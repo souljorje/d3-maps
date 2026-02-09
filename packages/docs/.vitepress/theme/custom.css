@@ -1,0 +1,17 @@
+:root {
+  --vp-c-brand-1: #3eaf7c;
+  --vp-c-brand-2: #35a26f;
+  --vp-c-brand-3: #2d8c60;
+  --vp-c-text-1: #2c3e50;
+  --vp-c-border: #eaecef;
+}
+
+.VPImage.image img {
+  max-height: 220px;
+}
+
+.vp-doc .code-copy {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}

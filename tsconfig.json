@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "baseUrl": ".",
+    "paths": {
+      "@d3-maps/core": [
+        "./packages/core/src/index.ts"
+      ],
+      "@d3-maps/core/*": [
+        "./packages/core/src/*"
+      ]
+    },
+
+    "noEmit": true,
+    "skipLibCheck": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+
+    /* Linting */
+    "strict": true,
+    "allowJs": false,
+    "allowUnreachableCode": false,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true
+  },
+  "include": [
+    "packages/core/**/*.ts",
+    "packages/vue/**/*.{ts,vue}",
+    "packages/.vitepress/components/*.vue",
+    "packages/.vitepress/*.ts"
+  ]
+}

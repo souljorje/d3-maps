@@ -1,0 +1,29 @@
+{
+  "name": "docs",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "Docs for @d3-maps/vue plugin",
+  "authors": {
+    "name": "Georgii Bukharov",
+    "email": "souljorje@gmail.com"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/souljorje/d3-maps",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "dependencies": {
+    "d3-array": "catalog:",
+    "d3-geo": "catalog:",
+    "d3-scale": "catalog:",
+    "vue": "catalog:",
+    "@d3-maps/vue": "workspace:*",
+    "@d3-maps/core": "workspace:*"
+  },
+  "devDependencies": {
+    "vitepress": "catalog:"
+  }
+}

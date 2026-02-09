@@ -1,0 +1,36 @@
+packages:
+  - packages/*
+
+catalog:
+  '@antfu/eslint-config': ^6.7.3
+  '@types/d3-geo': ^3.1.0
+  '@types/d3-selection': ^3.0.11
+  '@types/d3-zoom': ^3.0.8
+  '@types/geojson': ^7946.0.16
+  '@types/topojson-client': ^3.1.5
+  '@types/topojson-specification': ^1.0.5
+  '@vitejs/plugin-vue': ^6.0.2
+  '@vue/test-utils': ^2.4.6
+  '@vue/tsconfig': ^0.8.1
+  d3-array: ^3.2.4
+  d3-geo: ^3.1.1
+  d3-geo-projection: ^4.0.0
+  d3-scale: ^4.0.2
+  d3-selection: ^3.0.0
+  d3-zoom: ^3.0.0
+  eslint: ^9.39.2
+  jsdom: ^27.3.0
+  lint-staged: ^16.2.7
+  topojson-client: ^3.1.0
+  tsdown: 0.19.0
+  typescript: ^5.9.3
+  unplugin-vue: ^6.0.1
+  vite: ^7.2.7
+  vitepress: ^1.6.4
+  vitest: ^4.0.15
+  vue: 3.5.25
+  vue-tsc: ^3.2.0
+
+catalogMode: prefer
+
+shellEmulator: true

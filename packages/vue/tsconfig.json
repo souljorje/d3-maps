@@ -1,0 +1,7 @@
+{
+  "extends": ["../../tsconfig.json", "@vue/tsconfig/tsconfig.lib.json"],
+  "compilerOptions": {
+    "paths": {}
+  },
+  "include": ["src/**/*", "env.d.ts"]
+}

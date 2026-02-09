@@ -1,0 +1,54 @@
+{
+  "name": "@d3-maps/core",
+  "version": "0.1.0",
+  "type": "module",
+  "private": false,
+  "description": "Framework-agnostic core utilities for building reactive D3 maps",
+  "author": "Georgii Bukharov <souljorje@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/souljorje/d3-maps.git",
+    "directory": "packages/core"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "browser": "./dist/index.iife.js"
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "browser": "dist/index.iife.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/*",
+    "src/*"
+  ],
+  "scripts": {
+    "types": "tsc --noEmit",
+    "build": "pnpm run types && tsdown",
+    "dev": "tsdown --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "d3-geo": "catalog:",
+    "d3-selection": "catalog:",
+    "d3-zoom": "catalog:",
+    "topojson-client": "catalog:"
+  },
+  "devDependencies": {
+    "@types/d3-geo": "catalog:",
+    "@types/d3-selection": "catalog:",
+    "@types/d3-zoom": "catalog:",
+    "@types/geojson": "catalog:",
+    "@types/topojson-client": "catalog:",
+    "@types/topojson-specification": "catalog:",
+    "typescript": "catalog:",
+    "tsdown": "catalog:",
+    "vitest": "catalog:"
+  }
+}

@@ -1,0 +1,10 @@
+node_modules
+dist
+
+pnpm-error.log
+.pnpm-store
+
+.env
+
+.codex
+.netlify

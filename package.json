@@ -1,0 +1,37 @@
+{
+  "name": "d3-maps",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@10.25.0",
+  "engines": {
+    "node": ">= 20"
+  },
+  "scripts": {
+    "dev": "pnpm --filter docs dev",
+    "build": "pnpm --filter @d3-maps/core build && pnpm --filter @d3-maps/vue build && pnpm --filter docs build",
+    "test": "pnpm --filter @d3-maps/core test && pnpm --filter @d3-maps/vue test",
+    "docs:dev": "pnpm --filter docs dev",
+    "docs:build": "pnpm --filter docs build",
+    "docs:preview": "pnpm --filter docs preview",
+    "lint": "eslint . --max-warnings 0 --cache",
+    "lintfix": "pnpm run lint --fix"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@antfu/eslint-config": "catalog:",
+    "@vue/tsconfig": "catalog:",
+    "eslint": "catalog:",
+    "lint-staged": "catalog:",
+    "tsdown": "catalog:"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,vue}": [
+      "eslint --fix --max-warnings=0"
+    ]
+  }
+}

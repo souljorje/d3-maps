@@ -1,0 +1,68 @@
+{
+  "name": "@d3-maps/vue",
+  "version": "0.1.0",
+  "type": "module",
+  "private": false,
+  "description": "Vue bindings for @d3-maps/core to build reactive D3 SVG maps",
+  "author": "Georgii Bukharov <souljorje@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://d3-maps.netlify.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/souljorje/d3-maps.git",
+    "directory": "packages/vue"
+  },
+  "bugs": {
+    "url": "https://github.com/souljorje/d3-maps/issues"
+  },
+  "keywords": [
+    "vue",
+    "d3",
+    "svg",
+    "map"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "browser": "./dist/index.iife.js"
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "browser": "dist/index.iife.js",
+  "unpkg": "dist/index.iife.js",
+  "jsdelivr": "dist/index.iife.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/*",
+    "src/*"
+  ],
+  "scripts": {
+    "types": "vue-tsc --noEmit",
+    "build": "pnpm run types && tsdown",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "vue": "catalog:"
+  },
+  "dependencies": {
+    "@d3-maps/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/geojson": "catalog:",
+    "@types/topojson-client": "catalog:",
+    "@types/topojson-specification": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vue/test-utils": "catalog:",
+    "jsdom": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "vue": "catalog:",
+    "vue-tsc": "catalog:",
+    "unplugin-vue": "catalog:"
+  }
+}
