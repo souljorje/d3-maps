@@ -22,7 +22,7 @@
           :coordinates="[item.longitude, item.latitude]"
         >
           <circle
-            fill="#ff6f26"
+            fill="#ff6f2695"
             :r="setSize(item)"
             :transform="`scale(${markerScale})`"
           />
@@ -34,6 +34,8 @@
 
 <script setup lang="ts">
 import type { ZoomEvent } from '@d3-maps/core'
+import { getInverseZoomScale } from '@d3-maps/core'
+
 import { extent } from 'd3-array'
 import { geoAlbersUsa } from 'd3-geo'
 import { scaleLinear } from 'd3-scale'
@@ -50,7 +52,6 @@ const mapData = ref<unknown>()
 const projection = geoAlbersUsa
 const cities = ref<City[]>([])
 const markerScale = ref(1)
-const currentZoom = ref(1)
 const loading = ref(true)
 const error = ref(false)
 
@@ -77,11 +78,7 @@ onMounted(async () => {
 })
 
 function updateMarkerScale(e: ZoomEvent) {
-  if (currentZoom.value === e.transform.k) return
-
-  currentZoom.value = e.transform.k
-  const scaleFactor = e.transform.k !== 1 ? e.transform.k / 2 : e.transform.k
-  markerScale.value = 1 / scaleFactor
+  markerScale.value = getInverseZoomScale(e)
 }
 
 const setSize = (item: City) => scale.value(item.population)

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading">
+    <div v-if="loading">
       Loading...
     </div>
     <div v-else-if="error">
@@ -9,9 +9,6 @@
       v-else
       :data-transformer="dataTransformer"
       :data="mapData"
-      :projection-config="{
-        rotate: [-11, 0],
-      }"
     >
       <MapFeatures #default="{ features }">
         <MapFeature
@@ -48,10 +45,6 @@ const mapData = ref<unknown>()
 const loading = ref(true)
 const error = ref(false)
 const data = ref<CountryStat[]>([])
-
-function getCSSVariable(name: string): string {
-  return getComputedStyle(document.documentElement).getPropertyValue(name)
-}
 
 const minAndMaxValues = computed(() => extent(data.value, (item) => item.value))
 const colorScale = computed(() => {
