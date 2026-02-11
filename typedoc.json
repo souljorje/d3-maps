@@ -1,0 +1,42 @@
+{
+  "$schema": "https://typedoc-plugin-markdown.org/schema.json",
+  "plugin": [
+    "typedoc-plugin-markdown",
+    "typedoc-plugin-remark"
+  ],
+  "skipErrorChecking": true,
+  "name": "@d3-maps/core",
+  "entryPoints": ["packages/core/src/lib/**/*.ts"],
+  "exclude": ["packages/core/src/index.ts"],
+  "tsconfig": "packages/core/tsconfig.json",
+  "out": "packages/docs/api/core",
+  "readme": "none",
+  "entryFileName": "index.md",
+  "entryPointStrategy": "expand",
+  "groupOrder": ["Functions", "Variables", "*"],
+  "router": "module",
+  "cleanOutputDir": true,
+  "hidePageHeader": true,
+  "useCodeBlocks": true,
+  "expandParameters": true,
+  "expandObjects": true,
+  "parametersFormat": "table",
+  "interfacePropertiesFormat": "table",
+  "typeAliasPropertiesFormat": "table",
+  "disableSources": true,
+  "remarkPlugins": [
+    {
+      "applyTo": ["Module"],
+      "plugins": [
+        ["remark-insert-headings", { "text": "Table of contents" }],
+        [
+          "remark-toc",
+          {
+            "heading": "Table of contents",
+            "maxDepth": 3
+          }
+        ]
+      ]
+    }
+  ]
+}

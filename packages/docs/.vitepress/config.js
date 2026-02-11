@@ -1,69 +1,125 @@
-import { fileURLToPath, URL } from 'node:url'
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitepress'
 
-const guideSidebar = {
-  text: 'Guide',
-  items: [
-    { text: 'Introduction', link: '/guide/' },
-    { text: 'Getting Started', link: '/guide/getting-started' },
-  ],
+const REPO_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
+const PACKAGES_DIR = path.join(REPO_ROOT, 'packages')
+
+function toPascalCase(value) {
+  return value
+    .replace(/(^\w|[-_]\w)/g, (match) => match.replace(/[-_]/, '').toUpperCase())
 }
 
-const apiSidebar = {
-  text: 'API',
-  items: [
-    { text: 'Overview', link: '/api/' },
-    { text: 'MapFeature', link: '/api/map-feature' },
-    { text: 'MapFeatures', link: '/api/map-features' },
-    { text: 'MapMarker', link: '/api/map-marker' },
-    { text: 'MapZoom', link: '/api/map-zoom' },
-    { text: 'Context', link: '/api/map-context' },
-    { text: 'Consumer', link: '/api/map-consumer' },
-  ],
+function safeReadDir(dirPath) {
+  try {
+    return fs.readdirSync(dirPath)
+  } catch {
+    return []
+  }
 }
 
-const examplesSidebar = {
-  text: 'Examples',
-  items: [
-    { text: 'Basic', link: '/examples/' },
-    { text: 'Markers', link: '/examples/markers' },
-    { text: 'Zoom and Drag', link: '/examples/zoom-and-drag' },
-    { text: 'Choropleth Map', link: '/examples/choroplet-map' },
-    { text: 'Bubble Map', link: '/examples/bubble-map' },
-  ],
+function getExamples() {
+  const examplesDir = path.join(PACKAGES_DIR, 'docs', '.vitepress', 'examples')
+  const docsExamplesDir = path.join(PACKAGES_DIR, 'docs', 'examples')
+  const files = safeReadDir(examplesDir)
+    .filter((file) => file.endsWith('.vue'))
+    .sort((a, b) => a.localeCompare(b))
+
+  return files
+    .map((file) => {
+      const slug = path.basename(file, '.vue')
+      const docsFile = path.join(docsExamplesDir, `${slug}.md`)
+      if (!fs.existsSync(docsFile)) return null
+
+      return {
+        id: slug,
+        slug,
+        title: toPascalCase(slug).replace(/([a-z])([A-Z])/g, '$1 $2'),
+        sourcePath: `@/packages/docs/.vitepress/examples/${file}`,
+        docsPath: `/examples/${slug}`,
+      }
+    })
+    .filter(Boolean)
 }
+const examples = getExamples()
+
+const docsSidebar = [
+  {
+    text: 'Getting Started',
+    items: [
+      { text: 'Introduction', link: '/getting-started/' },
+      { text: 'Quick Start', link: '/getting-started/quick-start' },
+      { text: 'Data', link: '/getting-started/data' },
+      { text: 'Projections', link: '/getting-started/projections' },
+      { text: 'Responsiveness', link: '/getting-started/responsiveness' },
+      { text: 'Styling', link: '/getting-started/styling' },
+      { text: 'Troubleshooting', link: '/getting-started/troubleshooting' },
+    ],
+  },
+  {
+    text: 'Components',
+    items: [
+      { text: 'Overview', link: '/components/' },
+      { text: 'Map', link: '/components/map' },
+      { text: 'MapFeatures', link: '/components/map-features' },
+      { text: 'MapFeature', link: '/components/map-feature' },
+      { text: 'MapMarker', link: '/components/map-marker' },
+      { text: 'MapZoom', link: '/components/map-zoom' },
+    ],
+  },
+  {
+    text: 'Examples',
+    items: [
+      { text: 'Overview', link: '/examples' },
+      ...examples.map((example) => ({
+        text: example.title,
+        link: example.docsPath,
+      })),
+    ],
+  },
+]
+
+const apiSidebar = [
+  {
+    text: 'API',
+    items: [
+      { text: 'Core', link: '/api/core/' },
+    ],
+  },
+]
 
 export default defineConfig({
   srcExclude: ['AGENTS.md'],
   title: 'd3-maps',
-  description: 'Responsive SVG maps with Vue 3, Vite, and D3',
+  description: 'Reactive SVG maps powered by D3',
   head: [
-    ['meta', { name: 'theme-color', content: '#3eaf7c' }],
+    ['meta', { name: 'theme-color', content: '#ff6f26' }],
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
     ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
     ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicons/apple-touch-icon.png' }],
-    ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicons/favicon-32x32.png' }],
-    ['link', { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicons/favicon-16x16.png' }],
+    ['link', { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicons/favicon-96x96.png' }],
     ['link', { rel: 'manifest', href: '/favicons/site.webmanifest' }],
-    ['link', { rel: 'shortcut icon', href: '/favicons/favicon.ico' }],
-    ['meta', { name: 'msapplication-TileColor', content: '#000' }],
-    ['meta', { name: 'msapplication-config', content: '/favicons/browserconfig.xml' }],
+    ['link', { rel: 'shortcut icon', href: '/favicons/favicon.ico' }]
   ],
   themeConfig: {
-    logo: '/d3-maps-logo.png',
+    logo: '/d3-maps-logo.svg',
     nav: [
-      { text: 'Guide', link: '/guide/' },
-      { text: 'API', link: '/api/' },
+      { text: 'Getting Started', link: '/getting-started/' },
       { text: 'Examples', link: '/examples/' },
+      { text: 'API', link: '/api/core' },
     ],
-    sidebar: [
-      guideSidebar,
-      apiSidebar,
-      examplesSidebar,
-    ],
+    sidebar: {
+      '/api/': apiSidebar,
+      '/': docsSidebar,
+    },
     editLink: {
       pattern: 'https://github.com/souljorje/d3-maps/edit/main/packages/docs/:path',
       text: 'Edit this page on GitHub',
+    },
+    search: {
+      provider: 'local'
     },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/souljorje/d3-maps' },
@@ -72,13 +128,23 @@ export default defineConfig({
       message: 'MIT Licensed',
       copyright: 'Copyright © 2020-present Georgii Bukharov',
     },
+    externalLinkIcon: true,
+    examples
   },
   vite: {
+    plugins: [tailwindcss()],
+    server: {
+      fs: {
+        allow: [REPO_ROOT],
+      },
+    },
     resolve: {
+      dedupe: ['vue'],
       alias: {
-        '@': fileURLToPath(new URL('./', import.meta.url)),
-        'd3-maps': fileURLToPath(new URL('../../d3-maps/src/index.ts', import.meta.url)),
-        '@d3-maps/core': fileURLToPath(new URL('../../core/src/index.ts', import.meta.url)),
+        '@': REPO_ROOT,
+        '@d3-maps/core/index.css': path.join(PACKAGES_DIR, 'core', 'src', 'index.css'),
+        '@d3-maps/core': path.join(PACKAGES_DIR, 'core', 'src', 'index.ts'),
+        '@d3-maps/vue': path.join(PACKAGES_DIR, 'vue', 'src', 'index.ts'),
       },
     },
   },

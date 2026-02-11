@@ -30,7 +30,7 @@ Framework-agnostic utilities for building reactive D3 maps.
 Run from repo root:
 
 - `pnpm --filter @d3-maps/core build`
-- `pnpm --filter @d3-maps/core types`
+- `pnpm --filter @d3-maps/core typecheck`
 - `pnpm --filter @d3-maps/core test`
 - `pnpm --filter @d3-maps/core test:watch`
 

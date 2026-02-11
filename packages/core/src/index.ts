@@ -1,3 +1,5 @@
+import './index.css'
+
 export * from './lib/feature'
 export * from './lib/map'
 export * from './lib/mapObject'

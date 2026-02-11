@@ -10,8 +10,8 @@ Works with Vue. React, Solid, and Svelte support coming soon.
 
 1. **Core** is framework-agnostic
    - Universal higher order logic
-   - Map features models: georgaphies, markers, etc
-   - Utilities for custom layers: zoom, choroplet, bubble, etc
+   - Map objects models: features, markers, etc
+   - Utilities for custom layers: zoom, choropleth, bubble, etc
 
 2. **Adapters** are framework-specific
    - Vue / React / Svelte / Solid bindings

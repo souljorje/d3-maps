@@ -11,7 +11,10 @@
     "build": "pnpm --filter @d3-maps/core build && pnpm --filter @d3-maps/vue build && pnpm --filter docs build",
     "test": "pnpm --filter @d3-maps/core test && pnpm --filter @d3-maps/vue test",
     "docs:dev": "pnpm --filter docs dev",
-    "docs:build": "pnpm --filter docs build",
+    "docs:gen:examples": "node scripts/docs-gen-examples.mjs",
+    "typedoc": "typedoc --options typedoc.json",
+    "docs:gen": "pnpm docs:gen:examples && pnpm typedoc",
+    "docs:build": "pnpm docs:gen && pnpm --filter docs build",
     "docs:preview": "pnpm --filter docs preview",
     "lint": "eslint . --max-warnings 0 --cache",
     "lintfix": "pnpm run lint --fix"
@@ -24,10 +27,16 @@
     "@vue/tsconfig": "catalog:",
     "eslint": "catalog:",
     "lint-staged": "catalog:",
-    "tsdown": "catalog:"
+    "remark-insert-headings": "catalog:",
+    "remark-toc": "catalog:",
+    "tsdown": "catalog:",
+    "typedoc": "catalog:",
+    "typedoc-plugin-markdown": "catalog:",
+    "typedoc-plugin-remark": "catalog:"
   },
   "gitHooks": {
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "pre-push": "pnpm docs:build"
   },
   "lint-staged": {
     "*.{ts,tsx,vue}": [

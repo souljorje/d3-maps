@@ -1,19 +1,28 @@
-import { plugin as D3Maps } from '@d3-maps/vue'
 import DefaultTheme from 'vitepress/theme'
 import Demo from './components/Demo.vue'
-import ExampleBubble from './components/examples/bubble-map.vue'
-import ExampleChoroplet from './components/examples/choroplet-map.vue'
-import ExampleMarkers from './components/examples/markers.vue'
-import ExampleSimple from './components/examples/simple.vue'
-import ExampleZoomAndDrag from './components/examples/zoom-and-drag.vue'
+import ExamplesList from './components/ExamplesList.vue'
 import './custom.css'
 
-const exampleComponents = {
-  'examples-simple': ExampleSimple,
-  'examples-markers': ExampleMarkers,
-  'examples-zoom-and-drag': ExampleZoomAndDrag,
-  'examples-choroplet-map': ExampleChoroplet,
-  'examples-bubble-map': ExampleBubble,
+import { plugin as D3Maps } from '@d3-maps/vue'
+
+const demoModules = import.meta.glob('../examples/*.vue', {
+  eager: true,
+  import: 'default',
+})
+
+function toPascalCase(value) {
+  return value.replace(/(^\w|[-_]\w)/g, (match) => match.replace(/[-_]/, '').toUpperCase())
+}
+
+function registerDemoComponents(app) {
+  for (const [filePath, component] of Object.entries(demoModules)) {
+    const match = /\/([^/]+)\.vue$/.exec(filePath)
+    if (!match) continue
+
+    const slug = match[1]
+    const componentName = `${toPascalCase(slug)}`
+    app.component(componentName, component)
+  }
 }
 
 export default {
@@ -21,9 +30,8 @@ export default {
   enhanceApp({ app }) {
     DefaultTheme.enhanceApp({ app })
     app.use(D3Maps)
+    registerDemoComponents(app)
     app.component('Demo', Demo)
-    Object.entries(exampleComponents).forEach(([name, component]) => {
-      app.component(name, component)
-    })
+    app.component('ExamplesList', ExamplesList)
   },
 }

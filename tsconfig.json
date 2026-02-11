@@ -5,19 +5,12 @@
     "moduleResolution": "bundler",
     "moduleDetection": "force",
     "baseUrl": ".",
-    "paths": {
-      "@d3-maps/core": [
-        "./packages/core/src/index.ts"
-      ],
-      "@d3-maps/core/*": [
-        "./packages/core/src/*"
-      ]
-    },
 
     "noEmit": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
     "allowImportingTsExtensions": true,
+    "forceConsistentCasingInFileNames": true,
 
     /* Linting */
     "strict": true,
@@ -25,16 +18,12 @@
     "allowUnreachableCode": false,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
+    "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true
-  },
-  "include": [
-    "packages/core/**/*.ts",
-    "packages/vue/**/*.{ts,vue}",
-    "packages/.vitepress/components/*.vue",
-    "packages/.vitepress/*.ts"
-  ]
+    "erasableSyntaxOnly": true,
+    "useDefineForClassFields": true
+  }
 }

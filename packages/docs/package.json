@@ -2,7 +2,7 @@
   "name": "docs",
   "type": "module",
   "version": "0.0.1",
-  "description": "Docs for @d3-maps/vue plugin",
+  "description": "Docs for d3-maps across",
   "authors": {
     "name": "Georgii Bukharov",
     "email": "souljorje@gmail.com"
@@ -16,14 +16,16 @@
     "preview": "vitepress preview"
   },
   "dependencies": {
+    "@d3-maps/core": "workspace:*",
+    "@d3-maps/vue": "workspace:*",
     "d3-array": "catalog:",
     "d3-geo": "catalog:",
     "d3-scale": "catalog:",
-    "vue": "catalog:",
-    "@d3-maps/vue": "workspace:*",
-    "@d3-maps/core": "workspace:*"
+    "vue": "catalog:"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "catalog:",
+    "tailwindcss": "catalog:",
     "vitepress": "catalog:"
   }
 }

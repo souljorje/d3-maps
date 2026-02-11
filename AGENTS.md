@@ -34,10 +34,20 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 ## Common Commands (root)
 
 - `pnpm install`
-- `pnpm dev` (docs dev server)
-- `pnpm build`
-- `pnpm test` (Vue package tests)
-- `pnpm lint` / `pnpm lintfix`
+
+| Command | Description |
+| --- | --- |
+| `pnpm dev` | Run docs dev server (`docs` workspace). |
+| `pnpm build` | Build core, vue, and docs packages. |
+| `pnpm test` | Run core and vue test suites. |
+| `pnpm docs:dev` | Run VitePress docs in dev mode. |
+| `pnpm docs:gen:examples` | Generate docs example wrapper pages from `.vitepress/examples`. |
+| `pnpm typedoc` | Generate API reference docs via TypeDoc. |
+| `pnpm docs:gen` | Run all docs generation steps. |
+| `pnpm docs:build` | Generate docs and build VitePress site. |
+| `pnpm docs:preview` | Preview built docs site. |
+| `pnpm lint` | Run ESLint. |
+| `pnpm lintfix` | Run ESLint with auto-fix. |
 
 ## Commit & Pull Request Guidelines
 

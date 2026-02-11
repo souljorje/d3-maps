@@ -1,5 +1,13 @@
-export { default as Map } from './Map.vue'
-export { default as MapFeature } from './MapFeature.vue'
-export { default as MapFeatures } from './MapFeatures.vue'
-export { default as MapMarker } from './MapMarker.vue'
-export { default as MapZoom } from './MapZoom.vue'
+import Map from './Map.vue'
+import MapFeature from './MapFeature.vue'
+import MapFeatures from './MapFeatures.vue'
+import MapMarker from './MapMarker.vue'
+import MapZoom from './MapZoom.vue'
+
+export {
+  Map,
+  MapFeature,
+  MapFeatures,
+  MapMarker,
+  MapZoom,
+}

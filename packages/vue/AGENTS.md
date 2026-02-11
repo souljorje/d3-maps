@@ -28,7 +28,7 @@ Run from repo root:
 
 - `pnpm --filter @d3-maps/vue dev` (tsdown watch)
 - `pnpm --filter @d3-maps/vue build`
-- `pnpm --filter @d3-maps/vue type-check`
+- `pnpm --filter @d3-maps/vue typecheck`
 - `pnpm --filter @d3-maps/vue test`
 - `pnpm --filter @d3-maps/vue test:watch`
 
@@ -38,6 +38,5 @@ Run from repo root:
 - Keep component props typed and aligned with @d3-maps/core types.
 - Update packages/vue/src/components/index.ts and packages/vue/src/index.ts when adding components.
 - Prefer consuming shared logic from @d3-maps/core rather than copying utilities.
-- For MapZoom, prefer @d3-maps/core zoom helpers instead of direct d3-zoom usage.
 - Use shared helpers from [./../core/src/lib/utils.ts](./../core/src/lib/utils.ts) (copied there from [https://github.com/souljorje/utilities](https://github.com/souljorje/utilities) when needed) for null checks and abstract utility logic via @d3-maps/core exports.
-- Do not edit packages/vue/dist directly; rebuild instead.
+- For MapZoom, prefer @d3-maps/core zoom helpers instead of direct d3-zoom usage.

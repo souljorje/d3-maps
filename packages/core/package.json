@@ -16,8 +16,13 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "browser": "./dist/index.iife.js"
+    },
+    "./*.css": {
+      "import": "./dist/*.css",
+      "browser": "./dist/*.css"
     }
   },
+  "style": "dist/index.css",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "browser": "dist/index.iife.js",
@@ -27,8 +32,8 @@
     "src/*"
   ],
   "scripts": {
-    "types": "tsc --noEmit",
-    "build": "pnpm run types && tsdown",
+    "typecheck": "tsc --noEmit",
+    "build": "pnpm run typecheck && tsdown",
     "dev": "tsdown --watch",
     "test": "vitest run",
     "test:watch": "vitest",

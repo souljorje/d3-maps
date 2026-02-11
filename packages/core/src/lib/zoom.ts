@@ -3,6 +3,7 @@ import type {
   ZoomBehavior,
   ZoomTransform,
 } from 'd3-zoom'
+
 import { select as d3Select } from 'd3-selection'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import type { MapContext } from './map'
@@ -27,19 +28,19 @@ export interface ZoomConfig {
   translateExtent: Extent
 }
 
-type ZoomBehaviorOwnMethodName<TElement extends Element, TDatum> = Exclude<
+export type ZoomBehaviorOwnMethodName<TElement extends Element, TDatum> = Exclude<
   keyof ZoomBehavior<TElement, TDatum>,
   keyof Function
 >
 
-type ZoomBehaviorMethodName<TElement extends Element, TDatum> = Extract<{
+export type ZoomBehaviorMethodName<TElement extends Element, TDatum> = Extract<{
   [K in ZoomBehaviorOwnMethodName<TElement, TDatum>]:
   ZoomBehavior<TElement, TDatum>[K] extends (...args: unknown[]) => unknown
     ? K
     : never
 }[ZoomBehaviorOwnMethodName<TElement, TDatum>], string>
 
-type ZoomBehaviorMethodArgs<
+export type ZoomBehaviorMethodArgs<
   TElement extends Element,
   TDatum,
   TMethod extends ZoomBehaviorMethodName<TElement, TDatum>,
@@ -47,7 +48,7 @@ type ZoomBehaviorMethodArgs<
   ? TArgs
   : never
 
-type ZoomBehaviorSingleArg<
+export type ZoomBehaviorSingleArg<
   TElement extends Element,
   TDatum,
   TMethod extends ZoomBehaviorMethodName<TElement, TDatum>,
@@ -55,7 +56,7 @@ type ZoomBehaviorSingleArg<
   ? TArg
   : never
 
-type ZoomModifierValue<
+export type ZoomModifierValue<
   TElement extends Element,
   TDatum,
   TMethod extends ZoomBehaviorMethodName<TElement, TDatum>,
@@ -76,12 +77,16 @@ export interface ZoomProps<TElement extends Element = SVGSVGElement, TDatum = un
   modifiers?: ZoomModifiers<TElement, TDatum>
 }
 
-export interface ZoomBehaviorOptions<TElement extends Element = SVGSVGElement, TDatum = unknown>
-  extends ZoomProps<TElement, TDatum> {
-  onZoomStart?: (event: D3ZoomEvent<TElement, TDatum>) => void
-  onZoom?: (event: D3ZoomEvent<TElement, TDatum>) => void
-  onZoomEnd?: (event: D3ZoomEvent<TElement, TDatum>) => void
+export interface ZoomEvent extends D3ZoomEvent<SVGSVGElement, unknown> {};
+
+export interface ZoomEvents {
+  onZoomStart?: (event: ZoomEvent) => void
+  onZoom?: (event: ZoomEvent) => void
+  onZoomEnd?: (event: ZoomEvent) => void
 }
+
+export interface ZoomBehaviorOptions<TElement extends Element = SVGSVGElement, TDatum = unknown>
+  extends ZoomProps<TElement, TDatum>, ZoomEvents {}
 
 export type ZoomScaleSource = number | ZoomTransform | { transform: ZoomTransform }
 export type ZoomTargetElement = SVGSVGElement | SVGGElement

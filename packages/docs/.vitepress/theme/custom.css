@@ -1,17 +1,30 @@
+@import 'tailwindcss';
+
 :root {
-  --vp-c-brand-1: #3eaf7c;
-  --vp-c-brand-2: #35a26f;
-  --vp-c-brand-3: #2d8c60;
-  --vp-c-text-1: #2c3e50;
-  --vp-c-border: #eaecef;
+  --vp-c-brand-1: #dd4a00;
+  --vp-c-brand-2: #e94e00;
+  --vp-c-brand-3: #ea570d;
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(
+    -45deg,
+    var(--vp-c-brand-3) 30%,
+    color-mix(in oklab, var(--vp-c-brand-3), white 40%) 40%,
+    var(--vp-c-brand-3) 50%
+  );
+}
+
+@keyframes text-gradient {
+  50%,
+  100% {
+    background-position: 180% 0;
+  }
+}
+
+.main .heading .name {
+  background-size: 200% auto;
+  animation: 5s text-gradient linear infinite;
 }
 
 .VPImage.image img {
   max-height: 220px;
-}
-
-.vp-doc .code-copy {
-  position: absolute;
-  right: 0;
-  bottom: 0;
 }

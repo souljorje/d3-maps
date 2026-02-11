@@ -2,29 +2,35 @@
 layout: home
 hero:
   name: d3-maps
-  text: Responsive SVG maps with Vue 3 and D3
-  tagline: Zoom, drag, and full SVG control
+  text: Reactive SVG maps, powered by D3
+  tagline: Works with Vue, React, Solid, and Svelte
   image:
-    src: /d3-maps-logo.png
+    src: /d3-maps-logo.svg
     alt: d3-maps logo
   actions:
     - theme: brand
-      text: Get Started
-      link: /guide/
+      text: Getting started
+      link: /getting-started
     - theme: alt
       text: Examples
       link: /examples/
 features:
-  - icon: 👌
-    title: Easy
-    details: Drop-in Vue components backed by powerful defaults.
-  - icon: 📦
-    title: Lightweight
-    details: Modern Vite-powered bundle with tree-shakable exports.
-  - icon: 💪
-    title: Flexible
-    details: Compose with SVG to add any custom feature or interaction.
+  - title: Simple
+    details: Drop-in components with powerful defaults
+    icon: 😌
+  - title: Feature rich
+    details: Zoom, drag, markers out of the box (and more)
+    icon: 💪
+  - title: Responsive
+    details: By default, without rerenders
+    icon: 📱
+  - title: Lightweight
+    details: And treeshakable ESM
+    icon: 🪶
+  - title: SSR friendly
+    details: It's just an SVG, can be server-sendered
+    icon: 🗄️
+  - title: Universal
+    details: Supports TopoJSON and GeoJSON
+    icon: 📄
 ---
-
-## Install
-<!--@include: @/.vitepress/parts/installation.md-->

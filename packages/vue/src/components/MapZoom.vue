@@ -1,7 +1,7 @@
 <template>
   <g
     ref="container"
-    class="vsm-zoom"
+    class="d3-map-zoom"
   >
     <slot />
   </g>
@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import type {
-  D3ZoomEvent,
+  ZoomEvent,
   ZoomProps,
 } from '@d3-maps/core'
 import {
@@ -33,9 +33,9 @@ const props = withDefaults(defineProps<ZoomProps>(), {
 })
 
 const emit = defineEmits<{
-  (event: 'zoomstart', payload: D3ZoomEvent<SVGSVGElement, unknown>): void
-  (event: 'zoom', payload: D3ZoomEvent<SVGSVGElement, unknown>): void
-  (event: 'zoomend', payload: D3ZoomEvent<SVGSVGElement, unknown>): void
+  (event: 'zoomstart', payload: ZoomEvent): void
+  (event: 'zoom', payload: ZoomEvent): void
+  (event: 'zoomend', payload: ZoomEvent): void
 }>()
 
 const container = ref<SVGGElement | null>(null)
@@ -87,9 +87,3 @@ defineExpose({
   zoomBehavior,
 })
 </script>
-
-<style lang="css">
-  .vsm-zoom path {
-    vector-effect: non-scaling-stroke;
-  }
-</style>

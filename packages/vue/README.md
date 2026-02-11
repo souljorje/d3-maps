@@ -12,29 +12,35 @@ npm
 npm install @d3-maps/vue
 ```
 
-yarn
+pnpm
 
 ```bash
-yarn add @d3-maps/vue
+pnpm add @d3-maps/vue
+```
+
+bun
+
+```bash
+bun add @d3-maps/vue
 ```
 
 ## Usage
 
 ```js
 import { createApp } from 'vue'
-import D3MapsVue from '@d3-maps/vue'
+import { plugin as D3MapsVue } from '@d3-maps/vue'
 import App from './App.vue'
 
-const app = createApp(App)
-app.use(D3MapsVue)
-app.mount('#app')
+createApp(App)
+  .use(D3MapsVue)
+  .mount('#app')
 ```
 
 _Nuxt 3_ \
 Create `~/plugins/d3-maps-vue.client.ts`:
 
 ```ts
-import D3MapsVue from '@d3-maps/vue'
+import { plugin as D3MapsVue } from '@d3-maps/vue'
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(D3MapsVue)

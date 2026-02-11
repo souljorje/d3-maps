@@ -3,8 +3,16 @@ import { isStringOrNumber } from './utils'
 
 import type { Feature } from 'geojson'
 
+/**
+ * A GeoJSON Feature used by d3-maps.
+ *
+ * This type allows extra top-level fields to be attached in `dataTransformer` (e.g. choropleth colors).
+ */
 export type MapFeature = (Feature & Record<string, unknown>) | Feature
 
+/**
+ * Shared props contract for a single rendered feature.
+ */
 export interface MapFeatureProps<TStyle = unknown> {
   data: MapFeature
   styles?: MapObjectStyles<TStyle>
@@ -12,6 +20,14 @@ export interface MapFeatureProps<TStyle = unknown> {
   stroke?: string
 }
 
+/**
+ * Resolves a stable key for a feature.
+ *
+ * Checks:
+ * 1) `feature[idKey]`
+ * 2) `feature.properties[idKey]`
+ * 3) fallback to the list index
+ */
 export function getFeatureKey(
   feature: MapFeature,
   idKey = 'id',

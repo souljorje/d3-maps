@@ -7,10 +7,16 @@ export type MapObjectMouseEventType = 'mouseenter' | 'mouseleave' | 'mousedown' 
 export type MapObjectEventType = MapObjectFocusEventType | MapObjectMouseEventType
 export type MapObjectEvent<E> = E extends MapObjectFocusEventType ? FocusEvent : MouseEvent;
 
+/**
+ * Supported interaction states for map objects.
+ */
 export const mapObjectState = ['default', 'hover', 'active'] as const
 export type MapObjectState = typeof mapObjectState[number]
 export type MapObjectStyles<TStyle> = Partial<Record<MapObjectState, TStyle>>
 
+/**
+ * Maps DOM event names to interaction state updates.
+ */
 export function getObjectStateUpdate(event: MapObjectEventType): MapObjectState {
   switch (event) {
     case 'focus':
@@ -27,6 +33,9 @@ export function getObjectStateUpdate(event: MapObjectEventType): MapObjectState 
   }
 }
 
+/**
+ * Resolves a style value for the current state (falls back to `default`).
+ */
 export function resolveObjectStyle<TStyle>(
   state: MapObjectState,
   styles?: MapObjectStyles<TStyle>,

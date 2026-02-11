@@ -1,10 +1,9 @@
 <template>
   <MapProvider :context="context">
     <svg
-      :viewBox="`0 0 ${width} ${height}`"
+      :viewBox="`0 0 ${context.width} ${context.height}`"
       v-bind="$attrs"
-      width="100%"
-      height="100%"
+      class="d3-map"
     >
       <slot v-bind="context" />
     </svg>
@@ -20,11 +19,7 @@ import { makeMapContext } from '@d3-maps/core'
 import { computed } from 'vue'
 import { MapProvider } from './MapContext'
 
-// TODO: rework default width & height
-const props = withDefaults(defineProps<MapConfig>(), {
-  width: 680,
-  height: 680 * 0.55,
-})
+const props = defineProps<MapConfig>()
 
 defineSlots<{
   default?: (props: MapContext) => unknown
@@ -33,6 +28,7 @@ defineSlots<{
 const context = computed<MapContext>(() => makeMapContext({
   width: props.width,
   height: props.height,
+  aspectRatio: props.aspectRatio,
   projection: props.projection,
   projectionConfig: props.projectionConfig,
   data: props.data,
