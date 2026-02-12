@@ -33,6 +33,11 @@
 | Adapter imports | Never import d3-related libraries directly in adapters; import only from `@d3-maps/core`. |
 | Zoom behavior | Prefer `@d3-maps/core` zoom helpers over direct `d3-zoom` usage. |
 
+## Skills
+| Skill | When to use |
+|-------|-------------|
+| [vue-best-practices](../../.agents/skills/vue-best-practices/SKILL.md) | Any Vue component/composable work in this package, including TypeScript and Composition API decisions. |
+
 ## References
 - [Root Guide](../../AGENTS.md)
 - [Core Guide](../core/AGENTS.md)

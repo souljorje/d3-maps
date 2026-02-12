@@ -18,7 +18,12 @@
 | Demo source files | packages/docs/.vitepress/examples |
 | Generator script | scripts/docs-gen-examples.mjs |
 | Generated wrappers output directory | packages/docs/examples (`*.md` except AGENTS file) |
-| Generated examples index | [Examples Home](index.md) |
+| Generated examples index | packages/docs/examples/index.md |
+
+## Guardrails
+| Rule | Requirement |
+| --- | --- |
+| Generated docs ownership | Treat wrapper markdown files in packages/docs/examples as generated output managed by docs generation commands. |
 
 ## References
 - [Docs Guide](../AGENTS.md)

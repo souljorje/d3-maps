@@ -29,10 +29,13 @@
 | Theme registration | Register global demo components in packages/docs/.vitepress/theme/index.js. |
 | Generated content | Do not hand-edit generated files in packages/docs/examples and generated API markdown in packages/docs/api/core. |
 
+## Skills
+| Skill | When to use |
+|-------|-------------|
+| [vitepress](../../.agents/skills/vitepress/SKILL.md) | Changing VitePress config, theme behavior, markdown features, or docs site navigation/content structure. |
+
 ## References
 - [Root Guide](../../AGENTS.md)
-- [API Guide](api/AGENTS.md)
-- [Examples Guide](examples/AGENTS.md)
 - [Architecture](../../.agents/references/architecture.md)
 - [Engineering Workflow](../../.agents/references/engineering-workflow.md)
 - [Docs Generation Workflow](../../.agents/references/docs-generation.md)

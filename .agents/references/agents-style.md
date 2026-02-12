@@ -10,11 +10,13 @@ Canonical format for all project AGENTS files.
 | Brevity | Keep prose short; avoid paragraph-heavy sections. |
 | Specificity | Use exact paths, commands, and function signatures. |
 | Duplication | Do not repeat rules already defined in another AGENTS file; reference the source doc. |
+| Rule placement | Add new cross-cutting AGENTS rules in `.agents/references` docs and reference them from AGENTS files instead of duplicating the same rule text across multiple AGENTS files. |
 | Scope | Keep each AGENTS file local to its package/folder responsibility. |
 | Deep detail | Move long workflows/policy detail to docs under [.agents/references](./). |
 | .md references | Write `.md` file mentions as relative links with readable titles. |
 | Link titles | Do not use backticks in markdown link titles. |
 | File tree style | Use canonical tree block from [Architecture](architecture.md). |
+| Skills tables | Keep `Skills` tables only in the root AGENTS and package-root AGENTS files (not nested AGENTS). Place shared skills in root only; place package-specific skills only in the corresponding package-root AGENTS. Update the relevant table when a new relevant skill appears under `.agents/skills/`. |
 
 ## Structure Selection
 - Use lists when linking small sets (for example package guides and references).

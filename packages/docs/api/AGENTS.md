@@ -20,6 +20,11 @@
 | Primary API source package | packages/core/src/index.ts |
 | Generated output directory | packages/docs/api/core |
 
+## Guardrails
+| Rule | Requirement |
+| --- | --- |
+| Generated docs ownership | Treat API markdown in packages/docs/api/core as generated output managed by docs generation commands. |
+
 ## References
 - [Docs Guide](../AGENTS.md)
 - [Root Guide](../../../AGENTS.md)

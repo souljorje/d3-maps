@@ -39,11 +39,18 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 ## Global Rules
 | Topic | Rule |
 | --- | --- |
+| AGENTS.md files | Follow [AGENTS Style Guide](.agents/references/agents-style.md) when updating AGENTS.md files. |
 | Nested AGENTS | Always update all relevant nested AGENTS files when rules/scope change. |
+| Duplicated AGENTS | Never duplicate content in AGENTS files. |
 | Markdown links | Write `.md` mentions as relative links with readable titles. |
 | Architecture constraints | Follow [Architecture](.agents/references/architecture.md). |
 | Engineering workflow | Follow [Engineering Workflow](.agents/references/engineering-workflow.md). |
-| Style | Follow [Code Style](.agents/references/code-style.md). |
+| Code Style | Follow [Code Style](.agents/references/code-style.md). |
+
+## Skills
+| Skill | When to use |
+|-------|-------------|
+| [vitest](.agents/skills/vitest/SKILL.md) | Writing or updating test suites, mocking setup, or coverage/test config. |
 
 ## Detailed Instructions
 
