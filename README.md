@@ -1,7 +1,6 @@
 # d3-maps
 
-SVG maps made simple, reactive and responsive out of the box.  
-Powered with [d3](https://github.com/d3/d3) and [topojson](https://github.com/TopoJSON/TopoJSON-client).  
+Reactive SVG maps, powered by D3.  
 Works with Vue. React, Solid, and Svelte support coming soon.
 
 [docs](https://d3-maps.netlify.app/guide/) | [examples](https://d3-maps.netlify.app/examples/)

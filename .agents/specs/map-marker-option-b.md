@@ -65,7 +65,7 @@ Vue adapter responsibilities:
 ## Suggested File Targets (Future)
 
 ```text
-agents/
+.agents/
   specs/
     map-marker-option-b.md
 packages/

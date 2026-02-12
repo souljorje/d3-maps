@@ -38,4 +38,4 @@ Generated docs content for `packages/docs`.
 ## Related Docs
 - [Architecture](architecture.md)
 - [Code Style](code-style.md)
-- [AGENTS Style Guide](agents-style.md)
+- [AGENTS Style Guide](.agents-style.md)

@@ -55,4 +55,4 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 - [Engineering Workflow](engineering-workflow.md)
 - [Git Workflow](git-workflow.md)
 - [Docs Generation Workflow](docs-generation.md)
-- [AGENTS Style Guide](agents-style.md)
+- [AGENTS Style Guide](.agents-style.md)

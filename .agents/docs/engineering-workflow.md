@@ -13,4 +13,4 @@ Operational engineering policies that are not code-style or git-history rules.
 - [Architecture](architecture.md)
 - [Code Style](code-style.md)
 - [Git Workflow](git-workflow.md)
-- [AGENTS Style Guide](agents-style.md)
+- [AGENTS Style Guide](.agents-style.md)

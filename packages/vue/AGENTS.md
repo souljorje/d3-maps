@@ -36,7 +36,7 @@
 ## References
 - [Root Guide](../../AGENTS.md)
 - [Core Guide](../core/AGENTS.md)
-- [Architecture](../../agents/docs/architecture.md)
-- [Engineering Workflow](../../agents/docs/engineering-workflow.md)
-- [Code Style](../../agents/docs/code-style.md)
-- [AGENTS Style Guide](../../agents/docs/agents-style.md)
+- [Architecture](../../.agents/docs/architecture.md)
+- [Engineering Workflow](../../.agents/docs/engineering-workflow.md)
+- [Code Style](../../.agents/docs/code-style.md)
+- [AGENTS Style Guide](../../.agents/docs/.agents-style.md)

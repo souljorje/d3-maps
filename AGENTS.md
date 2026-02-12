@@ -42,15 +42,15 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | --- | --- |
 | Nested AGENTS | Always update all relevant nested AGENTS files when rules/scope change. |
 | Markdown links | Write `.md` mentions as relative links with readable titles. |
-| Architecture constraints | Follow [Architecture](agents/docs/architecture.md). |
-| Engineering workflow | Follow [Engineering Workflow](agents/docs/engineering-workflow.md). |
-| Style | Follow [Code Style](agents/docs/code-style.md). |
+| Architecture constraints | Follow [Architecture](.agents/docs/architecture.md). |
+| Engineering workflow | Follow [Engineering Workflow](.agents/docs/engineering-workflow.md). |
+| Style | Follow [Code Style](.agents/docs/code-style.md). |
 
 ## Deep Docs
 
-- [Architecture](agents/docs/architecture.md)
-- [Code Style](agents/docs/code-style.md)
-- [Engineering Workflow](agents/docs/engineering-workflow.md)
-- [Git Workflow](agents/docs/git-workflow.md)
-- [Docs Generation Workflow](agents/docs/docs-generation.md)
-- [AGENTS Style Guide](agents/docs/agents-style.md)
+- [Architecture](.agents/docs/architecture.md)
+- [Code Style](.agents/docs/code-style.md)
+- [Engineering Workflow](.agents/docs/engineering-workflow.md)
+- [Git Workflow](.agents/docs/git-workflow.md)
+- [Docs Generation Workflow](.agents/docs/docs-generation.md)
+- [AGENTS Style Guide](.agents/docs/.agents-style.md)
