@@ -11,7 +11,7 @@ Canonical format for all project AGENTS files.
 | Specificity | Use exact paths, commands, and function signatures. |
 | Duplication | Do not repeat rules already defined in another AGENTS file; reference the source doc. |
 | Scope | Keep each AGENTS file local to its package/folder responsibility. |
-| Deep detail | Move long workflows/policy detail to docs under [.agents/docs](./). |
+| Deep detail | Move long workflows/policy detail to docs under [.agents/references](./). |
 | .md references | Write `.md` file mentions as relative links with readable titles. |
 | Link titles | Do not use backticks in markdown link titles. |
 | File tree style | Use canonical tree block from [Architecture](architecture.md). |
@@ -29,7 +29,7 @@ Canonical format for all project AGENTS files.
 | Common Commands | Root commands valid for all contributors. |
 | Git Workflow | Single pointer to [Git Workflow](git-workflow.md). |
 | Global Rules | Cross-repo conventions only. |
-| Deep Docs | Links to docs in `.agents/docs`. |
+| Deep Docs | Links to docs in `.agents/references`. |
 
 ## Package AGENTS Template
 | Section | Content |

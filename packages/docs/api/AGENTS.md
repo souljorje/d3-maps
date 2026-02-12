@@ -23,7 +23,7 @@
 ## References
 - [Docs Guide](../AGENTS.md)
 - [Root Guide](../../../AGENTS.md)
-- [Architecture](../../../.agents/docs/architecture.md)
-- [Engineering Workflow](../../../.agents/docs/engineering-workflow.md)
-- [Docs Generation Workflow](../../../.agents/docs/docs-generation.md)
-- [AGENTS Style Guide](../../../.agents/docs/.agents-style.md)
+- [Architecture](../../../.agents/references/architecture.md)
+- [Engineering Workflow](../../../.agents/references/engineering-workflow.md)
+- [Docs Generation Workflow](../../../.agents/references/docs-generation.md)
+- [AGENTS Style Guide](../../../.agents/references/.agents-style.md)
