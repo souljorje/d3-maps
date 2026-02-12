@@ -1,43 +1,44 @@
-# @d3-maps/core Guide
-
-Framework-agnostic utilities for building reactive D3 maps.
+# @d3-maps/core
 
 ## Scope
+| Area | Path |
+| --- | --- |
+| Source | packages/core/src |
+| Tests | packages/core/tests |
+| Build output | packages/core/dist |
 
-- Source: packages/core/src
-- Tests: packages/core/tests
-- Build output: packages/core/dist
-
-## Key Files
-
-- packages/core/src/index.ts exports public API.
-- packages/core/src/lib/map.ts contains map context/projection helpers.
-- packages/core/src/lib/mapObject.ts contains shared map object types and event contracts.
-- packages/core/src/lib/feature.ts and packages/core/src/lib/marker.ts contain feature/marker helpers.
-- packages/core/src/lib/zoom.ts contains pure zoom behavior helpers.
-- packages/core/src/lib/utils.ts contains shared utility helpers.
-
-## Responsibilities
-
-- Core functions for GeoJSON and TopoJSON transformation and map rendering
-- Pure helper functions for map entities (Feature, Marker, etc)
-- Pure helpers for map object interaction state and style resolution
-- Helpers for d3-zoom behavior creation, configuration, and transform/scale formatting
-- Helpers for custom maps (choropleth, bubble, and similar)
+## Entry Points
+| Item | Path | Contract |
+| --- | --- | --- |
+| Public API | packages/core/src/index.ts | Export all supported public symbols. |
+| Map context/projection model | packages/core/src/lib/map.ts | Map data/context contracts and projection setup. |
+| Map object interaction model | packages/core/src/lib/mapObject.ts | Shared map object types, state, events, style resolution. |
+| Feature model | packages/core/src/lib/feature.ts | `MapFeature` and `MapFeatureProps` contracts plus feature key resolver. |
+| Marker model | packages/core/src/lib/marker.ts | Marker coordinate/props contracts plus marker transform resolver. |
+| Zoom model and behavior | packages/core/src/lib/zoom.ts | Zoom types/events/contracts and behavior setup helpers. |
+| Shared utilities | packages/core/src/lib/utils.ts | Reusable assertions/null checks/helpers. |
 
 ## Commands
+| Command | Purpose |
+| --- | --- |
+| `pnpm --filter @d3-maps/core typecheck` | Run TypeScript checks. |
+| `pnpm --filter @d3-maps/core build` | Typecheck and build package. |
+| `pnpm --filter @d3-maps/core dev` | Build in watch mode. |
+| `pnpm --filter @d3-maps/core test` | Run tests once. |
+| `pnpm --filter @d3-maps/core test:watch` | Run tests in watch mode. |
 
-Run from repo root:
+## Guardrails
+| Rule | Requirement |
+| --- | --- |
+| Framework boundaries | Keep package framework-agnostic and side-effect-free. |
+| API stability | Add new exports via packages/core/src/index.ts and flag breaking changes. |
+| Shared abstractions | Keep reusable logic in core; adapters should be framework-specific wrappers only. |
+| Domain contracts | Treat `feature.ts`, `marker.ts`, `zoom.ts`, and `mapObject.ts` as shared model/type contracts, not view-only helpers. |
+| Map context inputs | If helper depends on map context values, accept the context object. |
 
-- `pnpm --filter @d3-maps/core build`
-- `pnpm --filter @d3-maps/core typecheck`
-- `pnpm --filter @d3-maps/core test`
-- `pnpm --filter @d3-maps/core test:watch`
-
-## Conventions
-
-- Keep the public API stable: add exports via ./src/index.ts and document breaking changes.
-- Keep utilities framework-agnostic and side-effect-free
-- For shared type assertions, null checks, and abstract reusable helpers, copy needed functions from [https://github.com/souljorje/utilities](https://github.com/souljorje/utilities) into [./src/lib/utils.ts](./src/lib/utils.ts).
-- Avoid framework-specific code in core; write ALL abstract reusable logic in core; adapters must follow KISS principle and be framework-specific only
-- When helpers depend on values that come from MapContext, accept the whole context object instead of individual properties.
+## References
+- [Root Guide](../../AGENTS.md)
+- [Architecture](../../agents/docs/architecture.md)
+- [Engineering Workflow](../../agents/docs/engineering-workflow.md)
+- [Code Style](../../agents/docs/code-style.md)
+- [AGENTS Style Guide](../../agents/docs/agents-style.md)

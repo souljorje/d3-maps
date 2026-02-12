@@ -1,11 +1,29 @@
-# docs/api Guide
+# docs/api
 
 ## Scope
+| Area | Path |
+| --- | --- |
+| API index/landing | [API Home](index.md), [Core API](core/index.md) |
+| Generated API docs | packages/docs/api/core |
 
-- API landing pages: [packages/docs/api/index.md](./index.md) (redirect), [packages/docs/api/core/index.md](./core/index.md)
+## Commands
+| Command | Purpose |
+| --- | --- |
+| `pnpm typedoc` | Generate API markdown from package exports. |
+| `pnpm docs:gen` | Regenerate examples wrappers and API docs. |
 
-## Generation flow
+## Inputs/Outputs
+| Type | Path |
+| --- | --- |
+| TypeDoc command definition | package.json |
+| TypeDoc config | typedoc.json |
+| Primary API source package | packages/core/src/index.ts |
+| Generated output directory | packages/docs/api/core |
 
-- Run `pnpm typedoc` from repo root
-- The command runs TypeDoc directly from [package.json](./../../../package.json)
-- Shared TypeDoc config: [typedoc.json](./../../../typedoc.json)
+## References
+- [Docs Guide](../AGENTS.md)
+- [Root Guide](../../../AGENTS.md)
+- [Architecture](../../../agents/docs/architecture.md)
+- [Engineering Workflow](../../../agents/docs/engineering-workflow.md)
+- [Docs Generation Workflow](../../../agents/docs/docs-generation.md)
+- [AGENTS Style Guide](../../../agents/docs/agents-style.md)

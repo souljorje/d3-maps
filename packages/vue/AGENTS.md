@@ -1,42 +1,42 @@
 # @d3-maps/vue
 
-Vue bindings for @d3-maps/core
-
 ## Scope
+| Area | Path |
+| --- | --- |
+| Source | packages/vue/src |
+| Components | packages/vue/src/components |
+| Composables/helpers | packages/vue/src/lib |
+| Tests | packages/vue/tests |
+| Build output | packages/vue/dist |
 
-- Source: [packages/vue/src](./src)
-- Components: [packages/vue/src/components](./src/components)
-- Composables/helpers: [packages/vue/src/lib](./src/lib) (Vue wrappers around core helpers)
-- Tests: [packages/vue/tests](./tests)
-- Build output: [packages/vue/dist](./dist)
-
-## Key Files
-
-- [packages/vue/src/index.ts](./src/index.ts) is the public entry
-- [packages/vue/src/components/index.ts](./src/components/index.ts) re-exports components
-
-## Responsibilities
-
-- Vue components and composables that wrap @d3-maps/core helpers
-- Reuse prop and event contracts from @d3-maps/core for map objects
-- Declarative SVG map composition
-- Reactivity for data, size, projection, and options
+## Entry Points
+| Item | Path | Contract |
+| --- | --- | --- |
+| Package entry | packages/vue/src/index.ts | Public API for Vue adapter. |
+| Components export | packages/vue/src/components/index.ts | Re-export all public components. |
 
 ## Commands
+| Command | Purpose |
+| --- | --- |
+| `pnpm --filter @d3-maps/vue typecheck` | Run Vue TypeScript checks. |
+| `pnpm --filter @d3-maps/vue build` | Typecheck and build package. |
+| `pnpm --filter @d3-maps/vue test` | Run tests once. |
+| `pnpm --filter @d3-maps/vue test:watch` | Run tests in watch mode. |
 
-Run from repo root:
+## Guardrails
+| Rule | Requirement |
+| --- | --- |
+| SFC style | Use `<script setup lang="ts">` and Composition API. |
+| Type contracts | Align component props/events with `@d3-maps/core` contracts. |
+| Exports | Update packages/vue/src/components/index.ts and packages/vue/src/index.ts for public components. |
+| Shared logic | Reuse `@d3-maps/core` helpers; do not duplicate core abstractions in Vue package. |
+| Adapter imports | Never import d3-related libraries directly in adapters; import only from `@d3-maps/core`. |
+| Zoom behavior | Prefer `@d3-maps/core` zoom helpers over direct `d3-zoom` usage. |
 
-- `pnpm --filter @d3-maps/vue dev` (tsdown watch)
-- `pnpm --filter @d3-maps/vue build`
-- `pnpm --filter @d3-maps/vue typecheck`
-- `pnpm --filter @d3-maps/vue test`
-- `pnpm --filter @d3-maps/vue test:watch`
-
-## Conventions
-
-- Vue SFCs use `<script setup lang="ts">` and Composition API.
-- Keep component props typed and aligned with @d3-maps/core types.
-- Update packages/vue/src/components/index.ts and packages/vue/src/index.ts when adding components.
-- Prefer consuming shared logic from @d3-maps/core rather than copying utilities.
-- Use shared helpers from [./../core/src/lib/utils.ts](./../core/src/lib/utils.ts) (copied there from [https://github.com/souljorje/utilities](https://github.com/souljorje/utilities) when needed) for null checks and abstract utility logic via @d3-maps/core exports.
-- For MapZoom, prefer @d3-maps/core zoom helpers instead of direct d3-zoom usage.
+## References
+- [Root Guide](../../AGENTS.md)
+- [Core Guide](../core/AGENTS.md)
+- [Architecture](../../agents/docs/architecture.md)
+- [Engineering Workflow](../../agents/docs/engineering-workflow.md)
+- [Code Style](../../agents/docs/code-style.md)
+- [AGENTS Style Guide](../../agents/docs/agents-style.md)

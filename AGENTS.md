@@ -1,17 +1,14 @@
 # D3-maps
 
 ## Goal
-
 Make map creation with D3 simple, reactive, and responsive out of the box, across frameworks.
 
 ## Package Guides
-
-- [packages/core/AGENTS.md](./packages/core/AGENTS.md)
-- [packages/vue/AGENTS.md](./packages/vue/AGENTS.md)
-- [packages/docs/AGENTS.md](./packages/docs/AGENTS.md)
+- [Core Guide](packages/core/AGENTS.md)
+- [Vue Guide](packages/vue/AGENTS.md)
+- [Docs Guide](packages/docs/AGENTS.md)
 
 ## Repository Layout
-
 ```text
 ├─ packages/
   ├─ docs/  # VitePress unified docs site
@@ -23,20 +20,10 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
   └─ solid/  # Solid adapter
 ```
 
-## Stack
-
-- Language: TypeScript (ESM)
-- Build: Tsdown
-- Tests: Vitest
-- Docs: VitePress
-- Package manager: pnpm workspaces (Node >= 20)
-
-## Common Commands (root)
-
-- `pnpm install`
-
+## Common Commands
 | Command | Description |
 | --- | --- |
+| `pnpm install` | Install workspace dependencies. |
 | `pnpm dev` | Run docs dev server (`docs` workspace). |
 | `pnpm build` | Build core, vue, and docs packages. |
 | `pnpm test` | Run core and vue test suites. |
@@ -49,37 +36,21 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | `pnpm lint` | Run ESLint. |
 | `pnpm lintfix` | Run ESLint with auto-fix. |
 
-## Commit & Pull Request Guidelines
+## Global Rules
 
-Follow the [Conventional Commits v1.0.0](https://www.conventionalcommits.org/en/v1.0.0/).
+| Topic | Rule |
+| --- | --- |
+| Nested AGENTS | Always update all relevant nested AGENTS files when rules/scope change. |
+| Markdown links | Write `.md` mentions as relative links with readable titles. |
+| Architecture constraints | Follow [Architecture](agents/docs/architecture.md). |
+| Engineering workflow | Follow [Engineering Workflow](agents/docs/engineering-workflow.md). |
+| Style | Follow [Code Style](agents/docs/code-style.md). |
 
-- Format: type(scope): summary
-- Types: feat, fix, docs, style, refactor, test, chore
-- Examples:
-  - feat(product): add product detail page
-  - fix(auth): handle token refresh edge case
+## Deep Docs
 
-## Conventions
-
-- ALWAYS update (all nested) AGENTS.md files when facing relevant updates
-- Use `pnpm --filter <pkg>` for package-specific scripts.
-- Follow ESLint rules from [eslint.config.js](./eslint.config.js).
-- Paradigm: Prefer functional and declarative programming patterns
-- Declarativity: Prefix boolean props/variables with is, has, should (e.g., isLoading, hasError)
-- Prefer the most elegant and short solution; avoid premature optimization.
-- For type assertions, null checks, and sharable abstract helpers, copy needed functions from [https://github.com/souljorje/utilities](https://github.com/souljorje/utilities) into [./packages/core/src/lib/utils.ts](./packages/core/src/lib/utils.ts), then consume them across packages.
-
-## Do
-
-- ALWAYS install latest stable package version initially
-- ALWAYS use context7 MCP when working with third-party packages for the latest guides and code patterns
-- ALWAYS write file mentions as short relative links in .md files e.g. `[./src/index.ts](./src/index.ts)`
-- Use tree-style folder structure in .md files
-
-## Don’t
-
-- NEVER use ` in link titles in .md files
-
-## When stuck
-
-- Ask for clarification when changing public API or build outputs.
+- [Architecture](agents/docs/architecture.md)
+- [Code Style](agents/docs/code-style.md)
+- [Engineering Workflow](agents/docs/engineering-workflow.md)
+- [Git Workflow](agents/docs/git-workflow.md)
+- [Docs Generation Workflow](agents/docs/docs-generation.md)
+- [AGENTS Style Guide](agents/docs/agents-style.md)
