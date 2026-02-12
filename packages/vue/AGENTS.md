@@ -39,4 +39,3 @@
 - [Architecture](../../.agents/references/architecture.md)
 - [Engineering Workflow](../../.agents/references/engineering-workflow.md)
 - [Code Style](../../.agents/references/code-style.md)
-- [AGENTS Style Guide](../../.agents/references/.agents-style.md)

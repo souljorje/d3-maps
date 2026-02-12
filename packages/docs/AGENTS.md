@@ -37,4 +37,3 @@
 - [Engineering Workflow](../../.agents/references/engineering-workflow.md)
 - [Docs Generation Workflow](../../.agents/references/docs-generation.md)
 - [Code Style](../../.agents/references/code-style.md)
-- [AGENTS Style Guide](../../.agents/references/.agents-style.md)

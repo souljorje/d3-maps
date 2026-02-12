@@ -37,7 +37,6 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | `pnpm lintfix` | Run ESLint with auto-fix. |
 
 ## Global Rules
-
 | Topic | Rule |
 | --- | --- |
 | Nested AGENTS | Always update all relevant nested AGENTS files when rules/scope change. |
@@ -46,11 +45,11 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | Engineering workflow | Follow [Engineering Workflow](.agents/references/engineering-workflow.md). |
 | Style | Follow [Code Style](.agents/references/code-style.md). |
 
-## Deep Docs
+## Detailed Instructions
 
 - [Architecture](.agents/references/architecture.md)
 - [Code Style](.agents/references/code-style.md)
 - [Engineering Workflow](.agents/references/engineering-workflow.md)
 - [Git Workflow](.agents/references/git-workflow.md)
 - [Docs Generation Workflow](.agents/references/docs-generation.md)
-- [AGENTS Style Guide](.agents/references/.agents-style.md)
+- [AGENTS Style Guide](.agents/references/agents-style.md)
