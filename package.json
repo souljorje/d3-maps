@@ -19,7 +19,7 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "changeset publish",
-    "prerelease": "changeset publish --tag next",
+    "prerelease": "changeset publish",
     "prerelease:enter": "changeset pre enter next",
     "prerelease:exit": "changeset pre exit",
     "lint": "eslint . --max-warnings 0 --cache",
