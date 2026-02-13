@@ -1,6 +1,6 @@
 {
   "name": "@d3-maps/vue",
-  "version": "0.1.0",
+  "version": "0.1.1-next.0",
   "type": "module",
   "private": false,
   "description": "Vue bindings for @d3-maps/core to build reactive D3 SVG maps",

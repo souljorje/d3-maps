@@ -60,7 +60,7 @@ jobs:
 
       - name: Version prerelease packages
         if: steps.pre.outputs.enabled == 'true' && steps.pending.outputs.available == 'true'
-        run: pnpm version
+        run: pnpm run version
 
       - name: Publish next packages
         if: steps.pre.outputs.enabled == 'true' && steps.pending.outputs.available == 'true'
