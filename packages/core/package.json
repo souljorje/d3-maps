@@ -6,6 +6,9 @@
   "description": "Framework-agnostic core utilities for building reactive D3 maps",
   "author": "Georgii Bukharov <souljorje@gmail.com>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/souljorje/d3-maps.git",

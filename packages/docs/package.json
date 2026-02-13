@@ -2,6 +2,7 @@
   "name": "docs",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
   "description": "Docs for d3-maps across",
   "authors": {
     "name": "Georgii Bukharov",

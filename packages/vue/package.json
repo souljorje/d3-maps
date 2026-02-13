@@ -6,6 +6,9 @@
   "description": "Vue bindings for @d3-maps/core to build reactive D3 SVG maps",
   "author": "Georgii Bukharov <souljorje@gmail.com>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "homepage": "https://d3-maps.netlify.app",
   "repository": {
     "type": "git",

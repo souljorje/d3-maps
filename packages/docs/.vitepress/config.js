@@ -91,7 +91,8 @@ const apiSidebar = [
 ]
 
 export default defineConfig({
-  srcExclude: ['AGENTS.md'],
+  base: process.env.VITEPRESS_BASE || '/',
+  srcExclude: ['AGENTS.md', '**/AGENTS.md'],
   title: 'd3-maps',
   description: 'Reactive SVG maps powered by D3',
   head: [
