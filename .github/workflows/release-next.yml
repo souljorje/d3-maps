@@ -31,7 +31,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
@@ -62,11 +62,14 @@ jobs:
         if: steps.pre.outputs.enabled == 'true' && steps.pending.outputs.available == 'true'
         run: pnpm run version
 
+      - name: Build workspace
+        if: steps.pre.outputs.enabled == 'true' && steps.pending.outputs.available == 'true'
+        run: pnpm build
+
       - name: Publish next packages
         if: steps.pre.outputs.enabled == 'true' && steps.pending.outputs.available == 'true'
         run: pnpm prerelease
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
 
       - name: Commit version files

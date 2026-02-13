@@ -45,8 +45,7 @@
     "typecheck": "vue-tsc --noEmit",
     "build": "pnpm run typecheck && tsdown",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "prepublishOnly": "pnpm run build"
+    "test:watch": "vitest"
   },
   "peerDependencies": {
     "vue": "catalog:"

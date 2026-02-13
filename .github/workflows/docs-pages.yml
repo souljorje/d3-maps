@@ -5,15 +5,15 @@ on:
     branches:
       - main
     paths:
-      - "packages/docs/**"
-      - "packages/core/**"
-      - "packages/vue/**"
-      - "scripts/docs-gen-examples.mjs"
-      - "typedoc.json"
-      - "package.json"
-      - "pnpm-lock.yaml"
-      - "pnpm-workspace.yaml"
-      - ".github/workflows/docs-pages.yml"
+      - 'packages/docs/**'
+      - 'packages/core/**'
+      - 'packages/vue/**'
+      - 'scripts/docs-gen-examples.mjs'
+      - 'typedoc.json'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.github/workflows/docs-pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -40,7 +40,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
 
       - name: Setup Pages

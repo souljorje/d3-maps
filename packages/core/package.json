@@ -39,8 +39,7 @@
     "build": "pnpm run typecheck && tsdown",
     "dev": "tsdown --watch",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "prepublishOnly": "pnpm run build"
+    "test:watch": "vitest"
   },
   "dependencies": {
     "d3-geo": "catalog:",

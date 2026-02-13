@@ -4,6 +4,7 @@ dist
 
 pnpm-error.log
 .pnpm-store
+.turbo
 
 .env
 
