@@ -38,8 +38,7 @@
   "jsdelivr": "dist/index.iife.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist/*",
-    "src/*"
+    "dist/*"
   ],
   "scripts": {
     "typecheck": "vue-tsc --noEmit",

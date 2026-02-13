@@ -31,8 +31,7 @@
   "browser": "dist/index.iife.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist/*",
-    "src/*"
+    "dist/*"
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
