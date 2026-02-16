@@ -3,7 +3,7 @@
 Reactive SVG maps, powered by D3.  
 Works with Vue. React, Solid, and Svelte support coming soon.
 
-[docs](https://d3-maps.netlify.app/guide/) | [examples](https://d3-maps.netlify.app/examples/)
+[docs](https://souljorje.github.io/d3-maps)
 
 <!-- ![@d3-maps/vue](https://img.shields.io/bundlephobia/minzip/%40d3-maps/vue) -->
 

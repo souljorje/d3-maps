@@ -2,7 +2,7 @@
 
 `@d3-maps/vue` provides Vue bindings for `@d3-maps/core` to build SVG maps with Vue, [d3](https://github.com/d3/d3) and [TopoJSON-client](https://github.com/TopoJSON/TopoJSON-client).
 
-[docs](https://d3-maps.netlify.app/guide/) | [examples](https://d3-maps.netlify.app/examples/) _(being updated for the new package name)_
+[docs](https://souljorje.github.io/d3-maps)
 
 ## Installation
 

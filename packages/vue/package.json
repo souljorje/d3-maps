@@ -9,7 +9,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "https://d3-maps.netlify.app",
+  "homepage": "https://souljorje.github.io/d3-maps",
   "repository": {
     "type": "git",
     "url": "https://github.com/souljorje/d3-maps.git",
