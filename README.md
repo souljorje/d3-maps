@@ -35,20 +35,20 @@ Adapters depend on the core.
 
 ```bash
 # vue
-npm add @d3-maps/vue
+pnpm add @d3-maps/vue
 ```
 
 Coming soon
 
 ```bash
 # react
-npm add @d3-maps/react
+pnpm add @d3-maps/react
 
 # solid
-npm add @d3-maps/solid
+pnpm add @d3-maps/solid
 
 # svelte
-npm add @d3-maps/svelte
+pnpm add @d3-maps/svelte
 ```
 
 ## Development
@@ -56,15 +56,17 @@ npm add @d3-maps/svelte
 ```bash
 pnpm install
 pnpm build
-pnpm lint
-pnpm test
 pnpm docs:dev
 pnpm docs:build
 ```
 
+## Contributing
+
+[Contributing Guide](CONTRIBUTING.md)
+
 ## License
 
-MIT licensed. Copyright © 2026 Georgii Bukharov. See [LICENSE](./LICENSE) for more details.
+MIT licensed. Copyright © 2026 Georgii Bukharov. See [LICENCE](./LICENCE) for more details.
 
 ## Inspired by
 

@@ -51,6 +51,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | Skill | When to use |
 |-------|-------------|
 | [vitest](.agents/skills/vitest/SKILL.md) | Writing or updating test suites, mocking setup, or coverage/test config. |
+| [changesets](.agents/skills/changesets/SKILL.md) | Creating or updating `.changeset/*.md` entries for package changes (everything under `packages/*` except `packages/docs`). |
 
 ## Detailed Instructions
 
