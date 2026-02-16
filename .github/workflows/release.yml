@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup repo
+        uses: ./.github/actions/setup
+
+      - name: Build
+        id: build
+        continue-on-error: false
+        run: |
+          pnpm build:packages || {
+            echo "Turbo build failed with exit code $?"
+            exit 1
+          }
+
+      - name: Create release PR or publish to NPM
+        if: steps.build.outcome == 'success'
+        uses: changesets/action@v1
+        with:
+          title: 'ci(release): :package: version packages'
+          commit: 'ci(release): version packages'
+          publish: pnpm release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true

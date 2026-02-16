@@ -4,10 +4,13 @@ on:
   pull_request:
     branches:
       - main
-      - next
 
 permissions:
   contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
   checks:
@@ -16,33 +19,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: Detect docs changes
+        id: changes
+        uses: dorny/paths-filter@v3
         with:
-          version: 10.25.0
+          filters: .github/path-filters.yml
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-
-      - name: Resolve pnpm store path
-        run: echo "STORE_PATH=$(pnpm store path --silent)" >> "$GITHUB_ENV"
-
-      - name: Cache Turborepo
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ env.STORE_PATH }}
-            .turbo
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}-turbo-${{ hashFiles('turbo.json') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}-turbo-
-            ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}-
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Setup repo
+        uses: ./.github/actions/setup
 
       - name: Lint
         run: pnpm lint
@@ -50,5 +34,10 @@ jobs:
       - name: Test
         run: pnpm test
 
-      - name: Build
+      - name: Build (excluding docs)
+        if: steps.changes.outputs.docs != 'true'
+        run: pnpm build:packages
+
+      - name: Build (including docs)
+        if: steps.changes.outputs.docs == 'true'
         run: pnpm build

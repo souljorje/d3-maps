@@ -1,0 +1,9 @@
+docs:
+  - 'packages/docs/**'
+  - 'scripts/docs-gen-examples.mjs'
+  - 'typedoc.json'
+  - 'pnpm-lock.yaml'
+  - 'pnpm-workspace.yaml'
+  - '.github/workflows/ci.yml'
+  - '.github/workflows/docs-deploy.yml'
+  - '.github/path-filters.yml'

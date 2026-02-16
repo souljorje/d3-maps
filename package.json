@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "pnpm --filter docs dev",
     "build": "turbo run build",
+    "build:packages": "turbo run build --filter=!docs",
     "test": "turbo run test",
     "docs:dev": "pnpm --filter docs dev",
     "docs:gen:examples": "node scripts/docs-gen-examples.mjs",
@@ -19,9 +20,6 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "changeset publish",
-    "prerelease": "changeset publish",
-    "prerelease:enter": "changeset pre enter next",
-    "prerelease:exit": "changeset pre exit",
     "lint": "eslint . --max-warnings 0 --cache",
     "lintfix": "pnpm run lint --fix"
   },
