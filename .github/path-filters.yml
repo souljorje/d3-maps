@@ -4,6 +4,4 @@ docs:
   - 'typedoc.json'
   - 'pnpm-lock.yaml'
   - 'pnpm-workspace.yaml'
-  - '.github/workflows/ci.yml'
-  - '.github/workflows/docs-deploy.yml'
   - '.github/path-filters.yml'
