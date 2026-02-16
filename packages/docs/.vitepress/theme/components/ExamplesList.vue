@@ -4,9 +4,9 @@
       v-for="example in examples"
       :key="example.id"
     >
-      <a :href="example.docsPath">
+      <VPLink :href="example.docsPath">
         {{ example.title }}
-      </a>
+      </VPLink>
     </li>
   </ul>
 </template>
@@ -14,6 +14,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData } from 'vitepress'
+import { VPLink } from 'vitepress/theme'
 
 interface ExampleInfo {
   id: string
