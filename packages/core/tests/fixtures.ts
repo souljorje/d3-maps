@@ -1,4 +1,5 @@
 import type { FeatureCollection, Polygon } from 'geojson'
+import type { Topology } from 'topojson-specification'
 
 import { makeMapContext } from '../src'
 
@@ -30,4 +31,25 @@ export function makeTestMapContext(): ReturnType<typeof makeMapContext> {
     height: 300,
     data: sampleGeoJson,
   })
+}
+
+export const sampleTopology: Topology = {
+  type: 'Topology',
+  transform: { scale: [1, 1], translate: [0, 0] },
+  objects: {
+    demo: {
+      type: 'Polygon',
+      arcs: [[0]],
+      properties: { id: 'demo' },
+    },
+  },
+  arcs: [
+    [
+      [0, 0],
+      [10, 0],
+      [0, 10],
+      [-10, 0],
+      [0, -10],
+    ],
+  ],
 }

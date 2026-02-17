@@ -56,8 +56,7 @@ pnpm add @d3-maps/svelte
 ```bash
 pnpm install
 pnpm build
-pnpm docs:dev
-pnpm docs:build
+pnpm dev
 ```
 
 ## Contributing

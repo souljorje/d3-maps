@@ -6,9 +6,13 @@ import {
   isTopology,
   makeFeatures,
   makeMapContext,
+  makeMesh,
   makeProjection,
 } from '../src'
-import { sampleGeoJson } from './fixtures'
+import {
+  sampleGeoJson,
+  sampleTopology,
+} from './fixtures'
 
 describe('makeProjection', () => {
   it('applies projection config', () => {
@@ -34,6 +38,19 @@ describe('makeFeatures', () => {
   })
 })
 
+describe('makeMesh', () => {
+  it('returns undefined for geojson input', () => {
+    expect(makeMesh(sampleGeoJson)).toBeUndefined()
+  })
+
+  it('returns a mesh for topology input', () => {
+    const topologyMesh = makeMesh(sampleTopology)
+
+    expect(topologyMesh?.type).toBe('MultiLineString')
+    expect(topologyMesh?.coordinates.length).toBeGreaterThan(0)
+  })
+})
+
 describe('makeMapContext', () => {
   it('produces context with path generator', () => {
     const context = makeMapContext({
@@ -46,6 +63,15 @@ describe('makeMapContext', () => {
     expect(context.height).toBe(300)
     expect(context.features).toHaveLength(1)
     expect(typeof context.path(context.features[0])).toBe('string')
+    expect(context.mesh).toBeUndefined()
+    expect(context.renderMesh()).toBeNull()
+  })
+
+  it('includes mesh helpers for topology input', () => {
+    const context = makeMapContext({ data: sampleTopology })
+
+    expect(context.mesh?.type).toBe('MultiLineString')
+    expect(typeof context.renderMesh()).toBe('string')
   })
 })
 

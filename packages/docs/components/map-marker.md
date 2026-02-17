@@ -7,7 +7,7 @@ Positions anything on the map based on coordinates
 | Parameter | Type | Default value | Description |
 | --- | --- | --- | --- |
 | `coordinates` | `[number, number]` | — | Marker coordinates in `[longitude, latitude]` format. |
-| `styles` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | Style object with `default`, `hover`, and `active` states. |
+| `styles` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/getting-started/styling) |
 
 ## Events
 
