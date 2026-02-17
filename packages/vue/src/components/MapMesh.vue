@@ -19,8 +19,11 @@
 <script setup lang="ts">
 import type { MapObjectStyles } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
+
 import type { MapObjectEmit } from '../lib/useMapObject'
+
 import { computed, toRef } from 'vue'
+
 import { useMapObject } from '../lib/useMapObject'
 import { useMapContext } from './MapContext'
 
@@ -30,7 +33,7 @@ interface Props {
   styles?: MapObjectStyles<StyleValue>
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), { fill: 'none' })
 const emit = defineEmits<MapObjectEmit>()
 const context = useMapContext()
 
