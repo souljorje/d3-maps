@@ -25,13 +25,13 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | --- | --- |
 | `pnpm install` | Install workspace dependencies. |
 | `pnpm dev` | Run docs dev server (`docs` workspace). |
-| `pnpm build` | Build core, vue, and docs packages. |
+| `pnpm build` | Build the full project (packages + docs generation + docs site). |
 | `pnpm test` | Run core and vue test suites. |
 | `pnpm docs:dev` | Run VitePress docs in dev mode. |
 | `pnpm docs:gen:examples` | Generate docs example wrapper pages from `.vitepress/examples`. |
 | `pnpm typedoc` | Generate API reference docs via TypeDoc. |
 | `pnpm docs:gen` | Run all docs generation steps. |
-| `pnpm docs:build` | Generate docs and build VitePress site. |
+| `pnpm docs:build` | Build VitePress docs only (includes docs generation). |
 | `pnpm docs:preview` | Preview built docs site. |
 | `pnpm lint` | Run ESLint. |
 | `pnpm lintfix` | Run ESLint with auto-fix. |
