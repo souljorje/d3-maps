@@ -5,7 +5,7 @@
 | --- | --- |
 | Specification | [Conventional Commits v1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) |
 | Subject format | `type(scope): summary` |
-| Allowed types | `feat`, `fix`, `docs`, `refactor`, `ci`, `chore` |
+| Allowed types | `feat`, `fix`, `docs`, `refactor`, `ci`, `chore`, `test` |
 | Body | Prefer a body for anything non-trivial (include what changed and why) |
 
 ## Commit Body Style
