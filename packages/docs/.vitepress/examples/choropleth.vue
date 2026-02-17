@@ -34,6 +34,7 @@
 <script setup lang="ts">
 import { extent } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
+import { withBase } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
 
 interface CountryStat {
@@ -69,12 +70,12 @@ onMounted(async () => {
 })
 
 async function fetchMap() {
-  const response = await fetch('/example-data/countries-110m.json')
+  const response = await fetch(withBase('/example-data/countries-110m.json'))
   mapData.value = await response.json()
 }
 
 async function fetchData() {
-  const response = await fetch('/choropleth-data.json')
+  const response = await fetch(withBase('/choropleth-data.json'))
   const rawData = await response.json()
   data.value = rawData.map((item) => {
     const id = item['country-code']
