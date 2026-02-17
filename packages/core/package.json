@@ -1,7 +1,7 @@
 {
   "name": "@d3-maps/core",
-  "version": "0.1.0",
   "type": "module",
+  "version": "0.1.0",
   "private": false,
   "description": "Framework-agnostic core utilities for building reactive D3 maps",
   "author": "Georgii Bukharov <souljorje@gmail.com>",
@@ -53,8 +53,8 @@
     "@types/geojson": "catalog:",
     "@types/topojson-client": "catalog:",
     "@types/topojson-specification": "catalog:",
-    "typescript": "catalog:",
     "tsdown": "catalog:",
+    "typescript": "catalog:",
     "vitest": "catalog:"
   }
 }

@@ -4,6 +4,7 @@ export default antfu({
   type: 'lib',
   vue: true,
   typescript: true,
+  ignores: ['**/*.md'],
 })
   .overrideRules({
     // eslint
@@ -22,5 +23,5 @@ export default antfu({
     'style/operator-linebreak': ['error', 'before', { overrides: { '=': 'after' } }],
     'style/brace-style': 'error',
     'style/arrow-parens': ['error', 'always'],
-    'style/quote-props': ['error', 'as-needed', { keywords: true }],
+    'style/quote-props': ['error', 'as-needed', { keywords: false }],
   })

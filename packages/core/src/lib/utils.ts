@@ -10,9 +10,9 @@ export const isNullish = (value: unknown): value is null | undefined => value ==
 
 export const isNumber = (value: unknown): value is number => Number.isFinite(value)
 
-export const isStringOrNumber = (value: unknown): value is string | number => (
-  isString(value) || isNumber(value)
-)
+export function isStringOrNumber(value: unknown): value is string | number {
+  return isString(value) || isNumber(value)
+}
 
 export function isFunction(value: unknown): value is (...args: unknown[]) => unknown {
   return typeof value === 'function'
@@ -29,6 +29,6 @@ export async function get<T>(url: string): Promise<T> {
   return response.json() as Promise<T>
 }
 
-export const makeTransform = (x: number, y: number, k?: number) => (
-  `translate(${x}, ${y}) scale(${k ?? 1})`
-)
+export function makeTransform(x: number, y: number, k?: number): string {
+  return `translate(${x}, ${y}) scale(${k ?? 1})`
+}

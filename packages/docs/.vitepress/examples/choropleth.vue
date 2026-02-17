@@ -1,34 +1,34 @@
 <template>
-    <div v-if="loading">
-      Loading...
-    </div>
-    <div v-else-if="error">
-      An error occurred
-    </div>
-    <Map
-      v-else
-      :data-transformer="dataTransformer"
-      :data="mapData"
-    >
-      <MapFeatures #default="{ features }">
-        <MapFeature
-          v-for="feature in features"
-          :key="String(feature.id)"
-          :data="feature"
-          :styles="{
-            default: {
-              fill: feature.color,
-              stroke: 'darkslategray',
-            },
-            hover: {
-              fill: feature.color,
-              stroke: 'darkslategray',
-              opacity: 0.8,
-            },
-          }"
-        />
-      </MapFeatures>
-    </Map>
+  <div v-if="loading">
+    Loading...
+  </div>
+  <div v-else-if="error">
+    An error occurred
+  </div>
+  <Map
+    v-else
+    :data-transformer="dataTransformer"
+    :data="mapData"
+  >
+    <MapFeatures v-slot="{ features }">
+      <MapFeature
+        v-for="feature in features"
+        :key="String(feature.id)"
+        :data="feature"
+        :styles="{
+          default: {
+            fill: feature.color,
+            stroke: 'darkslategray',
+          },
+          hover: {
+            fill: feature.color,
+            stroke: 'darkslategray',
+            opacity: 0.8,
+          },
+        }"
+      />
+    </MapFeatures>
+  </Map>
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitepress'
@@ -102,7 +103,7 @@ export default defineConfig({
     ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicons/apple-touch-icon.png' }],
     ['link', { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicons/favicon-96x96.png' }],
     ['link', { rel: 'manifest', href: '/favicons/site.webmanifest' }],
-    ['link', { rel: 'shortcut icon', href: '/favicons/favicon.ico' }]
+    ['link', { rel: 'shortcut icon', href: '/favicons/favicon.ico' }],
   ],
   themeConfig: {
     logo: '/d3-maps-logo.svg',
@@ -120,7 +121,7 @@ export default defineConfig({
       text: 'Edit this page on GitHub',
     },
     search: {
-      provider: 'local'
+      provider: 'local',
     },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/souljorje/d3-maps' },
@@ -130,7 +131,7 @@ export default defineConfig({
       copyright: 'Copyright © 2020-present Georgii Bukharov',
     },
     externalLinkIcon: true,
-    examples
+    examples,
   },
   vite: {
     plugins: [tailwindcss()],

@@ -12,9 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useData } from 'vitepress'
 import { VPLink } from 'vitepress/theme'
+import { computed } from 'vue'
 
 interface ExampleInfo {
   id: string

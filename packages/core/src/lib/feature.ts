@@ -1,7 +1,7 @@
-import type { MapObjectStyles } from './mapObject'
-import { isStringOrNumber } from './utils'
-
 import type { Feature } from 'geojson'
+import type { MapObjectStyles } from './mapObject'
+
+import { isStringOrNumber } from './utils'
 
 /**
  * A GeoJSON Feature used by d3-maps.
