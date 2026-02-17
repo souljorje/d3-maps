@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { geoEqualEarth } from 'd3-geo'
 import {
   isTopology,
   makeFeatures,
@@ -17,6 +18,7 @@ describe('makeProjection', () => {
       width: 100,
       height: 100,
       config: { scale: 200, center: [20, 10], rotate: [0, 0, 10] },
+      projection: geoEqualEarth,
     })
 
     expect(Math.round(projection.scale())).toBe(200)

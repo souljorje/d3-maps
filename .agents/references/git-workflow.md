@@ -5,14 +5,13 @@
 | --- | --- |
 | Specification | [Conventional Commits v1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) |
 | Subject format | `type(scope): summary` |
-| Allowed types | `feat`, `fix`, `docs`, `refactor`, `ci`, `chore` |
+| Allowed types | `feat`, `fix`, `docs`, `refactor`, `ci`, `chore`, `test` |
 | Body | Prefer a body for anything non-trivial (include what changed and why) |
 
 ## Commit Body Style
 
-- Use a blank line between subject and body.
-- Use short bullets; keep it user-facing (not a file list).
-- Always include validation when applicable: `Tests: pnpm test` / `Lint: pnpm lint` / `Build: pnpm build`.
+- Use a blank line between subject and body
+- Use short bullets; keep it user-facing (not a file list)
 
 Template:
 
@@ -49,8 +48,8 @@ feat(core): add auto-fit helper for responsive maps
 ## Hooks
 | Hook | Behavior |
 | --- | --- |
-| pre-commit | Runs `lint-staged` from package.json. |
-| pre-push | Runs `pnpm docs:build` from package.json. |
+| pre-commit | Runs `lint-staged`, then `pnpm test` from package.json (`simple-git-hooks`). |
+| pre-push | Runs `pnpm docs:build` from package.json (`simple-git-hooks`). |
 
 ## Related Docs
 - [Architecture](architecture.md)
