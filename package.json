@@ -15,7 +15,7 @@
     "docs:gen:examples": "node scripts/docs-gen-examples.mjs",
     "typedoc": "typedoc --options typedoc.json",
     "docs:gen": "pnpm docs:gen:examples && pnpm typedoc",
-    "docs:build": "pnpm docs:gen && pnpm --filter docs build",
+    "docs:build": "pnpm --filter docs build",
     "docs:preview": "pnpm --filter docs preview",
     "changeset": "changeset",
     "version": "changeset version",
