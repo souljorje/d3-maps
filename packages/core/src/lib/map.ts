@@ -2,13 +2,17 @@ import type { GeoPath, GeoProjection } from 'd3-geo'
 import type {
   Feature,
   FeatureCollection,
+  MultiLineString,
 } from 'geojson'
 import type { Topology } from 'topojson-specification'
 import {
   geoEqualEarth,
   geoPath,
 } from 'd3-geo'
-import { feature } from 'topojson-client'
+import {
+  feature,
+  mesh,
+} from 'topojson-client'
 import { isNumber } from './utils'
 import type { MapFeature } from './feature'
 
@@ -64,8 +68,10 @@ export interface MapContext {
   height: number
   projection?: GeoProjection
   features: MapFeature[]
+  mesh?: MultiLineString
   path: GeoPath
   renderPath: (feature: Feature) => ReturnType<GeoPath>
+  renderMesh: () => ReturnType<GeoPath>
 }
 
 /**
@@ -144,6 +150,23 @@ export function makeFeatures(
 export const makePathFn = (mapProjection: GeoProjection): GeoPath => geoPath().projection(mapProjection)
 
 /**
+ * Returns a TopoJSON mesh when topology data is provided.
+ */
+export function makeMesh(geoData: MapData): MultiLineString | undefined {
+  if (!isTopology(geoData)) {
+    return undefined
+  }
+
+  const objectKey = Object.keys(geoData.objects)[0]
+  if (!objectKey) {
+    return undefined
+  }
+
+  const topoObject = geoData.objects[objectKey]
+  return mesh(geoData, topoObject)
+}
+
+/**
  * Creates a full {@link MapContext} from a {@link MapConfig}.
  */
 export function makeMapContext({
@@ -156,6 +179,7 @@ export function makeMapContext({
   projectionConfig,
 }: MapConfig): MapContext {
   const [features, geoJson] = makeFeatures(data, dataTransformer)
+  const mapMesh = makeMesh(data)
   const height = passedHeight || (width / aspectRatio)
   const projection = makeProjection({
     width,
@@ -172,8 +196,10 @@ export function makeMapContext({
     height,
     projection,
     features,
+    mesh: mapMesh,
     path: pathFn,
     renderPath: (feature: Feature) => pathFn(feature),
+    renderMesh: () => mapMesh ? pathFn(mapMesh) : null,
   }
 }
 

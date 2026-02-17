@@ -1,6 +1,6 @@
 # Styling
 
-[MapFeature](/components/map-feature) and [MapMarker](/components/map-marker) accept a `styles` prop:
+[MapFeature](/components/map-feature), [MapMarker](/components/map-marker), and [MapMesh](/components/map-mesh) accept a `styles` prop:
 
 ```ts
 const styles = {
