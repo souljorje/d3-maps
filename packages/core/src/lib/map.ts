@@ -4,7 +4,7 @@ import type {
   FeatureCollection,
   MultiLineString,
 } from 'geojson'
-import type { Topology } from 'topojson-specification'
+import type { GeometryObject, Topology } from 'topojson-specification'
 
 import type { MapFeature } from './feature'
 
@@ -132,16 +132,11 @@ export function makeFeatures(
 ): [ features: MapFeature[], geoJson: FeatureCollection ] {
   let geoJson: FeatureCollection
   if (isTopology(geoData)) {
-    const objectKey = Object.keys(geoData.objects)[0]
-    if (objectKey) {
-      const topoObject = geoData.objects[objectKey]
-      const normalizedGeoJson = feature(geoData, topoObject)
-      geoJson = normalizedGeoJson.type === 'FeatureCollection'
-        ? normalizedGeoJson
-        : { type: 'FeatureCollection', features: [normalizedGeoJson] }
-    } else {
-      geoJson = { type: 'FeatureCollection', features: [] }
-    }
+    const topoObject = getTopoObject(geoData)
+    const normalizedGeoJson = feature(geoData, topoObject)
+    geoJson = normalizedGeoJson.type === 'FeatureCollection'
+      ? normalizedGeoJson
+      : { type: 'FeatureCollection', features: [normalizedGeoJson] }
   } else {
     geoJson = geoData
   }
@@ -156,16 +151,9 @@ export const makePathFn = (mapProjection: GeoProjection): GeoPath => geoPath().p
  * Returns a TopoJSON mesh when topology data is provided.
  */
 export function makeMesh(geoData: MapData): MultiLineString | undefined {
-  if (!isTopology(geoData)) {
-    return undefined
-  }
+  if (!isTopology(geoData)) return undefined
 
-  const objectKey = Object.keys(geoData.objects)[0]
-  if (!objectKey) {
-    return undefined
-  }
-
-  const topoObject = geoData.objects[objectKey]
+  const topoObject = getTopoObject(geoData)
   return mesh(geoData, topoObject)
 }
 
@@ -211,4 +199,9 @@ export function makeMapContext({
  */
 export function isTopology(data: MapData): data is Topology {
   return (data as Topology)?.type === 'Topology'
+}
+
+export function getTopoObject(geoData: Topology): GeometryObject {
+  const objectKey = Object.keys(geoData.objects)[0]
+  return geoData.objects[objectKey] as GeometryObject
 }

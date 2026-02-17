@@ -5,9 +5,11 @@
 ## Table of contents
 
 * [Functions](#functions)
+  * [getTopoObject()](#gettopoobject)
   * [isTopology()](#istopology)
   * [makeFeatures()](#makefeatures)
   * [makeMapContext()](#makemapcontext)
+  * [makeMesh()](#makemesh)
   * [makePathFn()](#makepathfn)
   * [makeProjection()](#makeprojection)
 * [Interfaces](#interfaces)
@@ -19,6 +21,24 @@
   * [MapData](#mapdata)
 
 ## Functions
+
+### getTopoObject()
+
+```ts
+function getTopoObject(geoData: Topology): GeometryObject;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `geoData` | `Topology` |
+
+#### Returns
+
+`GeometryObject`
+
+***
 
 ### isTopology()
 
@@ -81,6 +101,26 @@ Creates a full [MapContext](#mapcontext) from a [MapConfig](#mapconfig).
 #### Returns
 
 [`MapContext`](#mapcontext)
+
+***
+
+### makeMesh()
+
+```ts
+function makeMesh(geoData: MapData): MultiLineString | undefined;
+```
+
+Returns a TopoJSON mesh when topology data is provided.
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `geoData` | [`MapData`](#mapdata) |
+
+#### Returns
+
+`MultiLineString` | `undefined`
 
 ***
 
@@ -165,8 +205,10 @@ Adapters provide this context to child layers (features, markers, custom SVG).
 | ------ | ------ |
 | <a id="property-features"></a> `features` | [`MapFeature`](feature.md#mapfeature)\[] |
 | <a id="property-height-1"></a> `height` | `number` |
+| <a id="property-mesh"></a> `mesh?` | `MultiLineString` |
 | <a id="property-path"></a> `path` | `GeoPath` |
 | <a id="property-projection-1"></a> `projection?` | `GeoProjection` |
+| <a id="property-rendermesh"></a> `renderMesh` | () => `void` |
 | <a id="property-renderpath"></a> `renderPath` | (`feature`: `Feature`) => `void` |
 | <a id="property-width-1"></a> `width` | `number` |
 
