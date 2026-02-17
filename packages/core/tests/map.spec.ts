@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
+
 import { geoEqualEarth } from 'd3-geo'
+
 import {
   isTopology,
   makeFeatures,

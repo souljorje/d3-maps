@@ -15,8 +15,10 @@ import type {
   MapConfig,
   MapContext,
 } from '@d3-maps/core'
+
 import { makeMapContext } from '@d3-maps/core'
 import { computed } from 'vue'
+
 import { MapProvider } from './MapContext'
 
 const props = defineProps<MapConfig>()

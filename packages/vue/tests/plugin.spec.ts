@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
+
 import { createApp } from 'vue'
+
 import { Map, MapMesh, plugin } from '../src'
 
 describe('@d3-maps/vue plugin', () => {

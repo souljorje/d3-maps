@@ -19,8 +19,11 @@
 <script setup lang="ts">
 import type { MapFeatureProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
+
 import type { MapObjectEmit } from '../lib/useMapObject'
+
 import { computed, toRef } from 'vue'
+
 import { useMapObject } from '../lib/useMapObject'
 import { useMapContext } from './MapContext'
 

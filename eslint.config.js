@@ -4,7 +4,7 @@ export default antfu({
   type: 'lib',
   vue: true,
   typescript: true,
-  ignores: ['**/*.md'],
+  ignores: ['**/*.md', 'packages/docs/public/example-data/*'],
 })
   .overrideRules({
     // eslint
@@ -12,6 +12,41 @@ export default antfu({
 
     // eslint-plugin-antfu
     'antfu/if-newline': 0,
+    'perfectionist/sort-imports': [
+      'error',
+      {
+        newlinesBetween: 1,
+        type: 'alphabetical',
+        groups: [
+          'vitest',
+          'type',
+          [
+            'parent-type',
+            'sibling-type',
+            'index-type',
+            'internal-type',
+          ],
+          'builtin',
+          'external',
+          'internal',
+          [
+            'parent',
+            'sibling',
+            'index',
+          ],
+          'side-effect',
+          'object',
+          'unknown',
+        ],
+        customGroups: [
+          {
+            groupName: 'vitest',
+            selector: 'external',
+            elementNamePattern: '^vitest$',
+          },
+        ],
+      },
+    ],
 
     // eslint.vue
     'vue/block-order': ['error', {

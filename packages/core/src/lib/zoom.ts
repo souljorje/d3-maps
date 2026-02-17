@@ -5,8 +5,10 @@ import type {
 } from 'd3-zoom'
 
 import type { MapContext } from './map'
+
 import { select as d3Select } from 'd3-selection'
 import { zoom, zoomIdentity } from 'd3-zoom'
+
 import { isNumber } from './utils'
 
 export type {
