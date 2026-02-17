@@ -84,12 +84,12 @@ function updateMarkerScale(e: ZoomEvent) {
 const setSize = (item: City) => scale.value(item.population)
 
 async function fetchMap() {
-  const response = await fetch('https://unpkg.com/us-atlas@3.0.0/states-10m.json')
+  const response = await fetch('/example-data/states-10m.json')
   mapData.value = await response.json()
 }
 
 async function fetchData() {
-  const response = await fetch('https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json')
+  const response = await fetch('/example-data/us-cities.json')
   cities.value = await response.json()
 }
 </script>
