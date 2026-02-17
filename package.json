@@ -20,6 +20,8 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "changeset publish",
+    "prepare": "simple-git-hooks",
+    "lint-staged": "lint-staged",
     "lint": "eslint ./packages --max-warnings 0 --cache",
     "lintfix": "pnpm run lint --fix"
   },
@@ -35,14 +37,15 @@
     "lint-staged": "catalog:",
     "remark-insert-headings": "catalog:",
     "remark-toc": "catalog:",
+    "simple-git-hooks": "catalog:",
     "tsdown": "catalog:",
     "turbo": "catalog:",
     "typedoc": "catalog:",
     "typedoc-plugin-markdown": "catalog:",
     "typedoc-plugin-remark": "catalog:"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged",
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged && pnpm test",
     "pre-push": "pnpm docs:build"
   },
   "lint-staged": {
