@@ -68,8 +68,8 @@ onMounted(() => {
       zoom: props.zoom,
     }),
     {
-      immediate: true
-    }
+      immediate: true,
+    },
   )
   watch(
     () => [props.center[0], props.center[1], props.zoom],

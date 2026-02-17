@@ -5,6 +5,7 @@ import type {
   MultiLineString,
 } from 'geojson'
 import type { Topology } from 'topojson-specification'
+import type { MapFeature } from './feature'
 import {
   geoEqualEarth,
   geoPath,
@@ -14,7 +15,6 @@ import {
   mesh,
 } from 'topojson-client'
 import { isNumber } from './utils'
-import type { MapFeature } from './feature'
 
 export type MapData = FeatureCollection | Topology
 export type DataTransformer = (features: MapFeature[]) => MapFeature[]
@@ -38,7 +38,7 @@ export interface ProjectionConfig {
 export interface MapConfig {
   width?: number
   height?: number
-  aspectRatio?: number;
+  aspectRatio?: number
   /**
    * Projection factory from d3-geo (or a compatible implementation).
    *
@@ -135,7 +135,7 @@ export function makeFeatures(
       const normalizedGeoJson = feature(geoData, topoObject)
       geoJson = normalizedGeoJson.type === 'FeatureCollection'
         ? normalizedGeoJson
-        : { type: 'FeatureCollection', features: [ normalizedGeoJson ] }
+        : { type: 'FeatureCollection', features: [normalizedGeoJson] }
     } else {
       geoJson = { type: 'FeatureCollection', features: [] }
     }
@@ -144,7 +144,7 @@ export function makeFeatures(
   }
 
   const features = dataTransformer ? dataTransformer(geoJson.features) : geoJson.features
-  return [ features, geoJson ]
+  return [features, geoJson]
 }
 
 export const makePathFn = (mapProjection: GeoProjection): GeoPath => geoPath().projection(mapProjection)
@@ -172,7 +172,7 @@ export function makeMesh(geoData: MapData): MultiLineString | undefined {
 export function makeMapContext({
   width = 600,
   height: passedHeight,
-  aspectRatio = 16/9,
+  aspectRatio = 16 / 9,
   data,
   dataTransformer,
   projection: providedProjection = geoEqualEarth,

@@ -24,7 +24,7 @@ export const sampleGeoJson: FeatureCollection<Polygon> = {
   ],
 }
 
-export function makeTestMapContext() {
+export function makeTestMapContext(): ReturnType<typeof makeMapContext> {
   return makeMapContext({
     width: 400,
     height: 300,

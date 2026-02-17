@@ -27,7 +27,7 @@ describe('makeProjection', () => {
 
 describe('makeFeatures', () => {
   it('returns features from geojson and runs transformer', () => {
-    const [ features, geoJson ] = makeFeatures(sampleGeoJson, (items) => items.slice(0, 1))
+    const [features, geoJson] = makeFeatures(sampleGeoJson, (items) => items.slice(0, 1))
 
     expect(features).toHaveLength(1)
     expect(geoJson.features[0].properties?.id).toBe('demo')

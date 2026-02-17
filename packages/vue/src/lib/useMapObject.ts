@@ -1,8 +1,8 @@
 import type {
-  MapObjectStyles,
-  MapObjectEventType,
   MapObjectEvent,
+  MapObjectEventType,
   MapObjectState,
+  MapObjectStyles,
 } from '@d3-maps/core'
 import type { ComputedRef, MaybeRef, StyleValue } from 'vue'
 import {
@@ -36,13 +36,12 @@ export function useMapObject(
 ): UseMapObjectResult {
   const state = ref<MapObjectState>('default')
 
-  const eventCallbackFactory = <E extends MapObjectEventType>(eventName: E) => (
+  const eventCallbackFactory = <E extends MapObjectEventType>(eventName: E) =>
     (event: MapObjectEvent<E>) => {
       state.value = getObjectStateUpdate(eventName)
       emit(eventName, event)
     }
-  )
-  
+
   const computedStyle = computed(() => resolveObjectStyle(state.value, unref(styles)))
 
   return {

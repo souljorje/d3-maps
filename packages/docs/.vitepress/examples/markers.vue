@@ -5,7 +5,7 @@
   >
     <MapFeatures />
     <MapMarker
-      v-for="(item, index) in cities"
+      v-for="item in cities"
       :key="item.city"
       :coordinates="[item.lon, item.lat]"
     >

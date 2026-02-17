@@ -5,6 +5,7 @@
     :style="computedStyle"
     :fill="fill"
     :stroke="stroke"
+    v-bind="$attrs"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
     @mousedown="onMouseDown"
@@ -12,7 +13,6 @@
     @click="onMouseUp"
     @focus="onFocus"
     @blur="onBlur"
-    v-bind="$attrs"
   />
 </template>
 

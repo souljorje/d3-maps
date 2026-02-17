@@ -33,7 +33,6 @@
   * [Extent](#extent-2)
   * [ZoomBehaviorMethodArgs](#zoombehaviormethodargs)
   * [ZoomBehaviorMethodName](#zoombehaviormethodname)
-  * [ZoomBehaviorOwnMethodName](#zoombehaviorownmethodname)
   * [ZoomBehaviorSingleArg](#zoombehaviorsinglearg)
   * [ZoomModifiers](#zoommodifiers)
   * [ZoomModifierValue](#zoommodifiervalue)
@@ -1283,7 +1282,7 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 | <a id="property-center-2"></a> `center?` | \[`number`, `number`] | [`ZoomProps`](#zoomprops).[`center`](#property-center-3) |
 | <a id="property-maxzoom"></a> `maxZoom?` | `number` | [`ZoomProps`](#zoomprops).[`maxZoom`](#property-maxzoom-2) |
 | <a id="property-minzoom"></a> `minZoom?` | `number` | [`ZoomProps`](#zoomprops).[`minZoom`](#property-minzoom-2) |
-| <a id="property-modifiers"></a> `modifiers?` | `Partial`<{ `clickDistance`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"clickDistance"`>; `constrain`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"constrain"`>; `duration`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"duration"`>; `extent`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"extent"`>; `filter`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"filter"`>; `interpolate`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"interpolate"`>; `scaleExtent`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"scaleExtent"`>; `tapDistance`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"tapDistance"`>; `touchable`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"touchable"`>; `translateExtent`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"translateExtent"`>; `wheelDelta`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"wheelDelta"`>; }> | [`ZoomProps`](#zoomprops).[`modifiers`](#property-modifiers-1) |
+| <a id="property-modifiers"></a> `modifiers?` | `Partial`<{ `apply`: \[`any`, `any`]; `arguments`: `unknown`\[]; `bind`: \[`any`, `...argArray: any[]`]; `call`: \[`any`, `...argArray: any[]`]; `clickDistance`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"clickDistance"`>; `constrain`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"constrain"`>; `duration`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"duration"`>; `extent`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"extent"`>; `filter`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"filter"`>; `interpolate`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"interpolate"`>; `prototype`: `unknown`\[]; `scaleExtent`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"scaleExtent"`>; `tapDistance`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"tapDistance"`>; `toString`: \[]; `touchable`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"touchable"`>; `translateExtent`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"translateExtent"`>; `wheelDelta`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"wheelDelta"`>; }> | [`ZoomProps`](#zoomprops).[`modifiers`](#property-modifiers-1) |
 | <a id="property-onzoom"></a> `onZoom?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | [`ZoomEvents`](#zoomevents).[`onZoom`](#property-onzoom-1) |
 | <a id="property-onzoomend"></a> `onZoomEnd?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | [`ZoomEvents`](#zoomevents).[`onZoomEnd`](#property-onzoomend-1) |
 | <a id="property-onzoomstart"></a> `onZoomStart?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | [`ZoomEvents`](#zoomevents).[`onZoomStart`](#property-onzoomstart-1) |
@@ -1373,7 +1372,7 @@ The second generic refers to the type of the datum of the reference element.
 | <a id="property-center-3"></a> `center?` | \[`number`, `number`] |
 | <a id="property-maxzoom-2"></a> `maxZoom?` | `number` |
 | <a id="property-minzoom-2"></a> `minZoom?` | `number` |
-| <a id="property-modifiers-1"></a> `modifiers?` | `Partial`<{ `clickDistance`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"clickDistance"`>; `constrain`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"constrain"`>; `duration`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"duration"`>; `extent`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"extent"`>; `filter`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"filter"`>; `interpolate`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"interpolate"`>; `scaleExtent`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"scaleExtent"`>; `tapDistance`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"tapDistance"`>; `touchable`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"touchable"`>; `translateExtent`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"translateExtent"`>; `wheelDelta`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"wheelDelta"`>; }> |
+| <a id="property-modifiers-1"></a> `modifiers?` | `Partial`<{ `apply`: \[`any`, `any`]; `arguments`: `unknown`\[]; `bind`: \[`any`, `...argArray: any[]`]; `call`: \[`any`, `...argArray: any[]`]; `clickDistance`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"clickDistance"`>; `constrain`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"constrain"`>; `duration`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"duration"`>; `extent`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"extent"`>; `filter`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"filter"`>; `interpolate`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"interpolate"`>; `prototype`: `unknown`\[]; `scaleExtent`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"scaleExtent"`>; `tapDistance`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"tapDistance"`>; `toString`: \[]; `touchable`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"touchable"`>; `translateExtent`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"translateExtent"`>; `wheelDelta`: [`ZoomModifierValue`](#zoommodifiervalue)<`TElement`, `TDatum`, `"wheelDelta"`>; }> |
 | <a id="property-translateextent-3"></a> `translateExtent?` | [`Extent`](#extent-1) |
 | <a id="property-zoom-3"></a> `zoom?` | `number` |
 
@@ -1654,22 +1653,7 @@ type ZoomBehaviorMethodArgs<TElement, TDatum, TMethod> = ZoomBehavior<TElement, 
 ### ZoomBehaviorMethodName
 
 ```ts
-type ZoomBehaviorMethodName<TElement, TDatum> = Extract<{ [K in ZoomBehaviorOwnMethodName<TElement, TDatum>]: ZoomBehavior<TElement, TDatum>[K] extends (args: unknown[]) => unknown ? K : never }[ZoomBehaviorOwnMethodName<TElement, TDatum>], string>;
-```
-
-#### Type Parameters
-
-| Type Parameter |
-| ------ |
-| `TElement` *extends* `Element` |
-| `TDatum` |
-
-***
-
-### ZoomBehaviorOwnMethodName
-
-```ts
-type ZoomBehaviorOwnMethodName<TElement, TDatum> = Exclude<keyof ZoomBehavior<TElement, TDatum>, keyof Function>;
+type ZoomBehaviorMethodName<TElement, TDatum> = Extract<{ [K in keyof ZoomBehavior<TElement, TDatum>]: ZoomBehavior<TElement, TDatum>[K] extends (args: unknown[]) => unknown ? K : never }[keyof ZoomBehavior<TElement, TDatum>], string>;
 ```
 
 #### Type Parameters

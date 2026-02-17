@@ -1,7 +1,7 @@
 {
   "name": "@d3-maps/vue",
-  "version": "0.1.0",
   "type": "module",
+  "version": "0.1.0",
   "private": false,
   "description": "Vue bindings for @d3-maps/core to build reactive D3 SVG maps",
   "author": "Georgii Bukharov <souljorje@gmail.com>",
@@ -61,9 +61,9 @@
     "jsdom": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
+    "unplugin-vue": "catalog:",
     "vitest": "catalog:",
     "vue": "catalog:",
-    "vue-tsc": "catalog:",
-    "unplugin-vue": "catalog:"
+    "vue-tsc": "catalog:"
   }
 }

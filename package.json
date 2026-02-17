@@ -20,7 +20,7 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "changeset publish",
-    "lint": "eslint . --max-warnings 0 --cache",
+    "lint": "eslint ./packages --max-warnings 0 --cache",
     "lintfix": "pnpm run lint --fix"
   },
   "workspaces": [
