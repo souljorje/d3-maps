@@ -16,7 +16,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  changes:
+  detect_docs_changes:
+    name: Detect docs changes
     runs-on: ubuntu-latest
     outputs:
       docs: ${{ steps.filter.outputs.docs }}
@@ -33,18 +34,18 @@ jobs:
   checks:
     name: ${{ matrix.name }}
     runs-on: ubuntu-latest
-    needs: changes
+    needs: detect_docs_changes
     strategy:
       fail-fast: false
       matrix:
         include:
-          - name: lint
+          - name: Lint
             command: pnpm lint
-          - name: test
+          - name: Test
             command: pnpm test
-          - name: build
+          - name: Build
             command: |
-              if [ "${{ needs.changes.outputs.docs }}" = "true" ]; then
+              if [ "${{ needs.detect_docs_changes.outputs.docs }}" = "true" ]; then
                 pnpm build
               else
                 pnpm build:packages
