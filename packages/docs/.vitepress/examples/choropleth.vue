@@ -75,7 +75,7 @@ async function fetchMap() {
 }
 
 async function fetchData() {
-  const response = await fetch(withBase('/choropleth-data.json'))
+  const response = await fetch(withBase('/example-data/choropleth-data.json'))
   const rawData = await response.json()
   data.value = rawData.map((item) => {
     const id = item['country-code']

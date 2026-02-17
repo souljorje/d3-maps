@@ -1,4 +1,5 @@
 import type { Feature } from 'geojson'
+
 import type { MapObjectStyles } from './mapObject'
 
 import { isStringOrNumber } from './utils'

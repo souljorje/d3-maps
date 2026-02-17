@@ -5,6 +5,7 @@ import type {
   MapObjectStyles,
 } from '@d3-maps/core'
 import type { ComputedRef, MaybeRef, StyleValue } from 'vue'
+
 import {
   getObjectStateUpdate,
   resolveObjectStyle,

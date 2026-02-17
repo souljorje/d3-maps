@@ -29,6 +29,7 @@
 
 <script setup lang="ts">
 import type { D3ZoomEvent } from 'd3-zoom'
+
 import { geoEqualEarth } from 'd3-geo'
 import { withBase } from 'vitepress'
 import { onMounted, ref } from 'vue'

@@ -12,6 +12,7 @@ import type {
   ZoomEvent,
   ZoomProps,
 } from '@d3-maps/core'
+
 import {
   applyZoomTransform,
   createZoomBehavior,
@@ -23,6 +24,7 @@ import {
   ref,
   watch,
 } from 'vue'
+
 import { useMapContext } from './MapContext'
 
 const props = withDefaults(defineProps<ZoomProps>(), {

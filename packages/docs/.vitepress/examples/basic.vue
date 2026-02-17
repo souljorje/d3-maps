@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import type { MapData } from '@d3-maps/core'
+
 import { withBase } from 'vitepress'
 import { onMounted, ref } from 'vue'
 

@@ -1,5 +1,7 @@
-import type { Feature, Polygon } from 'geojson'
 import { describe, expect, it } from 'vitest'
+
+import type { Feature, Polygon } from 'geojson'
+
 import { getFeatureKey } from '../src'
 
 function makeFeature(): Feature<Polygon> {

@@ -1,5 +1,6 @@
 import { plugin as D3Maps } from '@d3-maps/vue'
 import DefaultTheme from 'vitepress/theme'
+
 import Demo from './components/Demo.vue'
 import ExamplesList from './components/ExamplesList.vue'
 
