@@ -5,8 +5,8 @@ dist
 pnpm-error.log
 .pnpm-store
 .turbo
+.eslintcache
 
 .env
 
 .codex
-.netlify

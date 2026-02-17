@@ -4,9 +4,9 @@ import type {
   ZoomTransform,
 } from 'd3-zoom'
 
+import type { MapContext } from './map'
 import { select as d3Select } from 'd3-selection'
 import { zoom, zoomIdentity } from 'd3-zoom'
-import type { MapContext } from './map'
 import { isNumber } from './utils'
 
 export type {
@@ -28,17 +28,12 @@ export interface ZoomConfig {
   translateExtent: Extent
 }
 
-export type ZoomBehaviorOwnMethodName<TElement extends Element, TDatum> = Exclude<
-  keyof ZoomBehavior<TElement, TDatum>,
-  keyof Function
->
-
 export type ZoomBehaviorMethodName<TElement extends Element, TDatum> = Extract<{
-  [K in ZoomBehaviorOwnMethodName<TElement, TDatum>]:
+  [K in keyof ZoomBehavior<TElement, TDatum>]:
   ZoomBehavior<TElement, TDatum>[K] extends (...args: unknown[]) => unknown
     ? K
     : never
-}[ZoomBehaviorOwnMethodName<TElement, TDatum>], string>
+}[keyof ZoomBehavior<TElement, TDatum>], string>
 
 export type ZoomBehaviorMethodArgs<
   TElement extends Element,

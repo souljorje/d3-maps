@@ -3,10 +3,10 @@ import {
   createZoomBehavior,
   createZoomConfig,
   createZoomTransform,
-  ZOOM_DEFAULTS,
-  getInverseZoomScale,
   getDefaultTranslateExtent,
+  getInverseZoomScale,
   getZoomScale,
+  ZOOM_DEFAULTS,
 } from '../src'
 import { makeTestMapContext } from './fixtures'
 
