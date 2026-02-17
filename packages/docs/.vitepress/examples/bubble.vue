@@ -35,11 +35,11 @@
 <script setup lang="ts">
 import type { ZoomEvent } from '@d3-maps/core'
 import { getInverseZoomScale } from '@d3-maps/core'
-import { withBase } from 'vitepress'
 
 import { extent } from 'd3-array'
 import { geoAlbersUsa } from 'd3-geo'
 import { scaleLinear } from 'd3-scale'
+import { withBase } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
 
 interface City {
