@@ -29,7 +29,9 @@
 
 <script setup lang="ts">
 import type { D3ZoomEvent } from 'd3-zoom'
+
 import { geoEqualEarth } from 'd3-geo'
+import { withBase } from 'vitepress'
 import { onMounted, ref } from 'vue'
 
 interface City {
@@ -55,7 +57,7 @@ const markerScale = ref(1)
 const currentZoom = ref(1)
 
 onMounted(async () => {
-  const response = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+  const response = await fetch(withBase('/example-data/countries-110m.json'))
   mapData.value = await response.json()
 })
 

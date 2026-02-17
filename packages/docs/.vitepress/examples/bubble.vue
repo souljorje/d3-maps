@@ -34,11 +34,12 @@
 
 <script setup lang="ts">
 import type { ZoomEvent } from '@d3-maps/core'
-import { getInverseZoomScale } from '@d3-maps/core'
 
+import { getInverseZoomScale } from '@d3-maps/core'
 import { extent } from 'd3-array'
 import { geoAlbersUsa } from 'd3-geo'
 import { scaleLinear } from 'd3-scale'
+import { withBase } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
 
 interface City {
@@ -84,12 +85,12 @@ function updateMarkerScale(e: ZoomEvent) {
 const setSize = (item: City) => scale.value(item.population)
 
 async function fetchMap() {
-  const response = await fetch('https://unpkg.com/us-atlas@3.0.0/states-10m.json')
+  const response = await fetch(withBase('/example-data/states-10m.json'))
   mapData.value = await response.json()
 }
 
 async function fetchData() {
-  const response = await fetch('https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json')
+  const response = await fetch(withBase('/example-data/us-cities.json'))
   cities.value = await response.json()
 }
 </script>

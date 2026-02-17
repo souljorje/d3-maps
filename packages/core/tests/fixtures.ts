@@ -1,4 +1,5 @@
 import type { FeatureCollection, Polygon } from 'geojson'
+
 import { makeMapContext } from '../src'
 
 export const sampleGeoJson: FeatureCollection<Polygon> = {

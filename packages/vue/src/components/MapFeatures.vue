@@ -16,6 +16,7 @@
 <script setup lang="ts">
 import { getFeatureKey } from '@d3-maps/core'
 import { computed } from 'vue'
+
 import { useMapContext } from './MapContext'
 import MapFeature from './MapFeature.vue'
 

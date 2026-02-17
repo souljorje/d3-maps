@@ -4,12 +4,15 @@ import type {
   FeatureCollection,
 } from 'geojson'
 import type { Topology } from 'topojson-specification'
+
 import type { MapFeature } from './feature'
+
 import {
   geoEqualEarth,
   geoPath,
 } from 'd3-geo'
 import { feature } from 'topojson-client'
+
 import { isNumber } from './utils'
 
 export type MapData = FeatureCollection | Topology

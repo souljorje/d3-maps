@@ -17,9 +17,12 @@
 <script setup lang="ts">
 import type { MapMarkerProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
+
 import type { MapObjectEmit } from '../lib/useMapObject'
+
 import { getMarkerTransform } from '@d3-maps/core'
 import { computed, toRef } from 'vue'
+
 import { useMapObject } from '../lib/useMapObject'
 import { useMapContext } from './MapContext'
 

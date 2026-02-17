@@ -1,5 +1,6 @@
 import type { MapContext } from './map'
 import type { MapObjectStyles } from './mapObject'
+
 import { makeTransform } from './utils'
 
 export type MapMarkerCoordinates = [number, number]
