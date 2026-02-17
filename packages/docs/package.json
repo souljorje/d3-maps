@@ -1,5 +1,5 @@
 {
-  "name": "docs",
+  "name": "@d3maps/docs",
   "type": "module",
   "version": "0.0.1",
   "private": true,
@@ -13,6 +13,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "vitepress dev",
+    "prebuild": "pnpm -w docs:gen",
     "build": "vitepress build",
     "preview": "vitepress preview"
   },

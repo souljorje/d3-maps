@@ -13,10 +13,9 @@
 | Command | Purpose |
 | --- | --- |
 | `pnpm --filter docs dev` | Run VitePress locally. |
-| `pnpm --filter docs build` | Build docs site only. |
+| `pnpm docs:build` | Build docs site (includes docs generation). |
 | `pnpm --filter docs preview` | Preview built docs site. |
 | `pnpm docs:gen` | Regenerate examples wrappers and API docs. |
-| `pnpm docs:build` | Regenerate and build docs site. |
 
 ## Routing
 - [API Guide](api/AGENTS.md)
