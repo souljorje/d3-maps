@@ -62,6 +62,7 @@
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "unplugin-vue": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
     "vitest": "catalog:",
     "vue": "catalog:",
     "vue-tsc": "catalog:"

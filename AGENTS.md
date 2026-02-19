@@ -45,6 +45,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | Architecture constraints | Follow [Architecture](.agents/references/architecture.md). |
 | Engineering workflow | Follow [Engineering Workflow](.agents/references/engineering-workflow.md). |
 | Code Style | Follow [Code Style](.agents/references/code-style.md). |
+| Test command | Run root test command as `pnpm test --output-logs=errors-only` to reduce token usage unless full logs are explicitly needed. |
 
 ## Skills
 | Skill | When to use |
