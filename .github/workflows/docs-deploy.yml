@@ -17,6 +17,7 @@ concurrency:
 
 jobs:
   detect_docs_changes:
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
       docs: ${{ steps.filter.outputs.docs }}
@@ -32,7 +33,7 @@ jobs:
 
   build:
     needs: detect_docs_changes
-    if: github.event_name == 'workflow_dispatch' || needs.detect_docs_changes.outputs.docs == 'true'
+    if: always() && (github.event_name == 'workflow_dispatch' || needs.detect_docs_changes.outputs.docs == 'true')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
