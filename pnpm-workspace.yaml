@@ -29,7 +29,7 @@ catalog:
   tailwindcss: ^4.1.18
   topojson-client: ^3.1.0
   tsdown: 0.19.0
-  turbo: ^2.8.7
+  turbo: ^2.8.9
   typedoc: ^0.28.16
   typedoc-plugin-markdown: ^4.10.0
   typedoc-plugin-remark: ^2.0.1
@@ -37,6 +37,7 @@ catalog:
   typescript: ^5.9.3
   unplugin-vue: ^6.0.1
   vite: ^7.2.7
+  vite-tsconfig-paths: ^6.1.1
   vitepress: ^1.6.4
   vitest: ^4.0.15
   vue: 3.5.25

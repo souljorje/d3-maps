@@ -44,8 +44,7 @@
     "typedoc-plugin-remark": "catalog:"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged && pnpm test",
-    "pre-push": "pnpm docs:build"
+    "pre-commit": "pnpm lint-staged && pnpm test"
   },
   "lint-staged": {
     "*.{ts,tsx,vue}": [

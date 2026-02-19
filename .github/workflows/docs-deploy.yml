@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  changes:
+  detect_docs_changes:
     runs-on: ubuntu-latest
     outputs:
       docs: ${{ steps.filter.outputs.docs }}
@@ -31,8 +31,8 @@ jobs:
           filters: .github/path-filters.yml
 
   build:
-    needs: changes
-    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.docs == 'true'
+    needs: detect_docs_changes
+    if: github.event_name == 'workflow_dispatch' || needs.detect_docs_changes.outputs.docs == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
