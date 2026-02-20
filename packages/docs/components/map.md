@@ -16,7 +16,9 @@ Renders the root `<svg>` and provides a reactive map context to children.
 
 ## Usage
 
-::: code-group
+:::tabs key:framework
+
+== Vue
 
 ```vue
 <script setup lang="ts">
@@ -36,7 +38,9 @@ import { geoMercator } from 'd3-geo'
 </template>
 ```
 
-```tsx [react]
+== React
+
+```tsx
 import type { MapData } from '@d3-maps/core'
 
 import { geoMercator } from 'd3-geo'

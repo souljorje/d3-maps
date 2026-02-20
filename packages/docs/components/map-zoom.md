@@ -24,9 +24,14 @@ Emits:
 
 ## Usage
 
-::: code-group
+:::tabs key:framework
 
-<<< ../.vitepress/examples/zoom.vue[vue]
-<<< ../.vitepress/examples/react/zoom.tsx[react]
+== Vue
+
+<<< ../.vitepress/examples/zoom.vue
+
+== React
+
+<<< ../.vitepress/examples/react/zoom.tsx
 
 :::

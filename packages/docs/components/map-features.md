@@ -12,18 +12,25 @@ Renders all GeoJSON features from the current map context
 
 ## Usage
 
-::: code-group
+:::tabs key:framework
 
-<<< ../.vitepress/examples/basic.vue[vue]
-<<< ../.vitepress/examples/react/basic.tsx[react]
+== Vue
+
+<<< ../.vitepress/examples/basic.vue
+
+== React
+
+<<< ../.vitepress/examples/react/basic.tsx
 
 :::
 
 ## Slots
 
-::: code-group
+:::tabs key:framework
 
-```vue [vue]
+== Vue
+
+```vue
 <MapFeatures #default="{ features }">
   <g>
     <MapFeature
@@ -36,7 +43,9 @@ Renders all GeoJSON features from the current map context
 </MapFeatures>
 ```
 
-```tsx [react]
+== React
+
+```tsx
 <MapFeatures>
   {({ features }) => (
     <g>

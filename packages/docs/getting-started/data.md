@@ -17,9 +17,11 @@ Use [Map](/components/map#props) `dataTransformer` prop when you need to:
 - attach derived fields (choropleth colors, stats, custom ids)
 - normalize feature properties
 
-::: code-group
+:::tabs key:framework
 
-```vue [vue]
+== Vue
+
+```vue
 <Map
   :data-transformer="(features) => features.map(/* some logic */)"
 >
@@ -27,7 +29,9 @@ Use [Map](/components/map#props) `dataTransformer` prop when you need to:
 </Map>
 ```
 
-```tsx [react]
+== React
+
+```tsx
 <Map
   dataTransformer={(features) => features.map(/* some logic */)}
 >

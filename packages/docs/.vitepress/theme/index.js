@@ -1,4 +1,5 @@
 import { plugin as D3Maps } from '@d3-maps/vue'
+import { enhanceAppWithTabs } from 'vitepress-plugin-tabs/client'
 import DefaultTheme from 'vitepress/theme'
 
 import Demo from './components/Demo.vue'
@@ -30,6 +31,7 @@ export default {
   ...DefaultTheme,
   enhanceApp({ app }) {
     DefaultTheme.enhanceApp({ app })
+    enhanceAppWithTabs(app)
     app.use(D3Maps)
     registerDemoComponents(app)
     app.component('Demo', Demo)

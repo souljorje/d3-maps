@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitepress'
+import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 
 const REPO_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
 const PACKAGES_DIR = path.join(REPO_ROOT, 'packages')
@@ -134,6 +135,11 @@ export default defineConfig({
     },
     externalLinkIcon: true,
     examples,
+  },
+  markdown: {
+    config(md) {
+      md.use(tabsMarkdownPlugin)
+    },
   },
   vite: {
     plugins: [tailwindcss()],

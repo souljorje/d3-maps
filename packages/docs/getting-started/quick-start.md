@@ -6,9 +6,13 @@
 
 ::: details [Optional] Framework setup snippets
 
+:::tabs key:framework
+
+== Vue
+
 ::: code-group
 
-```ts [vue]
+```ts
 import { createApp } from 'vue'
 import { plugin as D3MapsVue } from '@d3-maps/vue'
 import App from './App.vue'
@@ -18,7 +22,7 @@ createApp(App)
   .mount('#app')
 ```
 
-```ts [nuxt]
+```ts [Nuxt]
 // ~/plugins/d3-maps.client.ts
 import { plugin as D3MapsVue } from '@d3-maps/vue'
 
@@ -27,7 +31,11 @@ export default defineNuxtPlugin((nuxtApp) => {
 })
 ```
 
-```tsx [react]
+:::
+
+== React
+
+```tsx
 import { Map, MapFeatures } from '@d3-maps/react'
 
 export function App({ mapData }: { mapData: unknown }) {
@@ -47,10 +55,15 @@ export function App({ mapData }: { mapData: unknown }) {
 2) Provide the [data](./data) (TopoJSON or GeoJSON)
 3) Done
 
-::: code-group
+:::tabs key:framework
 
-<<< ../.vitepress/examples/basic.vue[vue]
-<<< ../.vitepress/examples/react/basic.tsx[react]
+== Vue
+
+<<< ../.vitepress/examples/basic.vue
+
+== React
+
+<<< ../.vitepress/examples/react/basic.tsx
 
 :::
 

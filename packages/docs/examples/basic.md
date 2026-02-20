@@ -4,10 +4,15 @@
 
 <Demo component-name="basic">
 
-::: code-group
+:::tabs key:framework
 
-<<< ../.vitepress/examples/basic.vue[vue]
-<<< ../.vitepress/examples/react/basic.tsx[react]
+== Vue
+
+<<< ../.vitepress/examples/basic.vue
+
+== React
+
+<<< ../.vitepress/examples/react/basic.tsx
 
 :::
 

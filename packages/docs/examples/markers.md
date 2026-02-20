@@ -4,10 +4,15 @@
 
 <Demo component-name="markers">
 
-::: code-group
+:::tabs key:framework
 
-<<< ../.vitepress/examples/markers.vue[vue]
-<<< ../.vitepress/examples/react/markers.tsx[react]
+== Vue
+
+<<< ../.vitepress/examples/markers.vue
+
+== React
+
+<<< ../.vitepress/examples/react/markers.tsx
 
 :::
 

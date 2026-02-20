@@ -12,9 +12,11 @@ d3-maps uses `fitSize([width, height], geoJson)` to fit the map into the provide
 
 Use an aspect-ratio wrapper and aspect-ratio prop:
 
-::: code-group
+:::tabs key:framework
 
-```vue [vue]
+== Vue
+
+```vue
 <template>
   <div class="map-shell">
     <Map
@@ -35,7 +37,9 @@ Use an aspect-ratio wrapper and aspect-ratio prop:
 </style>
 ```
 
-```tsx [react]
+== React
+
+```tsx
 export function Example({ data }: { data?: unknown }) {
   return (
     <div className="map-shell">
@@ -55,6 +59,8 @@ export function Example({ data }: { data?: unknown }) {
   )
 }
 ```
+
+== Shared CSS
 
 ```css [shared css]
 .map-shell {

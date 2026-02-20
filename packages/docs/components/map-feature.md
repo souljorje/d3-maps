@@ -17,9 +17,11 @@ Renders a single GeoJSON feature as an SVG `<path>`.
 
 ## Usage
 
-::: code-group
+:::tabs key:framework
 
-```vue [vue]
+== Vue
+
+```vue
 <template>
   <Map :data="mapData">
     <MapFeatures #default="{ features }">
@@ -45,7 +47,9 @@ Renders a single GeoJSON feature as an SVG `<path>`.
 </template>
 ```
 
-```tsx [react]
+== React
+
+```tsx
 <Map data={mapData}>
   <MapFeatures>
     {({ features }) => (

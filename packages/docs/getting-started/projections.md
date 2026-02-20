@@ -7,9 +7,11 @@ A map projection transforms the Earth's 3D curved surface onto a 2D flat map, or
 
 By default `geoEqualEarth` is used in core, but you can provide your own:
 
-::: code-group
+:::tabs key:framework
 
-```vue [vue]
+== Vue
+
+```vue
 <script setup>
 import { geoMercator } from 'd3-geo-projection'
 </script>
@@ -21,7 +23,9 @@ import { geoMercator } from 'd3-geo-projection'
 </template>
 ```
 
-```tsx [react]
+== React
+
+```tsx
 import { geoMercator } from 'd3-geo-projection'
 import { Map, MapFeatures } from '@d3-maps/react'
 
@@ -43,9 +47,11 @@ export function Example({ data }: { data: unknown }) {
 
 Use [Map](/components/map#props) `projectionConfig` for common tweaks:
 
-::: code-group
+:::tabs key:framework
 
-```vue [vue]
+== Vue
+
+```vue
 <Map
   :projection="geoMercator"
   :projection-config="{
@@ -58,7 +64,9 @@ Use [Map](/components/map#props) `projectionConfig` for common tweaks:
 </Map>
 ```
 
-```tsx [react]
+== React
+
+```tsx
 <Map
   projection={geoMercator}
   projectionConfig={{

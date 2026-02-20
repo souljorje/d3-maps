@@ -28,6 +28,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "catalog:",
     "tailwindcss": "catalog:",
-    "vitepress": "catalog:"
+    "vitepress": "catalog:",
+    "vitepress-plugin-tabs": "catalog:"
   }
 }
