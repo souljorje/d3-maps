@@ -1,6 +1,6 @@
 ## Data transformation
 
-Add `dataTransformer` to preprocess GeoJSON features before render.
+Add `dataTransformer` to preprocess GeoJSON features before render
 
 ```ts
 // e.g. don't render Antarctica 🇦🇶
@@ -11,10 +11,11 @@ function dataTransformer(features) {
 
 ::: code-group
 
-```vue{4} [vue]
+```vue{5} [vue]
 <template>
   <Map
     :data="data"
+    :projection="geoMercator"
     :data-transformer="dataTransformer"
   >
     <MapFeatures />

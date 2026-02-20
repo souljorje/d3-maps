@@ -16,12 +16,12 @@ Let's build the map step by step to understand how the library works
 
 <!--@include: ./_styling.md-->
 
-
 <!--@include: ./_responsiveness.md-->
+
 
 ## Next
 
-Yep, that's it. What's next?
+That's it! What's next?
 
-- Review all [components](/components/)
 - Explore live [examples](/examples/)
+- Review all [components](/components/)

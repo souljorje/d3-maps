@@ -4,10 +4,14 @@ To render borders use [MapMesh](/components/MapMesh) instead of applying `stroke
 
 ::: code-group
 
-```vue{4} [vue]
+```vue{8} [vue]
 <template>
-  <Map :data="mapData">
-    <MapFeatures fill="#000" />
+  <Map
+    :data="data"
+    :projection="geoMercator"
+    :data-transformer="dataTransformer"
+  >
+    <MapFeatures />
     <MapMesh stroke="#fff" />
   </Map>
 </template>

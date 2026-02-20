@@ -6,8 +6,8 @@ Positions anything on the map based on coordinates
 
 | Parameter | Type | Default value | Description |
 | --- | --- | --- | --- |
-| `coordinates` | `[number, number]` | — | Marker coordinates in `[longitude, latitude]` format. |
-| `styles` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/guide/core-concepts/#styling) |
+| `coordinates?` | `[number, number]` | — | Marker coordinates in `[longitude, latitude]` format. |
+| `styles?` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 ## Events
 

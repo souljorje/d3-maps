@@ -7,9 +7,9 @@ Renders a single GeoJSON feature as an SVG `<path>`.
 | Parameter | Type | Default value | Description |
 | --- | --- | --- | --- |
 | `data` | GeoJSON Feature | — | Rendered as an SVG path |
-| `styles` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/guide/core-concepts/#styling) |
-| `fill` | `string` | — | SVG presentation prop. |
-| `stroke` | `string` | — | SVG presentation prop. |
+| `styles?` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/guide/core-concepts/#styling) |
+| `fill?` | `string` | — | SVG presentation prop. |
+| `stroke?` | `string` | — | SVG presentation prop. |
 
 ## Events
 

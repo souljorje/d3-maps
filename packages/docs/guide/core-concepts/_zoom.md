@@ -4,11 +4,16 @@ Wrap layers with [MapZoom](/components/MapZoom) to enable pan and zoom
 
 ::: code-group
 
-```vue{3,5} [vue]
+```vue{7,10} [vue]
 <template>
-  <Map :data="data">
+  <Map
+    :data="data"
+    :projection="geoMercator"
+    :data-transformer="dataTransformer"
+  >
     <MapZoom>
       <MapFeatures />
+      <MapMesh stroke="#fff" />
     </MapZoom>
   </Map>
 </template>

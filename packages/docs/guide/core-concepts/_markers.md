@@ -7,14 +7,20 @@ Add any points to the map with [MapMarker](/components/MapMarker)
 
 ::: code-group
 
-```vue{4-7} [vue]
+```vue{8-11} [vue]
 <template>
-  <Map :data="data">
+  <Map
+    :data="data"
+    :projection="geoMercator"
+    :data-transformer="dataTransformer"
+  >
     <MapZoom>
       <MapMarker :coordinates=[-83.0457538, 42.331427]>
         <text>Sweet home 🧡</text> 
         <circle r="3" />  
       </MapMarker>
+      <MapFeatures />
+      <MapMesh stroke="#fff" />
     </MapZoom>
   </Map>
 </template>

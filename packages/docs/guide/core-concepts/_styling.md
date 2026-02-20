@@ -13,11 +13,24 @@ const styles = {
 
 ::: code-group
 
-```vue{3-4} [vue]
+```vue{8,10} [vue]
 <template>
-  <Map :data="data">
-    <MapMarker :styles="styles"/>
-    <MapFeatures :styles="styles"/>
+  <Map
+    :data="data"
+    :projection="geoMercator"
+    :data-transformer="dataTransformer"
+  >
+    <MapZoom>
+      <MapFeatures :styles="styles"/>
+      <MapMarker 
+        :styles="styles"
+        :coordinates=[-83.0457538, 42.331427]
+      >
+        <text>Sweet home 🧡</text> 
+        <circle r="3" />  
+      </MapMarker>
+      <MapMesh stroke="#fff" />
+    </MapZoom>
   </Map>
 </template>
 ```
