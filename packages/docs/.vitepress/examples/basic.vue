@@ -3,7 +3,8 @@
     v-if="mapData"
     :data="mapData"
   >
-    <MapFeatures />
+    <MapFeatures fill="darkorange" />
+    <MapMesh stroke="slategray" />
   </Map>
 </template>
 

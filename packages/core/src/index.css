@@ -2,6 +2,7 @@
   height: 100%;
   width: auto;
   max-width: 100%;
+  stroke-width: 0.5
 }
 .d3-map-zoom path {
   vector-effect: non-scaling-stroke;
