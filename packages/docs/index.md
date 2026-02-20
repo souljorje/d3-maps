@@ -9,17 +9,17 @@ hero:
     alt: d3-maps logo
   actions:
     - theme: brand
-      text: Getting started
+      text: Get started
       link: /guide/
     - theme: alt
       text: Examples
       link: /examples/
 features:
   - title: Simple
-    details: Drop-in components with powerful defaults
+    details: Drop-in components, powerful defaults
     icon: 😌
   - title: Feature rich
-    details: Zoom, drag, markers out of the box (and more)
+    details: Zoom, drag, mesh, markers, and more
     icon: 💪
   - title: Responsive
     details: By default, without rerenders

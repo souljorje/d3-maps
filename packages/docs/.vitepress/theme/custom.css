@@ -4,27 +4,64 @@
   --vp-c-brand-1: #dd4a00;
   --vp-c-brand-2: #e94e00;
   --vp-c-brand-3: #ea570d;
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: linear-gradient(
-    -45deg,
-    var(--vp-c-brand-3) 30%,
-    color-mix(in oklab, var(--vp-c-brand-3), white 40%) 40%,
-    var(--vp-c-brand-3) 50%
-  );
+  --vp-home-hero-name-color: var(--vp-c-brand-3);
 }
 
-@keyframes text-gradient {
+@keyframes glowing {
   50%,
   100% {
     background-position: 180% 0;
   }
 }
 
-.main .heading .name {
-  background-size: 200% auto;
-  animation: 5s text-gradient linear infinite;
+@keyframes float {
+  from {
+    translate: 0 -1%;
+  }
+  to {
+    translate: 0 1%;
+  }
 }
 
-.VPImage.image img {
-  max-height: 220px;
+.VPHome {
+  .image-src {
+    animation: 1s float ease-in-out infinite alternate;
+  }
+  .image-src:hover {
+    animation-play-state: paused;
+  }
+  .image-bg {
+    background: url(/d3-maps-logo.svg);
+    background-position: center;
+    filter: blur(60px);
+  }
+  .image-src, .image-bg {
+    max-width: 300px;
+    max-height: 300px;
+  }
+  .container {
+    max-width: 1000px
+  }
+  .VPButton.brand {
+    background-image: linear-gradient(
+      -45deg,
+      var(--vp-c-brand-3) 30%,
+      color-mix(in oklab, var(--vp-c-brand-3), white 20%) 40%,
+      var(--vp-c-brand-3) 50%
+    );
+    background-size: 200% auto;
+    animation: 3s glowing linear infinite;
+    transition: 0.3s ease;
+  }
+  .VPButton.brand:hover {
+    animation-play-state: paused;
+    filter: brightness(1.05);
+  }
 }
+
+.VPNavBar:not(.has-sidebar) {
+  .container {
+    max-width: 1000px;
+  }
+}
+

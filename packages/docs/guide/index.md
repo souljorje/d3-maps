@@ -1,6 +1,7 @@
 # Get started
 
-d3-maps is a small set of building blocks for creating SVG maps with D3 projections, with framework adapters for reactivity and rendering.
+`d3-maps` is a set of building blocks and helpers for creating SVG maps with D3.  
+Works with your favorite framework, batteries included.
 
 ## Architecture
 
