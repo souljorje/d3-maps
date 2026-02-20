@@ -1,12 +1,6 @@
 <template>
-  <div v-if="loading">
-    Loading...
-  </div>
-  <div v-else-if="error">
-    An error occurred
-  </div>
   <Map
-    v-else
+    v-if="mapData && choroplethdata"
     :data-transformer="dataTransformer"
     :data="mapData"
   >
@@ -18,15 +12,15 @@
         :styles="{
           default: {
             fill: feature.color,
-            stroke: 'darkslategray',
           },
           hover: {
             fill: feature.color,
-            stroke: 'darkslategray',
+            stroke: 'black',
             opacity: 0.8,
           },
         }"
       />
+      <MapMesh stroke="gray" />
     </MapFeatures>
   </Map>
 </template>
@@ -45,9 +39,9 @@ interface CountryStat {
 const mapData = ref<unknown>()
 const loading = ref(true)
 const error = ref(false)
-const data = ref<CountryStat[]>([])
+const choroplethdata = ref<CountryStat[]>([])
 
-const minAndMaxValues = computed(() => extent(data.value, (item) => item.value))
+const minAndMaxValues = computed(() => extent(choroplethdata.value, (item) => item.value))
 const colorScale = computed(() => {
   const domain = minAndMaxValues.value
   const safeDomain: [number, number] = [
@@ -77,19 +71,19 @@ async function fetchMap() {
 async function fetchData() {
   const response = await fetch(withBase('/example-data/choropleth-data.json'))
   const rawData = await response.json()
-  data.value = rawData.map((item) => {
+  choroplethdata.value = rawData.map((item) => {
     const id = item['country-code']
     return {
       ...item,
       id,
-      value: Number(id) * Math.random(),
+      value: Number(id),
     }
   })
 }
 
 function dataTransformer(features: any[]) {
   return features.map((feature) => {
-    const country = data.value.find((item) => item.id === feature.id)
+    const country = choroplethdata.value.find((item) => item.id === feature.id)
     const colorValue = country ? colorScale.value(country.value) : '#eee'
 
     return { ...feature, color: colorValue }

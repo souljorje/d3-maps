@@ -2,12 +2,12 @@
 
 ## Blank map
 
-- Ensure the map container has a height (see [Responsiveness guide](/getting-started/responsiveness)).
-- Ensure `data` is loaded before rendering [Map](/components/map) (use `v-if`).
+- Ensure the map container has a height (see [Responsiveness](/guide/core-concepts/#responsiveness))
+- Ensure `data` is loaded before rendering [Map](/components/map)
 
 ## Markers appear in the wrong place
 
-Coordinates are `[longitude, latitude]`.
+Coordinates are `[longitude, latitude]`
 
 ## Fetch errors
 

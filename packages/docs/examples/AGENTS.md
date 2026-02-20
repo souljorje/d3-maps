@@ -29,5 +29,4 @@
 - [Docs Guide](../AGENTS.md)
 - [Root Guide](../../../AGENTS.md)
 - [Architecture](../../../.agents/references/architecture.md)
-- [Engineering Workflow](../../../.agents/references/engineering-workflow.md)
 - [Docs Generation Workflow](../../../.agents/references/docs-generation.md)

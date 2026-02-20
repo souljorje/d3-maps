@@ -1,14 +1,8 @@
 <template>
-  <div v-if="loading">
-    Loading...
-  </div>
-  <div v-else-if="error">
-    An error occurred
-  </div>
   <Map
-    v-else
+    v-if="data"
     :projection="projection"
-    :data="mapData"
+    :data="data"
   >
     <MapZoom
       :max-zoom="100"
@@ -28,6 +22,7 @@
           />
         </MapMarker>
       </g>
+      <MapMesh stroke="slategray" />
     </MapZoom>
   </Map>
 </template>
@@ -49,7 +44,7 @@ interface City {
   population: number
 }
 
-const mapData = ref<unknown>()
+const data = ref<unknown>()
 const projection = geoAlbersUsa
 const cities = ref<City[]>([])
 const markerScale = ref(1)
@@ -86,7 +81,7 @@ const setSize = (item: City) => scale.value(item.population)
 
 async function fetchMap() {
   const response = await fetch(withBase('/example-data/states-10m.json'))
-  mapData.value = await response.json()
+  data.value = await response.json()
 }
 
 async function fetchData() {

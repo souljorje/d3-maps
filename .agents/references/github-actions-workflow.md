@@ -23,6 +23,5 @@ Repository automation for validation, docs deployment, and package releases.
 
 ## Related Docs
 - [Git Workflow](git-workflow.md)
-- [Engineering Workflow](engineering-workflow.md)
 - [Docs Generation Workflow](docs-generation.md)
 - [changesets skill](../skills/changesets/SKILL.md)

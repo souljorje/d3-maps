@@ -1,11 +1,12 @@
 <template>
   <Map
-    v-if="mapData"
-    :data="mapData"
+    v-if="data"
+    :data="data"
     :projection="projection"
   >
-    <MapZoom @zoomend="updateMarkerScale">
+    <MapZoom @zoom="updateMarkerScale">
       <MapFeatures />
+      <MapMesh stroke="slategray" />
       <MapMarker
         v-for="(item, index) in cities"
         :key="index"
@@ -13,12 +14,13 @@
       >
         <g :transform="`scale(${markerScale})`">
           <text
-            font-size="16"
-            y="-6"
+            font-size="14"
+            y="-8"
             text-anchor="middle"
+            fill="darkorange"
           >{{ item.city }}</text>
           <circle
-            fill="#ff6f26"
+            fill="darkorange"
             r="3"
           />
         </g>
@@ -50,7 +52,7 @@ const initialCities: City[] = [
   { city: 'Georgetown', lon: -58.1, lat: 6.48 },
 ]
 
-const mapData = ref<unknown>()
+const data = ref<unknown>()
 const projection = geoEqualEarth
 const cities = ref<City[]>(initialCities)
 const markerScale = ref(1)
@@ -58,7 +60,7 @@ const currentZoom = ref(1)
 
 onMounted(async () => {
   const response = await fetch(withBase('/example-data/countries-110m.json'))
-  mapData.value = await response.json()
+  data.value = await response.json()
 })
 
 function updateMarkerScale(e: D3ZoomEvent<SVGSVGElement | SVGGElement, unknown>) {
