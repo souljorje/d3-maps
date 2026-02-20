@@ -26,7 +26,7 @@ import { geoMercator } from 'd3-geo-projection'
 
 ::: details
 
-- You can tweak a projection with [Map.projectionConfig](/components/map/#props) (defaults are strong though)
+- You can tweak a projection with [Map.projectionConfig](/components/map#props) (defaults are strong though)
 - Projections are available in [d3-geo](https://github.com/d3/d3-geo) and [d3-geo-projection](https://github.com/d3/d3-geo-projection)
 - Here you can see [visualized projections](https://observablehq.com/@fil/d3-projections)
 :::
