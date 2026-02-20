@@ -17,7 +17,7 @@ Simply make it with an aspect-ratio wrapper and the `aspect-ratio` prop
         <MapFeatures :styles="styles"/>
         <MapMarker 
           :styles="styles"
-          :coordinates=[-83.0457538, 42.331427]
+          :coordinates="[-83.0457538, 42.331427]"
         >
           <text>Sweet home 🧡</text> 
           <circle r="3" />  

@@ -15,7 +15,7 @@ Add any points to the map with [MapMarker](/components/map-marker)
     :data-transformer="dataTransformer"
   >
     <MapZoom>
-      <MapMarker :coordinates=[-83.0457538, 42.331427]>
+      <MapMarker :coordinates="[-83.0457538, 42.331427]">
         <text>Sweet home 🧡</text> 
         <circle r="3" />  
       </MapMarker>

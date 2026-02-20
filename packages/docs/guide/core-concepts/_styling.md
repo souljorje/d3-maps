@@ -24,7 +24,7 @@ const styles = {
       <MapFeatures :styles="styles"/>
       <MapMarker 
         :styles="styles"
-        :coordinates=[-83.0457538, 42.331427]
+        :coordinates="[-83.0457538, 42.331427]"
       >
         <text>Sweet home 🧡</text> 
         <circle r="3" />  
