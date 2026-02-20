@@ -7,6 +7,7 @@
 ::: code-group
 
 <<< ../.vitepress/examples/choropleth.vue[vue]
+<<< ../.vitepress/examples/react/choropleth.tsx[react]
 
 :::
 

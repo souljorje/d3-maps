@@ -17,12 +17,24 @@ Use [Map](/components/map#props) `dataTransformer` prop when you need to:
 - attach derived fields (choropleth colors, stats, custom ids)
 - normalize feature properties
 
-```vue
+::: code-group
+
+```vue [vue]
 <Map
-  :dataTransformer="(features) => features.map(/* some logic */)"
+  :data-transformer="(features) => features.map(/* some logic */)"
 >
-  <MapFeatures/>
+  <MapFeatures />
 </Map>
 ```
+
+```tsx [react]
+<Map
+  dataTransformer={(features) => features.map(/* some logic */)}
+>
+  <MapFeatures />
+</Map>
+```
+
+:::
 
 See a complete example in [Choropleth](/examples/choropleth).

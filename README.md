@@ -1,7 +1,7 @@
 # d3-maps
 
 Reactive SVG maps, powered by D3.  
-Works with Vue. React, Solid, and Svelte support coming soon.
+Works with Vue and React. Solid and Svelte support coming soon.
 
 [![CI](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml/badge.svg)](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml) [![Deploy Docs](https://github.com/souljorje/d3-maps/actions/workflows/docs-deploy.yml/badge.svg)](https://github.com/souljorje/d3-maps/actions/workflows/docs-deploy.yml)
 
@@ -33,19 +33,33 @@ Adapters depend on the core.
 
 ## Installation
 
-### npm
+### pnpm
 
 ```bash
 # vue
 pnpm add @d3-maps/vue
-```
 
-Coming soon
-
-```bash
 # react
 pnpm add @d3-maps/react
+```
 
+### npm
+
+```bash
+npm install @d3-maps/vue
+npm install @d3-maps/react
+```
+
+### bun
+
+```bash
+bun add @d3-maps/vue
+bun add @d3-maps/react
+```
+
+Coming soon adapters
+
+```bash
 # solid
 pnpm add @d3-maps/solid
 

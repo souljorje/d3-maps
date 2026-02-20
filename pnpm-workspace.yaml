@@ -10,8 +10,11 @@ catalog:
   '@types/d3-selection': ^3.0.11
   '@types/d3-zoom': ^3.0.8
   '@types/geojson': ^7946.0.16
+  '@types/react': ^19.2.2
+  '@types/react-dom': ^19.2.2
   '@types/topojson-client': ^3.1.5
   '@types/topojson-specification': ^1.0.5
+  '@vitejs/plugin-react': ^5.1.0
   '@vitejs/plugin-vue': ^6.0.2
   '@vue/test-utils': ^2.4.6
   '@vue/tsconfig': ^0.8.1
@@ -23,6 +26,8 @@ catalog:
   eslint: ^9.39.2
   jsdom: ^27.3.0
   lint-staged: ^16.2.7
+  react: ^19.2.0
+  react-dom: ^19.2.0
   remark-insert-headings: ^0.0.0
   remark-toc: ^9.0.0
   simple-git-hooks: ^2.13.1

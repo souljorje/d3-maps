@@ -27,5 +27,6 @@ Emits:
 ::: code-group
 
 <<< ../.vitepress/examples/zoom.vue[vue]
+<<< ../.vitepress/examples/react/zoom.tsx[react]
 
 :::

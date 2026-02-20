@@ -15,4 +15,9 @@ Positions anything on the map based on coordinates
 
 ## Usage
 
-See an [example](/examples/markers)
+::: code-group
+
+<<< ../.vitepress/examples/markers.vue[vue]
+<<< ../.vitepress/examples/react/markers.tsx[react]
+
+:::

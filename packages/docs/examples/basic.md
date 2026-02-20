@@ -7,6 +7,7 @@
 ::: code-group
 
 <<< ../.vitepress/examples/basic.vue[vue]
+<<< ../.vitepress/examples/react/basic.tsx[react]
 
 :::
 

@@ -36,4 +36,25 @@ import { geoMercator } from 'd3-geo'
 </template>
 ```
 
+```tsx [react]
+import type { MapData } from '@d3-maps/core'
+
+import { geoMercator } from 'd3-geo'
+import { Map, MapFeatures } from '@d3-maps/react'
+
+export function Example({ data }: { data: MapData }) {
+  return (
+    <Map
+      data={data}
+      aspectRatio={4 / 3}
+      projection={geoMercator}
+      projectionConfig={{ center: [0, 20], rotate: [0, 0, 0], scale: 160 }}
+      dataTransformer={(features) => features}
+    >
+      <MapFeatures />
+    </Map>
+  )
+}
+```
+
 :::

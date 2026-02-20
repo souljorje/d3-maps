@@ -7,7 +7,9 @@ A map projection transforms the Earth's 3D curved surface onto a 2D flat map, or
 
 By default `geoEqualEarth` is used in core, but you can provide your own:
 
-```vue
+::: code-group
+
+```vue [vue]
 <script setup>
 import { geoMercator } from 'd3-geo-projection'
 </script>
@@ -19,11 +21,31 @@ import { geoMercator } from 'd3-geo-projection'
 </template>
 ```
 
+```tsx [react]
+import { geoMercator } from 'd3-geo-projection'
+import { Map, MapFeatures } from '@d3-maps/react'
+
+export function Example({ data }: { data: unknown }) {
+  return (
+    <Map
+      data={data}
+      projection={geoMercator}
+    >
+      <MapFeatures />
+    </Map>
+  )
+}
+```
+
+:::
+
 ## Configuring a projection
 
 Use [Map](/components/map#props) `projectionConfig` for common tweaks:
 
-```md
+::: code-group
+
+```vue [vue]
 <Map
   :projection="geoMercator"
   :projection-config="{
@@ -35,5 +57,20 @@ Use [Map](/components/map#props) `projectionConfig` for common tweaks:
   <MapFeatures />
 </Map>
 ```
+
+```tsx [react]
+<Map
+  projection={geoMercator}
+  projectionConfig={{
+    center: [20, 10],
+    rotate: [-11, 0],
+    scale: 3,
+  }}
+>
+  <MapFeatures />
+</Map>
+```
+
+:::
 
 Here you can see all [available projections](https://observablehq.com/@fil/d3-projections)

@@ -20,7 +20,9 @@ Use this to draw shared borders/edges (for example country boundaries) on top of
 
 ## Usage
 
-```vue
+::: code-group
+
+```vue [vue]
 <template>
   <Map :data="topologyData">
     <MapFeatures fill="#fff" />
@@ -28,3 +30,12 @@ Use this to draw shared borders/edges (for example country boundaries) on top of
   </Map>
 </template>
 ```
+
+```tsx [react]
+<Map data={topologyData}>
+  <MapFeatures fill="#fff" />
+  <MapMesh stroke="#000" />
+</Map>
+```
+
+:::

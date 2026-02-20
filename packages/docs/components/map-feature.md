@@ -45,4 +45,33 @@ Renders a single GeoJSON feature as an SVG `<path>`.
 </template>
 ```
 
+```tsx [react]
+<Map data={mapData}>
+  <MapFeatures>
+    {({ features }) => (
+      <>
+        {features.map((feature) => (
+          <MapFeature
+            key={String(feature.id)}
+            data={feature}
+            fill={String(feature.color)}
+            styles={{
+              default: {
+                opacity: 0.9,
+              },
+              hover: {
+                opacity: 0.8,
+              },
+              active: {
+                stroke: 'green',
+              },
+            }}
+          />
+        ))}
+      </>
+    )}
+  </MapFeatures>
+</Map>
+```
+
 :::

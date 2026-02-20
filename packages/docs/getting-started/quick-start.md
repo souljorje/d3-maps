@@ -4,7 +4,7 @@
 
 <!--@include: @/.vitepress/parts/installation.md-->
 
-::: details [Optional] Plugin to register components globally
+::: details [Optional] Framework setup snippets
 
 ::: code-group
 
@@ -27,6 +27,18 @@ export default defineNuxtPlugin((nuxtApp) => {
 })
 ```
 
+```tsx [react]
+import { Map, MapFeatures } from '@d3-maps/react'
+
+export function App({ mapData }: { mapData: unknown }) {
+  return (
+    <Map data={mapData}>
+      <MapFeatures />
+    </Map>
+  )
+}
+```
+
 :::
 
 ## Render your first map
@@ -38,6 +50,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 ::: code-group
 
 <<< ../.vitepress/examples/basic.vue[vue]
+<<< ../.vitepress/examples/react/basic.tsx[react]
 
 :::
 

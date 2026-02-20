@@ -7,6 +7,7 @@
 ::: code-group
 
 <<< ../.vitepress/examples/markers.vue[vue]
+<<< ../.vitepress/examples/react/markers.tsx[react]
 
 :::
 

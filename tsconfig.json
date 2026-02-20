@@ -8,6 +8,8 @@
     "paths": {
       "@d3-maps/core": ["packages/core/src/index.ts"],
       "@d3-maps/core/*": ["packages/core/src/*"],
+      "@d3-maps/react": ["packages/react/src/index.ts"],
+      "@d3-maps/react/*": ["packages/react/src/*"],
       "@d3-maps/vue": ["packages/vue/src/index.ts"],
       "@d3-maps/vue/*": ["packages/vue/src/*"]
     },

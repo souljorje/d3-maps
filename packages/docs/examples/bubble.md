@@ -7,6 +7,7 @@
 ::: code-group
 
 <<< ../.vitepress/examples/bubble.vue[vue]
+<<< ../.vitepress/examples/react/bubble.tsx[react]
 
 :::
 

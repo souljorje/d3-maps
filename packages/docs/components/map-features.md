@@ -15,12 +15,15 @@ Renders all GeoJSON features from the current map context
 ::: code-group
 
 <<< ../.vitepress/examples/basic.vue[vue]
+<<< ../.vitepress/examples/react/basic.tsx[react]
 
 :::
 
 ## Slots
 
-```vue
+::: code-group
+
+```vue [vue]
 <MapFeatures #default="{ features }">
   <g>
     <MapFeature
@@ -32,3 +35,21 @@ Renders all GeoJSON features from the current map context
   </g>
 </MapFeatures>
 ```
+
+```tsx [react]
+<MapFeatures>
+  {({ features }) => (
+    <g>
+      {features.map((feature) => (
+        <MapFeature
+          key={String(feature.id)}
+          data={feature}
+          fill={String(feature.color)}
+        />
+      ))}
+    </g>
+  )}
+</MapFeatures>
+```
+
+:::
