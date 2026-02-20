@@ -9,7 +9,6 @@ Code conventions for all packages and docs custom code.
 | Lint rules | eslint.config.js |
 | Shared utility file | packages/core/src/lib/utils.ts |
 | Architecture constraints | [Architecture](architecture.md) |
-| Workflow policies | [Engineering Workflow](engineering-workflow.md) |
 
 ## Rules
 | Topic | Rule |

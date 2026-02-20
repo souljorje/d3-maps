@@ -42,5 +42,4 @@
 - [Root Guide](../../AGENTS.md)
 - [Core Guide](../core/AGENTS.md)
 - [Architecture](../../.agents/references/architecture.md)
-- [Engineering Workflow](../../.agents/references/engineering-workflow.md)
 - [Code Style](../../.agents/references/code-style.md)

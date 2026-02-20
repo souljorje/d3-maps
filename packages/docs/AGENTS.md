@@ -3,7 +3,7 @@
 ## Scope
 | Area | Path |
 | --- | --- |
-| Main pages | [Docs Home](index.md), [Getting Started](getting-started/index.md), [Components](components/index.md), [Examples](examples/index.md), [API](api/index.md) |
+| Main pages | [Docs Home](index.md), [Guide](guide/index.md), [Components](components/index.md), [Examples](examples/index.md), [API](api/index.md) |
 | VitePress config | packages/docs/.vitepress/config.js |
 | Theme runtime | packages/docs/.vitepress/theme/index.js |
 | Demo sources | packages/docs/.vitepress/examples |
@@ -27,6 +27,7 @@
 | Navigation | Keep nav/sidebar changes in packages/docs/.vitepress/config.js. |
 | Theme registration | Register global demo components in packages/docs/.vitepress/theme/index.js. |
 | Generated content | Do not hand-edit generated files in packages/docs/examples and generated API markdown in packages/docs/api/core. |
+| Docs style | Follow [Docs Style](../../.agents/references/docs-style.md). |
 
 ## Skills
 | Skill | When to use |
@@ -36,6 +37,5 @@
 ## References
 - [Root Guide](../../AGENTS.md)
 - [Architecture](../../.agents/references/architecture.md)
-- [Engineering Workflow](../../.agents/references/engineering-workflow.md)
 - [Docs Generation Workflow](../../.agents/references/docs-generation.md)
 - [Code Style](../../.agents/references/code-style.md)
