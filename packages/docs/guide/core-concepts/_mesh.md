@@ -1,6 +1,6 @@
 ## Mesh
 
-To render borders use [MapMesh](/components/MapMesh) instead of applying `stroke`. It will render a single `<path>` (more efficient) and ensure borders don't overlap.
+To render borders use [MapMesh](/components/map-mesh) instead of applying `stroke`. It will render a single `<path>` (more efficient) and ensure borders don't overlap.
 
 ::: code-group
 

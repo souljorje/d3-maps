@@ -1,6 +1,6 @@
 ## Zoom
 
-Wrap layers with [MapZoom](/components/MapZoom) to enable pan and zoom
+Wrap layers with [MapZoom](/components/map-zoom) to enable pan and zoom
 
 ::: code-group
 

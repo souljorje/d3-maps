@@ -1,6 +1,6 @@
 ## Markers
 
-Add any points to the map with [MapMarker](/components/MapMarker)
+Add any points to the map with [MapMarker](/components/map-marker)
 
 - pass `coordinates` as `[longitude, latitude]`
 - and any SVG elements as a children
