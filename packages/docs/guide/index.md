@@ -1,6 +1,6 @@
 # Introduction
 
-`d3-maps` is a set of building blocks and helpers for creating SVG maps with D3.  
+**d3-maps** is a set of components and helpers simplifying creating SVG maps with [D3](https://d3js.org/).  
 Works with your favorite framework, batteries included.
 
 ## Architecture
