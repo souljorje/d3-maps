@@ -1,9 +1,10 @@
 <template>
   <Map
-    v-if="mapData"
-    :data="mapData"
+    v-if="data"
+    :data="data"
   >
-    <MapFeatures />
+    <MapFeatures fill="darkorange" />
+    <MapMesh stroke="slategray" />
   </Map>
 </template>
 
@@ -13,10 +14,10 @@ import type { MapData } from '@d3-maps/core'
 import { withBase } from 'vitepress'
 import { onMounted, ref } from 'vue'
 
-const mapData = ref<MapData>()
+const data = ref<MapData>()
 
 onMounted(async () => {
   const response = await fetch(withBase('/example-data/countries-110m.json'))
-  mapData.value = await response.json()
+  data.value = await response.json()
 })
 </script>

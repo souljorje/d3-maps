@@ -7,12 +7,12 @@ Renders the root `<svg>` and provides a reactive map context to children.
 | Parameter | Type | Default value | Description |
 | --- | --- | --- | --- |
 | `data` | [MapData](/api/core/map#mapdata) | — | TopoJSON or GeoJSON |
-| `width` | `number` | `600` | Internal width used by projection fitting and path rendering. |
-| `height` | `number` | `width / aspectRatio` | Internal height used by projection fitting and path rendering. |
-| `aspectRatio` | `number` | `16 / 9` | Used to derive `height` when `height` is not provided. |
-| `projection` | `() => GeoProjection` | `geoEqualEarth` | d3-geo projection factory |
-| `projectionConfig` | [ProjectionConfig](/api/core/map#projectionconfig) | — | `center`, `rotate`, `scale` |
-| `dataTransformer` | [DataTransformer](/api/core/map#datatransformer) | — | Optional transform applied to GeoJSON features before rendering |
+| `width?` | `number` | `600` | Internal width used by projection fitting and path rendering. |
+| `height?` | `number` | `width / aspectRatio` | Internal height used by projection fitting and path rendering. |
+| `aspectRatio?` | `number` | `16 / 9` | Used to derive `height` when `height` is not provided. |
+| `projection?` | `() => GeoProjection` | `geoEqualEarth` | d3-geo projection factory |
+| `projectionConfig?` | [ProjectionConfig](/api/core/map#projectionconfig) | — | `center`, `rotate`, `scale` |
+| `dataTransformer?` | [DataTransformer](/api/core/map#datatransformer) | — | Optional transform applied to GeoJSON features before rendering |
 
 ## Usage
 

@@ -50,15 +50,11 @@ const examples = getExamples()
 
 const docsSidebar = [
   {
-    text: 'Getting Started',
+    text: 'Guide',
     items: [
-      { text: 'Introduction', link: '/getting-started/' },
-      { text: 'Quick Start', link: '/getting-started/quick-start' },
-      { text: 'Data', link: '/getting-started/data' },
-      { text: 'Projections', link: '/getting-started/projections' },
-      { text: 'Responsiveness', link: '/getting-started/responsiveness' },
-      { text: 'Styling', link: '/getting-started/styling' },
-      { text: 'Troubleshooting', link: '/getting-started/troubleshooting' },
+      { text: 'Get Started', link: '/guide/' },
+      { text: 'Core Concepts', link: '/guide/core-concepts/' },
+      { text: 'Troubleshooting', link: '/guide/troubleshooting' },
     ],
   },
   {
@@ -96,7 +92,7 @@ const apiSidebar = [
 
 export default defineConfig({
   base: process.env.VITEPRESS_BASE || '/',
-  srcExclude: ['AGENTS.md', '**/AGENTS.md'],
+  srcExclude: ['AGENTS.md', '**/AGENTS.md', '**/_*.md'],
   title: 'd3-maps',
   description: 'Reactive SVG maps powered by D3',
   head: [
@@ -111,7 +107,7 @@ export default defineConfig({
   themeConfig: {
     logo: '/d3-maps-logo.svg',
     nav: [
-      { text: 'Getting Started', link: '/getting-started/' },
+      { text: 'Guide', link: '/guide/' },
       { text: 'Examples', link: '/examples/' },
       { text: 'API', link: '/api/core' },
     ],

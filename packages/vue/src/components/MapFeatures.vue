@@ -7,6 +7,7 @@
         :data="feature"
         :fill="fill"
         :stroke="stroke"
+        :styles="styles"
         v-bind="$attrs"
       />
     </slot>
@@ -14,6 +15,9 @@
 </template>
 
 <script setup lang="ts">
+import type { MapObjectStyles } from '@d3-maps/core'
+import type { StyleValue } from 'vue'
+
 import { getFeatureKey } from '@d3-maps/core'
 import { computed } from 'vue'
 
@@ -24,6 +28,7 @@ interface Props {
   idKey?: string
   fill?: string
   stroke?: string
+  styles?: MapObjectStyles<StyleValue>
 }
 
 withDefaults(defineProps<Props>(), {

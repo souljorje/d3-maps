@@ -3,7 +3,7 @@
 ## Scope
 | Area | Path |
 | --- | --- |
-| Main pages | [Docs Home](index.md), [Getting Started](getting-started/index.md), [Components](components/index.md), [Examples](examples/index.md), [API](api/index.md) |
+| Main pages | [Docs Home](index.md), [Guide](guide/index.md), [Components](components/index.md), [Examples](examples/index.md), [API](api/index.md) |
 | VitePress config | packages/docs/.vitepress/config.js |
 | Theme runtime | packages/docs/.vitepress/theme/index.js |
 | Demo sources | packages/docs/.vitepress/examples |
@@ -27,6 +27,23 @@
 | Navigation | Keep nav/sidebar changes in packages/docs/.vitepress/config.js. |
 | Theme registration | Register global demo components in packages/docs/.vitepress/theme/index.js. |
 | Generated content | Do not hand-edit generated files in packages/docs/examples and generated API markdown in packages/docs/api/core. |
+| Guide parts | Keep include-only guide parts in `_*.md` files and compose routed guide pages from `index.md` via includes. |
+| Progressive snippets | In progressive guides (for example `guide/core-concepts`), each snippet must build on the previous snippet and only add/change lines for the current concept. |
+| Snippet highlighting | Use VitePress line highlighting to mark newly added or changed lines in progressive snippets. |
+| Tone | Use a friendly, concise, instructional developer-doc tone. |
+| Sentence style | Prefer short declarative sentences with light imperative phrasing and minimal context. |
+| Approachability | Keep writing approachable but not chatty. |
+| Paragraph size | Prefer 1-2 sentences per paragraph and one idea per paragraph. |
+| Voice | Use active voice when possible. |
+| Section orientation | Start sections with a short purpose line when it helps orientation. |
+| Inline code | Use backticks for API names, props, events, and code identifiers. |
+| Link strategy | Prefer internal links and use external links only when no internal reference exists. |
+| Duplication | Avoid repeating content across pages and link instead. |
+| Headings | Keep headings short and free of trailing punctuation. |
+| Snippet scope | Keep snippets minimal, concept-focused, and free of unrelated boilerplate. |
+| Code groups | Use `code-group` only when showing multiple variants. |
+| Snippet consistency | Keep related snippets consistent in naming, data shapes, and structure. |
+| Vue examples | Prefer `<script setup lang="ts">` and Composition API unless the surrounding page already uses a different pattern. |
 
 ## Skills
 | Skill | When to use |
@@ -36,6 +53,5 @@
 ## References
 - [Root Guide](../../AGENTS.md)
 - [Architecture](../../.agents/references/architecture.md)
-- [Engineering Workflow](../../.agents/references/engineering-workflow.md)
 - [Docs Generation Workflow](../../.agents/references/docs-generation.md)
 - [Code Style](../../.agents/references/code-style.md)

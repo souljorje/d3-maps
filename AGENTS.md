@@ -1,5 +1,8 @@
 # D3-maps
 
+## Primary Rule
+Follow [Agent Meta-Flow](.agents/references/agent-meta-flow.md) before any task. It is the primary rule for this repo.
+
 ## Goal
 Make map creation with D3 simple, reactive, and responsive out of the box, across frameworks.
 
@@ -39,13 +42,14 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 ## Global Rules
 | Topic | Rule |
 | --- | --- |
+| Agent meta-flow | Primary rule. Follow [Agent Meta-Flow](.agents/references/agent-meta-flow.md) before any task. |
 | AGENTS.md files | Follow [AGENTS Style Guide](.agents/references/agents-style.md) when updating AGENTS.md files. |
 | Nested AGENTS | Always update all relevant nested AGENTS files when rules/scope change. |
 | Duplicated AGENTS | Never duplicate content in AGENTS files. |
 | Markdown links | Write `.md` mentions as relative links with readable titles. |
 | Architecture constraints | Follow [Architecture](.agents/references/architecture.md). |
-| Engineering workflow | Follow [Engineering Workflow](.agents/references/engineering-workflow.md). |
 | Code Style | Follow [Code Style](.agents/references/code-style.md). |
+| Writing style | Avoid ending single-sentence paragraphs with a period. |
 | Test command | Run root test command as `pnpm test --output-logs=errors-only` to reduce token usage unless full logs are explicitly needed. |
 
 ## Skills
@@ -58,7 +62,6 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 
 - [Architecture](.agents/references/architecture.md)
 - [Code Style](.agents/references/code-style.md)
-- [Engineering Workflow](.agents/references/engineering-workflow.md)
 - [Git Workflow](.agents/references/git-workflow.md)
 - [Docs Generation Workflow](.agents/references/docs-generation.md)
 - [AGENTS Style Guide](.agents/references/agents-style.md)

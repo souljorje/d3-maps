@@ -4,18 +4,20 @@
     :data="data"
   >
     <MapFeatures />
+    <MapMesh stroke="slategray" />
     <MapMarker
       v-for="item in cities"
       :key="item.city"
       :coordinates="[item.lon, item.lat]"
     >
       <text
-        font-size="16"
-        y="-6"
+        font-size="14"
+        y="-8"
         text-anchor="middle"
+        fill="darkorange"
       >{{ item.city }}</text>
       <circle
-        fill="#ff6f26"
+        fill="darkorange"
         r="3"
       />
     </MapMarker>
