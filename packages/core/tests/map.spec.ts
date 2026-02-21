@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 
 import { geoEqualEarth } from 'd3-geo'
 
@@ -15,17 +15,34 @@ import {
 } from './fixtures'
 
 describe('makeProjection', () => {
-  it('applies projection config', () => {
+  it('creates projection', () => {
     const projection = makeProjection({
       width: 100,
       height: 100,
-      config: { scale: 200, center: [20, 10], rotate: [0, 0, 10] },
+      projection: geoEqualEarth,
+    })
+    expectTypeOf(projection).toEqualTypeOf(geoEqualEarth())
+  })
+
+  it('applies config', () => {
+    const projection = makeProjection({
+      width: 100,
+      height: 100,
+      config: {
+        scale: 200,
+        center: [[20, 10]],
+        rotate: [[0, 0, 10]],
+        precision: 0.5,
+        reflectY: true,
+      },
       projection: geoEqualEarth,
     })
 
     expect(Math.round(projection.scale())).toBe(200)
     expect(projection.center()).toEqual([20, 10])
     expect(projection.rotate()).toEqual([0, 0, 10])
+    expect(projection.precision()).toBe(0.5)
+    expect(projection.reflectY()).toBe(true)
   })
 })
 

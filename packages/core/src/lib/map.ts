@@ -17,21 +17,49 @@ import {
   mesh,
 } from 'topojson-client'
 
-import { isNumber } from './utils'
-
 export type MapData = FeatureCollection | Topology
 export type DataTransformer = (features: MapFeature[]) => MapFeature[]
+
+export type ProjectionMethodName = Extract<{
+  [K in keyof GeoProjection]:
+  GeoProjection[K] extends (...args: unknown[]) => unknown
+    ? K
+    : never
+}[keyof GeoProjection], string>
+
+export type ProjectionMethodArgs<
+  TMethod extends ProjectionMethodName,
+> = GeoProjection[TMethod] extends (...args: infer TArgs) => GeoProjection
+  ? TArgs
+  : never
+
+export type ProjectionSingleArg<
+  TMethod extends ProjectionMethodName,
+> = ProjectionMethodArgs<TMethod> extends [infer TArg]
+  ? TArg
+  : never
+
+export type ProjectionSetterMethodName = Extract<{
+  [K in ProjectionMethodName]:
+  ProjectionMethodArgs<K> extends never
+    ? never
+    : K
+}[ProjectionMethodName], string>
+
+export type ProjectionModifierValue<
+  TMethod extends ProjectionSetterMethodName,
+> =
+  | ProjectionMethodArgs<TMethod>
+  | ProjectionSingleArg<TMethod>
 
 /**
  * Configuration for a d3-geo projection.
  *
  * d3-maps applies these options (if provided) before fitting the geometry to the map size.
  */
-export interface ProjectionConfig {
-  center?: [number, number]
-  rotate?: [number, number, number]
-  scale?: number
-}
+export type ProjectionConfig = Partial<{
+  [K in ProjectionSetterMethodName]: ProjectionModifierValue<K>
+}>
 
 /**
  * Input configuration for creating a map context.
@@ -94,28 +122,12 @@ export function makeProjection({
   geoJson?: FeatureCollection
 }): GeoProjection {
   const mapProjection = projection()
-
-  if (config?.center) {
-    const [cx, cy] = config.center
-    if (isNumber(cx) && isNumber(cy)) {
-      mapProjection.center([cx, cy])
-    }
-  }
-  if (config?.rotate) {
-    const [rx, ry, rz] = config.rotate
-    if (isNumber(rx) && isNumber(ry)) {
-      mapProjection.rotate([rx, ry, isNumber(rz) ? rz : 0])
-    }
-  }
-  if (config && isNumber(config.scale)) {
-    mapProjection.scale(config.scale)
-  }
-
   if (geoJson) {
     mapProjection.fitSize([width, height], geoJson)
   } else {
     mapProjection.translate([width / 2, height / 2])
   }
+  applyProjectionModifiers(mapProjection, config)
 
   return mapProjection
 }
@@ -204,4 +216,19 @@ export function isTopology(data: MapData): data is Topology {
 export function getTopoObject(geoData: Topology): GeometryObject {
   const objectKey = Object.keys(geoData.objects)[0]
   return geoData.objects[objectKey] as GeometryObject
+}
+
+function applyProjectionModifiers(
+  projection: GeoProjection,
+  config?: ProjectionConfig,
+): void {
+  if (!config) return
+
+  for (const [methodName, methodArgs] of Object.entries(config)) {
+    if (!methodName || methodArgs === undefined) continue
+
+    const modifier = projection[methodName as ProjectionSetterMethodName]
+    const normalizedArgs = Array.isArray(methodArgs) ? methodArgs : [methodArgs]
+    ;(modifier as (...args: unknown[]) => unknown).apply(projection, normalizedArgs)
+  }
 }
