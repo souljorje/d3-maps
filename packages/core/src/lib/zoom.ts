@@ -5,11 +5,17 @@ import type {
 } from 'd3-zoom'
 
 import type { MapContext } from './map'
+import type {
+  MethodsToModifiers,
+} from './utils'
 
 import { select as d3Select } from 'd3-selection'
 import { zoom, zoomIdentity } from 'd3-zoom'
 
-import { isNumber } from './utils'
+import {
+  applyModifiers,
+  isNumber,
+} from './utils'
 
 export type {
   D3ZoomEvent,
@@ -30,40 +36,8 @@ export interface ZoomConfig {
   translateExtent: Extent
 }
 
-export type ZoomBehaviorMethodName<TElement extends Element, TDatum> = Extract<{
-  [K in keyof ZoomBehavior<TElement, TDatum>]:
-  ZoomBehavior<TElement, TDatum>[K] extends (...args: unknown[]) => unknown
-    ? K
-    : never
-}[keyof ZoomBehavior<TElement, TDatum>], string>
-
-export type ZoomBehaviorMethodArgs<
-  TElement extends Element,
-  TDatum,
-  TMethod extends ZoomBehaviorMethodName<TElement, TDatum>,
-> = ZoomBehavior<TElement, TDatum>[TMethod] extends (...args: infer TArgs) => unknown
-  ? TArgs
-  : never
-
-export type ZoomBehaviorSingleArg<
-  TElement extends Element,
-  TDatum,
-  TMethod extends ZoomBehaviorMethodName<TElement, TDatum>,
-> = ZoomBehaviorMethodArgs<TElement, TDatum, TMethod> extends [infer TArg]
-  ? TArg
-  : never
-
-export type ZoomModifierValue<
-  TElement extends Element,
-  TDatum,
-  TMethod extends ZoomBehaviorMethodName<TElement, TDatum>,
-> =
-  | ZoomBehaviorMethodArgs<TElement, TDatum, TMethod>
-  | ZoomBehaviorSingleArg<TElement, TDatum, TMethod>
-
-export type ZoomModifiers<TElement extends Element = SVGSVGElement, TDatum = unknown> = Partial<{
-  [K in ZoomBehaviorMethodName<TElement, TDatum>]: ZoomModifierValue<TElement, TDatum, K>
-}>
+export type ZoomModifiers<TElement extends Element = SVGSVGElement, TDatum = unknown> =
+  MethodsToModifiers<ZoomBehavior<TElement, TDatum>>
 
 export interface ZoomProps<TElement extends Element = SVGSVGElement, TDatum = unknown> {
   center?: [number, number]
@@ -149,7 +123,7 @@ export function createZoomBehavior<TElement extends Element = SVGSVGElement, TDa
   }
 
   // Modifiers are applied last so user-level d3-zoom config can override convenience props.
-  applyZoomModifiers(behavior, options.modifiers)
+  applyModifiers(behavior, options.modifiers)
 
   return behavior
 }
@@ -210,23 +184,6 @@ function isZoomTransform(value: unknown): value is ZoomTransform {
     && isNumber((value as ZoomTransform).x)
     && isNumber((value as ZoomTransform).y),
   )
-}
-
-function applyZoomModifiers<TElement extends Element, TDatum>(
-  behavior: ZoomBehavior<TElement, TDatum>,
-  modifiers?: ZoomModifiers<TElement, TDatum>,
-): void {
-  if (!modifiers) return
-
-  for (const [methodName, methodArgs] of Object.entries(modifiers)) {
-    if (!methodName || methodArgs === undefined) continue
-
-    const modifier = behavior[methodName as ZoomBehaviorMethodName<TElement, TDatum>]
-    if (typeof modifier !== 'function') continue
-
-    const normalizedArgs = Array.isArray(methodArgs) ? methodArgs : [methodArgs]
-    ;(modifier as (...args: unknown[]) => unknown).apply(behavior, normalizedArgs)
-  }
 }
 
 function getSvgElement(element: ZoomTargetElement | null | undefined): SVGSVGElement | null {

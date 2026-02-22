@@ -7,6 +7,9 @@ import type {
 import type { GeometryObject, Topology } from 'topojson-specification'
 
 import type { MapFeature } from './feature'
+import type {
+  MethodsToModifiers,
+} from './utils'
 
 import {
   geoEqualEarth,
@@ -17,49 +20,17 @@ import {
   mesh,
 } from 'topojson-client'
 
+import { applyModifiers } from './utils'
+
 export type MapData = FeatureCollection | Topology
 export type DataTransformer = (features: MapFeature[]) => MapFeature[]
-
-export type ProjectionMethodName = Extract<{
-  [K in keyof GeoProjection]:
-  GeoProjection[K] extends (...args: unknown[]) => unknown
-    ? K
-    : never
-}[keyof GeoProjection], string>
-
-export type ProjectionMethodArgs<
-  TMethod extends ProjectionMethodName,
-> = GeoProjection[TMethod] extends (...args: infer TArgs) => GeoProjection
-  ? TArgs
-  : never
-
-export type ProjectionSingleArg<
-  TMethod extends ProjectionMethodName,
-> = ProjectionMethodArgs<TMethod> extends [infer TArg]
-  ? TArg
-  : never
-
-export type ProjectionSetterMethodName = Extract<{
-  [K in ProjectionMethodName]:
-  ProjectionMethodArgs<K> extends never
-    ? never
-    : K
-}[ProjectionMethodName], string>
-
-export type ProjectionModifierValue<
-  TMethod extends ProjectionSetterMethodName,
-> =
-  | ProjectionMethodArgs<TMethod>
-  | ProjectionSingleArg<TMethod>
 
 /**
  * Configuration for a d3-geo projection.
  *
  * d3-maps applies these options (if provided) before fitting the geometry to the map size.
  */
-export type ProjectionConfig = Partial<{
-  [K in ProjectionSetterMethodName]: ProjectionModifierValue<K>
-}>
+export type ProjectionConfig = MethodsToModifiers<GeoProjection>
 
 /**
  * Input configuration for creating a map context.
@@ -127,7 +98,7 @@ export function makeProjection({
   } else {
     mapProjection.translate([width / 2, height / 2])
   }
-  applyProjectionModifiers(mapProjection, config)
+  applyModifiers(mapProjection, config)
 
   return mapProjection
 }
@@ -216,19 +187,4 @@ export function isTopology(data: MapData): data is Topology {
 export function getTopoObject(geoData: Topology): GeometryObject {
   const objectKey = Object.keys(geoData.objects)[0]
   return geoData.objects[objectKey] as GeometryObject
-}
-
-function applyProjectionModifiers(
-  projection: GeoProjection,
-  config?: ProjectionConfig,
-): void {
-  if (!config) return
-
-  for (const [methodName, methodArgs] of Object.entries(config)) {
-    if (!methodName || methodArgs === undefined) continue
-
-    const modifier = projection[methodName as ProjectionSetterMethodName]
-    const normalizedArgs = Array.isArray(methodArgs) ? methodArgs : [methodArgs]
-    ;(modifier as (...args: unknown[]) => unknown).apply(projection, normalizedArgs)
-  }
 }
