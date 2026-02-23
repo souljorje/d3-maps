@@ -24,6 +24,11 @@ Shared workflow for Vue, React, and future adapters (Solid, Svelte)
 - Keep exports named-only and keep the surface consistent across adapters where it makes sense
 
 ## Implementation Patterns
+- Architecture is based on framework context:
+  - React: `createContext` / `useContext`
+  - Vue: `provide` / `inject`
+  - Solid: `createContext` / `useContext`
+  - Svelte: `setContext` / `getContext`
 - Split every adapter feature into two concerns:
   - Render: deterministic SVG markup derived from props and core contracts
   - Behavior: imperative DOM behavior wiring that enhances existing markup (zoom, drag, pointer/focus interactions)
@@ -44,12 +49,6 @@ Shared workflow for Vue, React, and future adapters (Solid, Svelte)
   - server render may produce static SVG markup
   - interactivity attaches only on the client after mount
   - do not require DOM availability to render markup
-
-### Framework context (current default)
-- React: `createContext` / `useContext`
-- Vue: `provide` / `inject`
-- Solid: `createContext` / `useContext`
-- Svelte: `setContext` / `getContext`
 
 ## Tests
 - Add/adjust adapter tests for behavior parity and edge cases
