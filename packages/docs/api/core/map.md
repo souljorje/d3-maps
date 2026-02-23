@@ -188,7 +188,7 @@ In adapters, this is usually passed as component props.
 | <a id="property-datatransformer"></a> `dataTransformer?` | [`DataTransformer`](#datatransformer) | Optional feature transformer (filter/augment/normalize features). |
 | <a id="property-height"></a> `height?` | `number` | - |
 | <a id="property-projection"></a> `projection?` | () => `GeoProjection` | Projection factory from d3-geo (or a compatible implementation). Example: `geoEqualEarth`. |
-| <a id="property-projectionconfig"></a> `projectionConfig?` | [`ProjectionConfig`](#projectionconfig) | - |
+| <a id="property-projectionconfig"></a> `projectionConfig?` | [`ProjectionConfig`](#projectionconfig) | Projection method arguments passed to the created projection |
 | <a id="property-width"></a> `width?` | `number` | - |
 
 ***
@@ -216,17 +216,40 @@ Adapters provide this context to child layers (features, markers, custom SVG).
 
 ### ProjectionConfig
 
-Configuration for a d3-geo projection.
+Extra projection method calls to apply before rendering.
 
-d3-maps applies these options (if provided) before fitting the geometry to the map size.
+Use projection method names as keys and method arguments as values.
+Example: `{ center: [[0, 20]], rotate: [[0, 0, 0]], scale: 160 }`
+
+#### See
+
+https://d3js.org/d3-geo/projection
+
+#### Extends
+
+* [`MethodsToModifiers`](utils.md#methodstomodifiers)<`GeoProjection`>
 
 #### Properties
 
-| Property | Type |
-| ------ | ------ |
-| <a id="property-center"></a> `center?` | \[`number`, `number`] |
-| <a id="property-rotate"></a> `rotate?` | \[`number`, `number`, `number`] |
-| <a id="property-scale"></a> `scale?` | `number` |
+| Property | Type | Inherited from |
+| ------ | ------ | ------ |
+| <a id="property-angle"></a> `angle?` | `number` | \[`number`] | `MethodsToModifiers.angle` |
+| <a id="property-center"></a> `center?` | \[\[`number`, `number`]] | `MethodsToModifiers.center` |
+| <a id="property-clipangle"></a> `clipAngle?` | `number` | \[`null`] | \[`number`] | `null` | `MethodsToModifiers.clipAngle` |
+| <a id="property-clipextent"></a> `clipExtent?` | \[`null`] | \[\[\[`number`, `number`], \[`number`, `number`]]] | `null` | `MethodsToModifiers.clipExtent` |
+| <a id="property-fitextent"></a> `fitExtent?` | \[\[\[`number`, `number`], \[`number`, `number`]], | `GeoGeometryObjects` | `ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`> | `ExtendedFeatureCollection`<`ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`>> | `ExtendedGeometryCollection`<`GeoGeometryObjects`>] | `MethodsToModifiers.fitExtent` |
+| <a id="property-fitheight"></a> `fitHeight?` | \[`number`, | `GeoGeometryObjects` | `ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`> | `ExtendedFeatureCollection`<`ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`>> | `ExtendedGeometryCollection`<`GeoGeometryObjects`>] | `MethodsToModifiers.fitHeight` |
+| <a id="property-fitsize"></a> `fitSize?` | \[\[`number`, `number`], | `GeoGeometryObjects` | `ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`> | `ExtendedFeatureCollection`<`ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`>> | `ExtendedGeometryCollection`<`GeoGeometryObjects`>] | `MethodsToModifiers.fitSize` |
+| <a id="property-fitwidth"></a> `fitWidth?` | \[`number`, | `GeoGeometryObjects` | `ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`> | `ExtendedFeatureCollection`<`ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`>> | `ExtendedGeometryCollection`<`GeoGeometryObjects`>] | `MethodsToModifiers.fitWidth` |
+| <a id="property-postclip"></a> `postclip?` | | (`stream`: `GeoStream`) => `GeoStream` | \[(`stream`: `GeoStream`) => `GeoStream`] | `MethodsToModifiers.postclip` |
+| <a id="property-precision"></a> `precision?` | `number` | \[`number`] | `MethodsToModifiers.precision` |
+| <a id="property-preclip"></a> `preclip?` | | (`stream`: `GeoStream`) => `GeoStream` | \[(`stream`: `GeoStream`) => `GeoStream`] | `MethodsToModifiers.preclip` |
+| <a id="property-reflectx"></a> `reflectX?` | `boolean` | \[`false`] | \[`true`] | `MethodsToModifiers.reflectX` |
+| <a id="property-reflecty"></a> `reflectY?` | `boolean` | \[`false`] | \[`true`] | `MethodsToModifiers.reflectY` |
+| <a id="property-rotate"></a> `rotate?` | \[\[`number`, `number`]] | \[\[`number`, `number`, `number`]] | `MethodsToModifiers.rotate` |
+| <a id="property-scale"></a> `scale?` | `number` | \[`number`] | `MethodsToModifiers.scale` |
+| <a id="property-stream"></a> `stream?` | `GeoStream` | \[`GeoStream`] | `MethodsToModifiers.stream` |
+| <a id="property-translate"></a> `translate?` | \[\[`number`, `number`]] | `MethodsToModifiers.translate` |
 
 ## Type Aliases
 

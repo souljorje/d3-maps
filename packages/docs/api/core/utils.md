@@ -5,7 +5,7 @@
 ## Table of contents
 
 * [Functions](#functions)
-  * [get()](#get)
+  * [applyModifiers()](#applymodifiers)
   * [isDefined()](#isdefined)
   * [isFunction()](#isfunction)
   * [isNullish()](#isnullish)
@@ -14,30 +14,63 @@
   * [isString()](#isstring)
   * [isStringOrNumber()](#isstringornumber)
   * [makeTransform()](#maketransform)
+* [Type Aliases](#type-aliases)
+  * [AnyFn()](#anyfn)
+  * [HasArgs](#hasargs)
+  * [MethodsToModifiers](#methodstomodifiers)
+  * [ModifierArgs](#modifierargs)
+  * [OwnKeys](#ownkeys)
 
 ## Functions
 
-### get()
+### applyModifiers()
 
 ```ts
-function get<T>(url: string): Promise<T>;
+function applyModifiers<T>(target: T, modifiers?: MethodsToModifiers<T>): void;
 ```
+
+Invokes `target` methods with arguments from `modifiers`.
+
+modifers: `{ [methodName]: GetArgs[] }`
 
 #### Type Parameters
 
 | Type Parameter |
 | ------ |
-| `T` |
+| `T` *extends* `object` |
 
 #### Parameters
 
 | Parameter | Type |
 | ------ | ------ |
-| `url` | `string` |
+| `target` | `T` |
+| `modifiers?` | [`MethodsToModifiers`](#methodstomodifiers)<`T`> |
 
 #### Returns
 
-`Promise`<`T`>
+`void`
+
+#### Example
+
+```ts
+class X {
+ a(x: number) {}
+ b(x: number, y: string) {}
+ c(x: string[]) {}
+ d() {}
+ e = 'foo'
+}
+
+applyModifiers(new X(), {
+ a: 1, // ok (single arg as-is)
+ a: [1], // ok (single arg wrapped)
+ b: [1, 'foo'], // ok (tuple for 2 args)
+ c: [['foo', 'bar']], // ok (array-arg must be wrapped)
+ c: ['foo', 'bar'],  // error (single array-arg must be wrapped into array)
+ d: [], // error (d has no args, excluded)
+ e: 'foo' // error (e is not a function, excluded)
+})
+```
 
 ***
 
@@ -193,3 +226,103 @@ function makeTransform(
 #### Returns
 
 `string`
+
+## Type Aliases
+
+### AnyFn()
+
+```ts
+type AnyFn = (...args: any) => any;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| ...`args` | `any` |
+
+#### Returns
+
+`any`
+
+***
+
+### HasArgs
+
+```ts
+type HasArgs<F> = Parameters<F>["length"] extends 0 ? false : true;
+```
+
+#### Type Parameters
+
+| Type Parameter |
+| ------ |
+| `F` *extends* [`AnyFn`](#anyfn) |
+
+***
+
+### MethodsToModifiers
+
+```ts
+type MethodsToModifiers<T> = { [K in OwnKeys<T> as T[K] extends AnyFn ? HasArgs<T[K]> extends true ? K : never : never]?: T[K] extends AnyFn ? ModifierArgs<Parameters<T[K]>> : never };
+```
+
+Maps methods with args to modifiers
+
+#### Type Parameters
+
+| Type Parameter |
+| ------ |
+| `T` *extends* `object` |
+
+#### Example
+
+```ts
+type X = {
+  a: string;  // not a function - will be ignored
+  b(): void;  // has no arguments - will be ignored
+  c(x: number): void;
+  d(x: number, y: string): void;
+  e(xs: string[]): void;
+}
+
+type R = MethodsToModifiers<X>
+{
+  c: number | [number];
+  d: [number, string];
+  e: [string[]]; // forced wrapper (arg is array)
+}
+```
+
+***
+
+### ModifierArgs
+
+```ts
+type ModifierArgs<P> = P extends [infer Only] ? Only extends unknown[] ? [Only] : Only | [Only] : P;
+```
+
+Converts method parameters to modifiers values
+
+* single non-array arg: `arg` | `[arg]`
+* multiple args/single array wrapped with array
+
+#### Type Parameters
+
+| Type Parameter |
+| ------ |
+| `P` *extends* `unknown`\[] |
+
+***
+
+### OwnKeys
+
+```ts
+type OwnKeys<T> = T extends Function ? Exclude<keyof T, keyof Function> : keyof T;
+```
+
+#### Type Parameters
+
+| Type Parameter |
+| ------ |
+| `T` |
