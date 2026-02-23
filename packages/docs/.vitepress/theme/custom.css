@@ -24,6 +24,7 @@
 }
 
 .VPHome {
+  margin-bottom: 0;
   .image-src {
     animation: 1s float ease-in-out infinite alternate;
   }
@@ -34,10 +35,6 @@
     background: url(/d3-maps-logo.svg);
     background-position: center;
     filter: blur(60px);
-  }
-  .image-src, .image-bg {
-    max-width: 300px;
-    max-height: 300px;
   }
   .container {
     max-width: 1000px
