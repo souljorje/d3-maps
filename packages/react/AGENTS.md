@@ -41,6 +41,6 @@
 - [Root Guide](../../AGENTS.md)
 - [Core Guide](../core/AGENTS.md)
 - [Agent Meta-Flow](../../.agents/references/agent-meta-flow.md)
-- [Adapter Development Flow](../../ADAPTER_DEVELOPMENT_FLOW.md)
+- [Adapter Development Flow](../../.agents/references/adapter-development-flow.md)
 - [Architecture](../../.agents/references/architecture.md)
 - [Code Style](../../.agents/references/code-style.md)
