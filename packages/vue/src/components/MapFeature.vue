@@ -33,7 +33,7 @@ const emit = defineEmits<MapObjectEmit>()
 
 const context = useMapContext()
 
-const path = computed(() => context?.renderPath(props.data))
+const path = computed(() => context?.value.renderPath(props.data))
 
 const {
   computedStyle,

@@ -35,7 +35,7 @@ const emit = defineEmits<MapObjectEmit>()
 const context = useMapContext()
 
 const transform = computed(() => {
-  return getMarkerTransform(context, props.coordinates)
+  return getMarkerTransform(context?.value, props.coordinates)
 })
 
 const {

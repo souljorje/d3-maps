@@ -11,6 +11,7 @@ import type {
 } from 'react'
 
 import {
+  applyZoomGroupTransform,
   applyZoomTransform,
   createZoomBehavior,
   setupZoom,
@@ -70,10 +71,7 @@ export function MapZoom({
         onZoomStartRef.current?.(event)
       },
       onZoom: (event) => {
-        const container = containerRef.current
-        if (container) {
-          container.setAttribute('transform', event.transform.toString())
-        }
+        applyZoomGroupTransform(containerRef.current, event.transform)
         onZoomRef.current?.(event)
       },
       onZoomEnd: (event) => {

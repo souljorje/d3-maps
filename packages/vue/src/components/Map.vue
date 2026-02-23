@@ -1,13 +1,11 @@
 <template>
-  <MapProvider :context="context">
-    <svg
-      :viewBox="`0 0 ${context.width} ${context.height}`"
-      v-bind="$attrs"
-      class="d3-map"
-    >
-      <slot v-bind="context" />
-    </svg>
-  </MapProvider>
+  <svg
+    :viewBox="`0 0 ${context.width} ${context.height}`"
+    v-bind="$attrs"
+    class="d3-map"
+  >
+    <slot v-bind="context" />
+  </svg>
 </template>
 
 <script setup lang="ts">
@@ -17,9 +15,12 @@ import type {
 } from '@d3-maps/core'
 
 import { makeMapContext } from '@d3-maps/core'
-import { computed } from 'vue'
+import {
+  computed,
+  provide,
+} from 'vue'
 
-import { MapProvider } from './MapContext'
+import { mapContextKey } from '../hooks/useMapContext'
 
 const props = defineProps<MapConfig>()
 
@@ -36,4 +37,6 @@ const context = computed<MapContext>(() => makeMapContext({
   data: props.data,
   dataTransformer: props.dataTransformer,
 }))
+
+provide(mapContextKey, context)
 </script>

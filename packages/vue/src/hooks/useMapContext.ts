@@ -1,10 +1,13 @@
 import type { MapContext } from '@d3-maps/core'
-import type { InjectionKey } from 'vue'
+import type {
+  ComputedRef,
+  InjectionKey,
+} from 'vue'
 
 import { inject } from 'vue'
 
-export const mapContextKey: InjectionKey<MapContext> = Symbol('MapContext')
+export const mapContextKey: InjectionKey<ComputedRef<MapContext>> = Symbol('MapContext')
 
-export function useMapContext(): MapContext | undefined {
+export function useMapContext(): ComputedRef<MapContext> | undefined {
   return inject(mapContextKey)
 }

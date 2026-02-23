@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), { fill: 'none' })
 const emit = defineEmits<MapObjectEmit>()
 const context = useMapContext()
 
-const path = computed(() => context?.renderMesh())
+const path = computed(() => context?.value.renderMesh())
 
 const {
   computedStyle,

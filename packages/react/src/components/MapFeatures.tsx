@@ -6,6 +6,8 @@ import type {
   ReactNode,
 } from 'react'
 
+import type { MapObjectStyles } from '../hooks/useMapObject'
+
 import { getFeatureKey } from '@d3-maps/core'
 
 import { useMapContext } from '../hooks/useMapContext'
@@ -21,6 +23,7 @@ export interface MapFeaturesProps {
   idKey?: string
   fill?: string
   stroke?: string
+  styles?: MapObjectStyles
   children?: MapFeaturesChildren
 }
 
@@ -32,6 +35,7 @@ export function MapFeatures({
   idKey = 'id',
   fill,
   stroke,
+  styles,
   children,
 }: MapFeaturesProps): ReactElement {
   const context = useMapContext()
@@ -51,6 +55,7 @@ export function MapFeatures({
             data={feature}
             fill={fill}
             stroke={stroke}
+            styles={styles}
           />
         ))
       }

@@ -35,5 +35,5 @@ withDefaults(defineProps<Props>(), {
 })
 
 const context = useMapContext()
-const features = computed(() => (context?.features ?? []))
+const features = computed(() => (context?.value.features ?? []))
 </script>

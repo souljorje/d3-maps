@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import {
+  applyZoomGroupTransform,
   createZoomBehavior,
   createZoomConfig,
   createZoomTransform,
@@ -100,5 +101,17 @@ describe('zoom helpers', () => {
     expect(getInverseZoomScale(transform)).toBe(0.5)
     expect(getInverseZoomScale(4)).toBe(0.25)
     expect(getInverseZoomScale(0, 1)).toBe(1)
+  })
+
+  it('applies zoom transform to a group element', () => {
+    const setAttribute = vi.fn()
+
+    applyZoomGroupTransform({
+      setAttribute,
+    } as unknown as Element, {
+      toString: () => 'translate(4,5) scale(2)',
+    })
+
+    expect(setAttribute).toHaveBeenCalledWith('transform', 'translate(4,5) scale(2)')
   })
 })
