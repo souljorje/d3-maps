@@ -161,6 +161,7 @@ export function applyModifiers<T extends object>(
     if (!isDefined(methodArgs)) continue
 
     const fn = target[methodName] as AnyFn
+    if (!isFunction(fn)) continue
     const normalizedArgs = Array.isArray(methodArgs) ? methodArgs : [methodArgs]
     fn.apply(target, normalizedArgs)
   }
