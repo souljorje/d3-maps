@@ -27,6 +27,7 @@
 ## Guardrails
 | Rule | Requirement |
 | --- | --- |
+| Required workflow | Must follow [Adapter Development Flow](../../.agents/references/adapter-development-flow.md) for any change in this package. Do not bypass steps. |
 | React support | React 19 only; keep `peerDependencies` for `react` and `react-dom` as `>=19 <20`. |
 | Next.js boundary | Any hook-using entrypoint must be client-only (`'use client'`); in Next.js App Router, import it from Client Components. |
 | Effects and callbacks | Keep effect deps primitive-focused and use stable callback refs for event props (follow the [vercel-react-best-practices](../../.agents/skills/react-best-practices/SKILL.md) skill). |
