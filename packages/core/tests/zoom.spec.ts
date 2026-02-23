@@ -39,7 +39,9 @@ describe('zoom helpers', () => {
     const behavior = createZoomBehavior(undefined, {
       minZoom: 1,
       maxZoom: 4,
-      translateExtent: [[0, 0], [120, 90]],
+      config: {
+        translateExtent: [[[0, 0], [120, 90]]],
+      },
     })
 
     expect(behavior.scaleExtent()).toEqual([1, 4])
@@ -68,9 +70,9 @@ describe('zoom helpers', () => {
     expect(getZoomScale(2)).toBe(2)
   })
 
-  it('applies zoom modifiers to behavior', () => {
+  it('applies zoom config to behavior', () => {
     const behavior = createZoomBehavior(undefined, {
-      modifiers: {
+      config: {
         clickDistance: 8,
         duration: 250,
       },
@@ -80,12 +82,11 @@ describe('zoom helpers', () => {
     expect(behavior.duration()).toBe(250)
   })
 
-  it('lets modifiers override overlapping props', () => {
+  it('lets config override overlapping props', () => {
     const behavior = createZoomBehavior(undefined, {
       minZoom: 1,
       maxZoom: 4,
-      translateExtent: [[0, 0], [120, 90]],
-      modifiers: {
+      config: {
         scaleExtent: [[2, 9]],
         translateExtent: [[[0, 0], [10, 10]]],
       },

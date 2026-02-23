@@ -26,11 +26,14 @@ export type MapData = FeatureCollection | Topology
 export type DataTransformer = (features: MapFeature[]) => MapFeature[]
 
 /**
- * Configuration for a d3-geo projection.
+ * Extra projection method calls to apply before rendering.
  *
- * d3-maps applies these options (if provided) before fitting the geometry to the map size.
+ * Use projection method names as keys and method arguments as values.
+ * Example: `{ center: [[0, 20]], rotate: [[0, 0, 0]], scale: 160 }`
+ *
+ * @see https://d3js.org/d3-geo/projection
  */
-export type ProjectionConfig = MethodsToModifiers<GeoProjection>
+export interface ProjectionConfig extends MethodsToModifiers<GeoProjection> {}
 
 /**
  * Input configuration for creating a map context.
@@ -47,6 +50,9 @@ export interface MapConfig {
    * Example: `geoEqualEarth`.
    */
   projection?: () => GeoProjection
+  /**
+   * Projection method arguments passed to the created projection
+   */
   projectionConfig?: ProjectionConfig
   /**
    * TopoJSON or GeoJSON input.
@@ -93,11 +99,15 @@ export function makeProjection({
   geoJson?: FeatureCollection
 }): GeoProjection {
   const mapProjection = projection()
-  if (geoJson) {
+
+  if (!geoJson) {
+    if (!config?.translate) {
+      mapProjection.translate([width / 2, height / 2])
+    }
+  } else if (!config?.fitSize) {
     mapProjection.fitSize([width, height], geoJson)
-  } else {
-    mapProjection.translate([width / 2, height / 2])
   }
+
   applyModifiers(mapProjection, config)
 
   return mapProjection

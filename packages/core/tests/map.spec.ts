@@ -44,6 +44,23 @@ describe('makeProjection', () => {
     expect(projection.precision()).toBe(0.5)
     expect(projection.reflectY()).toBe(true)
   })
+
+  it('accepts multi-arg projection methods in config', () => {
+    const projection = makeProjection({
+      width: 100,
+      height: 100,
+      projection: geoEqualEarth,
+      geoJson: sampleGeoJson,
+      config: {
+        fitExtent: [[[0, 0], [100, 80]], sampleGeoJson],
+        fitSize: [[100, 80], sampleGeoJson],
+        fitWidth: [120, sampleGeoJson],
+        fitHeight: [90, sampleGeoJson],
+      },
+    })
+
+    expect(projection.scale()).toBeGreaterThan(0)
+  })
 })
 
 describe('makeFeatures', () => {

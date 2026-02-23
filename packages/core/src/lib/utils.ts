@@ -1,8 +1,3 @@
-export type AnyFn = (...args: unknown[]) => unknown
-
-export type HasArgs<F extends AnyFn> =
-  Parameters<F> extends [] ? false : true
-
 export function isString(value: unknown): value is string {
   return typeof value === 'string'
 }
@@ -33,11 +28,17 @@ export function makeTransform(x: number, y: number, k?: number): string {
   return `translate(${x}, ${y}) scale(${k ?? 1})`
 }
 
+export type AnyFn = (...args: any) => any
+
+export type HasArgs<F extends AnyFn> =
+  Parameters<F>['length'] extends 0 ? false : true
+
+export type OwnKeys<T> = T extends AnyFn ? Exclude<keyof T, keyof AnyFn> : keyof T
+
 /**
  * Converts method parameters to modifiers values
- * - single non-array arg: `arg` or `[arg]`
- * - single array/tuple arg: must be as `[arg]` (to avoid ambiguity)
- * - multiple args: provide the full args tuple
+ * - single non-array arg: `arg` | `[arg]`
+ * - multiple args/single array wrapped with array
  */
 export type ModifierArgs<P extends unknown[]> =
   P extends [infer Only]
@@ -65,8 +66,9 @@ export type ModifierArgs<P extends unknown[]> =
  *   e: [string[]]; // forced wrapper (arg is array)
  * }
  */
+
 export type MethodsToModifiers<T extends object> = {
-  [K in keyof T as T[K] extends AnyFn
+  [K in OwnKeys<T> as T[K] extends AnyFn
     ? (HasArgs<T[K]> extends true ? K : never)
     : never
   ]?: T[K] extends AnyFn ? ModifierArgs<Parameters<T[K]>> : never
@@ -75,7 +77,7 @@ export type MethodsToModifiers<T extends object> = {
 /**
  * Invokes `target` methods with arguments from `modifiers`.
  *
- * modifers: `{ [methodName]: methodArgs[] }`
+ * modifers: `{ [methodName]: GetArgs[] }`
  *
  * @example
  * class X {
@@ -103,11 +105,11 @@ export function applyModifiers<T extends object>(
   if (!modifiers) return
 
   for (const methodName of Object.keys(modifiers) as (keyof typeof modifiers)[]) {
-    const methodArgs = modifiers[methodName]
-    if (!isDefined(methodArgs)) continue
+    const GetArgs = modifiers[methodName]
+    if (!isDefined(GetArgs)) continue
 
     const fn = target[methodName] as AnyFn
-    const normalizedArgs = Array.isArray(methodArgs) ? methodArgs : [methodArgs]
+    const normalizedArgs = Array.isArray(GetArgs) ? GetArgs : [GetArgs]
     fn.apply(target, normalizedArgs)
   }
 }
