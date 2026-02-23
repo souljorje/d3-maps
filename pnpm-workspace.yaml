@@ -7,8 +7,10 @@ catalog:
   '@changesets/cli': ^2.29.8
   '@testing-library/react': ^16.3.0
   '@tailwindcss/vite': ^4.1.18
+  '@types/d3-array': ^3.2.2
   '@types/d3-geo': ^3.1.0
   '@types/d3-selection': ^3.0.11
+  '@types/d3-scale': ^4.0.9
   '@types/d3-zoom': ^3.0.8
   '@types/geojson': ^7946.0.16
   '@types/react': ^19.2.2
@@ -24,7 +26,7 @@ catalog:
   d3-scale: ^4.0.2
   d3-selection: ^3.0.0
   d3-zoom: ^3.0.0
-  eslint: ^9.39.2
+  eslint: ^9.39.3
   jsdom: ^27.3.0
   lint-staged: ^16.2.7
   react: ^19.2.0
@@ -35,8 +37,8 @@ catalog:
   tailwindcss: ^4.1.18
   topojson-client: ^3.1.0
   tsdown: 0.19.0
-  turbo: ^2.8.9
-  typedoc: ^0.28.16
+  turbo: ^2.8.10
+  typedoc: ^0.28.17
   typedoc-plugin-markdown: ^4.10.0
   typedoc-plugin-remark: ^2.0.1
   typedoc-plugin-vue: 1.5.1

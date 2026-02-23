@@ -70,9 +70,12 @@ async function fetchMap() {
 
 async function fetchData() {
   const response = await fetch(withBase('/example-data/choropleth-data.json'))
-  const rawData = await response.json()
+  const rawData = (await response.json()) as Array<Record<string, unknown>>
   choroplethdata.value = rawData.map((item) => {
     const id = item['country-code']
+    if (typeof id !== 'string') {
+      return { id: '', value: 0 }
+    }
     return {
       ...item,
       id,

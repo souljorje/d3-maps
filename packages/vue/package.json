@@ -42,6 +42,7 @@
   ],
   "scripts": {
     "typecheck": "vue-tsc --noEmit",
+    "typecheck:test": "vue-tsc -p tsconfig.test.json --noEmit",
     "build": "pnpm run typecheck && tsdown",
     "test": "vitest run",
     "test:watch": "vitest"

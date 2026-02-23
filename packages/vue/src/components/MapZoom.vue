@@ -48,8 +48,7 @@ const zoomBehavior = computed(() => {
   return createZoomBehavior(context?.value, {
     minZoom: props.minZoom,
     maxZoom: props.maxZoom,
-    translateExtent: props.translateExtent,
-    modifiers: props.modifiers,
+    config: props.config,
     onZoomStart: (event) => emit('zoomstart', event),
     onZoom: (event) => {
       applyZoomGroupTransform(container.value, event.transform)

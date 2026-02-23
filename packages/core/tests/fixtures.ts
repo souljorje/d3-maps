@@ -1,9 +1,9 @@
-import type { FeatureCollection, Polygon } from 'geojson'
+import type { ExtendedFeatureCollection } from 'd3-geo'
 import type { Topology } from 'topojson-specification'
 
 import { makeMapContext } from '../src'
 
-export const sampleGeoJson: FeatureCollection<Polygon> = {
+export const sampleGeoJson: ExtendedFeatureCollection = {
   type: 'FeatureCollection',
   features: [
     {

@@ -17,7 +17,7 @@ description: Create or update a Changesets entry. Always preview and get explici
 
 1. Review the branch diff (what changed and which package(s) it affects).
 2. Check whether a pending `.changeset/*.md` already exists (ignore `.changeset/README.md` and `.changeset/config.json`).
-3. Draft a changeset with a short, user-facing summary (no implementation details).
+3. Draft a changeset with a short, user-facing summary as bullet list, written inpast tense (no implementation details).
 4. Preview the exact file content and ask for explicit `confirm`.
 5. Only after `confirm`, write/update the `.changeset/*.md` file.
 6. Optionally validate with `pnpm changeset status`.

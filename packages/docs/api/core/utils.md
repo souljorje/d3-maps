@@ -5,7 +5,7 @@
 ## Table of contents
 
 * [Functions](#functions)
-  * [get()](#get)
+  * [applyModifiers()](#applymodifiers)
   * [isDefined()](#isdefined)
   * [isFunction()](#isfunction)
   * [isNullish()](#isnullish)
@@ -14,30 +14,65 @@
   * [isString()](#isstring)
   * [isStringOrNumber()](#isstringornumber)
   * [makeTransform()](#maketransform)
+* [Type Aliases](#type-aliases)
+  * [AnyFn()](#anyfn)
+  * [HasArgs](#hasargs)
+  * [MethodsToModifiers](#methodstomodifiers)
+  * [ModifierArgs](#modifierargs)
+  * [OverloadedArgs](#overloadedargs)
+  * [OwnKeys](#ownkeys)
+  * [SetterArgs](#setterargs)
 
 ## Functions
 
-### get()
+### applyModifiers()
 
 ```ts
-function get<T>(url: string): Promise<T>;
+function applyModifiers<T>(target: T, modifiers?: MethodsToModifiers<T>): void;
 ```
+
+Invokes `target` methods with arguments from `modifiers`.
+
+modifiers: `{ [methodName]: args[] | arg }`
 
 #### Type Parameters
 
 | Type Parameter |
 | ------ |
-| `T` |
+| `T` *extends* `object` |
 
 #### Parameters
 
 | Parameter | Type |
 | ------ | ------ |
-| `url` | `string` |
+| `target` | `T` |
+| `modifiers?` | [`MethodsToModifiers`](#methodstomodifiers)<`T`> |
 
 #### Returns
 
-`Promise`<`T`>
+`void`
+
+#### Example
+
+```ts
+class X {
+ a(x: number) {}
+ b(x: number, y: string) {}
+ c(x: string[]) {}
+ d() {}
+ e = 'foo'
+}
+
+applyModifiers(new X(), {
+ a: 1, // ok (single arg as-is)
+ a: [1], // ok (single arg wrapped)
+ b: [1, 'foo'], // ok (tuple for 2 args)
+ c: [['foo', 'bar']], // ok (array-arg must be wrapped)
+ c: ['foo', 'bar'],  // error (single array-arg must be wrapped into array)
+ d: [], // error (d has no args, excluded)
+ e: 'foo' // error (e is not a function, excluded)
+})
+```
 
 ***
 
@@ -193,3 +228,164 @@ function makeTransform(
 #### Returns
 
 `string`
+
+## Type Aliases
+
+### AnyFn()
+
+```ts
+type AnyFn = (...args: any) => any;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| ...`args` | `any` |
+
+#### Returns
+
+`any`
+
+***
+
+### HasArgs
+
+```ts
+type HasArgs<F> = [SetterArgs<F>] extends [never] ? false : true;
+```
+
+True if the function has at least one overload that accepts arguments (i.e. a setter overload).
+
+#### Type Parameters
+
+| Type Parameter |
+| ------ |
+| `F` |
+
+***
+
+### MethodsToModifiers
+
+```ts
+type MethodsToModifiers<T> = { [K in OwnKeys<T> as Extract<T[K], AnyFn> extends never ? never : HasArgs<Extract<T[K], AnyFn>> extends true ? K : never]?: ModifierArgs<Extract<SetterArgs<Extract<T[K], AnyFn>>, unknown[]>> };
+```
+
+Maps methods with args to modifiers
+
+#### Type Parameters
+
+| Type Parameter |
+| ------ |
+| `T` *extends* `object` |
+
+#### Example
+
+```ts
+type X = {
+  a: string;  // not a function - will be ignored
+  b(): void;  // has no arguments - will be ignored
+  c(x: number): void;
+  d(x: number, y: string): void;
+  e(xs: string[]): void;
+}
+
+type R = MethodsToModifiers<X>
+{
+  c: number | [number];
+  d: [number, string];
+  e: [string[]]; // forced wrapper (arg is array)
+}
+```
+
+***
+
+### ModifierArgs
+
+```ts
+type ModifierArgs<P> = P extends [infer Only] ? Only extends readonly unknown[] ? [Only] : Only | [Only] : P;
+```
+
+Converts method parameters to modifiers values
+
+* single non-array arg: `arg` | `[arg]`
+* multiple args/single array wrapped with array
+
+#### Type Parameters
+
+| Type Parameter |
+| ------ |
+| `P` *extends* `unknown`\[] |
+
+***
+
+### OverloadedArgs
+
+```ts
+type OverloadedArgs<F> = F extends {
+  (...a: A1): any;
+  (...a: A2): any;
+  (...a: A3): any;
+  (...a: A4): any;
+  (...a: A5): any;
+} ? A1 | A2 | A3 | A4 | A5 : F extends {
+  (...a: A1): any;
+  (...a: A2): any;
+  (...a: A3): any;
+  (...a: A4): any;
+} ? A1 | A2 | A3 | A4 : F extends {
+  (...a: A1): any;
+  (...a: A2): any;
+  (...a: A3): any;
+} ? A1 | A2 | A3 : F extends {
+  (...a: A1): any;
+  (...a: A2): any;
+} ? A1 | A2 : F extends (...a: infer A1) => any ? A1 : never;
+```
+
+Extracts a union of parameter tuples from a (possibly overloaded) function type.
+
+TypeScript's built-in `Parameters<F>` only captures the *last* overload, which breaks typing
+for overloaded getter/setter APIs (common in d3), where the setter overload might not be last.
+
+Notes:
+
+* This helper supports up to 5 overload signatures (adjust if needed).
+* Getter overloads like `(): T` are filtered out later via `Exclude<..., []>` when we build
+  setter-only config types.
+
+#### Type Parameters
+
+| Type Parameter |
+| ------ |
+| `F` |
+
+***
+
+### OwnKeys
+
+```ts
+type OwnKeys<T> = T extends AnyFn ? Exclude<keyof T, keyof CallableFunction> : keyof T;
+```
+
+#### Type Parameters
+
+| Type Parameter |
+| ------ |
+| `T` |
+
+***
+
+### SetterArgs
+
+```ts
+type SetterArgs<F> = Exclude<OverloadedArgs<F>, []>;
+```
+
+Removes 0-arg overloads (getters), leaving only setter-style overload argument tuples.
+
+#### Type Parameters
+
+| Type Parameter |
+| ------ |
+| `F` |
