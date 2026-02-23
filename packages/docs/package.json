@@ -32,6 +32,7 @@
     "@types/d3-geo": "catalog:",
     "@types/d3-scale": "catalog:",
     "tailwindcss": "catalog:",
-    "vitepress": "catalog:"
+    "vitepress": "catalog:",
+    "vue-tsc": "catalog:"
   }
 }

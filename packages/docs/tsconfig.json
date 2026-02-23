@@ -2,4 +2,3 @@
   "extends": ["../../tsconfig.json"],
   "include": [".vitepress/**/*.vue", "env.d.ts"]
 }
-

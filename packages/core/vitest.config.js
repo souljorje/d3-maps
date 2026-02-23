@@ -5,6 +5,6 @@ export default defineConfig({
     environment: 'node',
     coverage: {
       reporter: ['text', 'html'],
-    }
+    },
   },
 })
