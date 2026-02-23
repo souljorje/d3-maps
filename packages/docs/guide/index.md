@@ -58,8 +58,9 @@ Requires React 19+
 
 ::: tip Next.js
 - `@d3-maps/react` entrypoints are client-only (`'use client'`)
-- Import it from Client Components in the App Router
+- Import it from Client Components in the App Router (still SSR-rendered)
 - Fetch data on the server and pass it as the `data` prop
+- React Server Components entrypoints are planned
 :::
 
 :::tabs key:package-manager

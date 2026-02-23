@@ -8,6 +8,9 @@
 
 Requires React 19+
 
+Next.js App Router: `@d3-maps/react` entrypoints are client-only (`'use client'`), so import them from Client Components  
+React Server Components entrypoints are planned
+
 npm
 
 ```bash
@@ -39,6 +42,12 @@ export function App({ mapData }: { mapData: unknown }) {
   )
 }
 ```
+
+## Styling
+
+Importing `@d3-maps/react` automatically includes `@d3-maps/core/index.css`
+
+If you need strict stylesheet ordering, load your global reset/theme styles before importing the adapter entry
 
 ## License
 

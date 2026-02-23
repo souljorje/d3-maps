@@ -25,7 +25,7 @@ Adapters depend on the core.
 
 ## Features
 
-- SSR friendly
+- SSR friendly (React: Next.js App Router requires Client Components, RSC entrypoints planned)
 - Lightweight and tree-shakable
 - Automatic rerender
 - Zoom and drag on all devices
