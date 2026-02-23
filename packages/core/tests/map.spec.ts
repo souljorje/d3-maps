@@ -1,4 +1,6 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
+
+import type { GeoPermissibleObjects } from 'd3-geo'
 
 import { geoEqualEarth } from 'd3-geo'
 
@@ -14,18 +16,110 @@ import {
   sampleTopology,
 } from './fixtures'
 
+const sphereGeoJson = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      geometry: { type: 'Sphere' },
+      properties: {},
+    },
+  ],
+} satisfies GeoPermissibleObjects
+
+const PROJECTION_BASE = {
+  width: 100,
+  height: 100,
+  projection: geoEqualEarth,
+}
+
+function makeProjectionFromBase(overrides: Partial<Parameters<typeof makeProjection>[0]> = {}) {
+  return makeProjection({
+    ...PROJECTION_BASE,
+    ...overrides,
+  })
+}
+
 describe('makeProjection', () => {
-  it('applies projection config', () => {
-    const projection = makeProjection({
-      width: 100,
-      height: 100,
-      config: { scale: 200, center: [20, 10], rotate: [0, 0, 10] },
-      projection: geoEqualEarth,
+  it('creates projection', () => {
+    const projection = makeProjectionFromBase()
+    expectTypeOf(projection).toEqualTypeOf(geoEqualEarth())
+  })
+
+  it('applies full projection config', () => {
+    const projection = makeProjectionFromBase({
+      config: {
+        angle: 12,
+        scale: 200,
+        center: [[20, 10]],
+        rotate: [[0, 0, 10]],
+        translate: [[30, 40]],
+        clipAngle: 90,
+        clipExtent: [[[0, 0], [90, 80]]],
+        precision: 0.5,
+        reflectX: true,
+        reflectY: true,
+      },
     })
 
+    expect(projection.angle()).toBeCloseTo(12)
     expect(Math.round(projection.scale())).toBe(200)
     expect(projection.center()).toEqual([20, 10])
     expect(projection.rotate()).toEqual([0, 0, 10])
+    expect(projection.translate()).toEqual([30, 40])
+    expect(projection.clipAngle()).toBe(90)
+    expect(projection.clipExtent()).toEqual([[0, 0], [90, 80]])
+    expect(projection.precision()).toBe(0.5)
+    expect(projection.reflectX()).toBe(true)
+    expect(projection.reflectY()).toBe(true)
+  })
+
+  it('applies fitSize from config', () => {
+    const projection = makeProjectionFromBase({
+      geoJson: sphereGeoJson,
+      config: {
+        fitSize: [[100, 80], sphereGeoJson],
+      },
+    })
+
+    expect(projection.scale()).toBeGreaterThan(0)
+    expect(projection.translate()).toEqual([50, 40])
+  })
+
+  it('applies fitExtent from config', () => {
+    const projection = makeProjectionFromBase({
+      geoJson: sphereGeoJson,
+      config: {
+        fitExtent: [[[0, 0], [100, 80]], sphereGeoJson],
+      },
+    })
+
+    expect(projection.scale()).toBeGreaterThan(0)
+    expect(projection.translate()).toEqual([50, 40])
+  })
+
+  it('applies fitWidth from config', () => {
+    const projection = makeProjectionFromBase({
+      geoJson: sphereGeoJson,
+      config: {
+        fitWidth: [120, sphereGeoJson],
+      },
+    })
+
+    expect(projection.scale()).toBeGreaterThan(0)
+    expect(projection.translate()[0]).toBeCloseTo(60)
+  })
+
+  it('applies fitHeight from config', () => {
+    const projection = makeProjectionFromBase({
+      geoJson: sphereGeoJson,
+      config: {
+        fitHeight: [90, sphereGeoJson],
+      },
+    })
+
+    expect(projection.scale()).toBeGreaterThan(0)
+    expect(projection.translate()[1]).toBeCloseTo(45)
   })
 })
 

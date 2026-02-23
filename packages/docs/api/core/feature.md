@@ -68,7 +68,7 @@ Shared props contract for a single rendered feature.
 ### MapFeature
 
 ```ts
-type MapFeature = Feature & Record<string, unknown> | Feature;
+type MapFeature = ExtendedFeature & Record<string, unknown> | ExtendedFeature;
 ```
 
 A GeoJSON Feature used by d3-maps.

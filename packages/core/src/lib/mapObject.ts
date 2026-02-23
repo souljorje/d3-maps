@@ -1,6 +1,9 @@
-import type { Feature, Point } from 'geojson'
+import type {
+  ExtendedFeature,
+  GeoGeometryObjects,
+} from 'd3-geo'
 
-export type MapObject = Point | Feature
+export type MapObject = GeoGeometryObjects | ExtendedFeature
 
 export type MapObjectFocusEventType = 'focus' | 'blur'
 export type MapObjectMouseEventType = 'mouseenter' | 'mouseleave' | 'mousedown' | 'mouseup'

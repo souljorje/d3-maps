@@ -80,7 +80,7 @@ Supported interaction states for map objects.
 ### MapObject
 
 ```ts
-type MapObject = Point | Feature;
+type MapObject = GeoGeometryObjects | ExtendedFeature;
 ```
 
 ***

@@ -5,11 +5,17 @@ import type {
 } from 'd3-zoom'
 
 import type { MapContext } from './map'
+import type {
+  MethodsToModifiers,
+} from './utils'
 
 import { select as d3Select } from 'd3-selection'
 import { zoom, zoomIdentity } from 'd3-zoom'
 
-import { isNumber } from './utils'
+import {
+  applyModifiers,
+  isNumber,
+} from './utils'
 
 export type {
   D3ZoomEvent,
@@ -18,60 +24,24 @@ export type {
 } from 'd3-zoom'
 
 export type Extent = [[number, number], [number, number]]
+export interface DefaultZoomBehavior extends ZoomBehavior<SVGSVGElement, unknown> {}
 
-export interface ZoomConfigOptions {
-  minZoom?: number
-  maxZoom?: number
-  translateExtent?: Extent
-}
+/**
+ * Extra zoom method calls to apply before rendering.
+ *
+ * Use zoom method names as keys and method arguments as values.
+ * Example: `{ scaleExtent: [[2, 9]], translateExtent: [[[0, 0], [10, 10]]] }`
+ *
+ * @see https://d3js.org/d3-zoom
+ */
+export interface ZoomModifiers extends MethodsToModifiers<DefaultZoomBehavior> {}
 
-export interface ZoomConfig {
-  scaleExtent: [number, number]
-  translateExtent: Extent
-}
-
-export type ZoomBehaviorMethodName<TElement extends Element, TDatum> = Extract<{
-  [K in keyof ZoomBehavior<TElement, TDatum>]:
-  ZoomBehavior<TElement, TDatum>[K] extends (...args: unknown[]) => unknown
-    ? K
-    : never
-}[keyof ZoomBehavior<TElement, TDatum>], string>
-
-export type ZoomBehaviorMethodArgs<
-  TElement extends Element,
-  TDatum,
-  TMethod extends ZoomBehaviorMethodName<TElement, TDatum>,
-> = ZoomBehavior<TElement, TDatum>[TMethod] extends (...args: infer TArgs) => unknown
-  ? TArgs
-  : never
-
-export type ZoomBehaviorSingleArg<
-  TElement extends Element,
-  TDatum,
-  TMethod extends ZoomBehaviorMethodName<TElement, TDatum>,
-> = ZoomBehaviorMethodArgs<TElement, TDatum, TMethod> extends [infer TArg]
-  ? TArg
-  : never
-
-export type ZoomModifierValue<
-  TElement extends Element,
-  TDatum,
-  TMethod extends ZoomBehaviorMethodName<TElement, TDatum>,
-> =
-  | ZoomBehaviorMethodArgs<TElement, TDatum, TMethod>
-  | ZoomBehaviorSingleArg<TElement, TDatum, TMethod>
-
-export type ZoomModifiers<TElement extends Element = SVGSVGElement, TDatum = unknown> = Partial<{
-  [K in ZoomBehaviorMethodName<TElement, TDatum>]: ZoomModifierValue<TElement, TDatum, K>
-}>
-
-export interface ZoomProps<TElement extends Element = SVGSVGElement, TDatum = unknown> {
+export interface ZoomProps {
   center?: [number, number]
   zoom?: number
   minZoom?: number
   maxZoom?: number
-  translateExtent?: Extent
-  modifiers?: ZoomModifiers<TElement, TDatum>
+  config?: ZoomModifiers
 }
 
 export interface ZoomEvent extends D3ZoomEvent<SVGSVGElement, unknown> {};
@@ -82,8 +52,7 @@ export interface ZoomEvents {
   onZoomEnd?: (event: ZoomEvent) => void
 }
 
-export interface ZoomBehaviorOptions<TElement extends Element = SVGSVGElement, TDatum = unknown>
-  extends ZoomProps<TElement, TDatum>, ZoomEvents {}
+export interface ZoomBehaviorOptions extends ZoomProps, ZoomEvents {}
 
 export type ZoomScaleSource = number | ZoomTransform | { transform: ZoomTransform }
 export type ZoomTargetElement = SVGSVGElement | SVGGElement
@@ -93,50 +62,28 @@ export const ZOOM_DEFAULTS = {
   zoom: 1,
   minZoom: 1,
   maxZoom: 8,
-  extent: [[0, 0], [0, 0]] as Extent,
 }
 
 export interface ApplyZoomOptions {
   element: ZoomTargetElement | null | undefined
-  behavior: ZoomBehavior<SVGSVGElement, unknown>
+  behavior: DefaultZoomBehavior
   center?: [number, number]
   zoom?: number
 }
 
 export interface SetupZoomOptions extends ApplyZoomOptions {}
 
-export function getDefaultTranslateExtent(context?: MapContext): Extent {
-  return [[0, 0], [context?.width ?? 0, context?.height ?? 0]]
-}
-
-export function createZoomTransform(center: [number, number], zoomLevel: number): ZoomTransform {
-  return zoomIdentity.translate(...center).scale(zoomLevel)
-}
-
-export function createZoomConfig(options: ZoomConfigOptions): ZoomConfig {
+export function createZoomBehavior(
+  context?: MapContext,
+  options: ZoomBehaviorOptions = {},
+): DefaultZoomBehavior {
+  const behavior = zoom<SVGSVGElement, unknown>()
   const minZoom = options.minZoom ?? ZOOM_DEFAULTS.minZoom
   const maxZoom = options.maxZoom ?? ZOOM_DEFAULTS.maxZoom
-
-  return {
-    scaleExtent: [minZoom, maxZoom],
-    translateExtent: options.translateExtent ?? ZOOM_DEFAULTS.extent,
-  }
-}
-
-export function createZoomBehavior<TElement extends Element = SVGSVGElement, TDatum = unknown>(
-  context?: MapContext,
-  options: ZoomBehaviorOptions<TElement, TDatum> = {},
-): ZoomBehavior<TElement, TDatum> {
-  const behavior = zoom<TElement, TDatum>()
-
-  const config = createZoomConfig({
-    minZoom: options.minZoom,
-    maxZoom: options.maxZoom,
-    translateExtent: options.translateExtent ?? getDefaultTranslateExtent(context),
-  })
+  const translateExtent: Extent = [[0, 0], [context?.width ?? 0, context?.height ?? 0]]
   behavior
-    .scaleExtent(config.scaleExtent)
-    .translateExtent(config.translateExtent)
+    .scaleExtent([minZoom, maxZoom])
+    .translateExtent(translateExtent)
 
   if (options.onZoomStart) {
     behavior.on('start', options.onZoomStart)
@@ -148,15 +95,14 @@ export function createZoomBehavior<TElement extends Element = SVGSVGElement, TDa
     behavior.on('end', options.onZoomEnd)
   }
 
-  // Modifiers are applied last so user-level d3-zoom config can override convenience props.
-  applyZoomModifiers(behavior, options.modifiers)
+  applyModifiers(behavior, options.config)
 
   return behavior
 }
 
 export function attachZoomBehavior(
   element: ZoomTargetElement | null | undefined,
-  behavior: ZoomBehavior<SVGSVGElement, unknown>,
+  behavior: DefaultZoomBehavior,
 ): void {
   const svgElement = getSvgElement(element)
   if (!svgElement) return
@@ -165,7 +111,7 @@ export function attachZoomBehavior(
 
 export function applyZoomBehaviorTransform(
   element: ZoomTargetElement | null | undefined,
-  behavior: ZoomBehavior<SVGSVGElement, unknown>,
+  behavior: DefaultZoomBehavior,
   transform: ZoomTransform,
 ): void {
   const svgElement = getSvgElement(element)
@@ -179,7 +125,7 @@ export function applyZoomTransform(options: ApplyZoomOptions): void {
   applyZoomBehaviorTransform(
     options.element,
     options.behavior,
-    createZoomTransform(center, zoom),
+    zoomIdentity.translate(...center).scale(zoom),
   )
 }
 
@@ -210,23 +156,6 @@ function isZoomTransform(value: unknown): value is ZoomTransform {
     && isNumber((value as ZoomTransform).x)
     && isNumber((value as ZoomTransform).y),
   )
-}
-
-function applyZoomModifiers<TElement extends Element, TDatum>(
-  behavior: ZoomBehavior<TElement, TDatum>,
-  modifiers?: ZoomModifiers<TElement, TDatum>,
-): void {
-  if (!modifiers) return
-
-  for (const [methodName, methodArgs] of Object.entries(modifiers)) {
-    if (!methodName || methodArgs === undefined) continue
-
-    const modifier = behavior[methodName as ZoomBehaviorMethodName<TElement, TDatum>]
-    if (typeof modifier !== 'function') continue
-
-    const normalizedArgs = Array.isArray(methodArgs) ? methodArgs : [methodArgs]
-    ;(modifier as (...args: unknown[]) => unknown).apply(behavior, normalizedArgs)
-  }
 }
 
 function getSvgElement(element: ZoomTargetElement | null | undefined): SVGSVGElement | null {

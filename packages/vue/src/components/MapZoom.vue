@@ -47,8 +47,7 @@ const zoomBehavior = computed(() => {
   return createZoomBehavior(context, {
     minZoom: props.minZoom,
     maxZoom: props.maxZoom,
-    translateExtent: props.translateExtent,
-    modifiers: props.modifiers,
+    config: props.config,
     onZoomStart: (event) => emit('zoomstart', event),
     onZoom: (event) => {
       if (container.value) {

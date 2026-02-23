@@ -1,13 +1,14 @@
 import { describe, expect, it } from 'vitest'
 
-import type { Feature, Polygon } from 'geojson'
+import type { MapFeature } from '../src'
 
 import { getFeatureKey } from '../src'
 
-function makeFeature(): Feature<Polygon> {
+function makeFeature(): MapFeature {
   return {
     type: 'Feature',
     id: 'feature-id',
+    slug: 'direct-key',
     properties: {
       code: 'feature-code',
     },
@@ -27,22 +28,17 @@ function makeFeature(): Feature<Polygon> {
 }
 
 describe('getFeatureKey', () => {
+  const feature = makeFeature()
   it('prefers direct property from feature object', () => {
-    const feature = makeFeature() as Feature<Polygon> & Record<string, unknown>
-    feature.slug = 'direct-key'
-
     expect(getFeatureKey(feature, 'slug', 0)).toBe('direct-key')
   })
 
   it('falls back to feature.properties', () => {
-    const feature = makeFeature() as Feature<Polygon> & Record<string, unknown>
     expect(getFeatureKey(feature, 'code', 0)).toBe('feature-code')
   })
 
   it('uses id key by default and falls back to index', () => {
-    const feature = makeFeature() as Feature<Polygon> & Record<string, unknown>
     expect(getFeatureKey(feature, 'id', 4)).toBe('feature-id')
-
     feature.id = undefined
     expect(getFeatureKey(feature, 'unknown', 4)).toBe(4)
   })
