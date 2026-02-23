@@ -45,6 +45,12 @@ Shared workflow for Vue, React, and future adapters (Solid, Svelte)
   - interactivity attaches only on the client after mount
   - do not require DOM availability to render markup
 
+### Framework context (current default)
+- React: `createContext` / `useContext`
+- Vue: `provide` / `inject`
+- Solid: `createContext` / `useContext`
+- Svelte: `setContext` / `getContext`
+
 ## Tests
 - Add/adjust adapter tests for behavior parity and edge cases
 - Include SSR smoke tests where components/hooks are expected to be SSR-safe
