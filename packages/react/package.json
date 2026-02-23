@@ -54,6 +54,7 @@
     "@d3-maps/core": "workspace:*"
   },
   "devDependencies": {
+    "@testing-library/react": "catalog:",
     "@types/geojson": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",

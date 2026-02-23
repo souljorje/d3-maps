@@ -1,9 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
 
+import {
+  render,
+  screen,
+} from '@testing-library/react'
+
 import { Map } from '../src/components/Map'
 import { MapZoom } from '../src/components/MapZoom'
 import { sampleGeoJson } from './fixtures'
-import { render } from './testUtils'
 
 const setupZoomSpy = vi.fn()
 const applyZoomTransformSpy = vi.fn()
@@ -39,9 +43,10 @@ describe('mapZoom', () => {
     const onZoom = vi.fn()
     const onZoomEnd = vi.fn()
 
-    const { container, unmount } = render(
+    render(
       <Map data={sampleGeoJson}>
         <MapZoom
+          data-testid="map-zoom-group"
           center={[11, 12]}
           zoom={2}
           minZoom={1}
@@ -61,9 +66,7 @@ describe('mapZoom', () => {
     expect(onZoom).toHaveBeenCalled()
     expect(onZoomEnd).toHaveBeenCalled()
 
-    const zoomGroup = container.querySelector('.d3-map-zoom')
+    const zoomGroup = screen.getByTestId('map-zoom-group')
     expect(zoomGroup?.getAttribute('transform')).toContain('translate')
-
-    unmount()
   })
 })

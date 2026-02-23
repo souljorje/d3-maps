@@ -1,32 +1,35 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { act } from 'react'
+import {
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react'
 
 import {
   Map,
   MapFeature,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
-import { render } from './testUtils'
 
 describe('mapFeature', () => {
   it('does not render without map context', () => {
-    const { container, unmount } = render(
+    const { container } = render(
       <svg>
         <MapFeature data={sampleGeoJson.features[0]} />
       </svg>,
     )
 
     expect(container.querySelector('path')).toBeNull()
-    unmount()
   })
 
   it('resolves styles across interaction states', () => {
     const onMouseUp = vi.fn()
 
-    const { container, unmount } = render(
+    render(
       <Map data={sampleGeoJson}>
         <MapFeature
+          data-testid="map-feature"
           data={sampleGeoJson.features[0]}
           styles={{
             default: { opacity: 0.9 },
@@ -38,25 +41,17 @@ describe('mapFeature', () => {
       </Map>,
     )
 
-    const path = container.querySelector('path')
+    const path = screen.getByTestId('map-feature')
     expect(path?.style.opacity).toBe('0.9')
 
-    act(() => {
-      path?.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
-    })
+    fireEvent.mouseOver(path)
     expect(path?.style.opacity).toBe('0.8')
 
-    act(() => {
-      path?.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
-    })
+    fireEvent.mouseDown(path)
     expect(path?.style.opacity).toBe('0.7')
 
-    act(() => {
-      path?.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }))
-    })
+    fireEvent.mouseUp(path)
     expect(path?.style.opacity).toBe('0.8')
     expect(onMouseUp).toHaveBeenCalledTimes(1)
-
-    unmount()
   })
 })

@@ -1,9 +1,7 @@
-declare global {
-  interface GlobalThis {
-    IS_REACT_ACT_ENVIRONMENT?: boolean
-  }
-}
+import { afterEach } from 'vitest'
 
-globalThis.IS_REACT_ACT_ENVIRONMENT = true
+import { cleanup } from '@testing-library/react'
 
-export {}
+afterEach(() => {
+  cleanup()
+})
