@@ -41,7 +41,7 @@ jobs:
         include:
           - name: Lint
             command: pnpm lint
-          - name: Typecheck (tests)
+          - name: Typecheck tests
             command: pnpm typecheck:test
           - name: Test
             command: pnpm test

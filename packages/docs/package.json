@@ -13,8 +13,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "vitepress dev",
+    "typecheck": "vue-tsc -p tsconfig.json --noEmit",
     "prebuild": "pnpm -w docs:gen",
-    "build": "vitepress build",
+    "build": "pnpm typecheck && vitepress build",
     "preview": "vitepress preview"
   },
   "dependencies": {
@@ -27,6 +28,9 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:",
+    "@types/d3-array": "catalog:",
+    "@types/d3-geo": "catalog:",
+    "@types/d3-scale": "catalog:",
     "tailwindcss": "catalog:",
     "vitepress": "catalog:"
   }

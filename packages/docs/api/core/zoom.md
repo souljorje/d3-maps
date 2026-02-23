@@ -9,9 +9,6 @@
   * [applyZoomTransform()](#applyzoomtransform)
   * [attachZoomBehavior()](#attachzoombehavior)
   * [createZoomBehavior()](#createzoombehavior)
-  * [createZoomConfig()](#createzoomconfig)
-  * [createZoomTransform()](#createzoomtransform)
-  * [getDefaultTranslateExtent()](#getdefaulttranslateextent)
   * [getInverseZoomScale()](#getinversezoomscale)
   * [getZoomScale()](#getzoomscale)
   * [setupZoom()](#setupzoom)
@@ -24,15 +21,13 @@
   * [SetupZoomOptions](#setupzoomoptions)
   * [ZoomBehavior()](#zoombehavior)
   * [ZoomBehaviorOptions](#zoombehavioroptions)
-  * [ZoomConfig](#zoomconfig)
-  * [ZoomConfigOptions](#zoomconfigoptions)
   * [ZoomEvent](#zoomevent)
   * [ZoomEvents](#zoomevents)
   * [ZoomModifiers](#zoommodifiers)
   * [ZoomProps](#zoomprops)
   * [ZoomTransform](#zoomtransform)
 * [Type Aliases](#type-aliases)
-  * [Extent](#extent-3)
+  * [Extent](#extent-2)
   * [ZoomScaleSource](#zoomscalesource)
   * [ZoomTargetElement](#zoomtargetelement)
 
@@ -117,61 +112,6 @@ function createZoomBehavior(context?: MapContext, options?: ZoomBehaviorOptions)
 
 ***
 
-### createZoomConfig()
-
-```ts
-function createZoomConfig(options: ZoomConfigOptions): ZoomConfig;
-```
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `options` | [`ZoomConfigOptions`](#zoomconfigoptions) |
-
-#### Returns
-
-[`ZoomConfig`](#zoomconfig)
-
-***
-
-### createZoomTransform()
-
-```ts
-function createZoomTransform(center: [number, number], zoomLevel: number): ZoomTransform;
-```
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `center` | \[`number`, `number`] |
-| `zoomLevel` | `number` |
-
-#### Returns
-
-[`ZoomTransform`](#zoomtransform)
-
-***
-
-### getDefaultTranslateExtent()
-
-```ts
-function getDefaultTranslateExtent(context?: MapContext): Extent;
-```
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `context?` | [`MapContext`](map.md#mapcontext) |
-
-#### Returns
-
-[`Extent`](#extent-2)
-
-***
-
 ### getInverseZoomScale()
 
 ```ts
@@ -232,7 +172,6 @@ function setupZoom(options: SetupZoomOptions): void;
 ```ts
 const ZOOM_DEFAULTS: {
   center: [number, number];
-  extent: Extent;
   maxZoom: number;
   minZoom: number;
   zoom: number;
@@ -245,12 +184,6 @@ const ZOOM_DEFAULTS: {
 
 ```ts
 center: [number, number];
-```
-
-##### extent
-
-```ts
-extent: Extent;
 ```
 
 ##### maxZoom
@@ -2295,35 +2228,12 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 | ------ | ------ | ------ |
 | <a id="property-center-2"></a> `center?` | \[`number`, `number`] | [`ZoomProps`](#zoomprops).[`center`](#property-center-3) |
 | <a id="property-config"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) | [`ZoomProps`](#zoomprops).[`config`](#property-config-1) |
-| <a id="property-maxzoom"></a> `maxZoom?` | `number` | [`ZoomProps`](#zoomprops).[`maxZoom`](#property-maxzoom-2) |
-| <a id="property-minzoom"></a> `minZoom?` | `number` | [`ZoomProps`](#zoomprops).[`minZoom`](#property-minzoom-2) |
+| <a id="property-maxzoom"></a> `maxZoom?` | `number` | [`ZoomProps`](#zoomprops).[`maxZoom`](#property-maxzoom-1) |
+| <a id="property-minzoom"></a> `minZoom?` | `number` | [`ZoomProps`](#zoomprops).[`minZoom`](#property-minzoom-1) |
 | <a id="property-onzoom"></a> `onZoom?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | [`ZoomEvents`](#zoomevents).[`onZoom`](#property-onzoom-1) |
 | <a id="property-onzoomend"></a> `onZoomEnd?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | [`ZoomEvents`](#zoomevents).[`onZoomEnd`](#property-onzoomend-1) |
 | <a id="property-onzoomstart"></a> `onZoomStart?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | [`ZoomEvents`](#zoomevents).[`onZoomStart`](#property-onzoomstart-1) |
 | <a id="property-zoom-2"></a> `zoom?` | `number` | [`ZoomProps`](#zoomprops).[`zoom`](#property-zoom-3) |
-
-***
-
-### ZoomConfig
-
-#### Properties
-
-| Property | Type |
-| ------ | ------ |
-| <a id="property-scaleextent"></a> `scaleExtent` | \[`number`, `number`] |
-| <a id="property-translateextent"></a> `translateExtent` | [`Extent`](#extent-2) |
-
-***
-
-### ZoomConfigOptions
-
-#### Properties
-
-| Property | Type |
-| ------ | ------ |
-| <a id="property-maxzoom-1"></a> `maxZoom?` | `number` |
-| <a id="property-minzoom-1"></a> `minZoom?` | `number` |
-| <a id="property-translateextent-1"></a> `translateExtent?` | [`Extent`](#extent-2) |
 
 ***
 
@@ -2387,18 +2297,18 @@ https://d3js.org/d3-zoom
 | <a id="property-clickdistance"></a> `clickDistance?` | `number` | \[`number`] | `MethodsToModifiers.clickDistance` |
 | <a id="property-constrain"></a> `constrain?` | | (`transform`: [`ZoomTransform`](#zoomtransform), `extent`: \[\[`number`, `number`], \[`number`, `number`]], `translateExtent`: \[\[`number`, `number`], \[`number`, `number`]]) => [`ZoomTransform`](#zoomtransform) | \[(`transform`: [`ZoomTransform`](#zoomtransform), `extent`: \[\[`number`, `number`], \[`number`, `number`]], `translateExtent`: \[\[`number`, `number`], \[`number`, `number`]]) => [`ZoomTransform`](#zoomtransform)] | `MethodsToModifiers.constrain` |
 | <a id="property-duration"></a> `duration?` | `number` | \[`number`] | `MethodsToModifiers.duration` |
-| <a id="property-extent"></a> `extent?` | | (`this`: `SVGSVGElement`, `datum`: `unknown`) => \[\[`number`, `number`], \[`number`, `number`]] | \[(`this`: `SVGSVGElement`, `datum`: `unknown`) => \[\[`number`, `number`], \[`number`, `number`]]] | `MethodsToModifiers.extent` |
+| <a id="property-extent"></a> `extent?` | | \[\[\[`number`, `number`], \[`number`, `number`]]] | (`this`: `SVGSVGElement`, `datum`: `unknown`) => \[\[`number`, `number`], \[`number`, `number`]] | \[(`this`: `SVGSVGElement`, `datum`: `unknown`) => \[\[`number`, `number`], \[`number`, `number`]]] | `MethodsToModifiers.extent` |
 | <a id="property-filter"></a> `filter?` | | (`this`: `SVGSVGElement`, `event`: `any`, `datum`: `unknown`) => `boolean` | \[(`this`: `SVGSVGElement`, `event`: `any`, `datum`: `unknown`) => `boolean`] | `MethodsToModifiers.filter` |
 | <a id="property-interpolate"></a> `interpolate?` | | (`a`: `ZoomView`, `b`: `ZoomView`) => (`t`: `number`) => `ZoomView` | \[(`a`: `ZoomView`, `b`: `ZoomView`) => (`t`: `number`) => `ZoomView`] | `MethodsToModifiers.interpolate` |
-| <a id="property-on"></a> `on?` | \[`string`, (`this`: `SVGSVGElement`, `event`: `any`, `d`: `unknown`) => `void`] | `MethodsToModifiers.on` |
+| <a id="property-on"></a> `on?` | | `string` | \[`string`, `null`] | \[`string`, (`this`: `SVGSVGElement`, `event`: `any`, `d`: `unknown`) => `void`] | \[`string`] | `MethodsToModifiers.on` |
 | <a id="property-scaleby"></a> `scaleBy?` | \[ | `Selection`<`SVGSVGElement`, `unknown`, `any`, `any`> | `TransitionLike`<`SVGSVGElement`, `unknown`>, `number` | `ValueFn`<`SVGSVGElement`, `unknown`, `number`>, | \[`number`, `number`] | `ValueFn`<`SVGSVGElement`, `unknown`, \[`number`, `number`]>] | `MethodsToModifiers.scaleBy` |
-| <a id="property-scaleextent-1"></a> `scaleExtent?` | \[\[`number`, `number`]] | `MethodsToModifiers.scaleExtent` |
+| <a id="property-scaleextent"></a> `scaleExtent?` | \[\[`number`, `number`]] | `MethodsToModifiers.scaleExtent` |
 | <a id="property-scaleto"></a> `scaleTo?` | \[ | `Selection`<`SVGSVGElement`, `unknown`, `any`, `any`> | `TransitionLike`<`SVGSVGElement`, `unknown`>, `number` | `ValueFn`<`SVGSVGElement`, `unknown`, `number`>, \[`number`, `number`]] | `MethodsToModifiers.scaleTo` |
 | <a id="property-tapdistance"></a> `tapDistance?` | `number` | \[`number`] | `MethodsToModifiers.tapDistance` |
-| <a id="property-touchable"></a> `touchable?` | | `ValueFn`<`SVGSVGElement`, `unknown`, `boolean`> | \[`ValueFn`<`SVGSVGElement`, `unknown`, `boolean`>] | `MethodsToModifiers.touchable` |
+| <a id="property-touchable"></a> `touchable?` | | `boolean` | \[`false`] | \[`true`] | `ValueFn`<`SVGSVGElement`, `unknown`, `boolean`> | \[`ValueFn`<`SVGSVGElement`, `unknown`, `boolean`>] | `MethodsToModifiers.touchable` |
 | <a id="property-transform-2"></a> `transform?` | \[ | `Selection`<`SVGSVGElement`, `unknown`, `any`, `any`> | `TransitionLike`<`SVGSVGElement`, `unknown`>, | [`ZoomTransform`](#zoomtransform) | (`this`: `SVGSVGElement`, `event`: `any`, `d`: `unknown`) => [`ZoomTransform`](#zoomtransform), | \[`number`, `number`] | (`this`: `SVGSVGElement`, `event`: `any`, `d`: `unknown`) => \[`number`, `number`]] | `MethodsToModifiers.transform` |
 | <a id="property-translateby"></a> `translateBy?` | \[ | `Selection`<`SVGSVGElement`, `unknown`, `any`, `any`> | `TransitionLike`<`SVGSVGElement`, `unknown`>, `number` | `ValueFn`<`SVGSVGElement`, `unknown`, `number`>, `number` | `ValueFn`<`SVGSVGElement`, `unknown`, `number`>] | `MethodsToModifiers.translateBy` |
-| <a id="property-translateextent-2"></a> `translateExtent?` | \[\[\[`number`, `number`], \[`number`, `number`]]] | `MethodsToModifiers.translateExtent` |
+| <a id="property-translateextent"></a> `translateExtent?` | \[\[\[`number`, `number`], \[`number`, `number`]]] | `MethodsToModifiers.translateExtent` |
 | <a id="property-translateto"></a> `translateTo?` | \[ | `Selection`<`SVGSVGElement`, `unknown`, `any`, `any`> | `TransitionLike`<`SVGSVGElement`, `unknown`>, `number` | `ValueFn`<`SVGSVGElement`, `unknown`, `number`>, `number` | `ValueFn`<`SVGSVGElement`, `unknown`, `number`>, | \[`number`, `number`] | `ValueFn`<`SVGSVGElement`, `unknown`, \[`number`, `number`]>] | `MethodsToModifiers.translateTo` |
 | <a id="property-wheeldelta"></a> `wheelDelta?` | | `number` | \[`number`] | (`event`: `WheelEvent`) => `number` | \[(`event`: `WheelEvent`) => `number`] | `MethodsToModifiers.wheelDelta` |
 
@@ -2416,8 +2326,8 @@ https://d3js.org/d3-zoom
 | ------ | ------ |
 | <a id="property-center-3"></a> `center?` | \[`number`, `number`] |
 | <a id="property-config-1"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) |
-| <a id="property-maxzoom-2"></a> `maxZoom?` | `number` |
-| <a id="property-minzoom-2"></a> `minZoom?` | `number` |
+| <a id="property-maxzoom-1"></a> `maxZoom?` | `number` |
+| <a id="property-minzoom-1"></a> `minZoom?` | `number` |
 | <a id="property-zoom-3"></a> `zoom?` | `number` |
 
 ***

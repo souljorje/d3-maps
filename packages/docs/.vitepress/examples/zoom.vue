@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import type { D3ZoomEvent } from 'd3-zoom'
+import type { ZoomEvent } from '@d3-maps/core'
 
 import { geoEqualEarth } from 'd3-geo'
 import { withBase } from 'vitepress'
@@ -63,7 +63,7 @@ onMounted(async () => {
   data.value = await response.json()
 })
 
-function updateMarkerScale(e: D3ZoomEvent<SVGSVGElement | SVGGElement, unknown>) {
+function updateMarkerScale(e: ZoomEvent) {
   if (currentZoom.value === e.transform.k)
     return
   currentZoom.value = e.transform.k

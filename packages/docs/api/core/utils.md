@@ -19,7 +19,9 @@
   * [HasArgs](#hasargs)
   * [MethodsToModifiers](#methodstomodifiers)
   * [ModifierArgs](#modifierargs)
+  * [OverloadedArgs](#overloadedargs)
   * [OwnKeys](#ownkeys)
+  * [SetterArgs](#setterargs)
 
 ## Functions
 
@@ -31,7 +33,7 @@ function applyModifiers<T>(target: T, modifiers?: MethodsToModifiers<T>): void;
 
 Invokes `target` methods with arguments from `modifiers`.
 
-modifers: `{ [methodName]: GetArgs[] }`
+modifiers: `{ [methodName]: args[] | arg }`
 
 #### Type Parameters
 
@@ -250,21 +252,23 @@ type AnyFn = (...args: any) => any;
 ### HasArgs
 
 ```ts
-type HasArgs<F> = Parameters<F>["length"] extends 0 ? false : true;
+type HasArgs<F> = [SetterArgs<F>] extends [never] ? false : true;
 ```
+
+True if the function has at least one overload that accepts arguments (i.e. a setter overload).
 
 #### Type Parameters
 
 | Type Parameter |
 | ------ |
-| `F` *extends* [`AnyFn`](#anyfn) |
+| `F` |
 
 ***
 
 ### MethodsToModifiers
 
 ```ts
-type MethodsToModifiers<T> = { [K in OwnKeys<T> as T[K] extends AnyFn ? HasArgs<T[K]> extends true ? K : never : never]?: T[K] extends AnyFn ? ModifierArgs<Parameters<T[K]>> : never };
+type MethodsToModifiers<T> = { [K in OwnKeys<T> as Extract<T[K], AnyFn> extends never ? never : HasArgs<Extract<T[K], AnyFn>> extends true ? K : never]?: ModifierArgs<Extract<SetterArgs<Extract<T[K], AnyFn>>, unknown[]>> };
 ```
 
 Maps methods with args to modifiers
@@ -299,7 +303,7 @@ type R = MethodsToModifiers<X>
 ### ModifierArgs
 
 ```ts
-type ModifierArgs<P> = P extends [infer Only] ? Only extends unknown[] ? [Only] : Only | [Only] : P;
+type ModifierArgs<P> = P extends [infer Only] ? Only extends readonly unknown[] ? [Only] : Only | [Only] : P;
 ```
 
 Converts method parameters to modifiers values
@@ -315,10 +319,53 @@ Converts method parameters to modifiers values
 
 ***
 
+### OverloadedArgs
+
+```ts
+type OverloadedArgs<F> = F extends {
+  (...a: A1): any;
+  (...a: A2): any;
+  (...a: A3): any;
+  (...a: A4): any;
+  (...a: A5): any;
+} ? A1 | A2 | A3 | A4 | A5 : F extends {
+  (...a: A1): any;
+  (...a: A2): any;
+  (...a: A3): any;
+  (...a: A4): any;
+} ? A1 | A2 | A3 | A4 : F extends {
+  (...a: A1): any;
+  (...a: A2): any;
+  (...a: A3): any;
+} ? A1 | A2 | A3 : F extends {
+  (...a: A1): any;
+  (...a: A2): any;
+} ? A1 | A2 : F extends (...a: infer A1) => any ? A1 : never;
+```
+
+Extracts a union of parameter tuples from a (possibly overloaded) function type.
+
+TypeScript's built-in `Parameters<F>` only captures the *last* overload, which breaks typing
+for overloaded getter/setter APIs (common in d3), where the setter overload might not be last.
+
+Notes:
+
+* This helper supports up to 5 overload signatures (adjust if needed).
+* Getter overloads like `(): T` are filtered out later via `Exclude<..., []>` when we build
+  setter-only config types.
+
+#### Type Parameters
+
+| Type Parameter |
+| ------ |
+| `F` |
+
+***
+
 ### OwnKeys
 
 ```ts
-type OwnKeys<T> = T extends Function ? Exclude<keyof T, keyof Function> : keyof T;
+type OwnKeys<T> = T extends AnyFn ? Exclude<keyof T, keyof CallableFunction> : keyof T;
 ```
 
 #### Type Parameters
@@ -326,3 +373,19 @@ type OwnKeys<T> = T extends Function ? Exclude<keyof T, keyof Function> : keyof 
 | Type Parameter |
 | ------ |
 | `T` |
+
+***
+
+### SetterArgs
+
+```ts
+type SetterArgs<F> = Exclude<OverloadedArgs<F>, []>;
+```
+
+Removes 0-arg overloads (getters), leaving only setter-style overload argument tuples.
+
+#### Type Parameters
+
+| Type Parameter |
+| ------ |
+| `F` |
