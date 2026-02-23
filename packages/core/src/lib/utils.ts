@@ -41,7 +41,7 @@ export type AnyFn = (...args: any) => any
  * - Getter overloads like `(): T` are filtered out later via `Exclude<..., []>` when we build
  *   setter-only config types.
  */
-type OverloadedArgs<F> =
+export type OverloadedArgs<F> =
   F extends {
     (...a: infer A1): any
     (...a: infer A2): any
@@ -72,9 +72,15 @@ type OverloadedArgs<F> =
             ? A1
             : never
 
-type SetterArgs<F> = Exclude<OverloadedArgs<F>, []>
+/**
+ * Removes 0-arg overloads (getters), leaving only setter-style overload argument tuples.
+ */
+export type SetterArgs<F> = Exclude<OverloadedArgs<F>, []>
 
-type HasArgs<F> = [SetterArgs<F>] extends [never] ? false : true
+/**
+ * True if the function has at least one overload that accepts arguments (i.e. a setter overload).
+ */
+export type HasArgs<F> = [SetterArgs<F>] extends [never] ? false : true
 
 export type OwnKeys<T> =
   T extends AnyFn ? Exclude<keyof T, keyof CallableFunction> : keyof T
