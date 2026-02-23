@@ -18,13 +18,13 @@
 import type { MapMarkerProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
-import type { MapObjectEmit } from '../lib/useMapObject'
+import type { MapObjectEmit } from '../hooks/useMapObject'
 
 import { getMarkerTransform } from '@d3-maps/core'
 import { computed, toRef } from 'vue'
 
-import { useMapObject } from '../lib/useMapObject'
-import { useMapContext } from './MapContext'
+import { useMapContext } from '../hooks/useMapContext'
+import { useMapObject } from '../hooks/useMapObject'
 
 const props = withDefaults(defineProps<MapMarkerProps<StyleValue>>(), {
   coordinates: () => [0, 0],

@@ -47,8 +47,8 @@
     "test:watch": "vitest"
   },
   "peerDependencies": {
-    "react": ">=18 <20",
-    "react-dom": ">=18 <20"
+    "react": ">=19 <20",
+    "react-dom": ">=19 <20"
   },
   "dependencies": {
     "@d3-maps/core": "workspace:*"

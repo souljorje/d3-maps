@@ -1,11 +1,12 @@
 'use client'
 
 import type {
+  MapObjectStyles as CoreMapObjectStyles,
   MapObjectEventType,
   MapObjectState,
-  MapObjectStyles,
 } from '@d3-maps/core'
 import type {
+  CSSProperties,
   FocusEventHandler,
   MouseEventHandler,
 } from 'react'
@@ -22,8 +23,11 @@ import {
 
 import { useLatest } from './useLatest'
 
-export interface UseMapObjectOptions<TElement extends Element, TStyle> {
-  styles?: MapObjectStyles<TStyle>
+export type MapObjectStyle = CSSProperties
+export type MapObjectStyles = CoreMapObjectStyles<MapObjectStyle>
+
+export interface UseMapObjectOptions<TElement extends Element> {
+  styles?: MapObjectStyles
   onMouseEnter?: MouseEventHandler<TElement>
   onMouseLeave?: MouseEventHandler<TElement>
   onMouseDown?: MouseEventHandler<TElement>
@@ -33,8 +37,8 @@ export interface UseMapObjectOptions<TElement extends Element, TStyle> {
   onBlur?: FocusEventHandler<TElement>
 }
 
-export interface UseMapObjectResult<TElement extends Element, TStyle> {
-  computedStyle: TStyle | undefined
+export interface UseMapObjectResult<TElement extends Element> {
+  computedStyle: MapObjectStyle | undefined
   onMouseEnter: MouseEventHandler<TElement>
   onMouseLeave: MouseEventHandler<TElement>
   onMouseDown: MouseEventHandler<TElement>
@@ -44,9 +48,9 @@ export interface UseMapObjectResult<TElement extends Element, TStyle> {
   onBlur: FocusEventHandler<TElement>
 }
 
-export function useMapObject<TElement extends Element, TStyle>(
-  options: UseMapObjectOptions<TElement, TStyle>,
-): UseMapObjectResult<TElement, TStyle> {
+export function useMapObject<TElement extends Element>(
+  options: UseMapObjectOptions<TElement>,
+): UseMapObjectResult<TElement> {
   const [state, setState] = useState<MapObjectState>('default')
 
   const onMouseEnterRef = useLatest(options.onMouseEnter)

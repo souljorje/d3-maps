@@ -9,8 +9,8 @@ import type {
 
 import { useMemo } from 'react'
 
-import { useMapObject } from '../lib/useMapObject'
-import { useMapContext } from './MapContext'
+import { useMapContext } from '../hooks/useMapContext'
+import { useMapObject } from '../hooks/useMapObject'
 
 export interface MapFeatureProps
   extends CoreMapFeatureProps<CSSProperties>,
@@ -45,7 +45,7 @@ export function MapFeature({
     onClick: handleClick,
     onFocus: handleFocus,
     onBlur: handleBlur,
-  } = useMapObject<SVGPathElement, CSSProperties>({
+  } = useMapObject<SVGPathElement>({
     styles,
     onMouseEnter,
     onMouseLeave,

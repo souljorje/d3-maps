@@ -6,14 +6,12 @@ import type {
   ReactNode,
 } from 'react'
 
-import { createContext, useContext } from 'react'
+import { MapContextValue } from '../hooks/useMapContext'
 
 interface MapProviderProps {
   context: D3MapContext
   children?: ReactNode
 }
-
-const MapContextValue = createContext<D3MapContext | undefined>(undefined)
 
 export function MapProvider({ context, children }: MapProviderProps): ReactElement {
   return (
@@ -21,8 +19,4 @@ export function MapProvider({ context, children }: MapProviderProps): ReactEleme
       {children}
     </MapContextValue.Provider>
   )
-}
-
-export function useMapContext(): D3MapContext | undefined {
-  return useContext(MapContextValue)
 }

@@ -1,22 +1,22 @@
 'use client'
 
-import type { MapObjectStyles } from '@d3-maps/core'
 import type {
-  CSSProperties,
   ReactElement,
   SVGProps,
 } from 'react'
 
+import type { MapObjectStyles } from '../hooks/useMapObject'
+
 import { useMemo } from 'react'
 
-import { useMapObject } from '../lib/useMapObject'
-import { useMapContext } from './MapContext'
+import { useMapContext } from '../hooks/useMapContext'
+import { useMapObject } from '../hooks/useMapObject'
 
 export interface MapMeshProps
   extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style'> {
   fill?: string
   stroke?: string
-  styles?: MapObjectStyles<CSSProperties>
+  styles?: MapObjectStyles
 }
 
 export function MapMesh({
@@ -47,7 +47,7 @@ export function MapMesh({
     onClick: handleClick,
     onFocus: handleFocus,
     onBlur: handleBlur,
-  } = useMapObject<SVGPathElement, CSSProperties>({
+  } = useMapObject<SVGPathElement>({
     styles,
     onMouseEnter,
     onMouseLeave,

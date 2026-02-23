@@ -22,8 +22,8 @@ import {
   useRef,
 } from 'react'
 
-import { useLatest } from '../lib/useLatest'
-import { useMapContext } from './MapContext'
+import { useLatest } from '../hooks/useLatest'
+import { useMapContext } from '../hooks/useMapContext'
 
 export interface MapZoomProps
   extends ZoomProps,

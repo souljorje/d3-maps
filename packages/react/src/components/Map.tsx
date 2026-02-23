@@ -63,15 +63,11 @@ export function Map({
     ? children(context)
     : children
 
-  const mergedClassName = className
-    ? `d3-map ${className}`
-    : 'd3-map'
-
   return (
     <MapProvider context={context}>
       <svg
         {...svgProps}
-        className={mergedClassName}
+        className={`d3-map ${className ?? ''}`}
         viewBox={`0 0 ${context.width} ${context.height}`}
       >
         {resolvedChildren}

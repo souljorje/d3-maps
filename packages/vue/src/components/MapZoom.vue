@@ -25,7 +25,7 @@ import {
   watch,
 } from 'vue'
 
-import { useMapContext } from './MapContext'
+import { useMapContext } from '../hooks/useMapContext'
 
 const props = withDefaults(defineProps<ZoomProps>(), {
   center: () => [0, 0] as [number, number],

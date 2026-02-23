@@ -8,7 +8,7 @@ import type {
 
 import { getFeatureKey } from '@d3-maps/core'
 
-import { useMapContext } from './MapContext'
+import { useMapContext } from '../hooks/useMapContext'
 import { MapFeature } from './MapFeature'
 
 interface MapFeaturesRenderProps {

@@ -2,9 +2,13 @@ import type {
   MapObjectEvent,
   MapObjectEventType,
   MapObjectState,
-  MapObjectStyles,
+  MapObjectStyles as TMapObjectStyles,
 } from '@d3-maps/core'
-import type { ComputedRef, MaybeRef, StyleValue } from 'vue'
+import type {
+  ComputedRef,
+  MaybeRef,
+  StyleValue,
+} from 'vue'
 
 import {
   getObjectStateUpdate,
@@ -15,6 +19,8 @@ import {
   ref,
   unref,
 } from 'vue'
+
+export type MapObjectStyles = TMapObjectStyles<StyleValue>
 
 export type MapObjectEmit = <E extends MapObjectEventType>(
   event: E,
@@ -33,7 +39,7 @@ export interface UseMapObjectResult {
 
 export function useMapObject(
   emit: MapObjectEmit,
-  styles: MaybeRef<MapObjectStyles<StyleValue> | undefined>,
+  styles: MaybeRef<MapObjectStyles | undefined>,
 ): UseMapObjectResult {
   const state = ref<MapObjectState>('default')
 

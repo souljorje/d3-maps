@@ -10,8 +10,8 @@ import type {
 import { getMarkerTransform } from '@d3-maps/core'
 import { useMemo } from 'react'
 
-import { useMapObject } from '../lib/useMapObject'
-import { useMapContext } from './MapContext'
+import { useMapContext } from '../hooks/useMapContext'
+import { useMapObject } from '../hooks/useMapObject'
 
 const DEFAULT_COORDINATES: [number, number] = [0, 0]
 
@@ -51,7 +51,7 @@ export function MapMarker({
     onClick: handleClick,
     onFocus: handleFocus,
     onBlur: handleBlur,
-  } = useMapObject<SVGGElement, CSSProperties>({
+  } = useMapObject<SVGGElement>({
     styles,
     onMouseEnter,
     onMouseLeave,
