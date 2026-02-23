@@ -6,6 +6,8 @@
 
 ## Installation
 
+Requires React 19+
+
 npm
 
 ```bash

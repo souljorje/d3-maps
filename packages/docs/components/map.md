@@ -62,3 +62,7 @@ export function Example({ data }: { data: MapData }) {
 ```
 
 :::
+
+## Hooks
+
+- See [useMapContext](/hooks/use-map-context)

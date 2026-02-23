@@ -15,7 +15,8 @@ Works with Vue and React. Solid and Svelte support coming soon.
    - Utilities for custom layers: zoom, choropleth, bubble, etc
 
 2. **Adapters** are framework-specific
-   - Vue / React / Svelte / Solid bindings
+   - Vue and React bindings
+   - Solid and Svelte support coming soon
    - Rendering and reactivity integration
    - Declarative components and composables (hooks)
 
@@ -32,6 +33,8 @@ Adapters depend on the core.
 - Automatic transform lightweight TopoJSON to functional GeoJSON
 
 ## Installation
+
+React adapter requires React 19+
 
 ### pnpm
 

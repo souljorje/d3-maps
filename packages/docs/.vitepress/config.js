@@ -70,6 +70,14 @@ const docsSidebar = [
     ],
   },
   {
+    text: 'Hooks',
+    items: [
+      { text: 'Overview', link: '/hooks/' },
+      { text: 'useMapContext', link: '/hooks/use-map-context' },
+      { text: 'useMapObject', link: '/hooks/use-map-object' },
+    ],
+  },
+  {
     text: 'Examples',
     items: [
       { text: 'Overview', link: '/examples' },

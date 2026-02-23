@@ -13,15 +13,15 @@ Works with your favorite framework, batteries included.
 
 **Adapters** implement the core in a simple way *(you'll see it)*
 
-- Vue / React / Svelte / Solid bindings
+- Vue and React bindings, Solid and Svelte coming soon
 - Rendering and reactivity integration
 - Declarative components and composables
 
 ## Installation
 
-:::tabs key:framework
+::::tabs key:framework
 
-== Vue
+=== Vue
 
 :::tabs key:package-manager
 
@@ -52,7 +52,15 @@ https://unpkg.com/@d3-maps/vue/index.iife.js
 
 :::
 
-== React
+=== React
+
+Requires React 19+
+
+::: tip Next.js
+- `@d3-maps/react` entrypoints are client-only (`'use client'`)
+- Import it from Client Components in the App Router
+- Fetch data on the server and pass it as the `data` prop
+:::
 
 :::tabs key:package-manager
 
@@ -83,9 +91,14 @@ https://unpkg.com/@d3-maps/react/index.iife.js
 
 :::
 
-:::
+::::
 
 ## Basic usage
+
+```ts
+import type { MapData } from '@d3-maps/core'
+const data: MapData = await fetch('/some-topojson.json').then((res) => res.json())
+```
 
 :::tabs key:framework
 
@@ -93,19 +106,14 @@ https://unpkg.com/@d3-maps/react/index.iife.js
 
 ```vue [vue]
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { withBase } from 'vitepress'
-
-const data = ref<unknown>()
-
-onMounted(async () => {
-  const response = await fetch(withBase('/example-data/countries-110m.json'))
-  data.value = await response.json()
-})
+import { Map, MapFeatures } from '@d3-maps/vue'
+defineProps<{
+  data: MapData
+}>()
 </script>
 
 <template>
-  <Map v-if="data" :data="data">
+  <Map :data="data">
     <MapFeatures />
   </Map>
 </template>
@@ -116,7 +124,7 @@ onMounted(async () => {
 ```tsx [react]
 import { Map, MapFeatures } from '@d3-maps/react'
 
-export function App({ data }: { data: unknown }) {
+export function MapView({ data }: { data: MapData }) {
   return (
     <Map data={data}>
       <MapFeatures />

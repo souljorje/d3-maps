@@ -13,7 +13,7 @@ Renders a single GeoJSON feature as an SVG `<path>`.
 
 ## Events
 
-`mouseenter` `mouseleave` `mousedown` `mouseup` `focus` `blur`
+<!--@include: ./_map-object-events.md-->
 
 ## Usage
 
@@ -79,3 +79,7 @@ Renders a single GeoJSON feature as an SVG `<path>`.
 ```
 
 :::
+
+## Hooks
+
+- See [useMapObject](/hooks/use-map-object)

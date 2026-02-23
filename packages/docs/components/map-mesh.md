@@ -16,7 +16,7 @@ Use this to draw shared borders/edges (for example country boundaries) on top of
 
 ## Events
 
-`mouseenter` `mouseleave` `mousedown` `mouseup` `focus` `blur`
+<!--@include: ./_map-object-events.md-->
 
 ## Usage
 

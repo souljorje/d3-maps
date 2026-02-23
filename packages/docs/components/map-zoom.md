@@ -16,11 +16,25 @@ Wrap layers that should be zoomed inside [MapZoom](/components/map-zoom).
 
 ## Events
 
+:::tabs key:framework
+
+== Vue
+
 Emits:
 
 - `zoomstart`
 - `zoom`
 - `zoomend`
+
+== React
+
+Callbacks:
+
+- `onZoomStart`
+- `onZoom`
+- `onZoomEnd`
+
+:::
 
 ## Usage
 

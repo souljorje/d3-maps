@@ -11,7 +11,7 @@ Positions anything on the map based on coordinates
 
 ## Events
 
-`mouseenter` `mouseleave` `mousedown` `mouseup` `focus` `blur`
+<!--@include: ./_map-object-events.md-->
 
 ## Usage
 
