@@ -135,7 +135,7 @@ export default defineConfig({
     ],
     footer: {
       message: 'MIT Licensed',
-      copyright: 'Copyright © 2020-present Georgii Bukharov',
+      copyright: 'Copyright © 2026-present Georgii Bukharov',
     },
     externalLinkIcon: true,
     examples,
