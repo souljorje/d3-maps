@@ -35,6 +35,7 @@
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "typecheck:test": "tsc -p tsconfig.test.json --noEmit",
     "build": "pnpm run typecheck && tsdown",
     "dev": "tsdown --watch",
     "test": "vitest run",
