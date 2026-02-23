@@ -5,7 +5,7 @@
 | --- | --- |
 | Source | packages/react/src |
 | Components | packages/react/src/components |
-| Hooks/helpers | packages/react/src/lib |
+| Hooks | packages/react/src/hooks |
 | Tests | packages/react/tests |
 | Build output | packages/react/dist |
 
@@ -14,6 +14,7 @@
 | --- | --- | --- |
 | Package entry | packages/react/src/index.ts | Public API for React adapter. |
 | Components export | packages/react/src/components/index.ts | Re-export all public components. |
+| Hooks export | packages/react/src/hooks/index.ts | Re-export all public hooks and hook types. |
 
 ## Commands
 | Command | Purpose |
@@ -26,11 +27,10 @@
 ## Guardrails
 | Rule | Requirement |
 | --- | --- |
-| Type contracts | Align component props/events with `@d3-maps/core` contracts. |
-| Exports | Update packages/react/src/components/index.ts and packages/react/src/index.ts for public components/hooks. |
-| Shared logic | Reuse `@d3-maps/core` helpers; do not duplicate core abstractions in React package. |
-| Adapter imports | Never import d3-related libraries directly in adapters; import only from `@d3-maps/core`. |
-| Zoom behavior | Prefer `@d3-maps/core` zoom helpers over direct `d3-zoom` usage. |
+| React support | React 19 only; keep `peerDependencies` for `react` and `react-dom` as `>=19 <20`. |
+| Next.js boundary | Any hook-using entrypoint must be client-only (`'use client'`); in Next.js App Router, import it from Client Components. |
+| Effects and callbacks | Keep effect deps primitive-focused and use stable callback refs for event props (follow the [vercel-react-best-practices](../../.agents/skills/react-best-practices/SKILL.md) skill). |
+| Public exports | Keep public surface as named exports routed through packages/react/src/index.ts (and packages/react/src/hooks/index.ts for hooks/types). |
 
 ## Skills
 | Skill | When to use |
@@ -40,6 +40,7 @@
 ## References
 - [Root Guide](../../AGENTS.md)
 - [Core Guide](../core/AGENTS.md)
+- [Agent Meta-Flow](../../.agents/references/agent-meta-flow.md)
+- [Adapter Development Flow](../../ADAPTER_DEVELOPMENT_FLOW.md)
 - [Architecture](../../.agents/references/architecture.md)
-- [Engineering Workflow](../../.agents/references/engineering-workflow.md)
 - [Code Style](../../.agents/references/code-style.md)
