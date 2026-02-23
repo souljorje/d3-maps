@@ -1,4 +1,4 @@
-import type { Feature } from 'geojson'
+import type { ExtendedFeature } from 'd3-geo'
 
 import type { MapObjectStyles } from './mapObject'
 
@@ -9,7 +9,7 @@ import { isStringOrNumber } from './utils'
  *
  * This type allows extra top-level fields to be attached in `dataTransformer` (e.g. choropleth colors).
  */
-export type MapFeature = (Feature & Record<string, unknown>) | Feature
+export type MapFeature = (ExtendedFeature & Record<string, unknown>) | ExtendedFeature
 
 /**
  * Shared props contract for a single rendered feature.

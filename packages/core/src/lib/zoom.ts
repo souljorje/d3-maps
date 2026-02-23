@@ -26,17 +26,6 @@ export type {
 export type Extent = [[number, number], [number, number]]
 export interface DefaultZoomBehavior extends ZoomBehavior<SVGSVGElement, unknown> {}
 
-export interface ZoomConfigOptions {
-  minZoom?: number
-  maxZoom?: number
-  translateExtent?: Extent
-}
-
-export interface ZoomConfig {
-  scaleExtent: [number, number]
-  translateExtent: Extent
-}
-
 /**
  * Extra zoom method calls to apply before rendering.
  *
@@ -73,7 +62,6 @@ export const ZOOM_DEFAULTS = {
   zoom: 1,
   minZoom: 1,
   maxZoom: 8,
-  extent: [[0, 0], [0, 0]] as Extent,
 }
 
 export interface ApplyZoomOptions {
@@ -85,38 +73,17 @@ export interface ApplyZoomOptions {
 
 export interface SetupZoomOptions extends ApplyZoomOptions {}
 
-export function getDefaultTranslateExtent(context?: MapContext): Extent {
-  return [[0, 0], [context?.width ?? 0, context?.height ?? 0]]
-}
-
-export function createZoomTransform(center: [number, number], zoomLevel: number): ZoomTransform {
-  return zoomIdentity.translate(...center).scale(zoomLevel)
-}
-
-export function createZoomConfig(options: ZoomConfigOptions): ZoomConfig {
-  const minZoom = options.minZoom ?? ZOOM_DEFAULTS.minZoom
-  const maxZoom = options.maxZoom ?? ZOOM_DEFAULTS.maxZoom
-
-  return {
-    scaleExtent: [minZoom, maxZoom],
-    translateExtent: options.translateExtent ?? ZOOM_DEFAULTS.extent,
-  }
-}
-
 export function createZoomBehavior(
   context?: MapContext,
   options: ZoomBehaviorOptions = {},
 ): DefaultZoomBehavior {
   const behavior = zoom<SVGSVGElement, unknown>()
-
-  const config = createZoomConfig({
-    minZoom: options.minZoom,
-    maxZoom: options.maxZoom,
-    translateExtent: getDefaultTranslateExtent(context),
-  })
+  const minZoom = options.minZoom ?? ZOOM_DEFAULTS.minZoom
+  const maxZoom = options.maxZoom ?? ZOOM_DEFAULTS.maxZoom
+  const translateExtent: Extent = [[0, 0], [context?.width ?? 0, context?.height ?? 0]]
   behavior
-    .scaleExtent(config.scaleExtent)
-    .translateExtent(config.translateExtent)
+    .scaleExtent([minZoom, maxZoom])
+    .translateExtent(translateExtent)
 
   if (options.onZoomStart) {
     behavior.on('start', options.onZoomStart)
@@ -158,7 +125,7 @@ export function applyZoomTransform(options: ApplyZoomOptions): void {
   applyZoomBehaviorTransform(
     options.element,
     options.behavior,
-    createZoomTransform(center, zoom),
+    zoomIdentity.translate(...center).scale(zoom),
   )
 }
 
