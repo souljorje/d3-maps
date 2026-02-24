@@ -4,7 +4,8 @@
 
 ### Minor Changes
 
-- [#10](https://github.com/souljorje/d3-maps/pull/10) [`aa5328d`](https://github.com/souljorje/d3-maps/commit/aa5328dfdb899560765f31df1b13af619e241d5b) Thanks [@souljorje](https://github.com/souljorje)! - - Added shared zoom transform helpers to keep adapter zoom behavior consistent
+- [#10](https://github.com/souljorje/d3-maps/pull/10) [`aa5328d`](https://github.com/souljorje/d3-maps/commit/aa5328dfdb899560765f31df1b13af619e241d5b) Thanks [@souljorje](https://github.com/souljorje)!
+  - Added shared zoom transform helpers to keep adapter zoom behavior consistent
 
 ## 0.3.0
 
