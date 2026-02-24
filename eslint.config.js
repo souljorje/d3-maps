@@ -12,6 +12,7 @@ export default antfu({
 
     // eslint-plugin-antfu
     'antfu/if-newline': 0,
+    'antfu/consistent-list-newline': 0,
     'perfectionist/sort-imports': [
       'error',
       {
