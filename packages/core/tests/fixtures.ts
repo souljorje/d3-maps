@@ -1,29 +1,11 @@
-import type { ExtendedFeatureCollection } from 'd3-geo'
-import type { Topology } from 'topojson-specification'
+import { sampleGeoJson } from '~/tests/fixtures/map'
 
 import { makeMapContext } from '../src'
 
-export const sampleGeoJson: ExtendedFeatureCollection = {
-  type: 'FeatureCollection',
-  features: [
-    {
-      type: 'Feature',
-      properties: { id: 'demo' },
-      geometry: {
-        type: 'Polygon',
-        coordinates: [
-          [
-            [0, 0],
-            [0, 10],
-            [10, 10],
-            [10, 0],
-            [0, 0],
-          ],
-        ],
-      },
-    },
-  ],
-}
+export {
+  sampleGeoJson,
+  sampleTopology,
+} from '~/tests/fixtures/map'
 
 export function makeTestMapContext(): ReturnType<typeof makeMapContext> {
   return makeMapContext({
@@ -31,25 +13,4 @@ export function makeTestMapContext(): ReturnType<typeof makeMapContext> {
     height: 300,
     data: sampleGeoJson,
   })
-}
-
-export const sampleTopology: Topology = {
-  type: 'Topology',
-  transform: { scale: [1, 1], translate: [0, 0] },
-  objects: {
-    demo: {
-      type: 'Polygon',
-      arcs: [[0]],
-      properties: { id: 'demo' },
-    },
-  },
-  arcs: [
-    [
-      [0, 0],
-      [10, 0],
-      [0, 10],
-      [-10, 0],
-      [0, -10],
-    ],
-  ],
 }

@@ -20,6 +20,7 @@
 | Command | Purpose |
 | --- | --- |
 | `pnpm --filter @d3-maps/react typecheck` | Run TypeScript checks. |
+| `pnpm --filter @d3-maps/react typecheck:test` | Typecheck tests via `tsconfig.test.json`. |
 | `pnpm --filter @d3-maps/react build` | Typecheck and build package. |
 | `pnpm --filter @d3-maps/react test` | Run tests once. |
 | `pnpm --filter @d3-maps/react test:watch` | Run tests in watch mode. |

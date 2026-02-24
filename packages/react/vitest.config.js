@@ -1,13 +1,20 @@
 import react from '@vitejs/plugin-react'
-import tsconfigPaths from 'vite-tsconfig-paths'
-import { defineConfig } from 'vitest/config'
+import {
+  defineConfig,
+  mergeConfig,
+} from 'vitest/config'
 
-export default defineConfig({
-  plugins: [tsconfigPaths({ loose: true }), react()],
-  test: {
-    environment: 'jsdom',
-    globals: true,
-    include: ['tests/**/*.spec.{ts,tsx}'],
-    setupFiles: ['./tests/setup.ts'],
-  },
-})
+import sharedVitestConfig from '../../vitest.shared'
+
+export default mergeConfig(
+  sharedVitestConfig,
+  defineConfig({
+    plugins: [react()],
+    test: {
+      environment: 'jsdom',
+      globals: true,
+      include: ['tests/**/*.spec.{ts,tsx}'],
+      setupFiles: ['./tests/setup.ts'],
+    },
+  }),
+)
