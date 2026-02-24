@@ -49,6 +49,7 @@ export function MapZoom({
   ...groupProps
 }: MapZoomProps): ReactElement {
   const containerRef = useRef<SVGGElement | null>(null)
+  const skipNextTransformSyncRef = useRef(false)
   const context = useMapContext()
 
   const onZoomStartRef = useLatest(onZoomStart)
@@ -84,6 +85,8 @@ export function MapZoom({
   ])
 
   useEffect(() => {
+    skipNextTransformSyncRef.current = true
+
     setupZoom({
       element: containerRef.current,
       behavior: zoomBehavior,
@@ -93,6 +96,11 @@ export function MapZoom({
   }, [zoomBehavior])
 
   useEffect(() => {
+    if (skipNextTransformSyncRef.current) {
+      skipNextTransformSyncRef.current = false
+      return
+    }
+
     applyZoomTransform({
       element: containerRef.current,
       behavior: zoomBehavior,
