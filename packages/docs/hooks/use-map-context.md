@@ -16,16 +16,22 @@ import { computed } from 'vue'
 import { useMapContext } from '@d3-maps/vue'
 
 const context = useMapContext()
-const meshPath = computed(() => context?.renderMesh() ?? null)
+const featureCountLabel = computed(() => {
+  if (!context) return null
+  return `${context.features.length} features`
+})
 </script>
 
 <template>
-  <path
-    v-if="meshPath"
-    :d="meshPath"
-    fill="none"
-    stroke="#fff"
-  />
+  <text
+    v-if="featureCountLabel"
+    x="12"
+    y="20"
+    font-size="12"
+    fill="#111"
+  >
+    {{ featureCountLabel }}
+  </text>
 </template>
 ```
 
@@ -34,23 +40,16 @@ const meshPath = computed(() => context?.renderMesh() ?? null)
 ```tsx
 import type { MapData } from '@d3-maps/core'
 
-import { Map, MapFeatures, useMapContext } from '@d3-maps/react'
+import { useMapContext } from '@d3-maps/react'
 
-function MeshOutline() {
+function FeatureCountLabel() {
   const context = useMapContext()
-  const meshPath = context?.renderMesh()
+  if (!context) return null
 
-  return meshPath
-    ? <path d={meshPath} fill="none" stroke="#fff" />
-    : null
-}
-
-export function Example({ data }: { data: MapData }) {
   return (
-    <Map data={data}>
-      <MapFeatures />
-      <MeshOutline />
-    </Map>
+    <text x={12} y={20} fontSize={14} fill="#111">
+      {context.features.length} features
+    </text>
   )
 }
 ```

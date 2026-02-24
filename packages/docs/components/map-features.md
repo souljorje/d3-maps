@@ -17,11 +17,37 @@ Renders all GeoJSON features from the current map context
 
 == Vue
 
-<<< ../.vitepress/examples/basic.vue
+```vue
+<template>
+  <Map :data="mapData">
+    <MapFeatures
+      fill="darkorange"
+      :styles="{
+        default: { opacity: 0.9 },
+        hover: { opacity: 0.7 },
+        active: { stroke: '#1f2937', strokeWidth: 1.5 },
+      }"
+    />
+    <MapMesh stroke="slategray" />
+  </Map>
+</template>
+```
 
 == React
 
-<<< ../.vitepress/examples/react/basic.tsx
+```tsx
+<Map data={mapData}>
+  <MapFeatures
+    fill="darkorange"
+    styles={{
+      default: { opacity: 0.9 },
+      hover: { opacity: 0.7 },
+      active: { stroke: '#1f2937', strokeWidth: 1.5 },
+    }}
+  />
+  <MapMesh stroke="slategray" />
+</Map>
+```
 
 :::
 

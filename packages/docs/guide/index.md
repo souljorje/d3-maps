@@ -54,15 +54,6 @@ https://unpkg.com/@d3-maps/vue/index.iife.js
 
 === React
 
-Requires React 19+
-
-::: tip Next.js
-- `@d3-maps/react` entrypoints are client-only (`'use client'`)
-- Import it from Client Components in the App Router (still SSR-rendered)
-- Fetch data on the server and pass it as the `data` prop
-- React Server Components entrypoints are planned
-:::
-
 :::tabs key:package-manager
 
 == npm
@@ -96,10 +87,14 @@ https://unpkg.com/@d3-maps/react/index.iife.js
 
 ## Basic usage
 
+1. Get data
+
 ```ts
 import type { MapData } from '@d3-maps/core'
 const data: MapData = await fetch('/some-topojson.json').then((res) => res.json())
 ```
+
+2. Pass the data to the Map
 
 :::tabs key:framework
 
@@ -136,6 +131,10 @@ export function MapView({ data }: { data: MapData }) {
 
 :::
 
+3. Your first map is ready
+
+<Demo component-name="basic"/>
+
 ## Next
 
-Continue with [Core concepts](/guide/core-concepts/) to learn how to customize data, projections, responsiveness, styling, markers, and zoom.
+Learn [core concepts](/guide/core-concepts/) to understand how **d3-maps** works step by step: data, projection, zoom, markers and more.

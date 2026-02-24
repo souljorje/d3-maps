@@ -21,7 +21,7 @@ To render borders use [MapMesh](/components/map-mesh) instead of applying `strok
 
 == React
 
-```tsx{8} [react]
+```tsx{7} [react]
 <Map
   data={data}
   projection={geoMercator}
@@ -34,4 +34,4 @@ To render borders use [MapMesh](/components/map-mesh) instead of applying `strok
 
 :::
 
-> Default stroke width is set to 0.5
+> Default stroke width is 0.5

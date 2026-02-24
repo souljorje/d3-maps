@@ -9,7 +9,7 @@ import {
   MapMarker,
   MapZoom,
 } from '@d3-maps/react'
-import { geoEqualEarth } from 'd3-geo'
+import { geoNaturalEarth1 } from 'd3-geo'
 import {
   useEffect,
   useState,
@@ -63,7 +63,7 @@ export default function ZoomExample(): JSX.Element | null {
     ? (
         <Map
           data={mapData}
-          projection={geoEqualEarth}
+          projection={geoNaturalEarth1}
         >
           <MapZoom onZoomEnd={updateMarkerScale}>
             <MapFeatures />

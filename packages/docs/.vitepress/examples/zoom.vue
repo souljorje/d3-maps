@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import type { ZoomEvent } from '@d3-maps/core'
 
-import { geoEqualEarth } from 'd3-geo'
+import { geoNaturalEarth1 } from 'd3-geo'
 import { withBase } from 'vitepress'
 import { onMounted, ref } from 'vue'
 
@@ -53,7 +53,7 @@ const initialCities: City[] = [
 ]
 
 const data = ref<unknown>()
-const projection = geoEqualEarth
+const projection = geoNaturalEarth1
 const cities = ref<City[]>(initialCities)
 const markerScale = ref(1)
 const currentZoom = ref(1)

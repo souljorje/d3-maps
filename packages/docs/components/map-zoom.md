@@ -76,6 +76,35 @@ Callbacks:
 
 == React
 
-<<< ../.vitepress/examples/react/zoom.tsx
+```tsx
+<Map
+  data={mapData}
+  projection={geoNaturalEarth1}
+>
+  <MapZoom onZoomEnd={(event) => setMarkerScale(1 / event.transform.k)}>
+    <MapFeatures />
+    {cities.map((item) => (
+      <MapMarker
+        key={item.city}
+        coordinates={[item.lon, item.lat]}
+      >
+        <g transform={`scale(${markerScale})`}>
+          <text
+            fontSize="16"
+            y={-6}
+            textAnchor="middle"
+          >
+            {item.city}
+          </text>
+          <circle
+            fill="#ff6f26"
+            r={3}
+          />
+        </g>
+      </MapMarker>
+    ))}
+  </MapZoom>
+</Map>
+```
 
 :::

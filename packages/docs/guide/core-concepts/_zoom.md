@@ -23,7 +23,7 @@ Wrap layers with [MapZoom](/components/map-zoom) to enable pan and zoom
 
 == React
 
-```tsx{7,10} [react]
+```tsx{6,9} [react]
 <Map
   data={data}
   projection={geoMercator}

@@ -39,7 +39,7 @@ const styles = {
 
 == React
 
-```tsx{8,10} [react]
+```tsx{7,9} [react]
 <Map
   data={data}
   projection={geoMercator}

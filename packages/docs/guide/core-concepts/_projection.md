@@ -3,7 +3,7 @@
 A map projection transforms the Earth's 3D curved surface into SVG map.  
 It determines how exactly map will look.  
 
-By default `geoEqualEarth` is used in core, but you can provide your own:
+By default `geoNaturalEarth1` is used in core, but you can provide your own:
 
 :::tabs key:framework
 

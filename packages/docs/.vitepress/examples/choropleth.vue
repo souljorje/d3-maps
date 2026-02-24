@@ -1,6 +1,6 @@
 <template>
   <Map
-    v-if="mapData && choroplethdata"
+    v-if="mapData && choroplethData.length"
     :data-transformer="dataTransformer"
     :data="mapData"
   >
@@ -39,9 +39,9 @@ interface CountryStat {
 const mapData = ref<unknown>()
 const loading = ref(true)
 const error = ref(false)
-const choroplethdata = ref<CountryStat[]>([])
+const choroplethData = ref<CountryStat[]>([])
 
-const minAndMaxValues = computed(() => extent(choroplethdata.value, (item) => item.value))
+const minAndMaxValues = computed(() => extent(choroplethData.value, (item) => item.value))
 const colorScale = computed(() => {
   const domain = minAndMaxValues.value
   const safeDomain: [number, number] = [
@@ -71,7 +71,7 @@ async function fetchMap() {
 async function fetchData() {
   const response = await fetch(withBase('/example-data/choropleth-data.json'))
   const rawData = (await response.json()) as Array<Record<string, unknown>>
-  choroplethdata.value = rawData.map((item) => {
+  choroplethData.value = rawData.map((item) => {
     const id = item['country-code']
     if (typeof id !== 'string') {
       return { id: '', value: 0 }
@@ -86,7 +86,7 @@ async function fetchData() {
 
 function dataTransformer(features: any[]) {
   return features.map((feature) => {
-    const country = choroplethdata.value.find((item) => item.id === feature.id)
+    const country = choroplethData.value.find((item) => item.id === feature.id)
     const colorValue = country ? colorScale.value(country.value) : '#eee'
 
     return { ...feature, color: colorValue }

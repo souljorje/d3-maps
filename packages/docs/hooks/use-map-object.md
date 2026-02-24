@@ -2,6 +2,8 @@
 
 Provides interaction-state transitions and resolved styles for custom map SVG elements.
 
+Used internally by [MapFeature](/components/map-feature), [MapMarker](/components/map-marker), and [MapMesh](/components/map-mesh)
+
 ## Usage
 
 :::tabs key:framework
