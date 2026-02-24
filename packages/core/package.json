@@ -1,7 +1,7 @@
 {
   "name": "@d3-maps/core",
   "type": "module",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": false,
   "description": "Framework-agnostic core utilities for building reactive D3 maps",
   "author": "Georgii Bukharov <souljorje@gmail.com>",
