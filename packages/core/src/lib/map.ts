@@ -12,7 +12,7 @@ import type {
 } from './utils'
 
 import {
-  geoEqualEarth,
+  geoNaturalEarth1,
   geoPath,
 } from 'd3-geo'
 import {
@@ -50,7 +50,7 @@ export interface MapConfig {
   /**
    * Projection factory from d3-geo (or a compatible implementation).
    *
-   * Example: `geoEqualEarth`.
+   * Example: `geoNaturalEarth1`.
    */
   projection?: () => GeoProjection
   /**
@@ -159,11 +159,15 @@ export function makeMesh(geoData: MapData): MapMesh | undefined {
 export function makeMapContext({
   width = 600,
   height: passedHeight,
-  aspectRatio = 16 / 9,
+  aspectRatio = 2 / 1,
   data,
   dataTransformer,
-  projection: providedProjection = geoEqualEarth,
-  projectionConfig,
+  projection: providedProjection = geoNaturalEarth1,
+  projectionConfig = providedProjection === geoNaturalEarth1
+    ? {
+        rotate: [[-11, 0]],
+      }
+    : {},
 }: MapConfig): MapContext {
   const [features, geoJson] = makeFeatures(data, dataTransformer)
   const mapMesh = makeMesh(data)

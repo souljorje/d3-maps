@@ -40,8 +40,7 @@ export function MapZoom({
   zoom,
   minZoom = ZOOM_DEFAULTS.minZoom,
   maxZoom = ZOOM_DEFAULTS.maxZoom,
-  translateExtent,
-  modifiers,
+  config,
   onZoomStart,
   onZoom,
   onZoomEnd,
@@ -65,8 +64,7 @@ export function MapZoom({
     return createZoomBehavior(context, {
       minZoom,
       maxZoom,
-      translateExtent,
-      modifiers,
+      config,
       onZoomStart: (event) => {
         onZoomStartRef.current?.(event)
       },
@@ -82,8 +80,7 @@ export function MapZoom({
     context,
     minZoom,
     maxZoom,
-    translateExtent,
-    modifiers,
+    config,
   ])
 
   useEffect(() => {

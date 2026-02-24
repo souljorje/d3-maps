@@ -41,4 +41,35 @@ describe('mapMarker', () => {
 
     expect(screen.getByTestId('fallback-map-marker').getAttribute('transform')).toBe('translate(0, 0)')
   })
+
+  it('recomputes marker transform when map context changes', () => {
+    const { rerender } = render(
+      <Map
+        data={sampleGeoJson}
+        width={300}
+      >
+        <MapMarker
+          data-testid="map-marker-recomputed"
+          coordinates={[5, 5]}
+        />
+      </Map>,
+    )
+
+    const initialTransform = screen.getByTestId('map-marker-recomputed').getAttribute('transform')
+
+    rerender(
+      <Map
+        data={sampleGeoJson}
+        width={700}
+      >
+        <MapMarker
+          data-testid="map-marker-recomputed"
+          coordinates={[5, 5]}
+        />
+      </Map>,
+    )
+
+    const nextTransform = screen.getByTestId('map-marker-recomputed').getAttribute('transform')
+    expect(nextTransform).not.toBe(initialTransform)
+  })
 })

@@ -51,6 +51,7 @@ describe('mapZoom', () => {
           zoom={2}
           minZoom={1}
           maxZoom={6}
+          config={{ scaleExtent: [[1, 6]] }}
           onZoomStart={onZoomStart}
           onZoom={onZoom}
           onZoomEnd={onZoomEnd}
@@ -65,6 +66,7 @@ describe('mapZoom', () => {
     expect(onZoomStart).toHaveBeenCalled()
     expect(onZoom).toHaveBeenCalled()
     expect(onZoomEnd).toHaveBeenCalled()
+    expect(zoomBehaviorOptions?.config).toEqual({ scaleExtent: [[1, 6]] })
 
     const zoomGroup = screen.getByTestId('map-zoom-group')
     expect(zoomGroup?.getAttribute('transform')).toContain('translate')
