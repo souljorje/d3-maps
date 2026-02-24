@@ -27,9 +27,14 @@
 | Navigation | Keep nav/sidebar changes in packages/docs/.vitepress/config.js. |
 | Theme registration | Register global demo components in packages/docs/.vitepress/theme/index.js. |
 | Generated content | Do not hand-edit generated files in packages/docs/examples and generated API markdown in packages/docs/api/core. |
-| Guide parts | Keep include-only guide parts in `_*.md` files and compose routed guide pages from `index.md` via includes. |
+| Parts usage | Extract duplicated content to parts with `_` prefix and reuse across files, `_*.md` are ignored by vitepress |
+| Core concepts | /guide/core-concepts must be composed with parts. |
 | Progressive snippets | In progressive guides (for example `guide/core-concepts`), each snippet must build on the previous snippet and only add/change lines for the current concept. |
 | Snippet highlighting | Use VitePress line highlighting to mark newly added or changed lines in progressive snippets. |
+| Progressive diff integrity | In progressive guides, each snippet MUST preserve the previous snippet verbatim except the concept-specific delta for the current section. |
+| No hidden edits | Do not reorder, delete, or rewrite unchanged lines in the next step unless that edit belongs to the current concept and is explicitly highlighted. |
+| Highlight completeness | VitePress highlight ranges MUST cover all changed lines for the current step in snippets for all supported adapters. |
+| Adapter parity | Progressive snippets for supported adapters MUST represent the same conceptual delta at each step. |
 | Tone | Use a friendly, concise, instructional developer-doc tone. |
 | Sentence style | Prefer short declarative sentences with light imperative phrasing and minimal context. |
 | Approachability | Keep writing approachable but not chatty. |

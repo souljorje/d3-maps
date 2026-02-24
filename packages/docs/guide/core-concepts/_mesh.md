@@ -2,7 +2,9 @@
 
 To render borders use [MapMesh](/components/map-mesh) instead of applying `stroke`. It will render a single `<path>` (more efficient) and ensure borders don't overlap.
 
-::: code-group
+:::tabs key:framework
+
+== Vue
 
 ```vue{8} [vue]
 <template>
@@ -17,6 +19,19 @@ To render borders use [MapMesh](/components/map-mesh) instead of applying `strok
 </template>
 ```
 
+== React
+
+```tsx{7} [react]
+<Map
+  data={data}
+  projection={geoMercator}
+  dataTransformer={dataTransformer}
+>
+  <MapFeatures />
+  <MapMesh stroke="#fff" />
+</Map>
+```
+
 :::
 
-> Default stroke width is set to 0.5
+> Default stroke width is 0.5

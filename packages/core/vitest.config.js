@@ -1,10 +1,15 @@
-import { defineConfig } from 'vitest/config'
+import {
+  defineConfig,
+  mergeConfig,
+} from 'vitest/config'
 
-export default defineConfig({
-  test: {
-    environment: 'node',
-    coverage: {
-      reporter: ['text', 'html'],
+import sharedVitestConfig from '../../vitest.shared'
+
+export default mergeConfig(
+  sharedVitestConfig,
+  defineConfig({
+    test: {
+      environment: 'node',
     },
-  },
-})
+  }),
+)

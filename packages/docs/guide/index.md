@@ -13,59 +13,128 @@ Works with your favorite framework, batteries included.
 
 **Adapters** implement the core in a simple way *(you'll see it)*
 
-- Vue / React / Svelte / Solid bindings
+- Vue and React bindings, Solid and Svelte coming soon
 - Rendering and reactivity integration
 - Declarative components and composables
 
 ## Installation
 
-::: code-group
+::::tabs key:framework
 
-```bash [npm]
+=== Vue
+
+:::tabs key:package-manager
+
+== npm
+
+```bash
 npm install @d3-maps/vue
 ```
 
-```bash [pnpm]
+== pnpm
+
+```bash
 pnpm add @d3-maps/vue
 ```
 
-```bash [bun]
+== bun
+
+```bash
 bun add @d3-maps/vue
 ```
 
-```bash [CDN]
+== CDN
+
+```bash
 https://unpkg.com/@d3-maps/core/index.iife.js
 https://unpkg.com/@d3-maps/vue/index.iife.js
 ```
 
 :::
 
+=== React
+
+:::tabs key:package-manager
+
+== npm
+
+```bash
+npm install @d3-maps/react
+```
+
+== pnpm
+
+```bash
+pnpm add @d3-maps/react
+```
+
+== bun
+
+```bash
+bun add @d3-maps/react
+```
+
+== CDN
+
+```bash
+https://unpkg.com/@d3-maps/core/index.iife.js
+https://unpkg.com/@d3-maps/react/index.iife.js
+```
+
+:::
+
+::::
+
 ## Basic usage
 
-::: code-group
+1. Get data
+
+```ts
+import type { MapData } from '@d3-maps/core'
+const data: MapData = await fetch('/some-topojson.json').then((res) => res.json())
+```
+
+2. Pass the data to the Map
+
+:::tabs key:framework
+
+== Vue
 
 ```vue [vue]
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { withBase } from 'vitepress'
-
-const data = ref<unknown>()
-
-onMounted(async () => {
-  const response = await fetch(withBase('/example-data/countries-110m.json'))
-  data.value = await response.json()
-})
+import { Map, MapFeatures } from '@d3-maps/vue'
+defineProps<{
+  data: MapData
+}>()
 </script>
 
 <template>
-  <Map v-if="data" :data="data">
+  <Map :data="data">
     <MapFeatures />
   </Map>
 </template>
 ```
 
+== React
+
+```tsx [react]
+import { Map, MapFeatures } from '@d3-maps/react'
+
+export function MapView({ data }: { data: MapData }) {
+  return (
+    <Map data={data}>
+      <MapFeatures />
+    </Map>
+  )
+}
+```
+
 :::
+
+3. Your first map is ready
+
+<Demo component-name="basic"/>
 
 ## Next
 
-Continue with [Core concepts](/guide/core-concepts/) to learn how to customize data, projections, responsiveness, styling, markers, and zoom.
+Learn [core concepts](/guide/core-concepts/) to understand how **d3-maps** works step by step: data, projection, zoom, markers and more.

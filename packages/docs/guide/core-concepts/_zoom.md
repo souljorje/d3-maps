@@ -2,7 +2,9 @@
 
 Wrap layers with [MapZoom](/components/map-zoom) to enable pan and zoom
 
-::: code-group
+:::tabs key:framework
+
+== Vue
 
 ```vue{7,10} [vue]
 <template>
@@ -17,6 +19,21 @@ Wrap layers with [MapZoom](/components/map-zoom) to enable pan and zoom
     </MapZoom>
   </Map>
 </template>
+```
+
+== React
+
+```tsx{6,9} [react]
+<Map
+  data={data}
+  projection={geoMercator}
+  dataTransformer={dataTransformer}
+>
+  <MapZoom>
+    <MapFeatures />
+    <MapMesh stroke="#fff" />
+  </MapZoom>
+</Map>
 ```
 
 :::

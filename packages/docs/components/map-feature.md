@@ -13,13 +13,15 @@ Renders a single GeoJSON feature as an SVG `<path>`.
 
 ## Events
 
-`mouseenter` `mouseleave` `mousedown` `mouseup` `focus` `blur`
+<!--@include: ./_map-object-events.md-->
 
 ## Usage
 
-::: code-group
+:::tabs key:framework
 
-```vue [vue]
+== Vue
+
+```vue
 <template>
   <Map :data="mapData">
     <MapFeatures #default="{ features }">
@@ -45,4 +47,39 @@ Renders a single GeoJSON feature as an SVG `<path>`.
 </template>
 ```
 
+== React
+
+```tsx
+<Map data={mapData}>
+  <MapFeatures>
+    {({ features }) => (
+      <>
+        {features.map((feature) => (
+          <MapFeature
+            key={String(feature.id)}
+            data={feature}
+            fill={String(feature.color)}
+            styles={{
+              default: {
+                opacity: 0.9,
+              },
+              hover: {
+                opacity: 0.8,
+              },
+              active: {
+                stroke: 'green',
+              },
+            }}
+          />
+        ))}
+      </>
+    )}
+  </MapFeatures>
+</Map>
+```
+
 :::
+
+## Hooks
+
+- See [useMapObject](/hooks/use-map-object)

@@ -188,7 +188,7 @@ In adapters, this is usually passed as component props.
 | <a id="property-data"></a> `data` | [`MapData`](#mapdata) | TopoJSON or GeoJSON input. TopoJSON is automatically converted to GeoJSON features. |
 | <a id="property-datatransformer"></a> `dataTransformer?` | [`DataTransformer`](#datatransformer) | Optional feature transformer (filter/augment/normalize features). |
 | <a id="property-height"></a> `height?` | `number` | - |
-| <a id="property-projection"></a> `projection?` | () => `GeoProjection` | Projection factory from d3-geo (or a compatible implementation). Example: `geoEqualEarth`. |
+| <a id="property-projection"></a> `projection?` | () => `GeoProjection` | Projection factory from d3-geo (or a compatible implementation). Example: `geoNaturalEarth1`. |
 | <a id="property-projectionconfig"></a> `projectionConfig?` | [`ProjectionConfig`](#projectionconfig) | Projection method arguments passed to the created projection |
 | <a id="property-width"></a> `width?` | `number` | - |
 

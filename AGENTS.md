@@ -8,6 +8,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 
 ## Package Guides
 - [Core Guide](packages/core/AGENTS.md)
+- [React Guide](packages/react/AGENTS.md)
 - [Vue Guide](packages/vue/AGENTS.md)
 - [Docs Guide](packages/docs/AGENTS.md)
 
@@ -16,9 +17,9 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 ├─ packages/
   ├─ docs/  # VitePress unified docs site
   ├─ core/  # framework-agnostic core utilities (@d3-maps/core)
+  ├─ react/ # React adapter (@d3-maps/react)
   ├─ vue/   # Vue adapter (@d3-maps/vue)
   # planned
-  ├─ react/  # React adapter
   ├─ svelte/ # Svelte adapter
   └─ solid/  # Solid adapter
 ```
@@ -29,7 +30,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | `pnpm install` | Install workspace dependencies. |
 | `pnpm dev` | Run docs dev server (`docs` workspace). |
 | `pnpm build` | Build the full project (packages + docs generation + docs site). |
-| `pnpm test` | Run core and vue test suites. |
+| `pnpm test` | Run core, react, and vue test suites. |
 | `pnpm docs:gen:examples` | Generate docs example wrapper pages from `.vitepress/examples`. |
 | `pnpm typedoc` | Generate API reference docs via TypeDoc. |
 | `pnpm docs:gen` | Run all docs generation steps. |
@@ -60,6 +61,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 ## Detailed Instructions
 
 - [Architecture](.agents/references/architecture.md)
+- [Adapter Development Flow](.agents/references/adapter-development-flow.md)
 - [Code Style](.agents/references/code-style.md)
 - [Git Workflow](.agents/references/git-workflow.md)
 - [Docs Generation Workflow](.agents/references/docs-generation.md)

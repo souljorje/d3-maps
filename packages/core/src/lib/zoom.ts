@@ -129,6 +129,14 @@ export function applyZoomTransform(options: ApplyZoomOptions): void {
   )
 }
 
+export function applyZoomGroupTransform(
+  element: Element | null | undefined,
+  transform: Pick<ZoomTransform, 'toString'> | null | undefined,
+): void {
+  if (!element || !transform) return
+  element.setAttribute('transform', transform.toString())
+}
+
 export function setupZoom(options: SetupZoomOptions): void {
   attachZoomBehavior(options.element, options.behavior)
   applyZoomTransform(options)

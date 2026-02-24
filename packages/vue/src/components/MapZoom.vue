@@ -14,6 +14,7 @@ import type {
 } from '@d3-maps/core'
 
 import {
+  applyZoomGroupTransform,
   applyZoomTransform,
   createZoomBehavior,
   setupZoom,
@@ -25,7 +26,7 @@ import {
   watch,
 } from 'vue'
 
-import { useMapContext } from './MapContext'
+import { useMapContext } from '../hooks/useMapContext'
 
 const props = withDefaults(defineProps<ZoomProps>(), {
   center: () => [0, 0] as [number, number],
@@ -44,15 +45,13 @@ const container = ref<SVGGElement | null>(null)
 const context = useMapContext()
 
 const zoomBehavior = computed(() => {
-  return createZoomBehavior(context, {
+  return createZoomBehavior(context?.value, {
     minZoom: props.minZoom,
     maxZoom: props.maxZoom,
     config: props.config,
     onZoomStart: (event) => emit('zoomstart', event),
     onZoom: (event) => {
-      if (container.value) {
-        container.value.setAttribute('transform', event.transform.toString())
-      }
+      applyZoomGroupTransform(container.value, event.transform)
       emit('zoom', event)
     },
     onZoomEnd: (event) => emit('zoomend', event),
@@ -61,25 +60,31 @@ const zoomBehavior = computed(() => {
 
 onMounted(() => {
   watch(
-    () => [zoomBehavior],
-    () => setupZoom({
-      element: container.value,
-      behavior: zoomBehavior.value,
-      center: props.center,
-      zoom: props.zoom,
-    }),
+    zoomBehavior,
+    (behavior) => {
+      if (!container.value) return
+      setupZoom({
+        element: container.value,
+        behavior,
+        center: props.center,
+        zoom: props.zoom,
+      })
+    },
     {
       immediate: true,
     },
   )
   watch(
-    () => [props.center[0], props.center[1], props.zoom],
-    () => applyZoomTransform({
-      element: container.value,
-      behavior: zoomBehavior.value,
-      center: props.center,
-      zoom: props.zoom,
-    }),
+    () => [zoomBehavior.value, props.center[0], props.center[1], props.zoom],
+    () => {
+      if (!container.value) return
+      applyZoomTransform({
+        element: container.value,
+        behavior: zoomBehavior.value,
+        center: props.center,
+        zoom: props.zoom,
+      })
+    },
   )
 })
 

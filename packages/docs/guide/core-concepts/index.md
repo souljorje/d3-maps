@@ -4,9 +4,11 @@ Let's build the map step by step to understand how the library works
 
 <!--@include: ./_data.md-->
 
+<!--@include: ./_data-transform.md-->
+
 <!--@include: ./_projection.md-->
 
-<!--@include: ./_data-transform.md-->
+<!--@include: ./_features.md-->
 
 <!--@include: ./_mesh.md-->
 

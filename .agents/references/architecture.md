@@ -8,9 +8,9 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 ├─ packages/
   ├─ docs/  # VitePress unified docs site
   ├─ core/  # framework-agnostic core utilities (@d3-maps/core)
+  ├─ react/ # React adapter (@d3-maps/react)
   ├─ vue/   # Vue adapter (@d3-maps/vue)
   # planned
-  ├─ react/  # React adapter
   ├─ svelte/ # Svelte adapter
   └─ solid/  # Solid adapter
 ```
@@ -28,7 +28,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | Layer | Package | Responsibility |
 | --- | --- | --- |
 | Core | @d3-maps/core | Framework-agnostic map models, contracts, and behavior utilities. |
-| Adapter | @d3-maps/vue | Framework bindings that consume core contracts/utilities only. |
+| Adapter | @d3-maps/react + @d3-maps/vue | Framework bindings that consume core contracts/utilities only. |
 | Docs | docs | VitePress site, examples, and API reference rendering. |
 
 ## Core Conventions
@@ -39,7 +39,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | Adapter imports | Adapters must never import d3-related libraries directly; import only from `@d3-maps/core`. |
 | Abstraction location | Put reusable abstract logic in packages/core. |
 | Adapter scope | Keep adapters framework-specific and thin wrappers around core. |
-| Public exports | Route public API through packages/core/src/index.ts and packages/vue/src/index.ts. |
+| Public exports | Route public API through packages/core/src/index.ts, packages/react/src/index.ts, and packages/vue/src/index.ts. |
 | Model contracts | Treat `feature.ts`, `marker.ts`, `zoom.ts`, and `mapObject.ts` as shared model/type contracts. |
 
 ## Docs Architecture

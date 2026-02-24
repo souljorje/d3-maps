@@ -15,20 +15,19 @@
 </template>
 
 <script setup lang="ts">
-import type { MapObjectStyles } from '@d3-maps/core'
-import type { StyleValue } from 'vue'
+import type { MapObjectStyles } from '../hooks/useMapObject'
 
 import { getFeatureKey } from '@d3-maps/core'
 import { computed } from 'vue'
 
-import { useMapContext } from './MapContext'
+import { useMapContext } from '../hooks/useMapContext'
 import MapFeature from './MapFeature.vue'
 
 interface Props {
   idKey?: string
   fill?: string
   stroke?: string
-  styles?: MapObjectStyles<StyleValue>
+  styles?: MapObjectStyles
 }
 
 withDefaults(defineProps<Props>(), {
@@ -36,5 +35,5 @@ withDefaults(defineProps<Props>(), {
 })
 
 const context = useMapContext()
-const features = computed(() => (context?.features ?? []))
+const features = computed(() => (context?.value.features ?? []))
 </script>

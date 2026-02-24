@@ -11,7 +11,9 @@ const styles = {
 }
 ```
 
-::: code-group
+:::tabs key:framework
+
+== Vue
 
 ```vue{8,10} [vue]
 <template>
@@ -33,6 +35,28 @@ const styles = {
     </MapZoom>
   </Map>
 </template>
+```
+
+== React
+
+```tsx{7,9} [react]
+<Map
+  data={data}
+  projection={geoMercator}
+  dataTransformer={dataTransformer}
+>
+  <MapZoom>
+    <MapFeatures styles={styles} />
+    <MapMarker
+      styles={styles}
+      coordinates={[-83.0457538, 42.331427]}
+    >
+      <text>Sweet home 🧡</text>
+      <circle r="3" />
+    </MapMarker>
+    <MapMesh stroke="#fff" />
+  </MapZoom>
+</Map>
 ```
 
 :::

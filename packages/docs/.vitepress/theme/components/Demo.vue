@@ -1,6 +1,6 @@
 <template>
   <div class="my-4">
-    <div class="flex justify-start aspect-video">
+    <div class="flex justify-start">
       <component
         :is="componentName"
       />

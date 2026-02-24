@@ -16,9 +16,13 @@ Use this to draw shared borders/edges (for example country boundaries) on top of
 
 ## Events
 
-`mouseenter` `mouseleave` `mousedown` `mouseup` `focus` `blur`
+<!--@include: ./_map-object-events.md-->
 
 ## Usage
+
+:::tabs key:framework
+
+== Vue
 
 ```vue
 <template>
@@ -28,3 +32,14 @@ Use this to draw shared borders/edges (for example country boundaries) on top of
   </Map>
 </template>
 ```
+
+== React
+
+```tsx
+<Map data={topologyData}>
+  <MapFeatures fill="#fff" />
+  <MapMesh stroke="#000" />
+</Map>
+```
+
+:::

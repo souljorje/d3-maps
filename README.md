@@ -1,7 +1,7 @@
 # d3-maps
 
 Reactive SVG maps, powered by D3.  
-Works with Vue. React, Solid, and Svelte support coming soon.
+Works with Vue and React. Solid and Svelte support coming soon.
 
 [![CI](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml/badge.svg)](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml) [![Deploy Docs](https://github.com/souljorje/d3-maps/actions/workflows/docs-deploy.yml/badge.svg)](https://github.com/souljorje/d3-maps/actions/workflows/docs-deploy.yml)
 
@@ -15,7 +15,8 @@ Works with Vue. React, Solid, and Svelte support coming soon.
    - Utilities for custom layers: zoom, choropleth, bubble, etc
 
 2. **Adapters** are framework-specific
-   - Vue / React / Svelte / Solid bindings
+   - Vue and React bindings
+   - Solid and Svelte support coming soon
    - Rendering and reactivity integration
    - Declarative components and composables (hooks)
 
@@ -24,7 +25,7 @@ Adapters depend on the core.
 
 ## Features
 
-- SSR friendly
+- SSR friendly (React: Next.js App Router requires Client Components, RSC entrypoints planned)
 - Lightweight and tree-shakable
 - Automatic rerender
 - Zoom and drag on all devices
@@ -33,19 +34,35 @@ Adapters depend on the core.
 
 ## Installation
 
-### npm
+React adapter requires React 19+
+
+### pnpm
 
 ```bash
 # vue
 pnpm add @d3-maps/vue
-```
 
-Coming soon
-
-```bash
 # react
 pnpm add @d3-maps/react
+```
 
+### npm
+
+```bash
+npm install @d3-maps/vue
+npm install @d3-maps/react
+```
+
+### bun
+
+```bash
+bun add @d3-maps/vue
+bun add @d3-maps/react
+```
+
+Coming soon adapters
+
+```bash
 # solid
 pnpm add @d3-maps/solid
 

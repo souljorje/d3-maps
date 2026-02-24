@@ -20,12 +20,12 @@
 import type { MapFeatureProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
-import type { MapObjectEmit } from '../lib/useMapObject'
+import type { MapObjectEmit } from '../hooks/useMapObject'
 
 import { computed, toRef } from 'vue'
 
-import { useMapObject } from '../lib/useMapObject'
-import { useMapContext } from './MapContext'
+import { useMapContext } from '../hooks/useMapContext'
+import { useMapObject } from '../hooks/useMapObject'
 
 const props = defineProps<MapFeatureProps<StyleValue>>()
 
@@ -33,7 +33,7 @@ const emit = defineEmits<MapObjectEmit>()
 
 const context = useMapContext()
 
-const path = computed(() => context?.renderPath(props.data))
+const path = computed(() => context?.value.renderPath(props.data))
 
 const {
   computedStyle,

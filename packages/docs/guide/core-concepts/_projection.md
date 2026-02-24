@@ -3,9 +3,11 @@
 A map projection transforms the Earth's 3D curved surface into SVG map.  
 It determines how exactly map will look.  
 
-By default `geoEqualEarth` is used in core, but you can provide your own:
+By default `geoNaturalEarth1` is used in core, but you can provide your own:
 
-::: code-group
+:::tabs key:framework
+
+== Vue
 
 ```vue{2,8} [vue]
 <script setup>
@@ -20,6 +22,19 @@ import { geoMercator } from 'd3-geo-projection'
     <MapFeatures />
   </Map>
 </template>
+```
+
+== React
+
+```tsx{1,5} [react]
+import { geoMercator } from 'd3-geo-projection'
+
+<Map
+  data={data}
+  projection={geoMercator}
+>
+  <MapFeatures />
+</Map>
 ```
 
 :::

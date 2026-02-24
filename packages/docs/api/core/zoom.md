@@ -6,6 +6,7 @@
 
 * [Functions](#functions)
   * [applyZoomBehaviorTransform()](#applyzoombehaviortransform)
+  * [applyZoomGroupTransform()](#applyzoomgrouptransform)
   * [applyZoomTransform()](#applyzoomtransform)
   * [attachZoomBehavior()](#attachzoombehavior)
   * [createZoomBehavior()](#createzoombehavior)
@@ -49,6 +50,28 @@ function applyZoomBehaviorTransform(
 | `element` | [`ZoomTargetElement`](#zoomtargetelement) | `null` | `undefined` |
 | `behavior` | [`DefaultZoomBehavior`](#defaultzoombehavior) |
 | `transform` | [`ZoomTransform`](#zoomtransform) |
+
+#### Returns
+
+`void`
+
+***
+
+### applyZoomGroupTransform()
+
+```ts
+function applyZoomGroupTransform(element: Element | null | undefined, transform: 
+  | Pick<ZoomTransform, "toString">
+  | null
+  | undefined): void;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `element` | `Element` | `null` | `undefined` |
+| `transform` | | `Pick`<[`ZoomTransform`](#zoomtransform), `"toString"`> | `null` | `undefined` |
 
 #### Returns
 

@@ -2,7 +2,7 @@ import { describe, expect, expectTypeOf, it } from 'vitest'
 
 import type { GeoPermissibleObjects } from 'd3-geo'
 
-import { geoEqualEarth } from 'd3-geo'
+import { geoNaturalEarth1 } from 'd3-geo'
 
 import {
   isTopology,
@@ -30,7 +30,7 @@ const sphereGeoJson = {
 const PROJECTION_BASE = {
   width: 100,
   height: 100,
-  projection: geoEqualEarth,
+  projection: geoNaturalEarth1,
 }
 
 function makeProjectionFromBase(overrides: Partial<Parameters<typeof makeProjection>[0]> = {}) {
@@ -43,7 +43,7 @@ function makeProjectionFromBase(overrides: Partial<Parameters<typeof makeProject
 describe('makeProjection', () => {
   it('creates projection', () => {
     const projection = makeProjectionFromBase()
-    expectTypeOf(projection).toEqualTypeOf(geoEqualEarth())
+    expectTypeOf(projection).toEqualTypeOf(geoNaturalEarth1())
   })
 
   it('applies full projection config', () => {

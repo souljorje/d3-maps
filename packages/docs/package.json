@@ -33,6 +33,7 @@
     "@types/d3-scale": "catalog:",
     "tailwindcss": "catalog:",
     "vitepress": "catalog:",
+    "vitepress-plugin-tabs": "catalog:",
     "vue-tsc": "catalog:"
   }
 }

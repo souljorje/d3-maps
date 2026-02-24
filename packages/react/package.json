@@ -1,0 +1,73 @@
+{
+  "name": "@d3-maps/react",
+  "type": "module",
+  "version": "0.0.0",
+  "private": false,
+  "description": "React bindings for @d3-maps/core to build reactive D3 SVG maps",
+  "author": "Georgii Bukharov <souljorje@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://souljorje.github.io/d3-maps",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/souljorje/d3-maps.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/souljorje/d3-maps/issues"
+  },
+  "keywords": [
+    "react",
+    "d3",
+    "svg",
+    "map"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "browser": "./dist/index.iife.js"
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "browser": "dist/index.iife.js",
+  "unpkg": "dist/index.iife.js",
+  "jsdelivr": "dist/index.iife.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/*"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "typecheck:test": "tsc -p tsconfig.test.json --noEmit",
+    "build": "pnpm run typecheck && tsdown",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "peerDependencies": {
+    "react": ">=19 <20",
+    "react-dom": ">=19 <20"
+  },
+  "dependencies": {
+    "@d3-maps/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@testing-library/react": "catalog:",
+    "@types/geojson": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@types/topojson-client": "catalog:",
+    "@types/topojson-specification": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "vitest": "catalog:"
+  }
+}

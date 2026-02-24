@@ -9,7 +9,9 @@ function dataTransformer(features) {
 }
 ```
 
-::: code-group
+:::tabs key:framework
+
+== Vue
 
 ```vue{5} [vue]
 <template>
@@ -21,6 +23,18 @@ function dataTransformer(features) {
     <MapFeatures />
   </Map>
 </template>
+```
+
+== React
+
+```tsx{4} [react]
+<Map
+  data={data}
+  projection={geoMercator}
+  dataTransformer={dataTransformer}
+>
+  <MapFeatures />
+</Map>
 ```
 
 :::

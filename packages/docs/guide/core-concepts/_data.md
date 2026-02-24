@@ -5,7 +5,9 @@ Both used for geo data encoding, but **TopoJSON is recommended**, it's smaller.
 
 Just pass `data` prop to render the basic map
 
-::: code-group
+:::tabs key:framework
+
+== Vue
 
 ```vue [vue]
 <template>
@@ -13,6 +15,14 @@ Just pass `data` prop to render the basic map
     <MapFeatures />
   </Map>
 </template>
+```
+
+== React
+
+```tsx [react]
+<Map data={data}>
+  <MapFeatures />
+</Map>
 ```
 
 :::

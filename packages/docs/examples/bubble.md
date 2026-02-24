@@ -4,9 +4,15 @@
 
 <Demo component-name="bubble">
 
-::: code-group
+:::tabs key:framework
 
-<<< ../.vitepress/examples/bubble.vue[vue]
+== Vue
+
+<<< ../.vitepress/examples/bubble.vue
+
+== React
+
+<<< ../.vitepress/examples/react/bubble.tsx
 
 :::
 

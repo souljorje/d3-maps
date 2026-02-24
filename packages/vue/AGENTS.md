@@ -5,7 +5,7 @@
 | --- | --- |
 | Source | packages/vue/src |
 | Components | packages/vue/src/components |
-| Composables/helpers | packages/vue/src/lib |
+| Composables/hooks | packages/vue/src/hooks |
 | Tests | packages/vue/tests |
 | Build output | packages/vue/dist |
 
@@ -14,6 +14,8 @@
 | --- | --- | --- |
 | Package entry | packages/vue/src/index.ts | Public API for Vue adapter. |
 | Components export | packages/vue/src/components/index.ts | Re-export all public components. |
+| Composables export | packages/vue/src/hooks/index.ts | Re-export all public composables and composable types. |
+| Plugin export | packages/vue/src/plugin.ts | Vue plugin entrypoint for component registration. |
 
 ## Commands
 | Command | Purpose |
@@ -26,12 +28,11 @@
 ## Guardrails
 | Rule | Requirement |
 | --- | --- |
+| Required workflow | Must follow [Adapter Development Flow](../../.agents/references/adapter-development-flow.md) for any change in this package. Do not bypass steps. |
 | SFC style | Use `<script setup lang="ts">` and Composition API. |
-| Type contracts | Align component props/events with `@d3-maps/core` contracts. |
-| Exports | Update packages/vue/src/components/index.ts and packages/vue/src/index.ts for public components. |
-| Shared logic | Reuse `@d3-maps/core` helpers; do not duplicate core abstractions in Vue package. |
-| Adapter imports | Never import d3-related libraries directly in adapters; import only from `@d3-maps/core`. |
-| Zoom behavior | Prefer `@d3-maps/core` zoom helpers over direct `d3-zoom` usage. |
+| Emits | Keep Vue emits as lowercase DOM-like events (`mouseenter`, `zoom`, `zoomend`) rather than React-style callbacks. |
+| Vue patterns | Follow the [vue-best-practices](../../.agents/skills/vue-best-practices/SKILL.md) skill for Composition API, typing, and reactivity decisions. |
+| Public exports | Keep public surface routed through packages/vue/src/index.ts (which exports components, composables, and plugin). |
 
 ## Skills
 | Skill | When to use |
@@ -41,5 +42,7 @@
 ## References
 - [Root Guide](../../AGENTS.md)
 - [Core Guide](../core/AGENTS.md)
+- [Agent Meta-Flow](../../.agents/references/agent-meta-flow.md)
+- [Adapter Development Flow](../../.agents/references/adapter-development-flow.md)
 - [Architecture](../../.agents/references/architecture.md)
 - [Code Style](../../.agents/references/code-style.md)

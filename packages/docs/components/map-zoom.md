@@ -32,17 +32,33 @@ Use `config` to call zoom methods before rendering
 
 ## Events
 
+:::tabs key:framework
+
+== Vue
+
 Emits:
 
 - `zoomstart`
 - `zoom`
 - `zoomend`
 
+== React
+
+Callbacks:
+
+- `onZoomStart`
+- `onZoom`
+- `onZoomEnd`
+
+:::
+
 ## Usage
 
-::: code-group
+:::tabs key:framework
 
-```vue [vue]
+== Vue
+
+```vue
 <template>
   <MapZoom
     :min-zoom="1"
@@ -56,6 +72,39 @@ Emits:
     <MapFeatures />
   </MapZoom>
 </template>
+```
+
+== React
+
+```tsx
+<Map
+  data={mapData}
+  projection={geoNaturalEarth1}
+>
+  <MapZoom onZoomEnd={(event) => setMarkerScale(1 / event.transform.k)}>
+    <MapFeatures />
+    {cities.map((item) => (
+      <MapMarker
+        key={item.city}
+        coordinates={[item.lon, item.lat]}
+      >
+        <g transform={`scale(${markerScale})`}>
+          <text
+            fontSize="16"
+            y={-6}
+            textAnchor="middle"
+          >
+            {item.city}
+          </text>
+          <circle
+            fill="#ff6f26"
+            r={3}
+          />
+        </g>
+      </MapMarker>
+    ))}
+  </MapZoom>
+</Map>
 ```
 
 :::

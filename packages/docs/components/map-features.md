@@ -13,13 +13,49 @@ Renders all GeoJSON features from the current map context
 
 ## Usage
 
-::: code-group
+:::tabs key:framework
 
-<<< ../.vitepress/examples/basic.vue[vue]
+== Vue
+
+```vue
+<template>
+  <Map :data="mapData">
+    <MapFeatures
+      fill="darkorange"
+      :styles="{
+        default: { opacity: 0.9 },
+        hover: { opacity: 0.7 },
+        active: { stroke: '#1f2937', strokeWidth: 1.5 },
+      }"
+    />
+    <MapMesh stroke="slategray" />
+  </Map>
+</template>
+```
+
+== React
+
+```tsx
+<Map data={mapData}>
+  <MapFeatures
+    fill="darkorange"
+    styles={{
+      default: { opacity: 0.9 },
+      hover: { opacity: 0.7 },
+      active: { stroke: '#1f2937', strokeWidth: 1.5 },
+    }}
+  />
+  <MapMesh stroke="slategray" />
+</Map>
+```
 
 :::
 
 ## Slots
+
+:::tabs key:framework
+
+== Vue
 
 ```vue
 <template>
@@ -33,3 +69,23 @@ Renders all GeoJSON features from the current map context
   </MapFeatures>
 </template>
 ```
+
+== React
+
+```tsx
+<MapFeatures>
+  {({ features }) => (
+    <g>
+      {features.map((feature) => (
+        <MapFeature
+          key={String(feature.id)}
+          data={feature}
+          fill={String(feature.color)}
+        />
+      ))}
+    </g>
+  )}
+</MapFeatures>
+```
+
+:::

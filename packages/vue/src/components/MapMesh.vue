@@ -17,27 +17,27 @@
 </template>
 
 <script setup lang="ts">
-import type { MapObjectStyles } from '@d3-maps/core'
-import type { StyleValue } from 'vue'
-
-import type { MapObjectEmit } from '../lib/useMapObject'
+import type {
+  MapObjectEmit,
+  MapObjectStyles,
+} from '../hooks/useMapObject'
 
 import { computed, toRef } from 'vue'
 
-import { useMapObject } from '../lib/useMapObject'
-import { useMapContext } from './MapContext'
+import { useMapContext } from '../hooks/useMapContext'
+import { useMapObject } from '../hooks/useMapObject'
 
 interface Props {
   fill?: string
   stroke?: string
-  styles?: MapObjectStyles<StyleValue>
+  styles?: MapObjectStyles
 }
 
 const props = withDefaults(defineProps<Props>(), { fill: 'none' })
 const emit = defineEmits<MapObjectEmit>()
 const context = useMapContext()
 
-const path = computed(() => context?.renderMesh())
+const path = computed(() => context?.value.renderMesh())
 
 const {
   computedStyle,

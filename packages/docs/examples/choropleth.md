@@ -4,9 +4,15 @@
 
 <Demo component-name="choropleth">
 
-::: code-group
+:::tabs key:framework
 
-<<< ../.vitepress/examples/choropleth.vue[vue]
+== Vue
+
+<<< ../.vitepress/examples/choropleth.vue
+
+== React
+
+<<< ../.vitepress/examples/react/choropleth.tsx
 
 :::
 

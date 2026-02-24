@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitepress'
+import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 
 const REPO_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
 const PACKAGES_DIR = path.join(REPO_ROOT, 'packages')
@@ -52,7 +53,20 @@ const docsSidebar = [
     text: 'Guide',
     items: [
       { text: 'Get Started', link: '/guide/' },
-      { text: 'Core Concepts', link: '/guide/core-concepts/' },
+      { text: 'Core Concepts',
+        link: '/guide/core-concepts/',
+        collapsed: false,
+        items: [
+          { text: 'Data', link: '/guide/core-concepts#data' },
+          { text: 'Data transformation', link: '/guide/core-concepts#data-transformation' },
+          { text: 'Projection', link: '/guide/core-concepts#projection' },
+          { text: 'Features', link: '/guide/core-concepts#features' },
+          { text: 'Mesh', link: '/guide/core-concepts#mesh' },
+          { text: 'Zoom', link: '/guide/core-concepts#zoom' },
+          { text: 'Markers', link: '/guide/core-concepts#markers' },
+          { text: 'Styling', link: '/guide/core-concepts#styling' },
+          { text: 'Responsiveness', link: '/guide/core-concepts#responsiveness' },
+        ] },
       { text: 'Troubleshooting', link: '/guide/troubleshooting' },
     ],
   },
@@ -66,6 +80,14 @@ const docsSidebar = [
       { text: 'MapMarker', link: '/components/map-marker' },
       { text: 'MapMesh', link: '/components/map-mesh' },
       { text: 'MapZoom', link: '/components/map-zoom' },
+    ],
+  },
+  {
+    text: 'Hooks',
+    items: [
+      { text: 'Overview', link: '/hooks/' },
+      { text: 'useMapContext', link: '/hooks/use-map-context' },
+      { text: 'useMapObject', link: '/hooks/use-map-object' },
     ],
   },
   {
@@ -130,6 +152,11 @@ export default defineConfig({
     },
     externalLinkIcon: true,
     examples,
+  },
+  markdown: {
+    config(md) {
+      md.use(tabsMarkdownPlugin)
+    },
   },
   vite: {
     plugins: [tailwindcss()],
