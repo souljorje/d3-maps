@@ -4,7 +4,8 @@
 
 ### Minor Changes
 
-- [#10](https://github.com/souljorje/d3-maps/pull/10) [`aa5328d`](https://github.com/souljorje/d3-maps/commit/aa5328dfdb899560765f31df1b13af619e241d5b) Thanks [@souljorje](https://github.com/souljorje)! - - Exported hooks, made map context updates reactive, and refined zoom wiring
+- [#10](https://github.com/souljorje/d3-maps/pull/10) [`aa5328d`](https://github.com/souljorje/d3-maps/commit/aa5328dfdb899560765f31df1b13af619e241d5b) Thanks [@souljorje](https://github.com/souljorje)!
+  - Exported hooks, made map context updates reactive, and refined zoom wiring
   - Reused core shared zoom transform helpers for consistent zoom behavior
 
 ### Patch Changes
