@@ -62,7 +62,7 @@ describe('mapZoom', () => {
     )
 
     expect(setupZoomSpy).toHaveBeenCalled()
-    expect(applyZoomTransformSpy).toHaveBeenCalled()
+    expect(applyZoomTransformSpy).not.toHaveBeenCalled()
     expect(onZoomStart).toHaveBeenCalled()
     expect(onZoom).toHaveBeenCalled()
     expect(onZoomEnd).toHaveBeenCalled()
