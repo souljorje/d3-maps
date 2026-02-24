@@ -20,6 +20,7 @@ vi.mock('@d3-maps/core', async () => {
     ...actual,
     setupZoom: (...args: Parameters<typeof actual.setupZoom>) => {
       setupZoomSpy(...args)
+      applyZoomTransformSpy(...args)
       zoomBehaviorOptions?.onZoomStart?.({ transform: { toString: () => 'translate(1,2) scale(3)' } })
       zoomBehaviorOptions?.onZoom?.({ transform: { toString: () => 'translate(3,4) scale(5)' } })
       zoomBehaviorOptions?.onZoomEnd?.({ transform: { toString: () => 'translate(3,4) scale(5)' } })

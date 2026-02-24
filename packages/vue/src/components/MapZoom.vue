@@ -85,9 +85,6 @@ onMounted(() => {
         zoom: props.zoom,
       })
     },
-    {
-      immediate: true,
-    },
   )
 })
 
