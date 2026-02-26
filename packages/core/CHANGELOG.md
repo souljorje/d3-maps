@@ -4,7 +4,8 @@
 
 ### Minor Changes
 
-- [#14](https://github.com/souljorje/d3-maps/pull/14) [`3b34758`](https://github.com/souljorje/d3-maps/commit/3b34758edcee9536756c819a35f7b18d373d8d7f) Thanks [@souljorje](https://github.com/souljorje)! - - Added `MapGraticule` component
+- [#14](https://github.com/souljorje/d3-maps/pull/14) [`3b34758`](https://github.com/souljorje/d3-maps/commit/3b34758edcee9536756c819a35f7b18d373d8d7f) Thanks [@souljorje](https://github.com/souljorje)! 
+  - Added `MapGraticule` component
   - Simplified map-object interaction APIs and normalized SVG rendering behavior
   - Removed conditional path rendering in map layers and rendered SVG nodes consistently
 
