@@ -1,7 +1,7 @@
 {
   "name": "@d3-maps/react",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "description": "React bindings for @d3-maps/core to build reactive D3 SVG maps",
   "author": "Georgii Bukharov <souljorje@gmail.com>",
