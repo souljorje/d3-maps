@@ -75,6 +75,7 @@ You can define styles for map components via plain CSS
 | [Map](/components/map) | `.d3-map` |
 | [MapFeature](/components/map-feature) | `[name="feature"]` |
 | [MapMesh](/components/map-mesh) | `[name="mesh"]` |
+| [MapMarker](/components/map-marker) | `[name="marker"]` |
 | [MapGraticule](/components/map-graticule) lines | `[name="graticule"]` |
 | [MapGraticule](/components/map-graticule) border | `[name="border"]` |
 | [MapGraticule](/components/map-graticule) background | `[name="background"]` |
