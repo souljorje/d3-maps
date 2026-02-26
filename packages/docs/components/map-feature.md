@@ -8,12 +8,8 @@ Renders a single GeoJSON feature as an SVG `<path>`.
 | --- | --- | --- | --- |
 | `data` | GeoJSON Feature | — | Rendered as an SVG path |
 | `styles?` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/guide/core-concepts/#styling) |
-| `fill?` | `string` | — | SVG presentation prop. |
-| `stroke?` | `string` | — | SVG presentation prop. |
 
-## Events
-
-<!--@include: ./_map-object-events.md-->
+Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeature`.
 
 ## Usage
 

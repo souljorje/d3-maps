@@ -61,8 +61,8 @@ Simply make it with an aspect-ratio wrapper and the `aspect-ratio` prop
 :::
 
 ::: details
-[Map](/components/map) renders an `<svg>` with a `viewBox`.  
+[Map](/components/map) renders an `<svg>` with a `viewBox` and `width="100%" height="auto"`.  
 Hence the **parent element must have height**, otherwise map will collapse.  
-Under the hood `fitSize([width, height], geoJson)` is used. It fits the map perfectly into provided projection.
-`2 / 1` is default aspectRatio
+Under the hood `fitExtent([[1, 1], [width - 1, height - 1]], { type: 'Sphere' }` is used.  
+Overridable with `fitExtent | fitSize | fitWidth | fitHeight` passed to `projectionConfig`.
 :::

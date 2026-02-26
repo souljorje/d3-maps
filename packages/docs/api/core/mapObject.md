@@ -11,10 +11,7 @@
   * [mapObjectState](#mapobjectstate)
 * [Type Aliases](#type-aliases)
   * [MapObject](#mapobject-1)
-  * [MapObjectEvent](#mapobjectevent)
   * [MapObjectEventType](#mapobjecteventtype)
-  * [MapObjectFocusEventType](#mapobjectfocuseventtype)
-  * [MapObjectMouseEventType](#mapobjectmouseeventtype)
   * [MapObjectState](#mapobjectstate-1)
   * [MapObjectStyles](#mapobjectstyles)
 
@@ -85,42 +82,10 @@ type MapObject = GeoGeometryObjects | ExtendedFeature;
 
 ***
 
-### MapObjectEvent
-
-```ts
-type MapObjectEvent<E> = E extends MapObjectFocusEventType ? FocusEvent : MouseEvent;
-```
-
-#### Type Parameters
-
-| Type Parameter |
-| ------ |
-| `E` |
-
-***
-
 ### MapObjectEventType
 
 ```ts
-type MapObjectEventType = 
-  | MapObjectFocusEventType
-  | MapObjectMouseEventType;
-```
-
-***
-
-### MapObjectFocusEventType
-
-```ts
-type MapObjectFocusEventType = "focus" | "blur";
-```
-
-***
-
-### MapObjectMouseEventType
-
-```ts
-type MapObjectMouseEventType = "mouseenter" | "mouseleave" | "mousedown" | "mouseup";
+type MapObjectEventType = "mouseenter" | "mouseleave" | "mousedown" | "mouseup";
 ```
 
 ***

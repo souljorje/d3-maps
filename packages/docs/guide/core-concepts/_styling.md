@@ -7,7 +7,7 @@
 const styles = {
   default: { fill: 'green' }, // default state
   hover: { fill: 'green', opacity: 0.8 }, // on hover
-  active: { fill: 'darkgreen' }, // on click or focus
+  active: { fill: 'darkgreen' }, // on mousedown
 }
 ```
 
@@ -67,19 +67,18 @@ const styles = {
 
 ### CSS
 
-You can define global styles for map components by targeting selectors inside `.d3-map`
+You can define styles for map components via plain CSS
 
-| Component | CSS selector | Default values |
-| --- | --- | --- |
-| Global defaults | `:root` | `--d3-map-stroke-w: 0.5` |
-| [Map](/components/map) | `.d3-map` | `height: 100%; width: auto; max-width: 100%` |
-| [MapFeatures](/components/map-features) | `[name="features"]` | — |
-| [MapFeature](/components/map-feature) | `[name="feature"]` | `stroke-width: var(--d3-map-stroke-w)` |
-| [MapMarker](/components/map-marker) | `[name="marker"]` | — |
-| [MapMesh](/components/map-mesh) | `[name="mesh"]` | `stroke-width: var(--d3-map-stroke-w)` |
-| [MapGraticule](/components/map-graticule) lines | `[name="graticule"]` | `stroke-width: var(--d3-map-stroke-w)` |
-| [MapGraticule](/components/map-graticule) background | `[name="background"]` | `stroke-width: var(--d3-map-stroke-w)` |
-| [MapGraticule](/components/map-graticule) border | `[name="border"]` | `stroke-width: var(--d3-map-stroke-w * 2)` |
-| [MapZoom](/components/map-zoom) content | `[name="zoom"] path` | `vector-effect: non-scaling-stroke` |
+| Component | CSS selector |
+| --- | --- |
+| Global defaults | `:root` |
+| [Map](/components/map) | `.d3-map` |
+| [MapFeature](/components/map-feature) | `[name="feature"]` |
+| [MapMesh](/components/map-mesh) | `[name="mesh"]` |
+| [MapGraticule](/components/map-graticule) lines | `[name="graticule"]` |
+| [MapGraticule](/components/map-graticule) border | `[name="border"]` |
+| [MapGraticule](/components/map-graticule) background | `[name="background"]` |
+| [MapZoom](/components/map-zoom) | `[name="zoom"]` |
 
-Source: [packages/core/src/index.css](https://github.com/souljorje/d3-maps/blob/main/packages/core/src/index.css)
+Source: [packages/core/src/index.css](https://github.com/souljorje/d3-maps/blob/main/packages/core/src/index.css)  
+Example (this site): [packages/docs/.vitepress/theme/custom.css](https://github.com/souljorje/d3-maps/blob/main/packages/docs/.vitepress/theme/custom.css)

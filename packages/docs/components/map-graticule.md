@@ -12,8 +12,9 @@ The outline is drawn as two paths: fill under lines and border over lines
 | `config?` | [GraticuleConfig](/api/core/graticule#graticuleconfig) | — | See [config](#config) below |
 | `background?` | `boolean \| string` | — | `true` renders background outline with no inline fill, `string` sets outline fill color |
 | `border?` | `boolean \| string` | — | `true` renders border outline with no inline stroke, `string` sets outline stroke color |
-| `stroke?` | `string` | — | Graticule lines stroke color |
 | `styles?` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | Applies map-object interaction styles to the lines path |
+
+Use native SVG presentation attrs like `stroke` directly on `MapGraticule` lines.
 
 ## Config
 
@@ -28,10 +29,6 @@ Use `config` to call graticule generator methods before rendering
 - single non-array arg: can be passed as it is or wrapped with an array
 - multiple args / single array arg: wrapped with an array
 - See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#geoGraticule)
-
-## Events
-
-<!--@include: ./_map-object-events.md-->
 
 ## Usage
 

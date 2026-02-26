@@ -5,7 +5,7 @@ Works with your favorite framework, batteries included.
 
 ## Architecture
 
-**Core** hides framework-agnostic complex logic under the hood *(you won't see it)*
+**Core** provides framework-agnostic complex logic *(you won't see it)*
 
 - Context creation, data transformation
 - Map layers types and models: features, markers, zoom, etc
@@ -13,7 +13,7 @@ Works with your favorite framework, batteries included.
 
 **Adapters** implement the core in a simple way *(you'll see it)*
 
-- Vue and React bindings, Solid and Svelte coming soon
+- Vue and React bindings (Solid and Svelte coming soon)
 - Rendering and reactivity integration
 - Declarative components and composables
 

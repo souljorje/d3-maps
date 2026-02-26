@@ -9,10 +9,6 @@ Positions anything on the map based on coordinates
 | `coordinates?` | `[number, number]` | — | Marker coordinates in `[longitude, latitude]` format. |
 | `styles?` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
-## Events
-
-<!--@include: ./_map-object-events.md-->
-
 ## Usage
 
 :::tabs key:framework

@@ -12,10 +12,7 @@ Used internally by [MapFeature](/components/map-feature), [MapMarker](/component
 
 ```vue
 <script setup lang="ts">
-import type {
-  MapObjectEmit,
-  MapObjectStyles,
-} from '@d3-maps/vue'
+import type { MapObjectStyles } from '@d3-maps/vue'
 
 import { useMapObject } from '@d3-maps/vue'
 
@@ -25,7 +22,6 @@ interface Props {
 
 defineProps<Props>()
 
-const emit = defineEmits<MapObjectEmit>()
 const styles: MapObjectStyles = {
   default: {
     opacity: 0.9,
@@ -38,27 +34,14 @@ const styles: MapObjectStyles = {
   },
 }
 
-const {
-  computedStyle,
-  onMouseEnter,
-  onMouseLeave,
-  onMouseDown,
-  onMouseUp,
-  onFocus,
-  onBlur,
-} = useMapObject(emit, styles)
+const { style, ...events } = useMapObject(styles)
 </script>
 
 <template>
   <path
     :d="d"
-    :style="computedStyle"
-    @mouseenter="onMouseEnter"
-    @mouseleave="onMouseLeave"
-    @mousedown="onMouseDown"
-    @mouseup="onMouseUp"
-    @focus="onFocus"
-    @blur="onBlur"
+    :style="style"
+    v-bind="events"
   />
 </template>
 ```
@@ -83,30 +66,15 @@ export function CustomFeaturePath({ d }: { d: string }) {
     },
   }
 
-  const {
-    computedStyle,
-    onMouseEnter,
-    onMouseLeave,
-    onMouseDown,
-    onMouseUp,
-    onClick,
-    onFocus,
-    onBlur,
-  } = useMapObject<SVGPathElement>({
+  const { style, ...events } = useMapObject<SVGPathElement>({
     styles,
   })
 
   return (
     <path
       d={d}
-      style={computedStyle}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onClick={onClick}
-      onFocus={onFocus}
-      onBlur={onBlur}
+      style={style}
+      {...events}
     />
   )
 }
