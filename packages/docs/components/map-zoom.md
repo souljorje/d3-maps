@@ -18,14 +18,7 @@ Wrap layers that should be zoomed inside [MapZoom](/components/map-zoom).
 
 Use `config` to call zoom methods before rendering
 
-```ts
-{
-  [methodName]: args[] | arg
-}
-```
-
-- single non-array arg: can be passed as it is or wrapped with an array
-- multiple args / single array arg: wrapped with an array
+<!--@include: ./_modifiers-args-shape.md-->
 
 - See available methods in [d3-zoom docs](https://d3js.org/d3-zoom)
 - See usage example below

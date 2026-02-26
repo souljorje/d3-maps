@@ -18,13 +18,7 @@ Renders the root `<svg>` and provides a reactive map context to children.
 
 Use `projectionConfig` to call projection methods before rendering
 
-```ts
-{
-  [methodName]: methodArgs[] | methodArg
-}
-```
-- single non-array arg: can be passed as it is or wrapped with an array
-- multiple args / single array arg: wrapped with an array
+<!--@include: ./_modifiers-args-shape.md-->
 
 See available methods in [d3-geo projection docs](https://d3js.org/d3-geo/projection)  
 and usage example below

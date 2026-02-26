@@ -1,13 +1,14 @@
 <template>
   <g>
     <path
-      v-if="showBackground"
+      v-if="background"
       :d="outlinePath"
       :fill="backgroundColor"
       pointer-events="none"
       name="background"
     />
     <path
+      v-if="graticulePath"
       :d="graticulePath"
       fill="none"
       :style="style"
@@ -15,7 +16,7 @@
       name="graticule"
     />
     <path
-      v-if="showBorder"
+      v-if="border"
       :d="outlinePath"
       fill="none"
       :stroke="borderColor"
@@ -28,11 +29,10 @@
 <script setup lang="ts">
 import type { GraticuleConfig } from '@d3-maps/core'
 
-import type {
-  MapObjectStyles,
-} from '../hooks/useMapObject'
+import type { MapObjectStyles } from '../hooks/useMapObject'
 
 import {
+  isString,
   renderGraticule,
   renderOutline,
 } from '@d3-maps/core'
@@ -51,6 +51,10 @@ interface Props {
   styles?: MapObjectStyles
 }
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const props = defineProps<Props>()
 const context = useMapContext()
 
@@ -59,20 +63,17 @@ const graticulePath = computed(() => {
   return renderGraticule(context.value, props.config) ?? undefined
 })
 
-const showBackground = computed(() => props.background === true || typeof props.background === 'string')
-const showBorder = computed(() => props.border === true || typeof props.border === 'string')
-const backgroundColor = computed(() => (
-  typeof props.background === 'string' ? props.background : undefined
-))
-const borderColor = computed(() => (
-  typeof props.border === 'string' ? props.border : undefined
-))
-const shouldRenderOutline = computed(() => showBackground.value || showBorder.value)
-
 const outlinePath = computed(() => {
-  if (!shouldRenderOutline.value || !context?.value) return undefined
+  if (!context?.value) return undefined
   return renderOutline(context.value) ?? undefined
 })
+
+const backgroundColor = computed(() => (
+  isString(props.background) ? props.background : undefined
+))
+const borderColor = computed(() => (
+  isString(props.border) ? props.border : undefined
+))
 
 const { style, ...events } = useMapObject(toRef(props, 'styles'))
 </script>
