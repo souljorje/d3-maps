@@ -6,7 +6,7 @@ Wrap layers that should be zoomed inside [MapZoom](/components/map-zoom).
 
 ## Props
 
-| Parameter | Type | Default value | Description |
+| Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `center?` | `[number, number]` | `[0, 0]` | Initial center for zoom behavior |
 | `zoom?` | `number` | `1` | Initial zoom level |
@@ -64,7 +64,7 @@ Callbacks:
     :min-zoom="1"
     :max-zoom="6"
     :config="{
-      translateExtent: [[[0, 0], [1200, 800]]] // array wrapper required
+      translateExtent: [[[0, 0], [1200, 800]]], // array wrapper required
       duration: 250, // single argument can be passed as it is
       clickDistance: [8], // also can be array-wrapped
     }"
@@ -77,34 +77,17 @@ Callbacks:
 == React
 
 ```tsx
-<Map
-  data={mapData}
-  projection={geoNaturalEarth1}
+<MapZoom
+  minZoom={1}
+  maxZoom={6}
+  config={{
+    translateExtent: [[[0, 0], [1200, 800]]], // array wrapper required
+    duration: 250, // single argument can be passed as it is
+    clickDistance: [8], // also can be array-wrapped
+  }}
 >
-  <MapZoom onZoomEnd={(event) => setMarkerScale(1 / event.transform.k)}>
-    <MapFeatures />
-    {cities.map((item) => (
-      <MapMarker
-        key={item.city}
-        coordinates={[item.lon, item.lat]}
-      >
-        <g transform={`scale(${markerScale})`}>
-          <text
-            fontSize="16"
-            y={-6}
-            textAnchor="middle"
-          >
-            {item.city}
-          </text>
-          <circle
-            fill="#ff6f26"
-            r={3}
-          />
-        </g>
-      </MapMarker>
-    ))}
-  </MapZoom>
-</Map>
+  <MapFeatures />
+</MapZoom>
 ```
 
 :::

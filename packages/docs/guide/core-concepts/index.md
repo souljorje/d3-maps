@@ -1,3 +1,7 @@
+---
+next: false
+---
+
 # Core concepts
 
 Let's build the map step by step to understand how the library works  
@@ -12,6 +16,8 @@ Let's build the map step by step to understand how the library works
 
 <!--@include: ./_mesh.md-->
 
+<!--@include: ./_graticule.md-->
+
 <!--@include: ./_zoom.md-->
 
 <!--@include: ./_markers.md-->
@@ -20,10 +26,9 @@ Let's build the map step by step to understand how the library works
 
 <!--@include: ./_responsiveness.md-->
 
+## That's it
 
-## Next
+What's next?
 
-That's it! What's next?
-
-- Explore live [examples](/examples/)
-- Review all [components](/components/)
+- Explore [examples](/examples/)
+- Check out [components](/components/)

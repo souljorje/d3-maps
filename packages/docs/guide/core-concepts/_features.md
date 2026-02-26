@@ -1,16 +1,18 @@
 ## Features
 
 Map feature is geographic entity, e.g. country or state.  
-[MapFeatures](/components/map-features) render all features internally, [MapFeature](/components/map-feature) renders a single feature. Switch to slot/render-function mode when each feature needs custom render logic
+[MapFeatures](/components/map-features) render all features internally, [MapFeature](/components/map-feature) renders a single one.  
+Switch to slot/render-function when each feature needs custom render logic.
 
 :::tabs key:framework
 
 == Vue
 
-```vue{6-14} [vue]
+```vue{7-15} [vue]
 <template>
   <Map
     :data="data"
+    :data-transformer="dataTransformer"
     :projection="geoMercator"
   >
     <MapFeatures>
@@ -28,9 +30,10 @@ Map feature is geographic entity, e.g. country or state.
 
 == React
 
-```tsx{5-16} [react]
+```tsx{6-17} [react]
 <Map
   data={data}
+  dataTransformer={dataTransformer}
   projection={geoMercator}
 >
   <MapFeatures>

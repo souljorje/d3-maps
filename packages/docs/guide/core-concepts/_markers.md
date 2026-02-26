@@ -23,6 +23,7 @@ Add any points to the map with [MapMarker](/components/map-marker)
         <circle r="3" />
       </MapMarker>
       <MapMesh stroke="#fff" />
+      <MapGraticule stroke="#cbd5e1" />
     </MapZoom>
   </Map>
 </template>
@@ -43,6 +44,7 @@ Add any points to the map with [MapMarker](/components/map-marker)
       <circle r="3" />
     </MapMarker>
     <MapMesh stroke="#fff" />
+    <MapGraticule stroke="#cbd5e1" />
   </MapZoom>
 </Map>
 ```

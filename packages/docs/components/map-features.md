@@ -4,7 +4,7 @@ Renders all GeoJSON features from the current map context
 
 ## Props
 
-| Parameter | Type | Default value | Description |
+| Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `idKey?` | `string` | `id` | Resolves feature key via `feature[idKey]`, then `feature.properties[idKey]` |
 | `fill?` | `string` | — | Forwarded to [MapFeature](/components/map-feature#props) in default rendering mode |

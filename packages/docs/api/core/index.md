@@ -3,6 +3,7 @@
 ## Modules
 
 * [feature](feature.md)
+* [graticule](graticule.md)
 * [map](map.md)
 * [mapObject](mapObject.md)
 * [marker](marker.md)

@@ -6,12 +6,15 @@ import type {
 import {
   Map,
   MapFeatures,
+  MapGraticule,
   MapMarker,
+  MapMesh,
   MapZoom,
 } from '@d3-maps/react'
 import { geoNaturalEarth1 } from 'd3-geo'
 import {
   useEffect,
+  useRef,
   useState,
 } from 'react'
 import { withBase } from 'vitepress'
@@ -35,6 +38,7 @@ const initialCities: City[] = [
 export default function ZoomExample(): JSX.Element | null {
   const [mapData, setMapData] = useState<MapData>()
   const [markerScale, setMarkerScale] = useState(1)
+  const currentZoomRef = useRef(1)
 
   useEffect(() => {
     let isCancelled = false
@@ -56,6 +60,11 @@ export default function ZoomExample(): JSX.Element | null {
   }, [])
 
   function updateMarkerScale(event: ZoomEvent): void {
+    if (currentZoomRef.current === event.transform.k) {
+      return
+    }
+
+    currentZoomRef.current = event.transform.k
     setMarkerScale(1 / event.transform.k)
   }
 
@@ -65,8 +74,10 @@ export default function ZoomExample(): JSX.Element | null {
           data={mapData}
           projection={geoNaturalEarth1}
         >
-          <MapZoom onZoomEnd={updateMarkerScale}>
+          <MapZoom onZoom={updateMarkerScale}>
+            <MapGraticule border />
             <MapFeatures />
+            <MapMesh />
             {
               initialCities.map((item) => (
                 <MapMarker
@@ -75,14 +86,13 @@ export default function ZoomExample(): JSX.Element | null {
                 >
                   <g transform={`scale(${markerScale})`}>
                     <text
-                      fontSize="16"
-                      y={-6}
+                      fontSize="14"
+                      y={-8}
                       textAnchor="middle"
                     >
                       {item.city}
                     </text>
                     <circle
-                      fill="#ff6f26"
                       r={3}
                     />
                   </g>

@@ -1,10 +1,57 @@
 @import 'tailwindcss';
 
 :root {
-  --vp-c-brand-1: #dd4a00;
-  --vp-c-brand-2: #e94e00;
-  --vp-c-brand-3: #ea570d;
+  --vp-c-orange-1: #e04600;
+  --vp-c-orange-2: #e85d14;
+  --vp-c-orange-3: #ef7234;
+  --vp-c-brand-1: var(--vp-c-orange-1);
+  --vp-c-brand-2: var(--vp-c-orange-2);
+  --vp-c-brand-3: var(--vp-c-orange-3);
   --vp-home-hero-name-color: var(--vp-c-brand-3);
+}
+
+.d3-map {
+  [name='border']:not([stroke]) {
+    stroke: var(--vp-c-border);
+  }
+  [name='background']:not([fill]) {
+    fill: var(--vp-c-bg-alt);
+  }
+  [name='graticule']:not([stroke]) {
+    stroke: var(--vp-c-divider);
+  }
+  [name='mesh']:not([stroke]) {
+    stroke: var(--vp-c-border);
+  }
+  [name='feature']:not([fill]) {
+    fill: var(--vp-c-text-1);
+  }
+  [name='marker'] {
+    text {
+      fill: var(--vp-c-brand-3);
+      font-weight: bold;
+      font-family: monospace;
+    }
+    circle {
+      fill: var(--vp-c-brand-3)
+    }
+  }
+}
+
+.vue {
+  color: #42b883;
+}
+
+.react {
+  color: #58c4dc;
+}
+
+.svelte {
+  color: #ff3e00;
+}
+
+.solid {
+  color: #60a5fa;
 }
 
 @keyframes glowing {
@@ -62,3 +109,10 @@
   }
 }
 
+.dark {
+  .VPHome {
+    .image {
+      filter: brightness(0.9);
+    }
+  }
+}

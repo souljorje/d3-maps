@@ -4,7 +4,7 @@ Renders the root `<svg>` and provides a reactive map context to children.
 
 ## Props
 
-| Parameter | Type | Default value | Description |
+| Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `data` | [MapData](/api/core/map#mapdata) | — | TopoJSON or GeoJSON |
 | `width?` | `number` | `600` | Internal width used by projection fitting and path rendering. |
@@ -37,6 +37,8 @@ and usage example below
 
 ```vue
 <script setup lang="ts">
+import type { MapData } from '@d3-maps/core'
+
 import { geoMercator } from 'd3-geo'
 </script>
 
@@ -48,7 +50,7 @@ import { geoMercator } from 'd3-geo'
     :projection="geoMercator"
     :projection-config="{
       rotate: [[0, 12]], // array wrapper required
-      scale: 200 // single argument can be passed as it is
+      scale: 200, // single argument can be passed as it is
       precision: [0.1], // also can be array-wrapped
     }"
   >
@@ -74,7 +76,7 @@ export function Example({ data }: { data: MapData }) {
       projection={geoMercator}
       projectionConfig={{
         rotate: [[0, 12]], // array wrapper required
-        scale: 200 // single argument can be passed as it is
+        scale: 200, // single argument can be passed as it is
         precision: [0.1], // also can be array-wrapped
       }}
     >

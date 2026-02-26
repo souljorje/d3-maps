@@ -3,7 +3,9 @@ import type { MapData } from '@d3-maps/core'
 import {
   Map,
   MapFeatures,
+  MapGraticule,
   MapMarker,
+  MapMesh,
 } from '@d3-maps/react'
 import { useEffect, useState } from 'react'
 import { withBase } from 'vitepress'
@@ -49,7 +51,9 @@ export default function MarkersExample(): JSX.Element | null {
   return mapData
     ? (
         <Map data={mapData}>
-          <MapFeatures />
+          <MapGraticule border />
+          <MapFeatures fill="var(--vp-c-neutral-inverse)" />
+          <MapMesh />
           {
             cities.map((item) => (
               <MapMarker
@@ -57,14 +61,13 @@ export default function MarkersExample(): JSX.Element | null {
                 coordinates={[item.lon, item.lat]}
               >
                 <text
-                  fontSize="16"
+                  fontSize="14"
                   y={-6}
                   textAnchor="middle"
                 >
                   {item.city}
                 </text>
                 <circle
-                  fill="#ff6f26"
                   r={3}
                 />
               </MapMarker>

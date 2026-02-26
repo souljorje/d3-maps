@@ -3,8 +3,9 @@
     v-if="data"
     :data="data"
   >
-    <MapFeatures />
-    <MapMesh stroke="slategray" />
+    <MapGraticule border />
+    <MapFeatures fill="var(--vp-c-neutral-inverse)" />
+    <MapMesh />
     <MapMarker
       v-for="item in cities"
       :key="item.city"
@@ -12,12 +13,10 @@
     >
       <text
         font-size="14"
-        y="-8"
+        y="-6"
         text-anchor="middle"
-        fill="darkorange"
       >{{ item.city }}</text>
       <circle
-        fill="darkorange"
         r="3"
       />
     </MapMarker>

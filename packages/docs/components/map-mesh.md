@@ -8,7 +8,7 @@ Use this to draw shared borders/edges (for example country boundaries) on top of
 
 ## Props
 
-| Parameter | Type | Default value | Description |
+| Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `styles?` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/guide/core-concepts/#styling) |
 | `fill?` | `string` | 'none' | SVG presentation prop. |

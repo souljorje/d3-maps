@@ -16,13 +16,14 @@
           :coordinates="[item.longitude, item.latitude]"
         >
           <circle
-            fill="#ff6f2695"
+            fill="var(--vp-c-brand)"
+            style="opacity: 0.85;"
             :r="setSize(item)"
             :transform="`scale(${markerScale})`"
           />
         </MapMarker>
       </g>
-      <MapMesh stroke="slategray" />
+      <MapMesh />
     </MapZoom>
   </Map>
 </template>

@@ -3,12 +3,16 @@ import type { MapData } from '@d3-maps/core'
 import {
   Map,
   MapFeatures,
+  MapGraticule,
   MapMesh,
 } from '@d3-maps/react'
-import { useEffect, useState } from 'react'
+import {
+  useEffect,
+  useState,
+} from 'react'
 import { withBase } from 'vitepress'
 
-export default function BasicExample(): JSX.Element | null {
+export default function GraticuleExample(): JSX.Element | null {
   const [mapData, setMapData] = useState<MapData>()
 
   useEffect(() => {
@@ -33,6 +37,10 @@ export default function BasicExample(): JSX.Element | null {
   return mapData
     ? (
         <Map data={mapData}>
+          <MapGraticule
+            background
+            border
+          />
           <MapFeatures />
           <MapMesh />
         </Map>

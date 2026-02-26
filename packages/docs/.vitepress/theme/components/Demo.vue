@@ -1,6 +1,6 @@
 <template>
   <div class="my-4">
-    <div class="flex justify-start">
+    <div class="flex justify-start aspect-2/1">
       <component
         :is="componentName"
       />

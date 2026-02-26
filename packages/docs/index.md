@@ -3,7 +3,7 @@ layout: home
 hero:
   name: d3-maps
   text: Reactive SVG maps, powered by D3
-  tagline: Works with Vue and React. Solid and Svelte coming soon
+  tagline: Works with <span class="vue">Vue</span> and <span class="react">React</span>.<br/><span class="svelte">Svelte</span> and <span class="solid">Solid</span> coming soon.
   image:
     src: /d3-maps-logo.svg
     alt: d3-maps logo

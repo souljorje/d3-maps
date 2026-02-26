@@ -9,18 +9,16 @@
         v-for="feature in features"
         :key="String(feature.id)"
         :data="feature"
+        :style="{
+          fill: feature.color,
+          stroke: '#777',
+        }"
         :styles="{
-          default: {
-            fill: feature.color,
-          },
           hover: {
-            fill: feature.color,
-            stroke: 'black',
             opacity: 0.8,
           },
         }"
       />
-      <MapMesh stroke="gray" />
     </MapFeatures>
   </Map>
 </template>
@@ -50,7 +48,7 @@ const colorScale = computed(() => {
   ]
   return scaleLinear<string>()
     .domain(safeDomain)
-    .range(['beige', 'darkorange'])
+    .range(['#e0460030', '#e04600'])
 })
 
 onMounted(async () => {
@@ -87,7 +85,7 @@ async function fetchData() {
 function dataTransformer(features: any[]) {
   return features.map((feature) => {
     const country = choroplethData.value.find((item) => item.id === feature.id)
-    const colorValue = country ? colorScale.value(country.value) : '#eee'
+    const colorValue = country ? colorScale.value(country.value) : ''
 
     return { ...feature, color: colorValue }
   })

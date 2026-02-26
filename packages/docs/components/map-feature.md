@@ -4,7 +4,7 @@ Renders a single GeoJSON feature as an SVG `<path>`.
 
 ## Props
 
-| Parameter | Type | Default value | Description |
+| Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `data` | GeoJSON Feature | — | Rendered as an SVG path |
 | `styles?` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/guide/core-concepts/#styling) |
