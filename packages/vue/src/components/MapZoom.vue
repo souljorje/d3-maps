@@ -1,7 +1,7 @@
 <template>
   <g
     ref="container"
-    class="d3-map-zoom"
+    name="zoom"
   >
     <slot />
   </g>

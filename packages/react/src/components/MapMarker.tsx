@@ -67,6 +67,7 @@ export function MapMarker({
       {...groupProps}
       transform={transform}
       style={computedStyle}
+      name="marker"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseDown={handleMouseDown}

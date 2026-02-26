@@ -76,7 +76,6 @@ describe('makeProjection', () => {
 
   it('applies fitSize from config', () => {
     const projection = makeProjectionFromBase({
-      geoJson: sphereGeoJson,
       config: {
         fitSize: [[100, 80], sphereGeoJson],
       },
@@ -88,7 +87,6 @@ describe('makeProjection', () => {
 
   it('applies fitExtent from config', () => {
     const projection = makeProjectionFromBase({
-      geoJson: sphereGeoJson,
       config: {
         fitExtent: [[[0, 0], [100, 80]], sphereGeoJson],
       },
@@ -100,7 +98,6 @@ describe('makeProjection', () => {
 
   it('applies fitWidth from config', () => {
     const projection = makeProjectionFromBase({
-      geoJson: sphereGeoJson,
       config: {
         fitWidth: [120, sphereGeoJson],
       },
@@ -112,7 +109,6 @@ describe('makeProjection', () => {
 
   it('applies fitHeight from config', () => {
     const projection = makeProjectionFromBase({
-      geoJson: sphereGeoJson,
       config: {
         fitHeight: [90, sphereGeoJson],
       },
@@ -125,10 +121,10 @@ describe('makeProjection', () => {
 
 describe('makeFeatures', () => {
   it('returns features from geojson and runs transformer', () => {
-    const [features, geoJson] = makeFeatures(sampleGeoJson, (items) => items.slice(0, 1))
+    const features = makeFeatures(sampleGeoJson, (items) => items.slice(0, 1))
 
     expect(features).toHaveLength(1)
-    expect(geoJson.features[0].properties?.id).toBe('demo')
+    expect(features[0].properties?.id).toBe('demo')
   })
 })
 
@@ -157,14 +153,11 @@ describe('makeMapContext', () => {
     expect(context.height).toBe(300)
     expect(context.features).toHaveLength(1)
     expect(typeof context.path(context.features[0])).toBe('string')
-    expect(context.mesh).toBeUndefined()
     expect(context.renderMesh()).toBeNull()
   })
 
   it('includes mesh helpers for topology input', () => {
     const context = makeMapContext({ data: sampleTopology })
-
-    expect(context.mesh?.type).toBe('MultiLineString')
     expect(typeof context.renderMesh()).toBe('string')
   })
 })

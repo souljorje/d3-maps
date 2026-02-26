@@ -2,6 +2,7 @@
   <g
     :transform="transform"
     :style="computedStyle"
+    name="marker"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
     @mousedown="onMouseDown"

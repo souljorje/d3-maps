@@ -1,9 +1,23 @@
-.d3-map {
-  height: 100%;
-  width: auto;
-  max-width: 100%;
-  stroke-width: 0.5
+:root {
+  --d3-map-stroke-w: 0.5;
 }
-.d3-map-zoom path {
-  vector-effect: non-scaling-stroke;
+.d3-map {
+  [name="mesh"] {
+    stroke-width: var(--d3-map-stroke-w)
+  }
+  [name="border"] {
+    stroke-width: var(--d3-map-stroke-w * 2)
+  }
+  [name="background"] {
+    stroke-width: var(--d3-map-stroke-w)
+  }
+  [name="graticule"] {
+    stroke-width: var(--d3-map-stroke-w)
+  }
+  [name="zoom"] path {
+    vector-effect: non-scaling-stroke;
+  }
+  [name="feature"] {
+    stroke-width: var(--d3-map-stroke-w)
+  }
 }

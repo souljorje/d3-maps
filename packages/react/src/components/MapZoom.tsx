@@ -123,6 +123,7 @@ export function MapZoom({
       {...groupProps}
       ref={containerRef}
       className={mergedClassName}
+      name="zoom"
     >
       {children}
     </g>

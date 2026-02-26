@@ -66,6 +66,7 @@ export function MapMesh({
           style={computedStyle}
           fill={fill}
           stroke={stroke}
+          name="mesh"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onMouseDown={handleMouseDown}

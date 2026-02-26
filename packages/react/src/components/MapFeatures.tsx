@@ -46,7 +46,7 @@ export function MapFeatures({
     : children
 
   return (
-    <g>
+    <g name="features">
       {
         resolvedChildren
         ?? features.map((feature, index) => (

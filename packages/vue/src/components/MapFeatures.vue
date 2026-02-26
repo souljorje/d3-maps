@@ -1,5 +1,5 @@
 <template>
-  <g>
+  <g name="features">
     <slot :features="features">
       <MapFeature
         v-for="(feature, index) in features"

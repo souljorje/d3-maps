@@ -33,7 +33,7 @@ export function MapFeature({
   const context = useMapContext()
 
   const path = useMemo(() => {
-    return context?.renderPath(data) ?? null
+    return context?.path(data) ?? null
   }, [context, data])
 
   const {
@@ -64,6 +64,7 @@ export function MapFeature({
           style={computedStyle}
           fill={fill}
           stroke={stroke}
+          name="feature"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onMouseDown={handleMouseDown}

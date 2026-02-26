@@ -6,6 +6,7 @@
     :fill="fill"
     :stroke="stroke"
     v-bind="$attrs"
+    name="feature"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
     @mousedown="onMouseDown"
@@ -33,7 +34,7 @@ const emit = defineEmits<MapObjectEmit>()
 
 const context = useMapContext()
 
-const path = computed(() => context?.value.renderPath(props.data))
+const path = computed(() => context?.value.path(props.data))
 
 const {
   computedStyle,

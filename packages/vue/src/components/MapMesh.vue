@@ -6,6 +6,7 @@
     :fill="fill"
     :stroke="stroke"
     v-bind="$attrs"
+    name="mesh"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
     @mousedown="onMouseDown"
