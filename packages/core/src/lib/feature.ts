@@ -17,8 +17,6 @@ export type MapFeature = (ExtendedFeature & Record<string, unknown>) | ExtendedF
 export interface MapFeatureProps<TStyle = unknown> {
   data: MapFeature
   styles?: MapObjectStyles<TStyle>
-  fill?: string
-  stroke?: string
 }
 
 /**

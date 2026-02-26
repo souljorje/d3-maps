@@ -22,7 +22,6 @@ export interface MapGraticuleProps
   config?: GraticuleConfig
   background?: boolean | string
   border?: boolean | string
-  stroke?: string
   styles?: MapObjectStyles
 }
 
@@ -30,21 +29,18 @@ export function MapGraticule({
   config,
   background,
   border,
-  stroke,
   styles,
   onMouseEnter,
   onMouseLeave,
   onMouseDown,
   onMouseUp,
-  onClick,
-  onFocus,
-  onBlur,
   ...pathProps
 }: MapGraticuleProps): ReactElement | null {
   const context = useMapContext()
 
   const graticulePath = useMemo(() => {
-    return context ? renderGraticule(context, config) : null
+    if (!context) return undefined
+    return renderGraticule(context, config) ?? undefined
   }, [context, config])
 
   const showBackground = background === true || typeof background === 'string'
@@ -54,70 +50,49 @@ export function MapGraticule({
   const shouldRenderOutline = showBackground || showBorder
 
   const outlinePath = useMemo(() => {
-    if (!context || !shouldRenderOutline) return null
-    return renderOutline(context)
+    if (!context || !shouldRenderOutline) return undefined
+    return renderOutline(context) ?? undefined
   }, [context, shouldRenderOutline])
 
-  const {
-    computedStyle,
-    onMouseEnter: handleMouseEnter,
-    onMouseLeave: handleMouseLeave,
-    onMouseDown: handleMouseDown,
-    onMouseUp: handleMouseUp,
-    onClick: handleClick,
-    onFocus: handleFocus,
-    onBlur: handleBlur,
-  } = useMapObject<SVGPathElement>({
+  const { style, ...events } = useMapObject<SVGPathElement>({
     styles,
     onMouseEnter,
     onMouseLeave,
     onMouseDown,
     onMouseUp,
-    onClick,
-    onFocus,
-    onBlur,
   })
 
-  return graticulePath
-    ? (
-        <g>
-          {showBackground && outlinePath
-            ? (
-                <path
-                  d={outlinePath}
-                  fill={backgroundColor}
-                  name="background"
-                  pointerEvents="none"
-                />
-              )
-            : null}
-          <path
-            {...pathProps}
-            d={graticulePath}
-            style={computedStyle}
-            fill="none"
-            stroke={stroke}
-            name="graticule"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
-            onClick={handleClick}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-          />
-          {showBorder && outlinePath
-            ? (
-                <path
-                  d={outlinePath}
-                  fill="none"
-                  stroke={borderColor}
-                  name="border"
-                  pointerEvents="none"
-                />
-              )
-            : null}
-        </g>
-      )
-    : null
+  return (
+    <g>
+      {showBackground
+        ? (
+            <path
+              d={outlinePath ?? undefined}
+              fill={backgroundColor}
+              name="background"
+              pointerEvents="none"
+            />
+          )
+        : null}
+      <path
+        {...pathProps}
+        d={graticulePath ?? undefined}
+        style={style}
+        fill="none"
+        name="graticule"
+        {...events}
+      />
+      {showBorder
+        ? (
+            <path
+              d={outlinePath ?? undefined}
+              fill="none"
+              stroke={borderColor}
+              name="border"
+              pointerEvents="none"
+            />
+          )
+        : null}
+    </g>
+  )
 }

@@ -160,13 +160,15 @@ describe('mapGraticule', () => {
     expect(onMouseUp).toHaveBeenCalledTimes(1)
   })
 
-  it('does not render outside map context', () => {
+  it('renders graticule path outside map context without geometry', () => {
     const { container } = render(
       <svg>
         <MapGraticule />
       </svg>,
     )
 
-    expect(container.querySelector('path')).toBeNull()
+    const paths = container.querySelectorAll('path')
+    expect(paths).toHaveLength(1)
+    expect(paths[0]?.getAttribute('d')).toBeNull()
   })
 })

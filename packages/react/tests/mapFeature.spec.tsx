@@ -13,14 +13,16 @@ import {
 import { sampleGeoJson } from './fixtures'
 
 describe('mapFeature', () => {
-  it('does not render without map context', () => {
+  it('renders path without map context', () => {
     const { container } = render(
       <svg>
         <MapFeature data={sampleGeoJson.features[0]} />
       </svg>,
     )
 
-    expect(container.querySelector('path')).toBeNull()
+    const path = container.querySelector('path')
+    expect(path).toBeTruthy()
+    expect(path?.getAttribute('d')).toBeNull()
   })
 
   it('resolves styles across interaction states', () => {

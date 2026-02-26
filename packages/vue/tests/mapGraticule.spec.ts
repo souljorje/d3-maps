@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { mount } from '@vue/test-utils'
 import { h } from 'vue'
@@ -105,35 +105,26 @@ describe('mapGraticule', () => {
     expect(outlineStroke.attributes('stroke')).toBe('#475569')
   })
 
-  it('emits map-object events from lines path', async () => {
-    const onMouseenter = vi.fn()
-    const onMouseleave = vi.fn()
-    const onMousedown = vi.fn()
-    const onMouseup = vi.fn()
-    const onFocus = vi.fn()
-    const onBlur = vi.fn()
+  it('applies map-object interaction styles on lines path', async () => {
     const wrapper = mountWithMapGraticule({
-      onMouseenter,
-      onMouseleave,
-      onMousedown,
-      onMouseup,
-      onFocus,
-      onBlur,
+      styles: {
+        default: { opacity: 0.9 },
+        hover: { opacity: 0.7 },
+        active: { opacity: 0.5 },
+      },
     })
     const lines = wrapper.find('path[data-testid="map-graticule-lines"]')
 
-    await lines.trigger('mouseenter')
-    await lines.trigger('mouseleave')
-    await lines.trigger('mousedown')
-    await lines.trigger('mouseup')
-    await lines.trigger('focus')
-    await lines.trigger('blur')
+    expect((lines.element as SVGPathElement).style.opacity).toBe('0.9')
 
-    expect(onMouseenter).toHaveBeenCalled()
-    expect(onMouseleave).toHaveBeenCalled()
-    expect(onMousedown).toHaveBeenCalled()
-    expect(onMouseup).toHaveBeenCalled()
-    expect(onFocus).toHaveBeenCalled()
-    expect(onBlur).toHaveBeenCalled()
+    await lines.trigger('mouseenter')
+    expect((lines.element as SVGPathElement).style.opacity).toBe('0.7')
+
+    await lines.trigger('mousedown')
+    expect((lines.element as SVGPathElement).style.opacity).toBe('0.5')
+
+    await lines.trigger('mouseleave')
+    await lines.trigger('mouseup')
+    expect((lines.element as SVGPathElement).style.opacity).toBe('0.7')
   })
 })

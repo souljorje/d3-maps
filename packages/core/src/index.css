@@ -1,23 +1,19 @@
 :root {
-  --d3-map-stroke-w: 0.5;
+  --d3m-stroke-w: 0.5;
 }
 .d3-map {
+  width: 100%;
+  height: auto;
+  [name="background"],
+  [name="graticule"],
+  [name="feature"],
   [name="mesh"] {
-    stroke-width: var(--d3-map-stroke-w)
+    stroke-width: var(--d3m-stroke-w)
   }
   [name="border"] {
-    stroke-width: var(--d3-map-stroke-w * 2)
-  }
-  [name="background"] {
-    stroke-width: var(--d3-map-stroke-w)
-  }
-  [name="graticule"] {
-    stroke-width: var(--d3-map-stroke-w)
+    stroke-width: var(--d3m-stroke-w * 2)
   }
   [name="zoom"] path {
     vector-effect: non-scaling-stroke;
-  }
-  [name="feature"] {
-    stroke-width: var(--d3-map-stroke-w)
   }
 }

@@ -1,27 +1,15 @@
 <template>
   <path
-    v-if="path"
     :d="path"
-    :style="computedStyle"
-    :fill="fill"
-    :stroke="stroke"
-    v-bind="$attrs"
+    :style="style"
+    v-bind="events"
     name="feature"
-    @mouseenter="onMouseEnter"
-    @mouseleave="onMouseLeave"
-    @mousedown="onMouseDown"
-    @mouseup="onMouseUp"
-    @click="onMouseUp"
-    @focus="onFocus"
-    @blur="onBlur"
   />
 </template>
 
 <script setup lang="ts">
 import type { MapFeatureProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
-
-import type { MapObjectEmit } from '../hooks/useMapObject'
 
 import { computed, toRef } from 'vue'
 
@@ -30,22 +18,9 @@ import { useMapObject } from '../hooks/useMapObject'
 
 const props = defineProps<MapFeatureProps<StyleValue>>()
 
-const emit = defineEmits<MapObjectEmit>()
+const { style, ...events } = useMapObject(toRef(props, 'styles'))
 
 const context = useMapContext()
 
-const path = computed(() => context?.value.path(props.data))
-
-const {
-  computedStyle,
-  onMouseEnter,
-  onMouseLeave,
-  onMouseDown,
-  onMouseUp,
-  onFocus,
-  onBlur,
-} = useMapObject(
-  emit,
-  toRef(props, 'styles'),
-)
+const path = computed(() => context?.value.path(props.data) ?? undefined)
 </script>

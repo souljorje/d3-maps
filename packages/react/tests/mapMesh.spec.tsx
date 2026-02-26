@@ -29,13 +29,15 @@ describe('mapMesh', () => {
     expect(mesh?.getAttribute('fill')).toBe('none')
   })
 
-  it('does not render mesh for geojson data', () => {
+  it('renders mesh path without topology geometry', () => {
     const { container } = render(
       <Map data={sampleGeoJson}>
         <MapMesh />
       </Map>,
     )
 
-    expect(container.querySelector('path')).toBeNull()
+    const path = container.querySelector('path')
+    expect(path).toBeTruthy()
+    expect(path?.getAttribute('d')).toBeNull()
   })
 })

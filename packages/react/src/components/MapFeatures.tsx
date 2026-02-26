@@ -4,6 +4,7 @@ import type { MapFeature as D3MapFeature } from '@d3-maps/core'
 import type {
   ReactElement,
   ReactNode,
+  SVGProps,
 } from 'react'
 
 import type { MapObjectStyles } from '../hooks/useMapObject'
@@ -19,10 +20,10 @@ interface MapFeaturesRenderProps {
 
 type MapFeaturesChildren = ReactNode | ((props: MapFeaturesRenderProps) => ReactNode)
 
-export interface MapFeaturesProps {
+type MapFeaturesElementProps = Omit<SVGProps<SVGGElement>, 'children'>
+
+export interface MapFeaturesProps extends MapFeaturesElementProps {
   idKey?: string
-  fill?: string
-  stroke?: string
   styles?: MapObjectStyles
   children?: MapFeaturesChildren
 }
@@ -33,10 +34,9 @@ function isRenderProp(children: MapFeaturesChildren | undefined): children is (p
 
 export function MapFeatures({
   idKey = 'id',
-  fill,
-  stroke,
   styles,
   children,
+  ...groupProps
 }: MapFeaturesProps): ReactElement {
   const context = useMapContext()
   const features = context?.features ?? []
@@ -46,15 +46,16 @@ export function MapFeatures({
     : children
 
   return (
-    <g name="features">
+    <g
+      {...groupProps}
+      name="features"
+    >
       {
         resolvedChildren
         ?? features.map((feature, index) => (
           <MapFeature
             key={getFeatureKey(feature, idKey, index)}
             data={feature}
-            fill={fill}
-            stroke={stroke}
             styles={styles}
           />
         ))

@@ -31,4 +31,17 @@ describe('mapFeatures', () => {
     await path.trigger('mouseenter')
     expect((path.element as SVGPathElement).style.opacity).toBe('0.7')
   })
+
+  it('accepts native svg attrs on features group', () => {
+    const wrapper = mount(Map, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapFeatures, { fill: 'darkorange' }),
+      },
+    })
+
+    expect(wrapper.find('g[name="features"]').attributes('fill')).toBe('darkorange')
+  })
 })

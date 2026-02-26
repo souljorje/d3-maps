@@ -1,5 +1,5 @@
 <template>
-  <g v-if="graticulePath">
+  <g>
     <path
       v-if="showBackground"
       :d="outlinePath"
@@ -9,18 +9,10 @@
     />
     <path
       :d="graticulePath"
-      :style="computedStyle"
       fill="none"
-      :stroke="stroke"
-      v-bind="$attrs"
+      :style="style"
+      v-bind="{ ...$attrs, ...events }"
       name="graticule"
-      @mouseenter="onMouseEnter"
-      @mouseleave="onMouseLeave"
-      @mousedown="onMouseDown"
-      @mouseup="onMouseUp"
-      @click="onMouseUp"
-      @focus="onFocus"
-      @blur="onBlur"
     />
     <path
       v-if="showBorder"
@@ -37,7 +29,6 @@
 import type { GraticuleConfig } from '@d3-maps/core'
 
 import type {
-  MapObjectEmit,
   MapObjectStyles,
 } from '../hooks/useMapObject'
 
@@ -57,17 +48,16 @@ interface Props {
   config?: GraticuleConfig
   background?: boolean | string
   border?: boolean | string
-  stroke?: string
   styles?: MapObjectStyles
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits<MapObjectEmit>()
 const context = useMapContext()
 
-const graticulePath = computed(() => (
-  context?.value && renderGraticule(context?.value, props.config)
-))
+const graticulePath = computed(() => {
+  if (!context?.value) return undefined
+  return renderGraticule(context.value, props.config) ?? undefined
+})
 
 const showBackground = computed(() => props.background === true || typeof props.background === 'string')
 const showBorder = computed(() => props.border === true || typeof props.border === 'string')
@@ -80,20 +70,9 @@ const borderColor = computed(() => (
 const shouldRenderOutline = computed(() => showBackground.value || showBorder.value)
 
 const outlinePath = computed(() => {
-  if (!shouldRenderOutline.value || !context?.value) return ''
-  return renderOutline(context.value) ?? ''
+  if (!shouldRenderOutline.value || !context?.value) return undefined
+  return renderOutline(context.value) ?? undefined
 })
 
-const {
-  computedStyle,
-  onMouseEnter,
-  onMouseLeave,
-  onMouseDown,
-  onMouseUp,
-  onFocus,
-  onBlur,
-} = useMapObject(
-  emit,
-  toRef(props, 'styles'),
-)
+const { style, ...events } = useMapObject(toRef(props, 'styles'))
 </script>

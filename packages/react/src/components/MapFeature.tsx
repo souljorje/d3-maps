@@ -19,60 +19,33 @@ export interface MapFeatureProps
 export function MapFeature({
   data,
   styles,
-  fill,
-  stroke,
   onMouseEnter,
   onMouseLeave,
   onMouseDown,
   onMouseUp,
-  onClick,
-  onFocus,
-  onBlur,
   ...pathProps
 }: MapFeatureProps): ReactElement | null {
   const context = useMapContext()
 
   const path = useMemo(() => {
-    return context?.path(data) ?? null
+    return context?.path(data) ?? undefined
   }, [context, data])
 
-  const {
-    computedStyle,
-    onMouseEnter: handleMouseEnter,
-    onMouseLeave: handleMouseLeave,
-    onMouseDown: handleMouseDown,
-    onMouseUp: handleMouseUp,
-    onClick: handleClick,
-    onFocus: handleFocus,
-    onBlur: handleBlur,
-  } = useMapObject<SVGPathElement>({
+  const { style, ...events } = useMapObject<SVGPathElement>({
     styles,
     onMouseEnter,
     onMouseLeave,
     onMouseDown,
     onMouseUp,
-    onClick,
-    onFocus,
-    onBlur,
   })
 
-  return path
-    ? (
-        <path
-          {...pathProps}
-          d={path}
-          style={computedStyle}
-          fill={fill}
-          stroke={stroke}
-          name="feature"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onClick={handleClick}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-        />
-      )
-    : null
+  return (
+    <path
+      {...pathProps}
+      d={path}
+      style={style}
+      name="feature"
+      {...events}
+    />
+  )
 }
