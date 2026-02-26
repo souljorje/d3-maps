@@ -1,14 +1,9 @@
 <template>
   <g
     :transform="transform"
-    :style="computedStyle"
-    @mouseenter="onMouseEnter"
-    @mouseleave="onMouseLeave"
-    @mousedown="onMouseDown"
-    @mouseup="onMouseUp"
-    @click="onMouseUp"
-    @focus="onFocus"
-    @blur="onBlur"
+    :style="style"
+    v-bind="events"
+    name="marker"
   >
     <slot />
   </g>
@@ -17,8 +12,6 @@
 <script setup lang="ts">
 import type { MapMarkerProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
-
-import type { MapObjectEmit } from '../hooks/useMapObject'
 
 import { getMarkerTransform } from '@d3-maps/core'
 import { computed, toRef } from 'vue'
@@ -30,24 +23,11 @@ const props = withDefaults(defineProps<MapMarkerProps<StyleValue>>(), {
   coordinates: () => [0, 0],
 })
 
-const emit = defineEmits<MapObjectEmit>()
-
 const context = useMapContext()
 
 const transform = computed(() => {
   return getMarkerTransform(context?.value, props.coordinates)
 })
 
-const {
-  computedStyle,
-  onMouseEnter,
-  onMouseLeave,
-  onMouseDown,
-  onMouseUp,
-  onFocus,
-  onBlur,
-} = useMapObject(
-  emit,
-  toRef(props, 'styles'),
-)
+const { style, ...events } = useMapObject(toRef(props, 'styles'))
 </script>

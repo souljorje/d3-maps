@@ -4,7 +4,7 @@ Renders the root `<svg>` and provides a reactive map context to children.
 
 ## Props
 
-| Parameter | Type | Default value | Description |
+| Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `data` | [MapData](/api/core/map#mapdata) | — | TopoJSON or GeoJSON |
 | `width?` | `number` | `600` | Internal width used by projection fitting and path rendering. |
@@ -18,16 +18,22 @@ Renders the root `<svg>` and provides a reactive map context to children.
 
 Use `projectionConfig` to call projection methods before rendering
 
-```ts
-{
-  [methodName]: methodArgs[] | methodArg
-}
-```
-- single non-array arg: can be passed as it is or wrapped with an array
-- multiple args / single array arg: wrapped with an array
+<!--@include: ./_modifiers-args-shape.md-->
 
 See available methods in [d3-geo projection docs](https://d3js.org/d3-geo/projection)  
 and usage example below
+
+::: details Core defaults
+```ts
+if (!(fitExtent || fitSize || fitWidth || fitHeight)) {
+  mapProjection.fitExtent([[1, 1], [width - 1, height - 1]], { type: 'Sphere' })
+}
+if (!precision) {
+  mapProjection.precision(0.2)
+}
+```
+Source: [packes/core/src/lib/map.ts](https://github.com/souljorje/d3-maps/blob/main/packages/core/src/lib/map.ts#:~:text=makeProjection)
+:::
 
 ## Usage
 
@@ -37,6 +43,8 @@ and usage example below
 
 ```vue
 <script setup lang="ts">
+import type { MapData } from '@d3-maps/core'
+
 import { geoMercator } from 'd3-geo'
 </script>
 
@@ -48,7 +56,7 @@ import { geoMercator } from 'd3-geo'
     :projection="geoMercator"
     :projection-config="{
       rotate: [[0, 12]], // array wrapper required
-      scale: 200 // single argument can be passed as it is
+      scale: 200, // single argument can be passed as it is
       precision: [0.1], // also can be array-wrapped
     }"
   >
@@ -74,7 +82,7 @@ export function Example({ data }: { data: MapData }) {
       projection={geoMercator}
       projectionConfig={{
         rotate: [[0, 12]], // array wrapper required
-        scale: 200 // single argument can be passed as it is
+        scale: 200, // single argument can be passed as it is
         precision: [0.1], // also can be array-wrapped
       }}
     >

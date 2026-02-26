@@ -1,5 +1,4 @@
 import type {
-  MapObjectEvent,
   MapObjectEventType,
   MapObjectState,
   MapObjectStyles as TMapObjectStyles,
@@ -22,42 +21,31 @@ import {
 
 export type MapObjectStyles = TMapObjectStyles<StyleValue>
 
-export type MapObjectEmit = <E extends MapObjectEventType>(
-  event: E,
-  payload: MapObjectEvent<E>,
-) => void
-
 export interface UseMapObjectResult {
-  computedStyle: ComputedRef<StyleValue | undefined>
-  onMouseEnter: (event: MouseEvent) => void
-  onMouseLeave: (event: MouseEvent) => void
-  onMouseDown: (event: MouseEvent) => void
-  onMouseUp: (event: MouseEvent) => void
-  onFocus: (event: FocusEvent) => void
-  onBlur: (event: FocusEvent) => void
+  style: ComputedRef<StyleValue | undefined>
+  onMouseenter: (event: MouseEvent) => void
+  onMouseleave: (event: MouseEvent) => void
+  onMousedown: (event: MouseEvent) => void
+  onMouseup: (event: MouseEvent) => void
 }
 
 export function useMapObject(
-  emit: MapObjectEmit,
   styles: MaybeRef<MapObjectStyles | undefined>,
 ): UseMapObjectResult {
   const state = ref<MapObjectState>('default')
 
   const eventCallbackFactory = <E extends MapObjectEventType>(eventName: E) =>
-    (event: MapObjectEvent<E>) => {
+    () => {
       state.value = getObjectStateUpdate(eventName)
-      emit(eventName, event)
     }
 
-  const computedStyle = computed(() => resolveObjectStyle(state.value, unref(styles)))
+  const style = computed(() => resolveObjectStyle(state.value, unref(styles)))
 
   return {
-    computedStyle,
-    onMouseEnter: eventCallbackFactory('mouseenter'),
-    onMouseLeave: eventCallbackFactory('mouseleave'),
-    onMouseDown: eventCallbackFactory('mousedown'),
-    onMouseUp: eventCallbackFactory('mouseup'),
-    onFocus: eventCallbackFactory('focus'),
-    onBlur: eventCallbackFactory('blur'),
+    style,
+    onMouseenter: eventCallbackFactory('mouseenter'),
+    onMouseleave: eventCallbackFactory('mouseleave'),
+    onMousedown: eventCallbackFactory('mousedown'),
+    onMouseup: eventCallbackFactory('mouseup'),
   }
 }

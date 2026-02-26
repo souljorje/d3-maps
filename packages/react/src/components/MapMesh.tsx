@@ -14,66 +14,41 @@ import { useMapObject } from '../hooks/useMapObject'
 
 export interface MapMeshProps
   extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style'> {
-  fill?: string
-  stroke?: string
   styles?: MapObjectStyles
 }
 
 export function MapMesh({
-  fill = 'none',
-  stroke,
   styles,
   onMouseEnter,
   onMouseLeave,
   onMouseDown,
   onMouseUp,
-  onClick,
-  onFocus,
-  onBlur,
   ...pathProps
 }: MapMeshProps): ReactElement | null {
   const context = useMapContext()
 
   const path = useMemo(() => {
-    return context?.renderMesh() ?? null
+    return context?.renderMesh() ?? undefined
   }, [context])
 
-  const {
-    computedStyle,
-    onMouseEnter: handleMouseEnter,
-    onMouseLeave: handleMouseLeave,
-    onMouseDown: handleMouseDown,
-    onMouseUp: handleMouseUp,
-    onClick: handleClick,
-    onFocus: handleFocus,
-    onBlur: handleBlur,
-  } = useMapObject<SVGPathElement>({
+  const { style, ...events } = useMapObject<SVGPathElement>({
     styles,
     onMouseEnter,
     onMouseLeave,
     onMouseDown,
     onMouseUp,
-    onClick,
-    onFocus,
-    onBlur,
   })
 
-  return path
-    ? (
-        <path
-          {...pathProps}
-          d={path}
-          style={computedStyle}
-          fill={fill}
-          stroke={stroke}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onClick={handleClick}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-        />
-      )
-    : null
+  const fill = pathProps.fill ?? 'none'
+
+  return (
+    <path
+      {...pathProps}
+      d={path}
+      style={style}
+      fill={fill}
+      name="mesh"
+      {...events}
+    />
+  )
 }

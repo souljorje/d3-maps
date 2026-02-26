@@ -13,11 +13,10 @@ function dataTransformer(features) {
 
 == Vue
 
-```vue{5} [vue]
+```vue{4} [vue]
 <template>
   <Map
     :data="data"
-    :projection="geoMercator"
     :data-transformer="dataTransformer"
   >
     <MapFeatures />
@@ -27,10 +26,9 @@ function dataTransformer(features) {
 
 == React
 
-```tsx{4} [react]
+```tsx{3} [react]
 <Map
   data={data}
-  projection={geoMercator}
   dataTransformer={dataTransformer}
 >
   <MapFeatures />

@@ -3,6 +3,10 @@
     v-if="data"
     :data="data"
   >
+    <MapGraticule
+      background
+      border
+    />
     <MapFeatures />
     <MapMesh />
   </Map>
@@ -12,7 +16,10 @@
 import type { MapData } from '@d3-maps/core'
 
 import { withBase } from 'vitepress'
-import { onMounted, ref } from 'vue'
+import {
+  onMounted,
+  ref,
+} from 'vue'
 
 const data = ref<MapData>()
 

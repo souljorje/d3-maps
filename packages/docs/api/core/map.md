@@ -10,7 +10,6 @@
   * [makeFeatures()](#makefeatures)
   * [makeMapContext()](#makemapcontext)
   * [makeMesh()](#makemesh)
-  * [makePathFn()](#makepathfn)
   * [makeProjection()](#makeprojection)
 * [Interfaces](#interfaces)
   * [MapConfig](#mapconfig)
@@ -64,7 +63,7 @@ Type guard for TopoJSON topology inputs.
 ### makeFeatures()
 
 ```ts
-function makeFeatures(geoData: MapData, dataTransformer?: DataTransformer): [MapFeature[], ExtendedFeatureCollection<ExtendedFeature<GeoGeometryObjects | null, GeoJsonProperties>>];
+function makeFeatures(geoData: MapData, dataTransformer?: DataTransformer): MapFeature[];
 ```
 
 Normalizes input map data to GeoJSON features.
@@ -81,7 +80,7 @@ Normalizes input map data to GeoJSON features.
 
 #### Returns
 
-\[[`MapFeature`](feature.md#mapfeature)\[], `ExtendedFeatureCollection`<`ExtendedFeature`<`GeoGeometryObjects` | `null`, `GeoJsonProperties`>>]
+[`MapFeature`](feature.md#mapfeature)\[]
 
 ***
 
@@ -125,30 +124,11 @@ Returns a TopoJSON mesh when topology data is provided.
 
 ***
 
-### makePathFn()
-
-```ts
-function makePathFn(mapProjection: GeoProjection): GeoPath;
-```
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `mapProjection` | `GeoProjection` |
-
-#### Returns
-
-`GeoPath`
-
-***
-
 ### makeProjection()
 
 ```ts
 function makeProjection(__namedParameters: {
   config?: ProjectionConfig;
-  geoJson?: GeoPermissibleObjects;
   height: number;
   projection: () => GeoProjection;
   width: number;
@@ -161,9 +141,8 @@ Creates a configured projection and fits it to the provided GeoJSON (if present)
 
 | Parameter | Type |
 | ------ | ------ |
-| `__namedParameters` | { `config?`: [`ProjectionConfig`](#projectionconfig); `geoJson?`: `GeoPermissibleObjects`; `height`: `number`; `projection`: () => `GeoProjection`; `width`: `number`; } |
+| `__namedParameters` | { `config?`: [`ProjectionConfig`](#projectionconfig); `height`: `number`; `projection`: () => `GeoProjection`; `width`: `number`; } |
 | `__namedParameters.config?` | [`ProjectionConfig`](#projectionconfig) |
-| `__namedParameters.geoJson?` | `GeoPermissibleObjects` |
 | `__namedParameters.height` | `number` |
 | `__namedParameters.projection` | () => `GeoProjection` |
 | `__namedParameters.width` | `number` |
@@ -206,11 +185,9 @@ Adapters provide this context to child layers (features, markers, custom SVG).
 | ------ | ------ |
 | <a id="property-features"></a> `features` | [`MapFeature`](feature.md#mapfeature)\[] |
 | <a id="property-height-1"></a> `height` | `number` |
-| <a id="property-mesh"></a> `mesh?` | `MultiLineString` |
 | <a id="property-path"></a> `path` | `GeoPath` |
 | <a id="property-projection-1"></a> `projection?` | `GeoProjection` |
 | <a id="property-rendermesh"></a> `renderMesh` | () => `void` |
-| <a id="property-renderpath"></a> `renderPath` | (`feature`: [`MapFeature`](feature.md#mapfeature)) => `void` |
 | <a id="property-width-1"></a> `width` | `number` |
 
 ***
@@ -236,14 +213,14 @@ https://d3js.org/d3-geo/projection
 | ------ | ------ | ------ |
 | <a id="property-angle"></a> `angle?` | `number` | \[`number`] | [`ProjectionConfig`](#projectionconfig).[`angle`](#property-angle) |
 | <a id="property-center"></a> `center?` | \[\[`number`, `number`]] | [`ProjectionConfig`](#projectionconfig).[`center`](#property-center) |
-| <a id="property-clipangle"></a> `clipAngle?` | `number` | \[`null`] | \[`number`] | `null` | [`ProjectionConfig`](#projectionconfig).[`clipAngle`](#property-clipangle) |
-| <a id="property-clipextent"></a> `clipExtent?` | \[`null`] | \[\[\[`number`, `number`], \[`number`, `number`]]] | `null` | [`ProjectionConfig`](#projectionconfig).[`clipExtent`](#property-clipextent) |
+| <a id="property-clipangle"></a> `clipAngle?` | `number` | \[`number`] | \[`null`] | `null` | [`ProjectionConfig`](#projectionconfig).[`clipAngle`](#property-clipangle) |
+| <a id="property-clipextent"></a> `clipExtent?` | \[\[\[`number`, `number`], \[`number`, `number`]]] | \[`null`] | `null` | [`ProjectionConfig`](#projectionconfig).[`clipExtent`](#property-clipextent) |
 | <a id="property-fitextent"></a> `fitExtent?` | \[\[\[`number`, `number`], \[`number`, `number`]], | `GeoGeometryObjects` | `ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`> | `ExtendedFeatureCollection`<`ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`>> | `ExtendedGeometryCollection`<`GeoGeometryObjects`>] | [`ProjectionConfig`](#projectionconfig).[`fitExtent`](#property-fitextent) |
 | <a id="property-fitheight"></a> `fitHeight?` | \[`number`, | `GeoGeometryObjects` | `ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`> | `ExtendedFeatureCollection`<`ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`>> | `ExtendedGeometryCollection`<`GeoGeometryObjects`>] | [`ProjectionConfig`](#projectionconfig).[`fitHeight`](#property-fitheight) |
 | <a id="property-fitsize"></a> `fitSize?` | \[\[`number`, `number`], | `GeoGeometryObjects` | `ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`> | `ExtendedFeatureCollection`<`ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`>> | `ExtendedGeometryCollection`<`GeoGeometryObjects`>] | [`ProjectionConfig`](#projectionconfig).[`fitSize`](#property-fitsize) |
 | <a id="property-fitwidth"></a> `fitWidth?` | \[`number`, | `GeoGeometryObjects` | `ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`> | `ExtendedFeatureCollection`<`ExtendedFeature`\<GeoGeometryObjects | null, `GeoJsonProperties`>> | `ExtendedGeometryCollection`<`GeoGeometryObjects`>] | [`ProjectionConfig`](#projectionconfig).[`fitWidth`](#property-fitwidth) |
 | <a id="property-postclip"></a> `postclip?` | | (`stream`: `GeoStream`) => `GeoStream` | \[(`stream`: `GeoStream`) => `GeoStream`] | [`ProjectionConfig`](#projectionconfig).[`postclip`](#property-postclip) |
-| <a id="property-precision"></a> `precision?` | `number` | \[`number`] | [`ProjectionConfig`](#projectionconfig).[`precision`](#property-precision) |
+| <a id="property-precision"></a> `precision?` | `number` | \[`number`] | [`GraticuleConfig`](graticule.md#graticuleconfig).[`precision`](graticule.md#property-precision) |
 | <a id="property-preclip"></a> `preclip?` | | (`stream`: `GeoStream`) => `GeoStream` | \[(`stream`: `GeoStream`) => `GeoStream`] | [`ProjectionConfig`](#projectionconfig).[`preclip`](#property-preclip) |
 | <a id="property-reflectx"></a> `reflectX?` | `boolean` | \[`false`] | \[`true`] | [`ProjectionConfig`](#projectionconfig).[`reflectX`](#property-reflectx) |
 | <a id="property-reflecty"></a> `reflectY?` | `boolean` | \[`false`] | \[`true`] | [`ProjectionConfig`](#projectionconfig).[`reflectY`](#property-reflecty) |

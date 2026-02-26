@@ -59,8 +59,6 @@ Shared props contract for a single rendered feature.
 | Property | Type |
 | ------ | ------ |
 | <a id="property-data"></a> `data` | [`MapFeature`](#mapfeature) |
-| <a id="property-fill"></a> `fill?` | `string` |
-| <a id="property-stroke"></a> `stroke?` | `string` |
 | <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> |
 
 ## Type Aliases

@@ -1,24 +1,15 @@
 <template>
   <path
-    v-if="path"
     :d="path"
-    :style="computedStyle"
-    :fill="fill"
-    :stroke="stroke"
-    v-bind="$attrs"
-    @mouseenter="onMouseEnter"
-    @mouseleave="onMouseLeave"
-    @mousedown="onMouseDown"
-    @mouseup="onMouseUp"
-    @click="onMouseUp"
-    @focus="onFocus"
-    @blur="onBlur"
+    fill="none"
+    :style="style"
+    v-bind="events"
+    name="mesh"
   />
 </template>
 
 <script setup lang="ts">
 import type {
-  MapObjectEmit,
   MapObjectStyles,
 } from '../hooks/useMapObject'
 
@@ -28,27 +19,13 @@ import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
 interface Props {
-  fill?: string
-  stroke?: string
   styles?: MapObjectStyles
 }
 
-const props = withDefaults(defineProps<Props>(), { fill: 'none' })
-const emit = defineEmits<MapObjectEmit>()
+const props = defineProps<Props>()
 const context = useMapContext()
 
-const path = computed(() => context?.value.renderMesh())
+const path = computed<string | undefined>(() => context?.value.renderMesh() ?? undefined)
 
-const {
-  computedStyle,
-  onMouseEnter,
-  onMouseLeave,
-  onMouseDown,
-  onMouseUp,
-  onFocus,
-  onBlur,
-} = useMapObject(
-  emit,
-  toRef(props, 'styles'),
-)
+const { style, ...events } = useMapObject(toRef(props, 'styles'))
 </script>

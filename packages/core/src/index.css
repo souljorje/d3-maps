@@ -1,9 +1,19 @@
-.d3-map {
-  height: 100%;
-  width: auto;
-  max-width: 100%;
-  stroke-width: 0.5
+:root {
+  --d3m-stroke-w: 0.5;
 }
-.d3-map-zoom path {
-  vector-effect: non-scaling-stroke;
+.d3-map {
+  width: 100%;
+  height: auto;
+  [name="background"],
+  [name="graticule"],
+  [name="feature"],
+  [name="mesh"] {
+    stroke-width: var(--d3m-stroke-w)
+  }
+  [name="border"] {
+    stroke-width: var(--d3m-stroke-w * 2)
+  }
+  [name="zoom"] path {
+    vector-effect: non-scaling-stroke;
+  }
 }

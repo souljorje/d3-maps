@@ -10,6 +10,7 @@ import {
   Map,
   MapFeatures,
   MapMarker,
+  MapMesh,
   MapZoom,
 } from '@d3-maps/react'
 import { extent } from 'd3-array'
@@ -122,7 +123,8 @@ export default function BubbleExample(): JSX.Element {
                 coordinates={[item.longitude, item.latitude]}
               >
                 <circle
-                  fill="#ff6f2695"
+                  fill="var(--vp-c-brand)"
+                  style={{ opacity: 0.85 }}
                   r={bubbleScale(item.population)}
                   transform={`scale(${markerScale})`}
                 />
@@ -130,6 +132,7 @@ export default function BubbleExample(): JSX.Element {
             ))
           }
         </g>
+        <MapMesh />
       </MapZoom>
     </Map>
   )

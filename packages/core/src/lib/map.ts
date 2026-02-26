@@ -1,7 +1,6 @@
 import type {
   ExtendedFeatureCollection,
   GeoPath,
-  GeoPermissibleObjects,
   GeoProjection,
 } from 'd3-geo'
 import type { GeometryObject, Topology } from 'topojson-specification'
@@ -79,9 +78,7 @@ export interface MapContext {
   height: number
   projection?: GeoProjection
   features: MapFeature[]
-  mesh?: MapMesh
   path: GeoPath
-  renderPath: (feature: MapFeature) => ReturnType<GeoPath>
   renderMesh: () => ReturnType<GeoPath>
 }
 
@@ -91,24 +88,23 @@ export interface MapContext {
 export function makeProjection({
   width,
   height,
-  config,
+  config = {},
   projection,
-  geoJson,
 }: {
   width: number
   height: number
   config?: ProjectionConfig
   projection: () => GeoProjection
-  geoJson?: GeoPermissibleObjects
 }): GeoProjection {
   const mapProjection = projection()
+  const { fitExtent, fitSize, fitWidth, fitHeight, precision } = config
 
-  if (!geoJson) {
-    if (!config?.translate) {
-      mapProjection.translate([width / 2, height / 2])
-    }
-  } else if (!config?.fitSize) {
-    mapProjection.fitSize([width, height], geoJson)
+  if (!(fitExtent || fitSize || fitWidth || fitHeight)) {
+    mapProjection.fitExtent([[1, 1], [width - 1, height - 1]], { type: 'Sphere' })
+  }
+
+  if (!precision) {
+    mapProjection.precision(0.2)
   }
 
   applyModifiers(mapProjection, config)
@@ -125,7 +121,7 @@ export function makeProjection({
 export function makeFeatures(
   geoData: MapData,
   dataTransformer?: DataTransformer,
-): [ features: MapFeature[], geoJson: ExtendedFeatureCollection ] {
+): MapFeature[] {
   let geoJson: ExtendedFeatureCollection
   if (isTopology(geoData)) {
     const topoObject = getTopoObject(geoData)
@@ -137,11 +133,8 @@ export function makeFeatures(
     geoJson = geoData
   }
 
-  const features = dataTransformer ? dataTransformer(geoJson.features) : geoJson.features
-  return [features, geoJson]
+  return dataTransformer ? dataTransformer(geoJson.features) : geoJson.features
 }
-
-export const makePathFn = (mapProjection: GeoProjection): GeoPath => geoPath().projection(mapProjection)
 
 /**
  * Returns a TopoJSON mesh when topology data is provided.
@@ -163,33 +156,27 @@ export function makeMapContext({
   data,
   dataTransformer,
   projection: providedProjection = geoNaturalEarth1,
-  projectionConfig = providedProjection === geoNaturalEarth1
-    ? {
-        rotate: [[-11, 0]],
-      }
-    : {},
+  projectionConfig,
 }: MapConfig): MapContext {
-  const [features, geoJson] = makeFeatures(data, dataTransformer)
-  const mapMesh = makeMesh(data)
+  const features = makeFeatures(data, dataTransformer)
+
   const height = passedHeight || (width / aspectRatio)
   const projection = makeProjection({
     width,
     height,
     projection: providedProjection,
     config: projectionConfig,
-    geoJson,
   })
 
-  const pathFn = makePathFn(projection)
+  const pathFn = geoPath().projection(projection)
+  const mapMesh = makeMesh(data)
 
   return {
     width,
     height,
     projection,
     features,
-    mesh: mapMesh,
     path: pathFn,
-    renderPath: (feature: MapFeature) => pathFn(feature),
     renderMesh: () => mapMesh ? pathFn(mapMesh) : null,
   }
 }

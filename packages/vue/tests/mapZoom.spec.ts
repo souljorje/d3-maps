@@ -58,6 +58,6 @@ describe('mapZoom', () => {
 
     expect(setupZoomSpy).toHaveBeenCalled()
     expect(applyZoomTransformSpy).toHaveBeenCalled()
-    expect(wrapper.find('.d3-map-zoom').attributes('transform')).toContain('translate')
+    expect(wrapper.find('[name="zoom"]').attributes('transform')).toContain('translate')
   })
 })

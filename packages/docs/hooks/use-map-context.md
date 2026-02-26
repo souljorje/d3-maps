@@ -38,8 +38,6 @@ const featureCountLabel = computed(() => {
 == React
 
 ```tsx
-import type { MapData } from '@d3-maps/core'
-
 import { useMapContext } from '@d3-maps/react'
 
 function FeatureCountLabel() {

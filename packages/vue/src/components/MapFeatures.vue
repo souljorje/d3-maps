@@ -1,14 +1,11 @@
 <template>
-  <g>
+  <g name="features">
     <slot :features="features">
       <MapFeature
         v-for="(feature, index) in features"
         :key="getFeatureKey(feature, idKey, index)"
         :data="feature"
-        :fill="fill"
-        :stroke="stroke"
         :styles="styles"
-        v-bind="$attrs"
       />
     </slot>
   </g>
@@ -25,8 +22,6 @@ import MapFeature from './MapFeature.vue'
 
 interface Props {
   idKey?: string
-  fill?: string
-  stroke?: string
   styles?: MapObjectStyles
 }
 

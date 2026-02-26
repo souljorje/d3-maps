@@ -55,13 +55,14 @@ const docsSidebar = [
       { text: 'Get Started', link: '/guide/' },
       { text: 'Core Concepts',
         link: '/guide/core-concepts/',
-        collapsed: false,
+        collapsed: true,
         items: [
           { text: 'Data', link: '/guide/core-concepts#data' },
           { text: 'Data transformation', link: '/guide/core-concepts#data-transformation' },
           { text: 'Projection', link: '/guide/core-concepts#projection' },
           { text: 'Features', link: '/guide/core-concepts#features' },
           { text: 'Mesh', link: '/guide/core-concepts#mesh' },
+          { text: 'Graticule', link: '/guide/core-concepts#graticule' },
           { text: 'Zoom', link: '/guide/core-concepts#zoom' },
           { text: 'Markers', link: '/guide/core-concepts#markers' },
           { text: 'Styling', link: '/guide/core-concepts#styling' },
@@ -79,6 +80,7 @@ const docsSidebar = [
       { text: 'MapFeature', link: '/components/map-feature' },
       { text: 'MapMarker', link: '/components/map-marker' },
       { text: 'MapMesh', link: '/components/map-mesh' },
+      { text: 'MapGraticule', link: '/components/map-graticule' },
       { text: 'MapZoom', link: '/components/map-zoom' },
     ],
   },
@@ -100,9 +102,6 @@ const docsSidebar = [
       })),
     ],
   },
-]
-
-const apiSidebar = [
   {
     text: 'API',
     items: [
@@ -133,7 +132,6 @@ export default defineConfig({
       { text: 'API', link: '/api/core' },
     ],
     sidebar: {
-      '/api/': apiSidebar,
       '/': docsSidebar,
     },
     editLink: {

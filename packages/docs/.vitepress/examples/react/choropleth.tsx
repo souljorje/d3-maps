@@ -41,12 +41,16 @@ export default function ChoroplethExample(): JSX.Element {
       const response = await fetch(withBase('/example-data/choropleth-data.json'))
       const rawData = await response.json()
 
-      return rawData.map((item: Record<string, string>) => {
+      return rawData.map((item: Record<string, unknown>) => {
         const id = item['country-code']
+        if (typeof id !== 'string') {
+          return { id: '', value: 0 }
+        }
+
         return {
           ...item,
           id,
-          value: Number(id) * Math.random(),
+          value: Number(id),
         }
       })
     }
@@ -88,7 +92,7 @@ export default function ChoroplethExample(): JSX.Element {
 
     return scaleLinear<string>()
       .domain(safeDomain)
-      .range(['beige', 'darkorange'])
+      .range(['#e0460030', '#e04600'])
   }, [
     minAndMaxValues[0],
     minAndMaxValues[1],
@@ -97,7 +101,7 @@ export default function ChoroplethExample(): JSX.Element {
   const dataTransformer = useCallback((features: MapFeature[]): MapFeature[] => {
     return features.map((feature) => {
       const country = data.find((item) => item.id === String(feature.id))
-      const colorValue = country ? colorScale(country.value) : '#eee'
+      const colorValue = country ? colorScale(country.value) : ''
 
       return { ...feature, color: colorValue }
     })
@@ -130,11 +134,11 @@ export default function ChoroplethExample(): JSX.Element {
                   styles={{
                     default: {
                       fill: String(feature.color),
-                      stroke: 'darkslategray',
+                      stroke: '#777',
                     },
                     hover: {
                       fill: String(feature.color),
-                      stroke: 'darkslategray',
+                      stroke: '#777',
                       opacity: 0.8,
                     },
                   }}

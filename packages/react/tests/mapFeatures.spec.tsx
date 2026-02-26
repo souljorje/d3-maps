@@ -69,4 +69,14 @@ describe('mapFeatures', () => {
     fireEvent.mouseOver(path as Element)
     expect(path?.style.opacity).toBe('0.7')
   })
+
+  it('accepts native svg attrs on features group', () => {
+    const { container } = render(
+      <Map data={sampleGeoJson}>
+        <MapFeatures fill="darkorange" />
+      </Map>,
+    )
+
+    expect(container.querySelector('g[name="features"]')?.getAttribute('fill')).toBe('darkorange')
+  })
 })

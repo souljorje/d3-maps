@@ -6,14 +6,12 @@ import {
 } from '../src'
 
 describe('getObjectStateUpdate', () => {
-  it('returns hover for focus-like events', () => {
-    expect(getObjectStateUpdate('focus')).toBe('hover')
+  it('returns hover for enter and mouseup events', () => {
     expect(getObjectStateUpdate('mouseenter')).toBe('hover')
     expect(getObjectStateUpdate('mouseup')).toBe('hover')
   })
 
-  it('returns default for blur-like events', () => {
-    expect(getObjectStateUpdate('blur')).toBe('default')
+  it('returns default for mouseleave', () => {
     expect(getObjectStateUpdate('mouseleave')).toBe('default')
   })
 

@@ -9,7 +9,7 @@ By default `geoNaturalEarth1` is used in core, but you can provide your own:
 
 == Vue
 
-```vue{2,8} [vue]
+```vue{2,9} [vue]
 <script setup>
 import { geoMercator } from 'd3-geo-projection'
 </script>
@@ -17,6 +17,7 @@ import { geoMercator } from 'd3-geo-projection'
 <template>
   <Map
     :data="data"
+    :data-transformer="dataTransformer"
     :projection="geoMercator"
   >
     <MapFeatures />
@@ -26,11 +27,12 @@ import { geoMercator } from 'd3-geo-projection'
 
 == React
 
-```tsx{1,5} [react]
+```tsx{1,6} [react]
 import { geoMercator } from 'd3-geo-projection'
 
 <Map
   data={data}
+  dataTransformer={dataTransformer}
   projection={geoMercator}
 >
   <MapFeatures />

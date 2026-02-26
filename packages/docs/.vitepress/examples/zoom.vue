@@ -5,8 +5,9 @@
     :projection="projection"
   >
     <MapZoom @zoom="updateMarkerScale">
+      <MapGraticule border />
       <MapFeatures />
-      <MapMesh stroke="slategray" />
+      <MapMesh />
       <MapMarker
         v-for="(item, index) in cities"
         :key="index"
@@ -17,10 +18,8 @@
             font-size="14"
             y="-8"
             text-anchor="middle"
-            fill="darkorange"
           >{{ item.city }}</text>
           <circle
-            fill="darkorange"
             r="3"
           />
         </g>
@@ -64,8 +63,8 @@ onMounted(async () => {
 })
 
 function updateMarkerScale(e: ZoomEvent) {
-  if (currentZoom.value === e.transform.k)
-    return
+  if (currentZoom.value === e.transform.k) return
+
   currentZoom.value = e.transform.k
   markerScale.value = 1 / e.transform.k
 }

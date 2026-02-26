@@ -5,10 +5,7 @@ import type {
 
 export type MapObject = GeoGeometryObjects | ExtendedFeature
 
-export type MapObjectFocusEventType = 'focus' | 'blur'
-export type MapObjectMouseEventType = 'mouseenter' | 'mouseleave' | 'mousedown' | 'mouseup'
-export type MapObjectEventType = MapObjectFocusEventType | MapObjectMouseEventType
-export type MapObjectEvent<E> = E extends MapObjectFocusEventType ? FocusEvent : MouseEvent
+export type MapObjectEventType = 'mouseenter' | 'mouseleave' | 'mousedown' | 'mouseup'
 
 /**
  * Supported interaction states for map objects.
@@ -22,11 +19,9 @@ export type MapObjectStyles<TStyle> = Partial<Record<MapObjectState, TStyle>>
  */
 export function getObjectStateUpdate(event: MapObjectEventType): MapObjectState {
   switch (event) {
-    case 'focus':
     case 'mouseenter':
     case 'mouseup':
       return 'hover'
-    case 'blur':
     case 'mouseleave':
       return 'default'
     case 'mousedown':
