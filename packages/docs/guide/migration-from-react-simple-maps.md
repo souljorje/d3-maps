@@ -113,8 +113,8 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 
 ```tsx
 <Map data={data}>
-  <MapFeatures />
   <MapGraticule stroke="#94a3b8" />
+  <MapFeatures />
 </Map>
 ```
 
@@ -124,8 +124,8 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 
 ```tsx
 <Map data={data}>
-  <MapFeatures />
   <MapGraticule background="#ffffff" border="#cbd5e1" />
+  <MapFeatures />
 </Map>
 ```
 
