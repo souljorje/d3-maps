@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import { mount } from '@vue/test-utils'
 import { h } from 'vue'
@@ -27,9 +27,7 @@ function mountWithMapGraticule(props: Record<string, unknown> = {}) {
 describe('mapGraticule', () => {
   it('renders graticule lines inside map context', () => {
     const wrapper = mountWithMapGraticule({ stroke: '#334155' })
-    const lines = wrapper.find('path[data-testid="map-graticule-lines"]')
-
-    expect(lines.exists()).toBe(true)
+    const lines = wrapper.get('path[data-testid="map-graticule-lines"]')
     expect(lines.attributes('d')).toBeTruthy()
     expect(lines.attributes('fill')).toBe('none')
     expect(lines.attributes('stroke')).toBe('#334155')
@@ -106,12 +104,15 @@ describe('mapGraticule', () => {
   })
 
   it('applies map-object interaction styles on lines path', async () => {
+    const onMouseup = vi.fn()
+
     const wrapper = mountWithMapGraticule({
       styles: {
         default: { opacity: 0.9 },
         hover: { opacity: 0.7 },
         active: { opacity: 0.5 },
       },
+      onMouseup,
     })
     const lines = wrapper.find('path[data-testid="map-graticule-lines"]')
 
@@ -126,5 +127,14 @@ describe('mapGraticule', () => {
     await lines.trigger('mouseleave')
     await lines.trigger('mouseup')
     expect((lines.element as SVGPathElement).style.opacity).toBe('0.7')
+    expect(onMouseup).toHaveBeenCalledTimes(1)
+  })
+
+  it('renders graticule path outside map context without geometry', () => {
+    const wrapper = mount(MapGraticule)
+    const paths = wrapper.findAll('path')
+
+    expect(paths).toHaveLength(1)
+    expect(paths[0]?.attributes('d')).toBeUndefined()
   })
 })
