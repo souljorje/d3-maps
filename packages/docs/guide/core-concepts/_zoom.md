@@ -10,13 +10,13 @@ Wrap layers with [MapZoom](/components/map-zoom) to enable pan and zoom
 <template>
   <Map
     :data="data"
-    :projection="geoMercator"
+    :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
   >
     <MapZoom>
+      <MapGraticule border />
       <MapFeatures />
       <MapMesh stroke="#fff" />
-      <MapGraticule stroke="#cbd5e1" />
     </MapZoom>
   </Map>
 </template>
@@ -27,13 +27,13 @@ Wrap layers with [MapZoom](/components/map-zoom) to enable pan and zoom
 ```tsx{6,10} [react]
 <Map
   data={data}
-  projection={geoMercator}
+  projection={geoEquirectangular}
   dataTransformer={dataTransformer}
 >
   <MapZoom>
+    <MapGraticule border />
     <MapFeatures />
     <MapMesh stroke="#fff" />
-    <MapGraticule stroke="#cbd5e1" />
   </MapZoom>
 </Map>
 ```

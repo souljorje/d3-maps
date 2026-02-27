@@ -10,10 +10,10 @@ Use [MapGraticule](/components/map-graticule) to draw latitude and longitude gri
 <template>
   <Map
     :data="data"
-    :projection="geoMercator"
+    :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
   >
-    <MapGraticule stroke="#cbd5e1" />
+    <MapGraticule border />
     <MapFeatures />
     <MapMesh stroke="#fff" />
   </Map>
@@ -25,10 +25,10 @@ Use [MapGraticule](/components/map-graticule) to draw latitude and longitude gri
 ```tsx{6} [react]
 <Map
   data={data}
-  projection={geoMercator}
+  projection={geoEquirectangular}
   dataTransformer={dataTransformer}
 >
-  <MapGraticule stroke="#cbd5e1" />
+  <MapGraticule border />
   <MapFeatures />
   <MapMesh stroke="#fff" />
 </Map>

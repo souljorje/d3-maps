@@ -10,7 +10,7 @@ To render borders use [MapMesh](/components/map-mesh) instead of applying `strok
 <template>
   <Map
     :data="data"
-    :projection="geoMercator"
+    :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
   >
     <MapFeatures />
@@ -24,7 +24,7 @@ To render borders use [MapMesh](/components/map-mesh) instead of applying `strok
 ```tsx{7} [react]
 <Map
   data={data}
-  projection={geoMercator}
+  projection={geoEquirectangular}
   dataTransformer={dataTransformer}
 >
   <MapFeatures />
