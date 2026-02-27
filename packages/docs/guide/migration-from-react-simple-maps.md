@@ -1,7 +1,8 @@
 # Migrate from react-simple-maps
 
-[@d3-maps/react](/components/) is fully compatible with [react-simple-maps](https://www.react-simple-maps.io/).  
-If you need something specific for migration, feel free to open an [issue](https://github.com/souljorje/d3-maps/issues) or [pull request](https://github.com/souljorje/d3-maps/pulls)
+[@d3-maps/react](/components/) is fully compatible* with [react-simple-maps](https://www.react-simple-maps.io/)  
+But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/issues) or [pull request](https://github.com/souljorje/d3-maps/pulls)  
+<sub>\* Line and Annotation in development</sub>
 
 ## Migration checklist
 
