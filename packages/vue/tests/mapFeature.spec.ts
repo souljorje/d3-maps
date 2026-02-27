@@ -1,7 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import { h } from 'vue'
+import {
+  h,
+  nextTick,
+} from 'vue'
 
 import {
   Map,
@@ -54,5 +57,33 @@ describe('mapFeature', () => {
     await path.trigger('mouseup')
     expect((path.element as SVGPathElement).style.opacity).toBe('0.8')
     expect(onMouseup).toHaveBeenCalledTimes(1)
+  })
+
+  it('resets active state on global mouseup when element mouseup is missed', async () => {
+    const wrapper = mount(Map, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapFeature, {
+          'data-testid': 'map-feature',
+          data: sampleGeoJson.features[0],
+          styles: {
+            default: { opacity: 0.9 },
+            active: { opacity: 0.7 },
+          },
+        }),
+      },
+    })
+
+    const path = wrapper.get('[data-testid="map-feature"]')
+    expect((path.element as SVGPathElement).style.opacity).toBe('0.9')
+
+    await path.trigger('mousedown')
+    expect((path.element as SVGPathElement).style.opacity).toBe('0.7')
+
+    window.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }))
+    await nextTick()
+    expect((path.element as SVGPathElement).style.opacity).toBe('0.9')
   })
 })

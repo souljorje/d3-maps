@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
   getObjectStateUpdate,
   resolveObjectStyle,
+  useMapObjectEvents,
 } from '../src'
 
 describe('getObjectStateUpdate', () => {
@@ -40,5 +41,70 @@ describe('resolveObjectStyle', () => {
 
   it('returns undefined when styles are not provided', () => {
     expect(resolveObjectStyle('hover')).toBeUndefined()
+  })
+})
+
+describe('useMapObjectEvents', () => {
+  it('tracks state transitions from map-object mouse events', () => {
+    let currentState = 'default'
+    const controller = useMapObjectEvents((state) => {
+      currentState = state
+    })
+
+    expect(currentState).toBe('default')
+    expect(controller.onMouseenter()).toBe('hover')
+    expect(currentState).toBe('hover')
+    expect(controller.onMousedown()).toBe('active')
+    expect(currentState).toBe('active')
+    expect(controller.onMouseup()).toBe('hover')
+    expect(currentState).toBe('hover')
+    expect(controller.onMouseleave()).toBe('default')
+    expect(currentState).toBe('default')
+  })
+
+  it('resets to default on global mouseup when element mouseup is missed', () => {
+    const originalWindow = globalThis.window
+    const listenerSet = new Set<() => void>()
+    ;(globalThis as { window: unknown }).window = {
+      addEventListener: (_eventName: string, listener: () => void) => {
+        listenerSet.add(listener)
+      },
+      removeEventListener: (_eventName: string, listener: () => void) => {
+        listenerSet.delete(listener)
+      },
+    }
+    let currentState = 'default'
+    const controller = useMapObjectEvents((state) => {
+      currentState = state
+    })
+
+    controller.onMousedown({ id: 'feature' })
+    expect(currentState).toBe('active')
+
+    for (const listener of listenerSet) listener()
+    expect(currentState).toBe('default')
+    expect(listenerSet.size).toBe(0)
+    ;(globalThis as { window?: unknown }).window = originalWindow
+  })
+
+  it('cleans up active global mouseup subscription on dispose', () => {
+    const originalWindow = globalThis.window
+    const listenerSet = new Set<() => void>()
+    ;(globalThis as { window: unknown }).window = {
+      addEventListener: (_eventName: string, listener: () => void) => {
+        listenerSet.add(listener)
+      },
+      removeEventListener: (_eventName: string, listener: () => void) => {
+        listenerSet.delete(listener)
+      },
+    }
+
+    const controller = useMapObjectEvents()
+
+    controller.onMousedown({ id: 'feature' })
+    controller.dispose()
+
+    expect(listenerSet.size).toBe(0)
+    ;(globalThis as { window?: unknown }).window = originalWindow
   })
 })

@@ -56,4 +56,28 @@ describe('mapFeature', () => {
     expect(path?.style.opacity).toBe('0.8')
     expect(onMouseUp).toHaveBeenCalledTimes(1)
   })
+
+  it('resets active state on global mouseup when element mouseup is missed', () => {
+    render(
+      <Map data={sampleGeoJson}>
+        <MapFeature
+          data-testid="map-feature"
+          data={sampleGeoJson.features[0]}
+          styles={{
+            default: { opacity: 0.9 },
+            active: { opacity: 0.7 },
+          }}
+        />
+      </Map>,
+    )
+
+    const path = screen.getByTestId('map-feature')
+    expect(path?.style.opacity).toBe('0.9')
+
+    fireEvent.mouseDown(path)
+    expect(path?.style.opacity).toBe('0.7')
+
+    fireEvent.mouseUp(window)
+    expect(path?.style.opacity).toBe('0.9')
+  })
 })
