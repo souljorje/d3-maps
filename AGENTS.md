@@ -57,6 +57,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 |-------|-------------|
 | [vitest](.agents/skills/vitest/SKILL.md) | Writing or updating test suites, mocking setup, or coverage/test config. |
 | [changesets](.agents/skills/changesets/SKILL.md) | Creating or updating `.changeset/*.md` entries for package changes (everything under `packages/*` except `packages/docs`). |
+| [doc-gardening](.agents/skills/doc-gardening/SKILL.md) | Fixing broken docs links, removing docs drift, or extending `pnpm agents:check` to keep the knowledge base validated. |
 
 ## Detailed Instructions
 
