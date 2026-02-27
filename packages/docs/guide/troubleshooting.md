@@ -9,9 +9,11 @@
 
 Coordinates are `[longitude, latitude]`
 
-## Fetch errors
+## Layers overlap unexpectedly
 
-If you fetch TopoJSON/GeoJSON from a third-party source, make sure:
+If something overlays incorrectly, render layers top-to-bottom in this order:
 
-- the URL is accessible from the browser (CORS)
-- you use HTTPS in production
+- `MapGraticule`
+- `MapFeatures`
+- `MapMesh`
+- `MapMarker`
