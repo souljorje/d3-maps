@@ -130,6 +130,46 @@ describe('mapGraticule', () => {
     expect(onMouseup).toHaveBeenCalledTimes(1)
   })
 
+  it('refreshes forwarded attrs and listeners on parent re-render', async () => {
+    const firstOnMouseup = vi.fn()
+    const secondOnMouseup = vi.fn()
+    let onMouseup = firstOnMouseup
+    let stroke = '#334155'
+
+    const wrapper = mount(Map, {
+      props: {
+        data: sampleGeoJson,
+        width: 600,
+      },
+      slots: {
+        default: () =>
+          h(MapGraticule, {
+            'data-testid': 'map-graticule-lines',
+            stroke,
+            onMouseup,
+          }),
+      },
+    })
+
+    const initialLines = wrapper.get('path[data-testid="map-graticule-lines"]')
+    expect(initialLines.attributes('stroke')).toBe('#334155')
+    await initialLines.trigger('mouseup')
+    expect(firstOnMouseup).toHaveBeenCalledTimes(1)
+    expect(secondOnMouseup).toHaveBeenCalledTimes(0)
+
+    onMouseup = secondOnMouseup
+    stroke = '#0f172a'
+    await wrapper.setProps({
+      width: 610,
+    })
+
+    const updatedLines = wrapper.get('path[data-testid="map-graticule-lines"]')
+    expect(updatedLines.attributes('stroke')).toBe('#0f172a')
+    await updatedLines.trigger('mouseup')
+    expect(firstOnMouseup).toHaveBeenCalledTimes(1)
+    expect(secondOnMouseup).toHaveBeenCalledTimes(1)
+  })
+
   it('renders graticule path outside map context without geometry', () => {
     const wrapper = mount(MapGraticule)
     const paths = wrapper.findAll('path')
