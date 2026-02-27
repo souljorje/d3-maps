@@ -1,7 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import { h } from 'vue'
+import {
+  defineComponent,
+  h,
+} from 'vue'
 
 import {
   Map,
@@ -128,6 +131,45 @@ describe('mapGraticule', () => {
     await lines.trigger('mouseup')
     expect((lines.element as SVGPathElement).style.opacity).toBe('0.7')
     expect(onMouseup).toHaveBeenCalledTimes(1)
+  })
+
+  it('refreshes forwarded attrs and listeners when parent updates them', async () => {
+    const firstMouseup = vi.fn()
+    const secondMouseup = vi.fn()
+
+    const TestHost = defineComponent({
+      props: {
+        useSecondBindings: {
+          default: false,
+          type: Boolean,
+        },
+      },
+      setup(hostProps) {
+        return () => h(Map, { data: sampleGeoJson }, {
+          default: () => h(MapGraticule, {
+            'aria-label': hostProps.useSecondBindings ? 'updated-graticule' : 'initial-graticule',
+            'data-testid': 'map-graticule-lines',
+            onMouseup: hostProps.useSecondBindings ? secondMouseup : firstMouseup,
+          }),
+        })
+      },
+    })
+
+    const wrapper = mount(TestHost)
+    const lines = wrapper.get('path[data-testid="map-graticule-lines"]')
+
+    expect(lines.attributes('aria-label')).toBe('initial-graticule')
+
+    await lines.trigger('mouseup')
+    expect(firstMouseup).toHaveBeenCalledTimes(1)
+    expect(secondMouseup).toHaveBeenCalledTimes(0)
+
+    await wrapper.setProps({ useSecondBindings: true })
+    expect(lines.attributes('aria-label')).toBe('updated-graticule')
+
+    await lines.trigger('mouseup')
+    expect(firstMouseup).toHaveBeenCalledTimes(1)
+    expect(secondMouseup).toHaveBeenCalledTimes(1)
   })
 
   it('renders graticule path outside map context without geometry', () => {

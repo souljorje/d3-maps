@@ -11,7 +11,7 @@
       :d="graticulePath"
       fill="none"
       :style="style"
-      v-bind="lineBindings"
+      v-bind="mergeProps(events, attrs)"
       name="graticule"
     />
     <path
@@ -78,6 +78,4 @@ const borderColor = computed(() => (
 ))
 
 const { style, ...events } = useMapObject(toRef(props, 'styles'))
-
-const lineBindings = computed(() => mergeProps(events, attrs))
 </script>
