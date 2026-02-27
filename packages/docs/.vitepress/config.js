@@ -69,6 +69,7 @@ const docsSidebar = [
           { text: 'Responsiveness', link: '/guide/core-concepts#responsiveness' },
         ] },
       { text: 'Troubleshooting', link: '/guide/troubleshooting' },
+      { text: 'Migrate from react-simple-maps', link: '/guide/migration-from-react-simple-maps' },
     ],
   },
   {

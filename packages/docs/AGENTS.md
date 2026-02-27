@@ -49,6 +49,7 @@
 | Code groups | Use `code-group` only when showing multiple variants. |
 | Snippet consistency | Keep related snippets consistent in naming, data shapes, and structure. |
 | Vue examples | Prefer `<script setup lang="ts">` and Composition API unless the surrounding page already uses a different pattern. |
+| Migration guide sync | When `@d3-maps/react` APIs or behavior change, update [react-simple-maps migration guide](guide/migration-from-react-simple-maps.md). |
 
 ## Skills
 | Skill | When to use |
