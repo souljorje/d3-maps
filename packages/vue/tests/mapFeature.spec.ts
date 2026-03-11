@@ -10,6 +10,7 @@ import {
   Map,
   MapFeature,
 } from '../src'
+import { insideZoomKey } from '../src/hooks/useInsideZoom'
 import { sampleGeoJson } from './fixtures'
 
 describe('mapFeature', () => {
@@ -61,6 +62,11 @@ describe('mapFeature', () => {
 
   it('resets active state on global mouseup when element mouseup is missed', async () => {
     const wrapper = mount(Map, {
+      global: {
+        provide: {
+          [insideZoomKey as symbol]: true,
+        },
+      },
       props: {
         data: sampleGeoJson,
       },

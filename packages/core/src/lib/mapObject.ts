@@ -8,7 +8,7 @@ import {
   isObject,
 } from './utils'
 
-export type MapObject = GeoGeometryObjects | ExtendedFeature
+export type MapObjectData = GeoGeometryObjects | ExtendedFeature
 
 export type MapObjectEventType = 'mouseenter' | 'mouseleave' | 'mousedown' | 'mouseup'
 export type MapObjectGlobalMouseupListener = () => void
@@ -33,7 +33,9 @@ export function subscribeWindow(
  */
 export const mapObjectState = ['default', 'hover', 'active'] as const
 export type MapObjectState = typeof mapObjectState[number]
-export type MapObjectStyles<TStyle> = Partial<Record<MapObjectState, TStyle>>
+export interface MapObject<TStyle = unknown> {
+  styles?: Partial<Record<MapObjectState, TStyle>>
+}
 
 export type ElementMapObjectMouseDownSource =
   | Element
@@ -74,13 +76,14 @@ export function getObjectStateUpdate(event: MapObjectEventType): MapObjectState 
  */
 export function resolveObjectStyle<TStyle>(
   state: MapObjectState,
-  styles?: MapObjectStyles<TStyle>,
+  styles?: MapObject<TStyle>['styles'],
 ): TStyle | undefined {
   return styles?.[state] ?? styles?.default
 }
 
 export function useMapObjectEvents<TTarget = unknown>(
   onStateChange?: (state: MapObjectState) => void,
+  recoverOnGlobalMouseup = false,
 ): MapObjectInteractionController<TTarget> {
   let state: MapObjectState = 'default'
   let pressedTarget: MapObjectMouseDownSource<TTarget> = null
@@ -104,6 +107,8 @@ export function useMapObjectEvents<TTarget = unknown>(
   }
 
   const registerGlobalMouseup = (): void => {
+    if (!recoverOnGlobalMouseup) return
+
     const onGlobalMouseup = (): MapObjectState => {
       const nextState = isHoveredSource(pressedTarget) ? 'hover' : 'default'
       clearInteraction()

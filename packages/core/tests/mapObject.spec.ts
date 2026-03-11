@@ -76,7 +76,7 @@ describe('useMapObjectEvents', () => {
     let currentState = 'default'
     const controller = useMapObjectEvents((state) => {
       currentState = state
-    })
+    }, true)
 
     controller.onMousedown({ id: 'feature' })
     expect(currentState).toBe('active')
@@ -99,10 +99,29 @@ describe('useMapObjectEvents', () => {
       },
     }
 
-    const controller = useMapObjectEvents()
+    const controller = useMapObjectEvents(undefined, true)
 
     controller.onMousedown({ id: 'feature' })
     controller.dispose()
+
+    expect(listenerSet.size).toBe(0)
+    ;(globalThis as { window?: unknown }).window = originalWindow
+  })
+
+  it('does not subscribe to global mouseup by default', () => {
+    const originalWindow = globalThis.window
+    const listenerSet = new Set<() => void>()
+    ;(globalThis as { window: unknown }).window = {
+      addEventListener: (_eventName: string, listener: () => void) => {
+        listenerSet.add(listener)
+      },
+      removeEventListener: (_eventName: string, listener: () => void) => {
+        listenerSet.delete(listener)
+      },
+    }
+
+    const controller = useMapObjectEvents()
+    controller.onMousedown({ id: 'feature' })
 
     expect(listenerSet.size).toBe(0)
     ;(globalThis as { window?: unknown }).window = originalWindow

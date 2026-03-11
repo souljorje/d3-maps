@@ -1,7 +1,6 @@
 import type {
   MapObjectInteractionController,
   MapObjectState,
-  MapObjectStyles as TMapObjectStyles,
 } from '@d3-maps/core'
 import type {
   ComputedRef,
@@ -20,7 +19,7 @@ import {
   unref,
 } from 'vue'
 
-export type MapObjectStyles = TMapObjectStyles<StyleValue>
+import { useInsideZoom } from './useInsideZoom'
 
 export interface UseMapObjectResult {
   style: ComputedRef<StyleValue | undefined>
@@ -31,9 +30,10 @@ export interface UseMapObjectResult {
 }
 
 export function useMapObject(
-  styles: MaybeRef<MapObjectStyles | undefined>,
+  styles: MaybeRef<Partial<Record<MapObjectState, StyleValue>> | undefined>,
 ): UseMapObjectResult {
   const state = ref<MapObjectState>('default')
+  const insideZoom = useInsideZoom()
 
   const {
     onMouseenter,
@@ -43,7 +43,7 @@ export function useMapObject(
     dispose,
   }: MapObjectInteractionController<MouseEvent> = useMapObjectEvents((nextState) => {
     state.value = nextState
-  })
+  }, insideZoom)
 
   onBeforeUnmount(() => {
     dispose()

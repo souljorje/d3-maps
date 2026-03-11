@@ -10,6 +10,7 @@ import {
   Map,
   MapFeature,
 } from '../src'
+import { InsideZoomContext } from '../src/hooks/useInsideZoom'
 import { sampleGeoJson } from './fixtures'
 
 describe('mapFeature', () => {
@@ -59,16 +60,18 @@ describe('mapFeature', () => {
 
   it('resets active state on global mouseup when element mouseup is missed', () => {
     render(
-      <Map data={sampleGeoJson}>
-        <MapFeature
-          data-testid="map-feature"
-          data={sampleGeoJson.features[0]}
-          styles={{
-            default: { opacity: 0.9 },
-            active: { opacity: 0.7 },
-          }}
-        />
-      </Map>,
+      <InsideZoomContext.Provider value={true}>
+        <Map data={sampleGeoJson}>
+          <MapFeature
+            data-testid="map-feature"
+            data={sampleGeoJson.features[0]}
+            styles={{
+              default: { opacity: 0.9 },
+              active: { opacity: 0.7 },
+            }}
+          />
+        </Map>
+      </InsideZoomContext.Provider>,
     )
 
     const path = screen.getByTestId('map-feature')

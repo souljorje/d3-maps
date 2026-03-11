@@ -1,7 +1,7 @@
 'use client'
 
 import type {
-  MapObjectStyles as CoreMapObjectStyles,
+  MapObject as CoreMapObject,
   MapObjectInteractionController,
   MapObjectState,
 } from '@d3-maps/core'
@@ -22,13 +22,13 @@ import {
   useState,
 } from 'react'
 
+import { useInsideZoom } from './useInsideZoom'
 import { useLatest } from './useLatest'
 
 export type MapObjectStyle = CSSProperties
-export type MapObjectStyles = CoreMapObjectStyles<MapObjectStyle>
 
-export interface UseMapObjectOptions<TElement extends Element> {
-  styles?: MapObjectStyles
+export interface UseMapObjectOptions<TElement extends Element>
+  extends CoreMapObject<MapObjectStyle> {
   onMouseEnter?: MouseEventHandler<TElement>
   onMouseLeave?: MouseEventHandler<TElement>
   onMouseDown?: MouseEventHandler<TElement>
@@ -48,6 +48,7 @@ export function useMapObject<TElement extends Element>(
 ): UseMapObjectResult<TElement> {
   const [state, setState] = useState<MapObjectState>('default')
   const stateRef = useRef(state)
+  const insideZoom = useInsideZoom()
 
   const onMouseEnterRef = useLatest(options.onMouseEnter)
   const onMouseLeaveRef = useLatest(options.onMouseLeave)
@@ -65,8 +66,8 @@ export function useMapObject<TElement extends Element>(
   }, [])
 
   const interactionController = useMemo<MapObjectInteractionController<MouseEvent>>(() => {
-    return useMapObjectEvents(syncState)
-  }, [syncState])
+    return useMapObjectEvents(syncState, insideZoom)
+  }, [insideZoom, syncState])
 
   useEffect(() => {
     return () => {
