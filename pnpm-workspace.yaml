@@ -11,6 +11,7 @@ catalog:
   '@types/d3-geo': ^3.1.0
   '@types/d3-selection': ^3.0.11
   '@types/d3-scale': ^4.0.9
+  '@types/d3-shape': ^3.1.7
   '@types/d3-zoom': ^3.0.8
   '@types/geojson': ^7946.0.16
   '@types/react': ^19.2.2
@@ -25,6 +26,7 @@ catalog:
   d3-geo: ^3.1.1
   d3-scale: ^4.0.2
   d3-selection: ^3.0.0
+  d3-shape: ^3.2.0
   d3-zoom: ^3.0.0
   eslint: ^9.39.3
   jsdom: ^27.3.0

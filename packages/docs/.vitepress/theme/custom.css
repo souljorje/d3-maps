@@ -30,11 +30,13 @@
     text {
       fill: var(--vp-c-brand-3);
       font-weight: bold;
-      font-family: monospace;
     }
     circle {
       fill: var(--vp-c-brand-3)
     }
+  }
+  [name='line']:not([stroke]) {
+    stroke: var(--vp-c-brand-3);
   }
 }
 

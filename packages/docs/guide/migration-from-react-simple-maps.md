@@ -2,7 +2,7 @@
 
 [@d3-maps/react](/components/) is fully compatible* with [react-simple-maps](https://www.react-simple-maps.io/)  
 But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/issues) or [pull request](https://github.com/souljorje/d3-maps/pulls)  
-<sub>\* Line and Annotation in development</sub>
+<sub>\* Annotation in development</sub>
 
 ## Migration checklist
 
@@ -137,8 +137,8 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 | [`Geographies`](https://www.react-simple-maps.io/docs/geographies/) | [MapFeatures](/components/map-features) |
 | [`Geography`](https://www.react-simple-maps.io/docs/geography/) | [MapFeature](/components/map-feature) |
 | [`Marker`](https://www.react-simple-maps.io/docs/marker/) | [MapMarker](/components/map-marker) |
+| [`Line`](https://www.react-simple-maps.io/docs/line/) | [MapLine](/components/map-line) |
 | [`ZoomableGroup`](https://www.react-simple-maps.io/docs/zoomable-group/) | [MapZoom](/components/map-zoom) |
 | [`Graticule`](https://www.react-simple-maps.io/docs/graticule/) | [MapGraticule](/components/map-graticule) |
 | [`Sphere`](https://www.react-simple-maps.io/docs/sphere/) | [MapGraticule](/components/map-graticule) (`background`/`border`) or a custom SVG layer |
-| [`Annotation`](https://www.react-simple-maps.io/docs/annotation/) | Custom layer using [useMapObject](/hooks/use-map-object) + [useMapContext](/hooks/use-map-context) |
-| [`Line`](https://www.react-simple-maps.io/docs/line/) | Custom layer using [useMapObject](/hooks/use-map-object) + [useMapContext](/hooks/use-map-context) |
+| [`Annotation`](https://www.react-simple-maps.io/docs/annotation/) | Use [MapLine](/components/map-line) & [MapMarker](/components/map-marker) together |

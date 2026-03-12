@@ -2,6 +2,7 @@ import './index.css'
 
 export * from './lib/feature'
 export * from './lib/graticule'
+export * from './lib/line'
 export * from './lib/map'
 export * from './lib/mapObject'
 export * from './lib/marker'
