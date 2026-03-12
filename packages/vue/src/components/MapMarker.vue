@@ -14,7 +14,10 @@ import type { MapMarkerProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
 import { getMarkerTransform } from '@d3-maps/core'
-import { computed, toRef } from 'vue'
+import {
+  computed,
+  toRef,
+} from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'

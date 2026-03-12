@@ -10,17 +10,19 @@
 
 <script setup lang="ts">
 import type {
-  MapObjectStyles,
-} from '../hooks/useMapObject'
+  MapObject,
+} from '@d3-maps/core'
+import type { StyleValue } from 'vue'
 
-import { computed, toRef } from 'vue'
+import {
+  computed,
+  toRef,
+} from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
-interface Props {
-  styles?: MapObjectStyles
-}
+interface Props extends MapObject<StyleValue> {}
 
 const props = defineProps<Props>()
 const context = useMapContext()

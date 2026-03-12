@@ -8,11 +8,10 @@
       name="background"
     />
     <path
-      v-if="graticulePath"
       :d="graticulePath"
       fill="none"
       :style="style"
-      v-bind="{ ...$attrs, ...events }"
+      v-bind="mergeProps(events, attrs)"
       name="graticule"
     />
     <path
@@ -27,9 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import type { GraticuleConfig } from '@d3-maps/core'
-
-import type { MapObjectStyles } from '../hooks/useMapObject'
+import type {
+  GraticuleConfig,
+  MapObject,
+} from '@d3-maps/core'
+import type { StyleValue } from 'vue'
 
 import {
   isString,
@@ -38,17 +39,18 @@ import {
 } from '@d3-maps/core'
 import {
   computed,
+  mergeProps,
   toRef,
+  useAttrs,
 } from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
-interface Props {
+interface Props extends MapObject<StyleValue> {
   config?: GraticuleConfig
   background?: boolean | string
   border?: boolean | string
-  styles?: MapObjectStyles
 }
 
 defineOptions({
@@ -57,6 +59,7 @@ defineOptions({
 
 const props = defineProps<Props>()
 const context = useMapContext()
+const attrs = useAttrs()
 
 const graticulePath = computed(() => {
   if (!context?.value) return undefined

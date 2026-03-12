@@ -1,7 +1,6 @@
 import type {
-  MapObjectEventType,
+  MapObjectInteractionController,
   MapObjectState,
-  MapObjectStyles as TMapObjectStyles,
 } from '@d3-maps/core'
 import type {
   ComputedRef,
@@ -10,16 +9,17 @@ import type {
 } from 'vue'
 
 import {
-  getObjectStateUpdate,
   resolveObjectStyle,
+  useMapObjectEvents,
 } from '@d3-maps/core'
 import {
   computed,
+  onBeforeUnmount,
   ref,
   unref,
 } from 'vue'
 
-export type MapObjectStyles = TMapObjectStyles<StyleValue>
+import { useInsideZoom } from './useInsideZoom'
 
 export interface UseMapObjectResult {
   style: ComputedRef<StyleValue | undefined>
@@ -30,22 +30,32 @@ export interface UseMapObjectResult {
 }
 
 export function useMapObject(
-  styles: MaybeRef<MapObjectStyles | undefined>,
+  styles: MaybeRef<Partial<Record<MapObjectState, StyleValue>> | undefined>,
 ): UseMapObjectResult {
   const state = ref<MapObjectState>('default')
+  const insideZoom = useInsideZoom()
 
-  const eventCallbackFactory = <E extends MapObjectEventType>(eventName: E) =>
-    () => {
-      state.value = getObjectStateUpdate(eventName)
-    }
+  const {
+    onMouseenter,
+    onMouseleave,
+    onMouseup,
+    onMousedown,
+    dispose,
+  }: MapObjectInteractionController<MouseEvent> = useMapObjectEvents((nextState) => {
+    state.value = nextState
+  }, insideZoom)
+
+  onBeforeUnmount(() => {
+    dispose()
+  })
 
   const style = computed(() => resolveObjectStyle(state.value, unref(styles)))
 
   return {
     style,
-    onMouseenter: eventCallbackFactory('mouseenter'),
-    onMouseleave: eventCallbackFactory('mouseleave'),
-    onMousedown: eventCallbackFactory('mousedown'),
-    onMouseup: eventCallbackFactory('mouseup'),
+    onMouseenter,
+    onMouseleave,
+    onMousedown,
+    onMouseup,
   }
 }
