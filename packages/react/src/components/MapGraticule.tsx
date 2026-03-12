@@ -1,12 +1,11 @@
 'use client'
 
-import type { GraticuleConfig } from '@d3-maps/core'
+import type { GraticuleConfig, MapObject } from '@d3-maps/core'
 import type {
+  CSSProperties,
   ReactElement,
   SVGProps,
 } from 'react'
-
-import type { MapObjectStyles } from '../hooks/useMapObject'
 
 import {
   renderGraticule,
@@ -18,11 +17,11 @@ import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
 export interface MapGraticuleProps
-  extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style' | 'fill'> {
+  extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style' | 'fill'>,
+  MapObject<CSSProperties> {
   config?: GraticuleConfig
   background?: boolean | string
   border?: boolean | string
-  styles?: MapObjectStyles
 }
 
 export function MapGraticule({

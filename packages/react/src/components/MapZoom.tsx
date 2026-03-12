@@ -23,6 +23,7 @@ import {
   useRef,
 } from 'react'
 
+import { InsideZoomContext } from '../hooks/useInsideZoom'
 import { useLatest } from '../hooks/useLatest'
 import { useMapContext } from '../hooks/useMapContext'
 
@@ -119,13 +120,15 @@ export function MapZoom({
     : 'd3-map-zoom'
 
   return (
-    <g
-      {...groupProps}
-      ref={containerRef}
-      className={mergedClassName}
-      name="zoom"
-    >
-      {children}
-    </g>
+    <InsideZoomContext.Provider value={true}>
+      <g
+        {...groupProps}
+        ref={containerRef}
+        className={mergedClassName}
+        name="zoom"
+      >
+        {children}
+      </g>
+    </InsideZoomContext.Provider>
   )
 }

@@ -22,10 +22,12 @@ import {
 import {
   computed,
   onMounted,
+  provide,
   ref,
   watch,
 } from 'vue'
 
+import { insideZoomKey } from '../hooks/useInsideZoom'
 import { useMapContext } from '../hooks/useMapContext'
 
 const props = withDefaults(defineProps<ZoomProps>(), {
@@ -43,6 +45,8 @@ const emit = defineEmits<{
 
 const container = ref<SVGGElement | null>(null)
 const context = useMapContext()
+
+provide(insideZoomKey, true)
 
 const zoomBehavior = computed(() => {
   return createZoomBehavior(context?.value, {

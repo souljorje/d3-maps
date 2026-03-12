@@ -1,13 +1,12 @@
 'use client'
 
-import type { MapFeature as D3MapFeature } from '@d3-maps/core'
+import type { MapFeature as D3MapFeature, MapObject } from '@d3-maps/core'
 import type {
+  CSSProperties,
   ReactElement,
   ReactNode,
   SVGProps,
 } from 'react'
-
-import type { MapObjectStyles } from '../hooks/useMapObject'
 
 import { getFeatureKey } from '@d3-maps/core'
 
@@ -22,9 +21,10 @@ type MapFeaturesChildren = ReactNode | ((props: MapFeaturesRenderProps) => React
 
 type MapFeaturesElementProps = Omit<SVGProps<SVGGElement>, 'children'>
 
-export interface MapFeaturesProps extends MapFeaturesElementProps {
+export interface MapFeaturesProps
+  extends MapFeaturesElementProps,
+  MapObject<CSSProperties> {
   idKey?: string
-  styles?: MapObjectStyles
   children?: MapFeaturesChildren
 }
 

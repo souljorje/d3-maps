@@ -11,7 +11,10 @@
 import type { MapFeatureProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
-import { computed, toRef } from 'vue'
+import {
+  computed,
+  toRef,
+} from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
