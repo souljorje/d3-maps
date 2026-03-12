@@ -10,7 +10,7 @@ Use this to draw shared borders/edges (for example country boundaries) on top of
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `styles?` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/guide/core-concepts/#styling) |
+| `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
 

@@ -10,7 +10,7 @@ Use it for direct straight lines or geographic curves between locations
 | --- | --- | --- | --- |
 | `coordinates?` | `[number, number]` | `[]` | Line coordinates in `[longitude, latitude]` format |
 | `curve?` | `boolean \| function` | `false` | `true` renders a [great-circle](https://en.wikipedia.org/wiki/Great-circle_distance) arc. For custom curve use [D3 curve factory](https://d3js.org/d3-shape/line#line_curve) |
-| `styles?` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/guide/core-concepts/#styling) |
+| `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapLine
 

@@ -4,7 +4,7 @@ import type {
 } from 'd3-shape'
 
 import type { MapContext } from './map'
-import type { MapObjectStyles } from './mapObject'
+import type { MapObject } from './mapObject'
 
 import { line } from 'd3-shape'
 
@@ -16,10 +16,9 @@ export type MapLineCurve = boolean | CurveFactory | CurveFactoryLineOnly
 /**
  * Shared props contract for straight line layers.
  */
-export interface MapLineProps<TStyle = unknown> {
+export interface MapLineProps<TStyle = unknown> extends MapObject<TStyle> {
   coordinates?: MapLineCoordinates[]
   curve?: MapLineCurve
-  styles?: MapObjectStyles<TStyle>
 }
 
 function isCurveFactory(curve: MapLineCurve): curve is CurveFactory | CurveFactoryLineOnly {

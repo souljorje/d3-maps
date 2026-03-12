@@ -45,6 +45,10 @@ Coordinates must be `[longitude, latitude]`.
 
 Shared props contract for straight line layers.
 
+#### Extends
+
+* [`MapObject`](mapObject.md#mapobject)<`TStyle`>
+
 #### Type Parameters
 
 | Type Parameter | Default type |
@@ -53,11 +57,11 @@ Shared props contract for straight line layers.
 
 #### Properties
 
-| Property | Type |
-| ------ | ------ |
-| <a id="property-coordinates"></a> `coordinates?` | [`MapLineCoordinates`](#maplinecoordinates)\[] |
-| <a id="property-curve"></a> `curve?` | [`MapLineCurve`](#maplinecurve) |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> |
+| Property | Type | Inherited from |
+| ------ | ------ | ------ |
+| <a id="property-coordinates"></a> `coordinates?` | [`MapLineCoordinates`](#maplinecoordinates)\[] | - |
+| <a id="property-curve"></a> `curve?` | [`MapLineCurve`](#maplinecurve) | - |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObject`](mapObject.md#mapobject).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases
 

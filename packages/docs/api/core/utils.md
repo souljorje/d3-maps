@@ -7,9 +7,11 @@
 * [Functions](#functions)
   * [applyModifiers()](#applymodifiers)
   * [isDefined()](#isdefined)
+  * [isElement()](#iselement)
   * [isFunction()](#isfunction)
   * [isNullish()](#isnullish)
   * [isNumber()](#isnumber)
+  * [isObject()](#isobject)
   * [isPlainObject()](#isplainobject)
   * [isString()](#isstring)
   * [isStringOrNumber()](#isstringornumber)
@@ -100,6 +102,24 @@ function isDefined<T>(value: T | null | undefined): value is T;
 
 ***
 
+### isElement()
+
+```ts
+function isElement(value: unknown): value is Element;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `value` | `unknown` |
+
+#### Returns
+
+`value is Element`
+
+***
+
 ### isFunction()
 
 ```ts
@@ -151,6 +171,24 @@ function isNumber(value: unknown): value is number;
 #### Returns
 
 `value is number`
+
+***
+
+### isObject()
+
+```ts
+function isObject(value: unknown): value is object;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `value` | `unknown` |
+
+#### Returns
+
+`value is object`
 
 ***
 

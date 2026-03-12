@@ -7,13 +7,21 @@
 * [Functions](#functions)
   * [getObjectStateUpdate()](#getobjectstateupdate)
   * [resolveObjectStyle()](#resolveobjectstyle)
+  * [subscribeWindow()](#subscribewindow)
+  * [useMapObjectEvents()](#usemapobjectevents)
 * [Variables](#variables)
   * [mapObjectState](#mapobjectstate)
-* [Type Aliases](#type-aliases)
+* [Interfaces](#interfaces)
   * [MapObject](#mapobject-1)
+  * [MapObjectInteractionController](#mapobjectinteractioncontroller)
+* [Type Aliases](#type-aliases)
+  * [ElementMapObjectMouseDownSource](#elementmapobjectmousedownsource)
+  * [MapObjectData](#mapobjectdata)
   * [MapObjectEventType](#mapobjecteventtype)
+  * [MapObjectGlobalMouseupListener()](#mapobjectglobalmouseuplistener)
+  * [MapObjectGlobalMouseupSubscription()](#mapobjectglobalmouseupsubscription)
+  * [MapObjectMouseDownSource](#mapobjectmousedownsource)
   * [MapObjectState](#mapobjectstate-1)
-  * [MapObjectStyles](#mapobjectstyles)
 
 ## Functions
 
@@ -62,6 +70,56 @@ Resolves a style value for the current state (falls back to `default`).
 
 `TStyle` | `undefined`
 
+***
+
+### subscribeWindow()
+
+```ts
+function subscribeWindow(ev: string, listener: MapObjectGlobalMouseupListener): () => void;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `ev` | `string` |
+| `listener` | [`MapObjectGlobalMouseupListener`](#mapobjectglobalmouseuplistener) |
+
+#### Returns
+
+```ts
+(): void;
+```
+
+##### Returns
+
+`void`
+
+***
+
+### useMapObjectEvents()
+
+```ts
+function useMapObjectEvents<TTarget>(onStateChange?: (state: "default" | "hover" | "active") => void, recoverOnGlobalMouseup?: boolean): MapObjectInteractionController<TTarget>;
+```
+
+#### Type Parameters
+
+| Type Parameter | Default type |
+| ------ | ------ |
+| `TTarget` | `unknown` |
+
+#### Parameters
+
+| Parameter | Type | Default value |
+| ------ | ------ | ------ |
+| `onStateChange?` | (`state`: `"default"` | `"hover"` | `"active"`) => `void` | `undefined` |
+| `recoverOnGlobalMouseup?` | `boolean` | `false` |
+
+#### Returns
+
+[`MapObjectInteractionController`](#mapobjectinteractioncontroller)<`TTarget`>
+
 ## Variables
 
 ### mapObjectState
@@ -72,12 +130,68 @@ const mapObjectState: readonly ["default", "hover", "active"];
 
 Supported interaction states for map objects.
 
-## Type Aliases
+## Interfaces
 
 ### MapObject
 
+#### Extended by
+
+* [`MapFeatureProps`](feature.md#mapfeatureprops)
+* [`MapLineProps`](line.md#maplineprops)
+* [`MapMarkerProps`](marker.md#mapmarkerprops)
+
+#### Type Parameters
+
+| Type Parameter | Default type |
+| ------ | ------ |
+| `TStyle` | `unknown` |
+
+#### Properties
+
+| Property | Type |
+| ------ | ------ |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> |
+
+***
+
+### MapObjectInteractionController
+
+#### Type Parameters
+
+| Type Parameter | Default type |
+| ------ | ------ |
+| `TTarget` | `unknown` |
+
+#### Properties
+
+| Property | Type |
+| ------ | ------ |
+| <a id="property-dispose"></a> `dispose` | () => `void` |
+| <a id="property-onmousedown"></a> `onMousedown` | (`source?`: [`MapObjectMouseDownSource`](#mapobjectmousedownsource)<`TTarget`>) => `"default"` | `"hover"` | `"active"` |
+| <a id="property-onmouseenter"></a> `onMouseenter` | () => `"default"` | `"hover"` | `"active"` |
+| <a id="property-onmouseleave"></a> `onMouseleave` | () => `"default"` | `"hover"` | `"active"` |
+| <a id="property-onmouseup"></a> `onMouseup` | () => `"default"` | `"hover"` | `"active"` |
+
+## Type Aliases
+
+### ElementMapObjectMouseDownSource
+
 ```ts
-type MapObject = GeoGeometryObjects | ExtendedFeature;
+type ElementMapObjectMouseDownSource = 
+  | Element
+  | {
+  currentTarget: EventTarget | null;
+}
+  | null
+  | undefined;
+```
+
+***
+
+### MapObjectData
+
+```ts
+type MapObjectData = GeoGeometryObjects | ExtendedFeature;
 ```
 
 ***
@@ -90,22 +204,60 @@ type MapObjectEventType = "mouseenter" | "mouseleave" | "mousedown" | "mouseup";
 
 ***
 
+### MapObjectGlobalMouseupListener()
+
+```ts
+type MapObjectGlobalMouseupListener = () => void;
+```
+
+#### Returns
+
+`void`
+
+***
+
+### MapObjectGlobalMouseupSubscription()
+
+```ts
+type MapObjectGlobalMouseupSubscription = (listener: MapObjectGlobalMouseupListener) => () => void;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `listener` | [`MapObjectGlobalMouseupListener`](#mapobjectglobalmouseuplistener) |
+
+#### Returns
+
+```ts
+(): void;
+```
+
+##### Returns
+
+`void`
+
+***
+
+### MapObjectMouseDownSource
+
+```ts
+type MapObjectMouseDownSource<TTarget> = 
+  | TTarget
+  | ElementMapObjectMouseDownSource;
+```
+
+#### Type Parameters
+
+| Type Parameter | Default type |
+| ------ | ------ |
+| `TTarget` | `unknown` |
+
+***
+
 ### MapObjectState
 
 ```ts
 type MapObjectState = typeof mapObjectState[number];
 ```
-
-***
-
-### MapObjectStyles
-
-```ts
-type MapObjectStyles<TStyle> = Partial<Record<MapObjectState, TStyle>>;
-```
-
-#### Type Parameters
-
-| Type Parameter |
-| ------ |
-| `TStyle` |
