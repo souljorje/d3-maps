@@ -1,10 +1,16 @@
 # @d3-maps/core
 
+## 0.6.0
+
+### Minor Changes
+
+- [#20](https://github.com/souljorje/d3-maps/pull/20) [`8eddfc6`](https://github.com/souljorje/d3-maps/commit/8eddfc69e82d6e2760f14dcafeb63660e0cd4f25) Thanks [@souljorje](https://github.com/souljorje)! - - Enabled missed `mouseup` recovery automatically for map objects rendered inside `MapZoom`
+
 ## 0.5.0
 
 ### Minor Changes
 
-- [#14](https://github.com/souljorje/d3-maps/pull/14) [`3b34758`](https://github.com/souljorje/d3-maps/commit/3b34758edcee9536756c819a35f7b18d373d8d7f) Thanks [@souljorje](https://github.com/souljorje)! 
+- [#14](https://github.com/souljorje/d3-maps/pull/14) [`3b34758`](https://github.com/souljorje/d3-maps/commit/3b34758edcee9536756c819a35f7b18d373d8d7f) Thanks [@souljorje](https://github.com/souljorje)!
   - Added `MapGraticule` component
   - Simplified map-object interaction APIs and normalized SVG rendering behavior
   - Removed conditional path rendering in map layers and rendered SVG nodes consistently

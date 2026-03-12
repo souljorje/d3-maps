@@ -1,5 +1,16 @@
 # @d3-maps/vue
 
+## 0.6.0
+
+### Minor Changes
+
+- [#20](https://github.com/souljorje/d3-maps/pull/20) [`8eddfc6`](https://github.com/souljorje/d3-maps/commit/8eddfc69e82d6e2760f14dcafeb63660e0cd4f25) Thanks [@souljorje](https://github.com/souljorje)! - - Enabled missed `mouseup` recovery automatically for map objects rendered inside `MapZoom`
+
+### Patch Changes
+
+- Updated dependencies [[`8eddfc6`](https://github.com/souljorje/d3-maps/commit/8eddfc69e82d6e2760f14dcafeb63660e0cd4f25)]:
+  - @d3-maps/core@0.6.0
+
 ## 0.5.1
 
 ### Patch Changes
