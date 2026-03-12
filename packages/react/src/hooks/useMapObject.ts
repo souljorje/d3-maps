@@ -1,8 +1,8 @@
 'use client'
 
 import type {
-  MapObjectStyles as CoreMapObjectStyles,
-  MapObjectEventType,
+  MapObject as CoreMapObject,
+  MapObjectInteractionController,
   MapObjectState,
 } from '@d3-maps/core'
 import type {
@@ -11,22 +11,24 @@ import type {
 } from 'react'
 
 import {
-  getObjectStateUpdate,
   resolveObjectStyle,
+  useMapObjectEvents,
 } from '@d3-maps/core'
 import {
   useCallback,
+  useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
 
+import { useInsideZoom } from './useInsideZoom'
 import { useLatest } from './useLatest'
 
 export type MapObjectStyle = CSSProperties
-export type MapObjectStyles = CoreMapObjectStyles<MapObjectStyle>
 
-export interface UseMapObjectOptions<TElement extends Element> {
-  styles?: MapObjectStyles
+export interface UseMapObjectOptions<TElement extends Element>
+  extends CoreMapObject<MapObjectStyle> {
   onMouseEnter?: MouseEventHandler<TElement>
   onMouseLeave?: MouseEventHandler<TElement>
   onMouseDown?: MouseEventHandler<TElement>
@@ -45,42 +47,55 @@ export function useMapObject<TElement extends Element>(
   options: UseMapObjectOptions<TElement>,
 ): UseMapObjectResult<TElement> {
   const [state, setState] = useState<MapObjectState>('default')
+  const stateRef = useRef(state)
+  const insideZoom = useInsideZoom()
 
   const onMouseEnterRef = useLatest(options.onMouseEnter)
   const onMouseLeaveRef = useLatest(options.onMouseLeave)
   const onMouseDownRef = useLatest(options.onMouseDown)
   const onMouseUpRef = useLatest(options.onMouseUp)
 
-  const setStateForEvent = useCallback((eventName: MapObjectEventType) => {
-    setState((currentState) => {
-      const nextState = getObjectStateUpdate(eventName)
-      return currentState === nextState ? currentState : nextState
-    })
+  useEffect(() => {
+    stateRef.current = state
+  }, [state])
+
+  const syncState = useCallback((nextState: MapObjectState) => {
+    if (stateRef.current === nextState) return
+    stateRef.current = nextState
+    setState(nextState)
   }, [])
 
-  const style = useMemo(() => {
-    return resolveObjectStyle(state, options.styles)
-  }, [state, options.styles])
+  const interactionController = useMemo<MapObjectInteractionController<MouseEvent>>(() => {
+    return useMapObjectEvents(syncState, insideZoom)
+  }, [insideZoom, syncState])
+
+  useEffect(() => {
+    return () => {
+      interactionController.dispose()
+    }
+  }, [interactionController])
+
+  const style = useMemo(() => resolveObjectStyle(state, options.styles), [state, options.styles])
 
   const onMouseEnter = useCallback<MouseEventHandler<TElement>>((event) => {
-    setStateForEvent('mouseenter')
+    interactionController.onMouseenter()
     onMouseEnterRef.current?.(event)
-  }, [setStateForEvent])
+  }, [interactionController])
 
   const onMouseLeave = useCallback<MouseEventHandler<TElement>>((event) => {
-    setStateForEvent('mouseleave')
+    interactionController.onMouseleave()
     onMouseLeaveRef.current?.(event)
-  }, [setStateForEvent])
+  }, [interactionController])
 
   const onMouseDown = useCallback<MouseEventHandler<TElement>>((event) => {
-    setStateForEvent('mousedown')
+    interactionController.onMousedown(event)
     onMouseDownRef.current?.(event)
-  }, [setStateForEvent])
+  }, [interactionController])
 
   const onMouseUp = useCallback<MouseEventHandler<TElement>>((event) => {
-    setStateForEvent('mouseup')
+    interactionController.onMouseup()
     onMouseUpRef.current?.(event)
-  }, [setStateForEvent])
+  }, [interactionController])
 
   return {
     style,

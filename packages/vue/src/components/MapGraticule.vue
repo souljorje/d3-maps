@@ -26,9 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import type { GraticuleConfig } from '@d3-maps/core'
-
-import type { MapObjectStyles } from '../hooks/useMapObject'
+import type {
+  GraticuleConfig,
+  MapObject,
+} from '@d3-maps/core'
+import type { StyleValue } from 'vue'
 
 import {
   isString,
@@ -45,11 +47,10 @@ import {
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
-interface Props {
+interface Props extends MapObject<StyleValue> {
   config?: GraticuleConfig
   background?: boolean | string
   border?: boolean | string
-  styles?: MapObjectStyles
 }
 
 defineOptions({
