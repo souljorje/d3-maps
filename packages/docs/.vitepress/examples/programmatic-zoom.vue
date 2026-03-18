@@ -12,7 +12,6 @@
           :min-zoom="minZoom"
           :max-zoom="maxZoom"
           :config="{ filter: isDragOnlyFilter }"
-          @zoomend="syncViewport($event, context)"
         >
           <MapGraticule
             border
@@ -83,7 +82,6 @@ import type {
   MapContext,
   MapData,
   MapFeature,
-  ZoomEvent,
 } from '@d3-maps/core'
 
 import {
@@ -104,7 +102,6 @@ const zoomStep = 0.5
 
 const data = ref<MapData>()
 const center = ref<[number, number]>()
-const focusPoint = ref<[number, number]>()
 const zoom = ref(initialZoom)
 const activeCountryLabel = ref('World')
 
@@ -133,21 +130,12 @@ function zoomOut() {
 
 function resetView() {
   center.value = undefined
-  focusPoint.value = undefined
   setZoom(initialZoom)
   activeCountryLabel.value = 'World'
 }
 
 function setZoom(nextZoom: number) {
-  const fittedZoom = clampZoom(nextZoom)
-
-  if (focusPoint.value && mapContext.value) {
-    center.value = getCenterForFocusPoint(focusPoint.value, fittedZoom, mapContext.value)
-  } else {
-    center.value = undefined
-  }
-
-  zoom.value = fittedZoom
+  zoom.value = clampZoom(nextZoom)
 }
 
 function zoomToRandomCountry() {
@@ -177,43 +165,17 @@ function zoomToFeature(
     return
   }
 
-  focusPoint.value = [
-    (x0 + x1) / 2,
-    (y0 + y1) / 2,
-  ]
   const fittedZoom = clampZoom(0.9 / Math.max(boundsWidth / width, boundsHeight / height))
-  center.value = getCenterForFocusPoint(focusPoint.value, fittedZoom, context)
   zoom.value = fittedZoom
+  center.value = clampCenter([
+    (width / 2) - (fittedZoom * (x0 + x1) / 2),
+    (height / 2) - (fittedZoom * (y0 + y1) / 2),
+  ], fittedZoom, context)
   activeCountryLabel.value = getFeatureLabel(feature)
 }
 
 function isDragOnlyFilter(event: Event) {
   return event.type !== 'wheel' && event.type !== 'dblclick'
-}
-
-function syncViewport(
-  event: ZoomEvent,
-  context: MapContext,
-) {
-  center.value = [event.transform.x, event.transform.y]
-  focusPoint.value = event.transform.invert([
-    context.width / 2,
-    context.height / 2,
-  ]) as [number, number]
-  zoom.value = event.transform.k
-}
-
-function getCenterForFocusPoint(
-  value: [number, number],
-  nextZoom: number,
-  context: MapContext,
-): [number, number] {
-  const { width, height } = context
-
-  return clampCenter([
-    (width / 2) - (nextZoom * value[0]),
-    (height / 2) - (nextZoom * value[1]),
-  ], nextZoom, context)
 }
 
 function clampCenter(
