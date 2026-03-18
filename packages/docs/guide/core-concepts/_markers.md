@@ -47,9 +47,9 @@ Add any points to the map with [MapMarker](/components/map-marker)
     <MapMesh stroke="#fff" />
     <MapMarker coordinates={[-83.0457538, 42.331427]}>
       <text
-        font-size={14}
+        fontSize={14}
         y={-6}
-        text-anchor={"middle"}
+        textAnchor={"middle"}
       >Sweet home 🧡</text>
       <circle r="3" />
     </MapMarker>

@@ -41,7 +41,7 @@ const styles = {
 
 == React
 
-```tsx{8} [react]
+```tsx{8,12,14} [react]
 <Map
   data={data}
   projection={geoEquirectangular}
@@ -53,9 +53,9 @@ const styles = {
     <MapMesh stroke="#fff" />
     <MapMarker coordinates={[-83.0457538, 42.331427]}>
       <text
-        font-size={14}
+        fontSize={14}
         y={-6}
-        text-anchor={"middle"}
+        textAnchor={"middle"}
       >Sweet home 🧡</text>
       <circle r="3" />
     </MapMarker>

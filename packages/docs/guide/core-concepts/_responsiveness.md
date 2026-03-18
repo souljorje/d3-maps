@@ -35,8 +35,8 @@ Simply make it with an aspect-ratio wrapper and the `aspect-ratio` prop
 
 == React
 
-```tsx{1,6,9,11} [react]
-<div style={"aspect-ratio: 2 / 1"}>
+```tsx{1,6,9,11,14,16} [react]
+<div style={{ aspectRatio: "2 / 1" }}>
   <Map
     data={data}
     projection={geoEquirectangular}
@@ -49,9 +49,9 @@ Simply make it with an aspect-ratio wrapper and the `aspect-ratio` prop
       <MapMesh stroke="#fff" />
       <MapMarker coordinates={[-83.0457538, 42.331427]}>
         <text
-          font-size={14}
+          fontSize={14}
           y={-6}
-          text-anchor={"middle"}
+          textAnchor={"middle"}
         >Sweet home 🧡</text>
         <circle r="3" />
       </MapMarker>
