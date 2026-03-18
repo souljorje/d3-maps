@@ -13,7 +13,6 @@ import type {
 import { select as d3Select } from 'd3-selection'
 import {
   zoom,
-  zoomIdentity,
 } from 'd3-zoom'
 
 import {
@@ -42,7 +41,7 @@ export interface ZoomModifiers extends MethodsToModifiers<DefaultZoomBehavior> {
 
 export interface ZoomProps {
   /**
-   * Raw d3-style translate offset.
+   * Projected map-space point to keep centered in the viewport.
    *
    * If omitted, changing `zoom` alone preserves the current viewport center.
    */
@@ -112,12 +111,8 @@ export function createZoomBehavior(
 
 export function applyZoom(options: ApplyZoomOptions): void {
   if (options.center) {
-    const zoom = options.zoom ?? ZOOM_DEFAULTS.zoom
-    callWithSvg(
-      options.element,
-      options.behavior.transform,
-      zoomIdentity.translate(...options.center).scale(zoom),
-    )
+    callWithSvg(options.element, options.behavior.scaleTo, options.zoom ?? ZOOM_DEFAULTS.zoom)
+    callWithSvg(options.element, options.behavior.translateTo, ...options.center)
     return
   }
 

@@ -2,7 +2,6 @@ import type {
   MapFeature as D3MapFeature,
   MapContext,
   MapData,
-  ZoomEvent,
 } from '@d3-maps/core'
 import type { JSX } from 'react'
 
@@ -33,7 +32,6 @@ const zoomStep = 0.5
 export default function ProgrammaticZoomExample(): JSX.Element | null {
   const [mapData, setMapData] = useState<MapData>()
   const [center, setCenter] = useState<[number, number]>()
-  const [focusPoint, setFocusPoint] = useState<[number, number]>()
   const [zoom, setZoom] = useState(initialZoom)
   const [activeCountryLabel, setActiveCountryLabel] = useState('World')
 
@@ -65,30 +63,17 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   }, [])
 
   function zoomIn(): void {
-    setView(zoom + zoomStep)
+    setZoom(clampZoom(zoom + zoomStep))
   }
 
   function zoomOut(): void {
-    setView(zoom - zoomStep)
+    setZoom(clampZoom(zoom - zoomStep))
   }
 
   function resetView(): void {
     setCenter(undefined)
-    setFocusPoint(undefined)
-    setView(initialZoom)
+    setZoom(initialZoom)
     setActiveCountryLabel('World')
-  }
-
-  function setView(nextZoom: number): void {
-    const fittedZoom = clampZoom(nextZoom)
-
-    if (focusPoint && mapContext) {
-      setCenter(getCenterForFocusPoint(focusPoint, fittedZoom, mapContext))
-    } else {
-      setCenter(undefined)
-    }
-
-    setZoom(fittedZoom)
   }
 
   function zoomToRandomCountry(): void {
@@ -112,24 +97,13 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
       return
     }
 
-    const nextFocusPoint: [number, number] = [
+    setCenter([
       (x0 + x1) / 2,
       (y0 + y1) / 2,
-    ]
+    ])
     const fittedZoom = clampZoom(0.9 / Math.max(boundsWidth / width, boundsHeight / height))
-    setFocusPoint(nextFocusPoint)
-    setCenter(getCenterForFocusPoint(nextFocusPoint, fittedZoom, context))
     setZoom(fittedZoom)
     setActiveCountryLabel(getFeatureLabel(feature))
-  }
-
-  function syncViewport(event: ZoomEvent, context: MapContext): void {
-    setCenter([event.transform.x, event.transform.y])
-    setFocusPoint(event.transform.invert([
-      context.width / 2,
-      context.height / 2,
-    ]) as [number, number])
-    setZoom(event.transform.k)
   }
 
   return mapData
@@ -192,7 +166,6 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
                     minZoom={minZoom}
                     maxZoom={maxZoom}
                     config={{ filter: isDragOnlyFilter }}
-                    onZoomEnd={(event) => syncViewport(event, context)}
                   >
                     <MapGraticule
                       border
@@ -223,36 +196,6 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
 
 function clampZoom(value: number): number {
   return Math.min(maxZoom, Math.max(minZoom, value))
-}
-
-function getCenterForFocusPoint(
-  value: [number, number],
-  nextZoom: number,
-  context: MapContext,
-): [number, number] {
-  const { width, height } = context
-
-  return clampCenter([
-    (width / 2) - (nextZoom * value[0]),
-    (height / 2) - (nextZoom * value[1]),
-  ], nextZoom, context)
-}
-
-function clampCenter(
-  value: [number, number],
-  nextZoom: number,
-  context: MapContext,
-): [number, number] {
-  const { width, height } = context
-
-  return [
-    clamp(value[0], width * (1 - nextZoom), 0),
-    clamp(value[1], height * (1 - nextZoom), 0),
-  ]
-}
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value))
 }
 
 function isDragOnlyFilter(event: Event): boolean {

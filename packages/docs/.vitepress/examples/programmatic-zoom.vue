@@ -167,32 +167,15 @@ function zoomToFeature(
 
   const fittedZoom = clampZoom(0.9 / Math.max(boundsWidth / width, boundsHeight / height))
   zoom.value = fittedZoom
-  center.value = clampCenter([
-    (width / 2) - (fittedZoom * (x0 + x1) / 2),
-    (height / 2) - (fittedZoom * (y0 + y1) / 2),
-  ], fittedZoom, context)
+  center.value = [
+    (x0 + x1) / 2,
+    (y0 + y1) / 2,
+  ]
   activeCountryLabel.value = getFeatureLabel(feature)
 }
 
 function isDragOnlyFilter(event: Event) {
   return event.type !== 'wheel' && event.type !== 'dblclick'
-}
-
-function clampCenter(
-  value: [number, number],
-  nextZoom: number,
-  context: MapContext,
-): [number, number] {
-  const { width, height } = context
-
-  return [
-    clamp(value[0], width * (1 - nextZoom), 0),
-    clamp(value[1], height * (1 - nextZoom), 0),
-  ]
-}
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value))
 }
 
 function clampZoom(value: number) {

@@ -2197,7 +2197,7 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 
 | Property | Type | Description | Inherited from |
 | ------ | ------ | ------ | ------ |
-| <a id="property-center-2"></a> `center?` | \[`number`, `number`] | Raw d3-style translate offset. If omitted, changing `zoom` alone preserves the current viewport center. | [`ZoomProps`](#zoomprops).[`center`](#property-center-3) |
+| <a id="property-center-2"></a> `center?` | \[`number`, `number`] | Projected map-space point to keep centered in the viewport. If omitted, changing `zoom` alone preserves the current viewport center. | [`ZoomProps`](#zoomprops).[`center`](#property-center-3) |
 | <a id="property-config"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) | - | [`ZoomProps`](#zoomprops).[`config`](#property-config-1) |
 | <a id="property-maxzoom"></a> `maxZoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`maxZoom`](#property-maxzoom-1) |
 | <a id="property-minzoom"></a> `minZoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`minZoom`](#property-minzoom-1) |
@@ -2295,7 +2295,7 @@ https://d3js.org/d3-zoom
 
 | Property | Type | Description |
 | ------ | ------ | ------ |
-| <a id="property-center-3"></a> `center?` | \[`number`, `number`] | Raw d3-style translate offset. If omitted, changing `zoom` alone preserves the current viewport center. |
+| <a id="property-center-3"></a> `center?` | \[`number`, `number`] | Projected map-space point to keep centered in the viewport. If omitted, changing `zoom` alone preserves the current viewport center. |
 | <a id="property-config-1"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) | - |
 | <a id="property-maxzoom-1"></a> `maxZoom?` | `number` | - |
 | <a id="property-minzoom-1"></a> `minZoom?` | `number` | - |
