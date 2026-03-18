@@ -11,8 +11,8 @@ import type {
 } from 'react'
 
 import {
+  applyZoom,
   applyZoomGroupTransform,
-  applyZoomTransform,
   createZoomBehavior,
   setupZoom,
   ZOOM_DEFAULTS,
@@ -57,10 +57,9 @@ export function MapZoom({
   const onZoomRef = useLatest(onZoom)
   const onZoomEndRef = useLatest(onZoomEnd)
 
-  const resolvedCenter = center ?? ZOOM_DEFAULTS.center
   const resolvedZoom = zoom ?? ZOOM_DEFAULTS.zoom
-  const centerX = resolvedCenter[0]
-  const centerY = resolvedCenter[1]
+  const centerX = center?.[0]
+  const centerY = center?.[1]
 
   const zoomBehavior = useMemo(() => {
     return createZoomBehavior(context, {
@@ -91,10 +90,14 @@ export function MapZoom({
     setupZoom({
       element: containerRef.current,
       behavior: zoomBehavior,
-      center: resolvedCenter,
+      center: centerX !== undefined && centerY !== undefined
+        ? [centerX, centerY]
+        : undefined,
       zoom: resolvedZoom,
     })
-  }, [zoomBehavior])
+  }, [
+    zoomBehavior,
+  ])
 
   useEffect(() => {
     if (skipNextTransformSyncRef.current) {
@@ -102,16 +105,18 @@ export function MapZoom({
       return
     }
 
-    applyZoomTransform({
+    applyZoom({
       element: containerRef.current,
       behavior: zoomBehavior,
-      center: [centerX, centerY],
+      center: centerX !== undefined && centerY !== undefined
+        ? [centerX, centerY]
+        : undefined,
       zoom: resolvedZoom,
     })
   }, [
-    zoomBehavior,
     centerX,
     centerY,
+    zoomBehavior,
     resolvedZoom,
   ])
 

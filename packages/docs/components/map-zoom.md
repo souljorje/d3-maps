@@ -8,11 +8,14 @@ Wrap layers that should be zoomed inside [MapZoom](/components/map-zoom).
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `center?` | `[number, number]` | `[0, 0]` | Initial center for zoom behavior |
+| `center?` | `[number, number]` | current viewport center | Raw translate offset. If omitted, changing `zoom` alone preserves the current viewport center |
 | `zoom?` | `number` | `1` | Initial zoom level |
 | `minZoom?` | `number` | `1` | Minimum zoom scale |
 | `maxZoom?` | `number` | `8` | Maximum zoom scale |
 | `config?` | [ZoomModifiers](/api/core/zoom#zoommodifiers) | — | See the [guide](#config) below |
+
+Changing `zoom` alone preserves the current viewport center by default.
+Pass `center` when you need exact `translate(...center).scale(zoom)` control.
 
 ### Config
 

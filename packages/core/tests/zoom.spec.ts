@@ -7,7 +7,6 @@ import { zoomIdentity } from 'd3-zoom'
 import {
   applyZoomGroupTransform,
   createZoomBehavior,
-
   getInverseZoomScale,
   getZoomScale,
   ZOOM_DEFAULTS,
@@ -20,9 +19,9 @@ type ZoomView = [number, number, number]
 
 describe('zoom helpers', () => {
   it('creates zoom transform from center and scale', () => {
-    const transform = zoomIdentity.translate(12, 34).scale(2)
-    expect(transform.x).toBe(12)
-    expect(transform.y).toBe(34)
+    const transform = zoomIdentity.translate(100, 50).scale(2)
+    expect(transform.x).toBe(100)
+    expect(transform.y).toBe(50)
     expect(transform.k).toBe(2)
   })
 

@@ -48,6 +48,10 @@ Checks:
 
 Shared props contract for a single rendered feature.
 
+#### Extends
+
+* [`MapObject`](mapObject.md#mapobject)<`TStyle`>
+
 #### Type Parameters
 
 | Type Parameter | Default type |
@@ -56,10 +60,10 @@ Shared props contract for a single rendered feature.
 
 #### Properties
 
-| Property | Type |
-| ------ | ------ |
-| <a id="property-data"></a> `data` | [`MapFeature`](#mapfeature) |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> |
+| Property | Type | Inherited from |
+| ------ | ------ | ------ |
+| <a id="property-data"></a> `data` | [`MapFeature`](#mapfeature) | - |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObject`](mapObject.md#mapobject).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases
 

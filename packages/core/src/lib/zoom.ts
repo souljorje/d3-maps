@@ -1,3 +1,4 @@
+import type { Selection } from 'd3-selection'
 import type {
   D3ZoomEvent,
   ZoomBehavior,
@@ -10,10 +11,14 @@ import type {
 } from './utils'
 
 import { select as d3Select } from 'd3-selection'
-import { zoom, zoomIdentity } from 'd3-zoom'
+import {
+  zoom,
+  zoomIdentity,
+} from 'd3-zoom'
 
 import {
   applyModifiers,
+  getSvgElement,
   isNumber,
 } from './utils'
 
@@ -23,7 +28,6 @@ export type {
   ZoomTransform,
 } from 'd3-zoom'
 
-export type Extent = [[number, number], [number, number]]
 export interface DefaultZoomBehavior extends ZoomBehavior<SVGSVGElement, unknown> {}
 
 /**
@@ -37,6 +41,11 @@ export interface DefaultZoomBehavior extends ZoomBehavior<SVGSVGElement, unknown
 export interface ZoomModifiers extends MethodsToModifiers<DefaultZoomBehavior> {}
 
 export interface ZoomProps {
+  /**
+   * Raw d3-style translate offset.
+   *
+   * If omitted, changing `zoom` alone preserves the current viewport center.
+   */
   center?: [number, number]
   zoom?: number
   minZoom?: number
@@ -58,7 +67,6 @@ export type ZoomScaleSource = number | ZoomTransform | { transform: ZoomTransfor
 export type ZoomTargetElement = SVGSVGElement | SVGGElement
 
 export const ZOOM_DEFAULTS = {
-  center: [0, 0] as [number, number],
   zoom: 1,
   minZoom: 1,
   maxZoom: 8,
@@ -71,7 +79,9 @@ export interface ApplyZoomOptions {
   zoom?: number
 }
 
-export interface SetupZoomOptions extends ApplyZoomOptions {}
+export interface SetupZoomOptions extends ApplyZoomOptions {
+  center?: [number, number]
+}
 
 export function createZoomBehavior(
   context?: MapContext,
@@ -80,10 +90,12 @@ export function createZoomBehavior(
   const behavior = zoom<SVGSVGElement, unknown>()
   const minZoom = options.minZoom ?? ZOOM_DEFAULTS.minZoom
   const maxZoom = options.maxZoom ?? ZOOM_DEFAULTS.maxZoom
-  const translateExtent: Extent = [[0, 0], [context?.width ?? 0, context?.height ?? 0]]
-  behavior
-    .scaleExtent([minZoom, maxZoom])
-    .translateExtent(translateExtent)
+
+  applyModifiers(behavior, {
+    scaleExtent: [[minZoom, maxZoom]],
+    translateExtent: [[[0, 0], [context?.width ?? 0, context?.height ?? 0]]],
+    ...options.config,
+  })
 
   if (options.onZoomStart) {
     behavior.on('start', options.onZoomStart)
@@ -95,38 +107,21 @@ export function createZoomBehavior(
     behavior.on('end', options.onZoomEnd)
   }
 
-  applyModifiers(behavior, options.config)
-
   return behavior
 }
 
-export function attachZoomBehavior(
-  element: ZoomTargetElement | null | undefined,
-  behavior: DefaultZoomBehavior,
-): void {
-  const svgElement = getSvgElement(element)
-  if (!svgElement) return
-  d3Select(svgElement).call(behavior)
-}
+export function applyZoom(options: ApplyZoomOptions): void {
+  if (options.center) {
+    const zoom = options.zoom ?? ZOOM_DEFAULTS.zoom
+    callWithSvg(
+      options.element,
+      options.behavior.transform,
+      zoomIdentity.translate(...options.center).scale(zoom),
+    )
+    return
+  }
 
-export function applyZoomBehaviorTransform(
-  element: ZoomTargetElement | null | undefined,
-  behavior: DefaultZoomBehavior,
-  transform: ZoomTransform,
-): void {
-  const svgElement = getSvgElement(element)
-  if (!svgElement) return
-  d3Select(svgElement).call(behavior.transform, transform)
-}
-
-export function applyZoomTransform(options: ApplyZoomOptions): void {
-  const center = options.center ?? ZOOM_DEFAULTS.center
-  const zoom = options.zoom ?? ZOOM_DEFAULTS.zoom
-  applyZoomBehaviorTransform(
-    options.element,
-    options.behavior,
-    zoomIdentity.translate(...center).scale(zoom),
-  )
+  callWithSvg(options.element, options.behavior.scaleTo, options.zoom ?? ZOOM_DEFAULTS.zoom)
 }
 
 export function applyZoomGroupTransform(
@@ -138,8 +133,8 @@ export function applyZoomGroupTransform(
 }
 
 export function setupZoom(options: SetupZoomOptions): void {
-  attachZoomBehavior(options.element, options.behavior)
-  applyZoomTransform(options)
+  callWithSvg(options.element, options.behavior)
+  applyZoom(options)
 }
 
 export function getZoomScale(source: ZoomScaleSource): number {
@@ -166,8 +161,12 @@ function isZoomTransform(value: unknown): value is ZoomTransform {
   )
 }
 
-function getSvgElement(element: ZoomTargetElement | null | undefined): SVGSVGElement | null {
-  if (!element) return null
-  if (element instanceof SVGSVGElement) return element
-  return element.closest('svg')
+function callWithSvg<Args extends unknown[]>(
+  element: ZoomTargetElement | null | undefined,
+  fn: (selection: Selection<SVGSVGElement, unknown, null, undefined>, ...args: Args) => void,
+  ...args: Args
+): void {
+  const svgElement = getSvgElement(element)
+  if (!svgElement) return
+  d3Select(svgElement).call(fn, ...args)
 }

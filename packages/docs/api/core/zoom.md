@@ -5,10 +5,8 @@
 ## Table of contents
 
 * [Functions](#functions)
-  * [applyZoomBehaviorTransform()](#applyzoombehaviortransform)
+  * [applyZoom()](#applyzoom)
   * [applyZoomGroupTransform()](#applyzoomgrouptransform)
-  * [applyZoomTransform()](#applyzoomtransform)
-  * [attachZoomBehavior()](#attachzoombehavior)
   * [createZoomBehavior()](#createzoombehavior)
   * [getInverseZoomScale()](#getinversezoomscale)
   * [getZoomScale()](#getzoomscale)
@@ -28,28 +26,22 @@
   * [ZoomProps](#zoomprops)
   * [ZoomTransform](#zoomtransform)
 * [Type Aliases](#type-aliases)
-  * [Extent](#extent-2)
   * [ZoomScaleSource](#zoomscalesource)
   * [ZoomTargetElement](#zoomtargetelement)
 
 ## Functions
 
-### applyZoomBehaviorTransform()
+### applyZoom()
 
 ```ts
-function applyZoomBehaviorTransform(
-   element: ZoomTargetElement | null | undefined, 
-   behavior: DefaultZoomBehavior, 
-   transform: ZoomTransform): void;
+function applyZoom(options: ApplyZoomOptions): void;
 ```
 
 #### Parameters
 
 | Parameter | Type |
 | ------ | ------ |
-| `element` | [`ZoomTargetElement`](#zoomtargetelement) | `null` | `undefined` |
-| `behavior` | [`DefaultZoomBehavior`](#defaultzoombehavior) |
-| `transform` | [`ZoomTransform`](#zoomtransform) |
+| `options` | [`ApplyZoomOptions`](#applyzoomoptions) |
 
 #### Returns
 
@@ -72,43 +64,6 @@ function applyZoomGroupTransform(element: Element | null | undefined, transform:
 | ------ | ------ |
 | `element` | `Element` | `null` | `undefined` |
 | `transform` | | `Pick`<[`ZoomTransform`](#zoomtransform), `"toString"`> | `null` | `undefined` |
-
-#### Returns
-
-`void`
-
-***
-
-### applyZoomTransform()
-
-```ts
-function applyZoomTransform(options: ApplyZoomOptions): void;
-```
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `options` | [`ApplyZoomOptions`](#applyzoomoptions) |
-
-#### Returns
-
-`void`
-
-***
-
-### attachZoomBehavior()
-
-```ts
-function attachZoomBehavior(element: ZoomTargetElement | null | undefined, behavior: DefaultZoomBehavior): void;
-```
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `element` | [`ZoomTargetElement`](#zoomtargetelement) | `null` | `undefined` |
-| `behavior` | [`DefaultZoomBehavior`](#defaultzoombehavior) |
 
 #### Returns
 
@@ -194,7 +149,6 @@ function setupZoom(options: SetupZoomOptions): void;
 
 ```ts
 const ZOOM_DEFAULTS: {
-  center: [number, number];
   maxZoom: number;
   minZoom: number;
   zoom: number;
@@ -202,12 +156,6 @@ const ZOOM_DEFAULTS: {
 ```
 
 #### Type Declaration
-
-##### center
-
-```ts
-center: [number, number];
-```
 
 ##### maxZoom
 
@@ -1310,12 +1258,12 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 
 #### Properties
 
-| Property | Type | Inherited from |
-| ------ | ------ | ------ |
-| <a id="property-behavior-1"></a> `behavior` | [`DefaultZoomBehavior`](#defaultzoombehavior) | [`ApplyZoomOptions`](#applyzoomoptions).[`behavior`](#property-behavior) |
-| <a id="property-center-1"></a> `center?` | \[`number`, `number`] | [`ApplyZoomOptions`](#applyzoomoptions).[`center`](#property-center) |
-| <a id="property-element-1"></a> `element` | [`ZoomTargetElement`](#zoomtargetelement) | `null` | `undefined` | [`ApplyZoomOptions`](#applyzoomoptions).[`element`](#property-element) |
-| <a id="property-zoom-1"></a> `zoom?` | `number` | [`ApplyZoomOptions`](#applyzoomoptions).[`zoom`](#property-zoom) |
+| Property | Type | Overrides | Inherited from |
+| ------ | ------ | ------ | ------ |
+| <a id="property-behavior-1"></a> `behavior` | [`DefaultZoomBehavior`](#defaultzoombehavior) | - | [`ApplyZoomOptions`](#applyzoomoptions).[`behavior`](#property-behavior) |
+| <a id="property-center-1"></a> `center?` | \[`number`, `number`] | [`ApplyZoomOptions`](#applyzoomoptions).[`center`](#property-center) | - |
+| <a id="property-element-1"></a> `element` | [`ZoomTargetElement`](#zoomtargetelement) | `null` | `undefined` | - | [`ApplyZoomOptions`](#applyzoomoptions).[`element`](#property-element) |
+| <a id="property-zoom-1"></a> `zoom?` | `number` | - | [`ApplyZoomOptions`](#applyzoomoptions).[`zoom`](#property-zoom) |
 
 ***
 
@@ -2247,16 +2195,16 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 
 #### Properties
 
-| Property | Type | Inherited from |
-| ------ | ------ | ------ |
-| <a id="property-center-2"></a> `center?` | \[`number`, `number`] | [`ZoomProps`](#zoomprops).[`center`](#property-center-3) |
-| <a id="property-config"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) | [`ZoomProps`](#zoomprops).[`config`](#property-config-1) |
-| <a id="property-maxzoom"></a> `maxZoom?` | `number` | [`ZoomProps`](#zoomprops).[`maxZoom`](#property-maxzoom-1) |
-| <a id="property-minzoom"></a> `minZoom?` | `number` | [`ZoomProps`](#zoomprops).[`minZoom`](#property-minzoom-1) |
-| <a id="property-onzoom"></a> `onZoom?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | [`ZoomEvents`](#zoomevents).[`onZoom`](#property-onzoom-1) |
-| <a id="property-onzoomend"></a> `onZoomEnd?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | [`ZoomEvents`](#zoomevents).[`onZoomEnd`](#property-onzoomend-1) |
-| <a id="property-onzoomstart"></a> `onZoomStart?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | [`ZoomEvents`](#zoomevents).[`onZoomStart`](#property-onzoomstart-1) |
-| <a id="property-zoom-2"></a> `zoom?` | `number` | [`ZoomProps`](#zoomprops).[`zoom`](#property-zoom-3) |
+| Property | Type | Description | Inherited from |
+| ------ | ------ | ------ | ------ |
+| <a id="property-center-2"></a> `center?` | \[`number`, `number`] | Raw d3-style translate offset. If omitted, changing `zoom` alone preserves the current viewport center. | [`ZoomProps`](#zoomprops).[`center`](#property-center-3) |
+| <a id="property-config"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) | - | [`ZoomProps`](#zoomprops).[`config`](#property-config-1) |
+| <a id="property-maxzoom"></a> `maxZoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`maxZoom`](#property-maxzoom-1) |
+| <a id="property-minzoom"></a> `minZoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`minZoom`](#property-minzoom-1) |
+| <a id="property-onzoom"></a> `onZoom?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | - | [`ZoomEvents`](#zoomevents).[`onZoom`](#property-onzoom-1) |
+| <a id="property-onzoomend"></a> `onZoomEnd?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | - | [`ZoomEvents`](#zoomevents).[`onZoomEnd`](#property-onzoomend-1) |
+| <a id="property-onzoomstart"></a> `onZoomStart?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | - | [`ZoomEvents`](#zoomevents).[`onZoomStart`](#property-onzoomstart-1) |
+| <a id="property-zoom-2"></a> `zoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`zoom`](#property-zoom-3) |
 
 ***
 
@@ -2345,13 +2293,13 @@ https://d3js.org/d3-zoom
 
 #### Properties
 
-| Property | Type |
-| ------ | ------ |
-| <a id="property-center-3"></a> `center?` | \[`number`, `number`] |
-| <a id="property-config-1"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) |
-| <a id="property-maxzoom-1"></a> `maxZoom?` | `number` |
-| <a id="property-minzoom-1"></a> `minZoom?` | `number` |
-| <a id="property-zoom-3"></a> `zoom?` | `number` |
+| Property | Type | Description |
+| ------ | ------ | ------ |
+| <a id="property-center-3"></a> `center?` | \[`number`, `number`] | Raw d3-style translate offset. If omitted, changing `zoom` alone preserves the current viewport center. |
+| <a id="property-config-1"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) | - |
+| <a id="property-maxzoom-1"></a> `maxZoom?` | `number` | - |
+| <a id="property-minzoom-1"></a> `minZoom?` | `number` | - |
+| <a id="property-zoom-3"></a> `zoom?` | `number` | - |
 
 ***
 
@@ -2602,14 +2550,6 @@ where tx0 and ty0 is this transform’s translation and tk is this transform’s
 | <a id="property-y"></a> `y` | `readonly` | `number` | The translation amount ty along the y-axis This property should be considered read-only; instead of mutating a transform, use transform.scale and transform.translate to derive a new transform. Also see zoom.scaleBy, zoom.scaleTo and zoom.translateBy for convenience methods on the zoom behavior. |
 
 ## Type Aliases
-
-### Extent
-
-```ts
-type Extent = [[number, number], [number, number]];
-```
-
-***
 
 ### ZoomScaleSource
 

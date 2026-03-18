@@ -14,8 +14,8 @@ import type {
 } from '@d3-maps/core'
 
 import {
+  applyZoom,
   applyZoomGroupTransform,
-  applyZoomTransform,
   createZoomBehavior,
   setupZoom,
 } from '@d3-maps/core'
@@ -31,7 +31,6 @@ import { insideZoomKey } from '../hooks/useInsideZoom'
 import { useMapContext } from '../hooks/useMapContext'
 
 const props = withDefaults(defineProps<ZoomProps>(), {
-  center: () => [0, 0] as [number, number],
   zoom: 1,
   minZoom: 1,
   maxZoom: 8,
@@ -79,10 +78,15 @@ onMounted(() => {
     },
   )
   watch(
-    () => [zoomBehavior.value, props.center[0], props.center[1], props.zoom],
+    () => [
+      zoomBehavior.value,
+      props.center?.[0],
+      props.center?.[1],
+      props.zoom,
+    ],
     () => {
       if (!container.value) return
-      applyZoomTransform({
+      applyZoom({
         element: container.value,
         behavior: zoomBehavior.value,
         center: props.center,

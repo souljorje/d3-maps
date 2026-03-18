@@ -6,10 +6,13 @@
 
 * [Functions](#functions)
   * [applyModifiers()](#applymodifiers)
+  * [getSvgElement()](#getsvgelement)
   * [isDefined()](#isdefined)
+  * [isElement()](#iselement)
   * [isFunction()](#isfunction)
   * [isNullish()](#isnullish)
   * [isNumber()](#isnumber)
+  * [isObject()](#isobject)
   * [isPlainObject()](#isplainobject)
   * [isString()](#isstring)
   * [isStringOrNumber()](#isstringornumber)
@@ -76,6 +79,24 @@ applyModifiers(new X(), {
 
 ***
 
+### getSvgElement()
+
+```ts
+function getSvgElement(element: SVGSVGElement | SVGGElement | null | undefined): SVGSVGElement | null;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `element` | `SVGSVGElement` | `SVGGElement` | `null` | `undefined` |
+
+#### Returns
+
+`SVGSVGElement` | `null`
+
+***
+
 ### isDefined()
 
 ```ts
@@ -97,6 +118,24 @@ function isDefined<T>(value: T | null | undefined): value is T;
 #### Returns
 
 `value is T`
+
+***
+
+### isElement()
+
+```ts
+function isElement(value: unknown): value is Element;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `value` | `unknown` |
+
+#### Returns
+
+`value is Element`
 
 ***
 
@@ -151,6 +190,24 @@ function isNumber(value: unknown): value is number;
 #### Returns
 
 `value is number`
+
+***
+
+### isObject()
+
+```ts
+function isObject(value: unknown): value is object;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `value` | `unknown` |
+
+#### Returns
+
+`value is object`
 
 ***
 
