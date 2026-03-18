@@ -6,26 +6,27 @@ Simply make it with an aspect-ratio wrapper and the `aspect-ratio` prop
 
 == Vue
 
-```vue{2,7,22} [vue]
+```vue{2,7} [vue]
 <template>
   <div style="aspect-ratio: 2 / 1">
     <Map
       :data="data"
-      :projection="geoMercator"
+      :projection="geoEquirectangular"
       :data-transformer="dataTransformer"
       :aspect-ratio="2 / 1"
     >
       <MapZoom>
+        <MapGraticule border />
         <MapFeatures :styles="styles"/>
-        <MapMarker 
-          :styles="styles"
-          :coordinates="[-83.0457538, 42.331427]"
-        >
-          <text>Sweet home 🧡</text> 
-          <circle r="3" />  
-        </MapMarker>
         <MapMesh stroke="#fff" />
-        <MapGraticule stroke="#cbd5e1" />
+        <MapMarker :coordinates="[-83.0457538, 42.331427]">
+          <text
+            font-size="14"
+            y="-6"
+            text-anchor="middle"
+          >Sweet home 🧡</text>
+          <circle r="3" />
+      </MapMarker>
       </MapZoom>
     </Map>
   </div>
@@ -34,25 +35,26 @@ Simply make it with an aspect-ratio wrapper and the `aspect-ratio` prop
 
 == React
 
-```tsx{1,6,23} [react]
-<div style={{ aspectRatio: '2 / 1' }}>
+```tsx{1,6,9,11,14,16} [react]
+<div style={{ aspectRatio: "2 / 1" }}>
   <Map
     data={data}
-    projection={geoMercator}
+    projection={geoEquirectangular}
     dataTransformer={dataTransformer}
     aspectRatio={2 / 1}
   >
     <MapZoom>
+      <MapGraticule border />
       <MapFeatures styles={styles} />
-      <MapMarker
-        styles={styles}
-        coordinates={[-83.0457538, 42.331427]}
-      >
-        <text>Sweet home 🧡</text>
+      <MapMesh stroke="#fff" />
+      <MapMarker coordinates={[-83.0457538, 42.331427]}>
+        <text
+          fontSize={14}
+          y={-6}
+          textAnchor={"middle"}
+        >Sweet home 🧡</text>
         <circle r="3" />
       </MapMarker>
-      <MapMesh stroke="#fff" />
-      <MapGraticule stroke="#cbd5e1" />
     </MapZoom>
   </Map>
 </div>

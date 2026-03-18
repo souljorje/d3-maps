@@ -9,7 +9,8 @@ import {
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
-describe('sSR', () => {
+// eslint-disable-next-line test/prefer-lowercase-title
+describe('SSR', () => {
   it('renders map component tree without DOM access errors', () => {
     const html = renderToString(
       <Map data={sampleGeoJson}>

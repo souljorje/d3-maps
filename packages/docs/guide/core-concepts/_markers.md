@@ -9,21 +9,25 @@ Add any points to the map with [MapMarker](/components/map-marker)
 
 == Vue
 
-```vue{9-12} [vue]
+```vue{11-18} [vue]
 <template>
   <Map
     :data="data"
-    :projection="geoMercator"
+    :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
   >
     <MapZoom>
+      <MapGraticule border />
       <MapFeatures />
+      <MapMesh stroke="#fff" />
       <MapMarker :coordinates="[-83.0457538, 42.331427]">
-        <text>Sweet home 🧡</text>
+        <text
+          font-size="14"
+          y="-6"
+          text-anchor="middle"
+        >Sweet home 🧡</text>
         <circle r="3" />
       </MapMarker>
-      <MapMesh stroke="#fff" />
-      <MapGraticule stroke="#cbd5e1" />
     </MapZoom>
   </Map>
 </template>
@@ -31,20 +35,24 @@ Add any points to the map with [MapMarker](/components/map-marker)
 
 == React
 
-```tsx{8-11} [react]
+```tsx{10-17} [react]
 <Map
   data={data}
-  projection={geoMercator}
+  projection={geoEquirectangular}
   dataTransformer={dataTransformer}
 >
   <MapZoom>
+    <MapGraticule border />
     <MapFeatures />
+    <MapMesh stroke="#fff" />
     <MapMarker coordinates={[-83.0457538, 42.331427]}>
-      <text>Sweet home 🧡</text>
+      <text
+        fontSize={14}
+        y={-6}
+        textAnchor={"middle"}
+      >Sweet home 🧡</text>
       <circle r="3" />
     </MapMarker>
-    <MapMesh stroke="#fff" />
-    <MapGraticule stroke="#cbd5e1" />
   </MapZoom>
 </Map>
 ```

@@ -13,7 +13,7 @@ Switch to slot/render-function when each feature needs custom render logic.
   <Map
     :data="data"
     :data-transformer="dataTransformer"
-    :projection="geoMercator"
+    :projection="geoEquirectangular"
   >
     <MapFeatures>
       <template #default="{ features }">
@@ -34,7 +34,7 @@ Switch to slot/render-function when each feature needs custom render logic.
 <Map
   data={data}
   dataTransformer={dataTransformer}
-  projection={geoMercator}
+  projection={geoEquirectangular}
 >
   <MapFeatures>
     {({ features }) => (

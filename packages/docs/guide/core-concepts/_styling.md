@@ -5,9 +5,9 @@
 <!-- TODO: check if it works with Solid and svelte -->
 ```ts
 const styles = {
-  default: { fill: 'green' }, // default state
-  hover: { fill: 'green', opacity: 0.8 }, // on hover
-  active: { fill: 'darkgreen' }, // on mousedown
+  default: { fill: 'lightblue' }, // default state
+  hover: { fill: 'skyblue' }, // on hover
+  active: { fill: 'lightskyblue' }, // on mousedown
 }
 ```
 
@@ -15,24 +15,25 @@ const styles = {
 
 == Vue
 
-```vue{8,10} [vue]
+```vue{9} [vue]
 <template>
   <Map
     :data="data"
-    :projection="geoMercator"
+    :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
   >
     <MapZoom>
+      <MapGraticule border />
       <MapFeatures :styles="styles"/>
-      <MapMarker 
-        :styles="styles"
-        :coordinates="[-83.0457538, 42.331427]"
-      >
-        <text>Sweet home 🧡</text> 
-        <circle r="3" />  
-      </MapMarker>
       <MapMesh stroke="#fff" />
-      <MapGraticule stroke="#cbd5e1" />
+      <MapMarker :coordinates="[-83.0457538, 42.331427]">
+        <text
+          font-size="14"
+          y="-6"
+          text-anchor="middle"
+        >Sweet home 🧡</text>
+        <circle r="3" />
+      </MapMarker>
     </MapZoom>
   </Map>
 </template>
@@ -40,23 +41,24 @@ const styles = {
 
 == React
 
-```tsx{7,9} [react]
+```tsx{8,12,14} [react]
 <Map
   data={data}
-  projection={geoMercator}
+  projection={geoEquirectangular}
   dataTransformer={dataTransformer}
 >
   <MapZoom>
+    <MapGraticule border />
     <MapFeatures styles={styles} />
-    <MapMarker
-      styles={styles}
-      coordinates={[-83.0457538, 42.331427]}
-    >
-      <text>Sweet home 🧡</text>
+    <MapMesh stroke="#fff" />
+    <MapMarker coordinates={[-83.0457538, 42.331427]}>
+      <text
+        fontSize={14}
+        y={-6}
+        textAnchor={"middle"}
+      >Sweet home 🧡</text>
       <circle r="3" />
     </MapMarker>
-    <MapMesh stroke="#fff" />
-    <MapGraticule stroke="#cbd5e1" />
   </MapZoom>
 </Map>
 ```

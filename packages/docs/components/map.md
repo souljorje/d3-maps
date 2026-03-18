@@ -45,7 +45,7 @@ Source: [packes/core/src/lib/map.ts](https://github.com/souljorje/d3-maps/blob/m
 <script setup lang="ts">
 import type { MapData } from '@d3-maps/core'
 
-import { geoMercator } from 'd3-geo'
+import { geoEquirectangular } from 'd3-geo'
 </script>
 
 <template>
@@ -53,7 +53,7 @@ import { geoMercator } from 'd3-geo'
     :data="data"
     :data-transformer="(features) => features.map(/* some logic */)"
     :aspect-ratio="2 / 1"
-    :projection="geoMercator"
+    :projection="geoEquirectangular"
     :projection-config="{
       rotate: [[0, 12]], // array wrapper required
       scale: 200, // single argument can be passed as it is
@@ -70,7 +70,7 @@ import { geoMercator } from 'd3-geo'
 ```tsx
 import type { MapData } from '@d3-maps/core'
 
-import { geoMercator } from 'd3-geo'
+import { geoEquirectangular } from 'd3-geo'
 import { Map, MapFeatures } from '@d3-maps/react'
 
 export function Example({ data }: { data: MapData }) {
@@ -79,7 +79,7 @@ export function Example({ data }: { data: MapData }) {
       data={data}
       dataTransformer={(features) => features.map(/* some logic */)}
       aspectRatio={2 / 1}
-      projection={geoMercator}
+      projection={geoEquirectangular}
       projectionConfig={{
         rotate: [[0, 12]], // array wrapper required
         scale: 200, // single argument can be passed as it is

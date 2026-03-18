@@ -1,8 +1,9 @@
 # @d3-maps/react
 
-`@d3-maps/react` provides React bindings for `@d3-maps/core` to build SVG maps with React, [d3](https://github.com/d3/d3) and [TopoJSON-client](https://github.com/TopoJSON/TopoJSON-client).
+Reactive SVG maps, powered by D3.  
 
-[docs](https://souljorje.github.io/d3-maps)
+[docs](https://souljorje.github.io/d3-maps)  
+[Migrate from react-simple-maps](https://souljorje.github.io/d3-maps/guide/migration-from-react-simple-maps.html)
 
 ## Installation
 

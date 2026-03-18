@@ -1,6 +1,6 @@
 # @d3-maps/vue
 
-`@d3-maps/vue` provides Vue bindings for `@d3-maps/core` to build SVG maps with Vue, [d3](https://github.com/d3/d3) and [TopoJSON-client](https://github.com/TopoJSON/TopoJSON-client).
+Reactive SVG maps, powered by D3.  
 
 [docs](https://souljorje.github.io/d3-maps)
 
