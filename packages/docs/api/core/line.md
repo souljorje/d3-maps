@@ -10,30 +10,25 @@
   * [MapLineProps](#maplineprops)
 * [Type Aliases](#type-aliases)
   * [MapLineCoordinates](#maplinecoordinates)
-  * [MapLineCurve](#maplinecurve)
 
 ## Functions
 
 ### getLinePath()
 
 ```ts
-function getLinePath(
-   context: MapContext | undefined, 
-   coordinates: MapLineCoordinates[], 
-   curve?: MapLineCurve): string | undefined;
+function getLinePath(context: MapContext | undefined, coordinates: MapLineCoordinates): string | undefined;
 ```
 
-Computes an SVG path for a straight projected line between geographic coordinates.
+Computes an SVG path for a geographic line between coordinates.
 
 Coordinates must be `[longitude, latitude]`.
 
 #### Parameters
 
-| Parameter | Type | Default value |
-| ------ | ------ | ------ |
-| `context` | [`MapContext`](map.md#mapcontext) | `undefined` | `undefined` |
-| `coordinates` | [`MapLineCoordinates`](#maplinecoordinates)\[] | `undefined` |
-| `curve` | [`MapLineCurve`](#maplinecurve) | `false` |
+| Parameter | Type |
+| ------ | ------ |
+| `context` | [`MapContext`](map.md#mapcontext) | `undefined` |
+| `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) |
 
 #### Returns
 
@@ -43,7 +38,7 @@ Coordinates must be `[longitude, latitude]`.
 
 ### MapLineProps
 
-Shared props contract for straight line layers.
+Shared props contract for geographic line layers.
 
 #### Extends
 
@@ -59,8 +54,7 @@ Shared props contract for straight line layers.
 
 | Property | Type | Inherited from |
 | ------ | ------ | ------ |
-| <a id="property-coordinates"></a> `coordinates?` | [`MapLineCoordinates`](#maplinecoordinates)\[] | - |
-| <a id="property-curve"></a> `curve?` | [`MapLineCurve`](#maplinecurve) | - |
+| <a id="property-coordinates"></a> `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) | - |
 | <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObject`](mapObject.md#mapobject).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases
@@ -68,13 +62,5 @@ Shared props contract for straight line layers.
 ### MapLineCoordinates
 
 ```ts
-type MapLineCoordinates = [number, number];
-```
-
-***
-
-### MapLineCurve
-
-```ts
-type MapLineCurve = boolean | CurveFactory | CurveFactoryLineOnly;
+type MapLineCoordinates = [number, number][];
 ```

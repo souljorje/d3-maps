@@ -5,6 +5,7 @@ import {
   MapFeatures,
   MapLine,
   MapMarker,
+  MapMesh,
 } from '@d3-maps/react'
 import {
   useEffect,
@@ -17,12 +18,20 @@ const cities = [
   { name: 'New York', coordinates: [-73.935242, 40.73061] },
   { name: 'London', coordinates: [-0.1276, 51.5072] },
   { name: 'Tokyo', coordinates: [139.6503, 35.6762] },
+  { name: 'Dubai ', coordinates: [55.2708, 25.2048] },
+  { name: 'Tbilisi', coordinates: [44.793, 41.7151] },
 ]
 
-const connections = [
-  { id: 'sf-nyc', coordinates: [cities[0].coordinates, cities[1].coordinates], stroke: '#ff6f26' },
-  { id: 'nyc-london', coordinates: [cities[1].coordinates, cities[2].coordinates], stroke: '#fb923c' },
-  { id: 'london-tokyo', coordinates: [cities[2].coordinates, cities[3].coordinates], stroke: '#f97316' },
+const visitFlights = [
+  [cities[0], cities[1]],
+  [cities[1], cities[2]],
+  [cities[2], cities[3]],
+]
+
+const returnRouteCoordinates = [
+  cities[3].coordinates,
+  cities[4].coordinates,
+  cities[5].coordinates,
 ]
 
 export default function ConnectionsExample(): JSX.Element | null {
@@ -50,6 +59,46 @@ export default function ConnectionsExample(): JSX.Element | null {
   return mapData
     ? (
         <Map data={mapData}>
+          <MapFeatures />
+          <MapMesh />
+
+          {
+            cities.map((city) => (
+              <MapMarker
+                key={city.name}
+                coordinates={city.coordinates}
+              >
+                <circle r={3} />
+                <text
+                  y={city.name === 'Tbilisi' ? -8 : 14}
+                  fontSize={12}
+                  textAnchor="middle"
+                >
+                  {city.name}
+                </text>
+              </MapMarker>
+            ))
+          }
+
+          {
+            visitFlights.map((flight) => (
+              <MapLine
+                key={`${flight[0].name}-${flight[1].name}`}
+                coordinates={[flight[0].coordinates, flight[1].coordinates]}
+                strokeWidth={1.5}
+                markerEnd="url(#connections-arrow)"
+              />
+            ))
+          }
+
+          <MapLine
+            coordinates={returnRouteCoordinates}
+            strokeWidth={1.5}
+            strokeDasharray="4 4"
+            markerEnd="url(#connections-arrow)"
+          />
+
+          {/* Custom line end */}
           <defs>
             <marker
               id="connections-arrow"
@@ -65,47 +114,6 @@ export default function ConnectionsExample(): JSX.Element | null {
               />
             </marker>
           </defs>
-
-          <MapFeatures />
-          <MapMesh />
-
-          {
-            connections.map((connection) => (
-              <MapLine
-                key={connection.id}
-                coordinates={connection.coordinates}
-                curve
-                stroke={connection.stroke}
-                strokeWidth={1.8}
-                fill="none"
-                strokeLinecap="round"
-                markerEnd="url(#connections-arrow)"
-                style={{ opacity: 0.85 }}
-              />
-            ))
-          }
-
-          {
-            cities.map((city) => (
-              <MapMarker
-                key={city.name}
-                coordinates={city.coordinates}
-              >
-                <circle
-                  r={2.5}
-                  fill="#111827"
-                />
-                <text
-                  y={-8}
-                  fontSize={11}
-                  textAnchor="middle"
-                  fill="#111827"
-                >
-                  {city.name}
-                </text>
-              </MapMarker>
-            ))
-          }
         </Map>
       )
     : null

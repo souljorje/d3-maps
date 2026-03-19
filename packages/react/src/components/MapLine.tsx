@@ -18,8 +18,7 @@ export interface MapLineProps
   Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style'> {}
 
 export function MapLine({
-  coordinates = [],
-  curve = false,
+  coordinates,
   styles,
   onMouseEnter,
   onMouseLeave,
@@ -30,11 +29,10 @@ export function MapLine({
   const context = useMapContext()
 
   const path = useMemo(() => {
-    return getLinePath(context, coordinates, curve)
+    return getLinePath(context, coordinates)
   }, [
     context,
     coordinates,
-    curve,
   ])
 
   const { style, ...events } = useMapObject<SVGPathElement>({

@@ -21,15 +21,12 @@ import {
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
-const props = withDefaults(defineProps<MapLineProps<StyleValue>>(), {
-  coordinates: () => [],
-  curve: false,
-})
+const props = defineProps<MapLineProps<StyleValue>>()
 
 const context = useMapContext()
 
 const path = computed<string | undefined>(() => {
-  return getLinePath(context?.value, props.coordinates, props.curve)
+  return getLinePath(context?.value, props.coordinates)
 })
 
 const { style, ...events } = useMapObject(toRef(props, 'styles'))

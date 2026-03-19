@@ -2,14 +2,13 @@
 
 Renders a path between map locations
 
-Use it for direct straight lines or geographic curves between locations
+Use it for geographic `LineString` paths between locations
 
 ## Props
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `coordinates?` | `[number, number]` | `[]` | Line coordinates in `[longitude, latitude]` format |
-| `curve?` | `boolean \| function` | `false` | `true` renders a [great-circle](https://en.wikipedia.org/wiki/Great-circle_distance) arc. For custom curve use [D3 curve factory](https://d3js.org/d3-shape/line#line_curve) |
+| `coordinates` | `[number, number][]` | — | Geographic line coordinates in `[longitude, latitude]` position format |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapLine
@@ -25,8 +24,7 @@ You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapL
   <Map :data="mapData">
     <MapFeatures />
     <MapLine
-      :coordinates="[[-122.4194, 37.7749], [-73.935242, 40.73061]]"
-      curve
+      :coordinates="[[-122.4194, 37.7749], [-98.5795, 39.8283], [-73.935242, 40.73061]]"
     />
   </Map>
 </template>
@@ -38,8 +36,7 @@ You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapL
 <Map data={mapData}>
   <MapFeatures />
   <MapLine
-    coordinates={[[-122.4194, 37.7749], [-73.935242, 40.73061]]}
-    curve
+    coordinates={[[-122.4194, 37.7749], [-98.5795, 39.8283], [-73.935242, 40.73061]]}
   />
 </Map>
 ```

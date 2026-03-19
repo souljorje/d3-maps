@@ -1,7 +1,5 @@
 import { describe, expect, it } from 'vitest'
 
-import type { MapLineCurve } from '@d3-maps/core'
-
 import { mount } from '@vue/test-utils'
 import { h } from 'vue'
 
@@ -20,26 +18,6 @@ const THREE_POINT_COORDINATES: [number, number][] = [
   [-98.5795, 39.8283],
   [-73.935242, 40.73061],
 ]
-const offsetCurve: Exclude<MapLineCurve, boolean> = (context) => {
-  let isFirstPoint = true
-
-  return {
-    lineStart() {
-      isFirstPoint = true
-    },
-    lineEnd() {},
-    point(x, y) {
-      if (isFirstPoint) {
-        context.moveTo(x, y)
-        isFirstPoint = false
-
-        return
-      }
-
-      context.lineTo(x, y + 12)
-    },
-  }
-}
 
 describe('mapLine', () => {
   it('renders a projected path inside map context', () => {
@@ -82,53 +60,19 @@ describe('mapLine', () => {
     expect(nextPath).not.toBe(initialPath)
   })
 
-  it('renders a different path when curve mode is enabled', () => {
+  it('renders a path for multi-point coordinates', () => {
     const wrapper = mount(Map, {
       props: {
         data: sampleGeoJson,
       },
       slots: {
-        default: () => [
-          h(MapLine, {
-            coordinates: LINE_COORDINATES,
-            'data-testid': 'map-line-straight',
-          }),
-          h(MapLine, {
-            coordinates: LINE_COORDINATES,
-            curve: true,
-            'data-testid': 'map-line-curved',
-          }),
-        ],
+        default: () => h(MapLine, {
+          coordinates: THREE_POINT_COORDINATES,
+          'data-testid': 'map-line-multi-point',
+        }),
       },
     })
 
-    const straightPath = wrapper.find('[data-testid="map-line-straight"]').attributes('d')
-    const curvedPath = wrapper.find('[data-testid="map-line-curved"]').attributes('d')
-    expect(curvedPath).not.toBe(straightPath)
-  })
-
-  it('accepts a d3 curve factory for projected line shaping', () => {
-    const wrapper = mount(Map, {
-      props: {
-        data: sampleGeoJson,
-      },
-      slots: {
-        default: () => [
-          h(MapLine, {
-            coordinates: THREE_POINT_COORDINATES,
-            'data-testid': 'map-line-linear',
-          }),
-          h(MapLine, {
-            coordinates: THREE_POINT_COORDINATES,
-            curve: offsetCurve,
-            'data-testid': 'map-line-basis',
-          }),
-        ],
-      },
-    })
-
-    const linearPath = wrapper.find('[data-testid="map-line-linear"]').attributes('d')
-    const basisPath = wrapper.find('[data-testid="map-line-basis"]').attributes('d')
-    expect(basisPath).not.toBe(linearPath)
+    expect(wrapper.find('[data-testid="map-line-multi-point"]').attributes('d')).toMatch(/^M/)
   })
 })

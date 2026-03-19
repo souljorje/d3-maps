@@ -2,7 +2,7 @@
 
 [@d3-maps/react](/components/) is fully compatible* with [react-simple-maps](https://www.react-simple-maps.io/)  
 But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/issues) or [pull request](https://github.com/souljorje/d3-maps/pulls)  
-<sub>\* Annotation in development</sub>
+<sub>\* `Annotation` in development</sub>
 
 ## Migration checklist
 
@@ -14,6 +14,7 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 | Style state | `style.pressed` -> `styles.active` |
 | Zoom wrapper | `ZoomableGroup` -> `MapZoom` |
 | Marker | `Marker` -> `MapMarker` |
+| Line | `Line` -> `MapLine` |
 | Graticule | `Graticule` -> `MapGraticule` |
 | Sphere | `Sphere` -> `MapGraticule` (`background`/`border`) |
 
@@ -118,14 +119,56 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 </Map>
 ```
 
-## 6. Migrate sphere component
+## 6. Rename line component
+
+`Line` -> [MapLine](/components/map-line)
+
+`react-simple-maps` line props map directly to `MapLine.coordinates`
+
+```tsx
+<Map data={data}>
+  <MapFeatures />
+  <MapLine
+    coordinates={[
+      [-74.006, 40.7128],
+      [-118.2437, 34.0522],
+    ]}
+  />
+</Map>
+```
+
+## 7. Migrate sphere component
 
 `Sphere` -> [MapGraticule](/components/map-graticule) with `background` and/or `border`.
 
 ```tsx
 <Map data={data}>
-  <MapGraticule background="#ffffff" border="#cbd5e1" />
+  <MapGraticule />
   <MapFeatures />
+</Map>
+```
+
+## 8. Migrate annotation patterns
+
+`Annotation` has no dedicated d3-maps component yet
+
+Use [MapLine](/components/map-line) for the connector and [MapMarker](/components/map-marker) for the label/anchor content
+
+```tsx
+<Map data={data}>
+  <MapFeatures />
+  <MapLine
+    coordinates={[
+      [-3.7038, 40.4168],
+      [2.3522, 48.8566],
+    ]}
+  />
+  <MapMarker coordinates={[2.3522, 48.8566]}>
+    <text y={-8} textAnchor="middle" fontSize={12}>
+      Paris
+    </text>
+    <circle r={3} />
+  </MapMarker>
 </Map>
 ```
 
