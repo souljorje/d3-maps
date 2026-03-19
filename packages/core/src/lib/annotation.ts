@@ -34,7 +34,7 @@ export function getAnnotationGeometry(
     margin = MAP_ANNOTATION_DEFAULTS.margin,
   }: Omit<MapAnnotationProps, 'coordinates' | 'styles'> = {},
 ): MapAnnotationGeometry | undefined {
-  const projected = context?.projection?.(coordinates)
+  const projected = context?.projection(coordinates)
   if (!projected) return undefined
 
   const connectorEndX = margin + length

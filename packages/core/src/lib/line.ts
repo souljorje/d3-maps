@@ -50,7 +50,6 @@ function getCustomLinePath(
   curve: MapLineCurve = curveLinear,
 ): string | undefined {
   const projection = context.projection
-  if (!projection) return undefined
 
   const points = coordinates
     .map((coordinate) => projection(coordinate))

@@ -167,7 +167,7 @@ In adapters, this is usually passed as component props.
 | <a id="property-data"></a> `data` | [`MapData`](#mapdata) | TopoJSON or GeoJSON input. TopoJSON is automatically converted to GeoJSON features. |
 | <a id="property-datatransformer"></a> `dataTransformer?` | [`DataTransformer`](#datatransformer) | Optional feature transformer (filter/augment/normalize features). |
 | <a id="property-height"></a> `height?` | `number` | - |
-| <a id="property-projection"></a> `projection?` | () => `GeoProjection` | Projection factory from d3-geo (or a compatible implementation). Example: `geoNaturalEarth1`. |
+| <a id="property-projection"></a> `projection` | () => `GeoProjection` | Projection factory from d3-geo (or a compatible implementation). Example: `geoNaturalEarth1`. |
 | <a id="property-projectionconfig"></a> `projectionConfig?` | [`ProjectionConfig`](#projectionconfig) | Projection method arguments passed to the created projection |
 | <a id="property-width"></a> `width?` | `number` | - |
 
@@ -186,7 +186,7 @@ Adapters provide this context to child layers (features, markers, custom SVG).
 | <a id="property-features"></a> `features` | [`MapFeature`](feature.md#mapfeature)\[] |
 | <a id="property-height-1"></a> `height` | `number` |
 | <a id="property-path"></a> `path` | `GeoPath` |
-| <a id="property-projection-1"></a> `projection?` | `GeoProjection` |
+| <a id="property-projection-1"></a> `projection` | `GeoProjection` |
 | <a id="property-rendermesh"></a> `renderMesh` | () => `void` |
 | <a id="property-width-1"></a> `width` | `number` |
 

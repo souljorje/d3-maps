@@ -51,7 +51,7 @@ export interface MapConfig {
    *
    * Example: `geoNaturalEarth1`.
    */
-  projection?: () => GeoProjection
+  projection: () => GeoProjection
   /**
    * Projection method arguments passed to the created projection
    */
@@ -76,7 +76,7 @@ export interface MapConfig {
 export interface MapContext {
   width: number
   height: number
-  projection?: GeoProjection
+  projection: GeoProjection
   features: MapFeature[]
   path: GeoPath
   renderMesh: () => ReturnType<GeoPath>
