@@ -1,8 +1,8 @@
 'use client'
 
 import type {
-  MapConfig,
   MapContext,
+  MapProps,
 } from '@d3-maps/core'
 import type {
   ReactElement,
@@ -18,8 +18,8 @@ import { MapProvider } from './MapContext'
 type MapBaseRenderProp = (context: MapContext) => ReactNode
 
 export interface MapBaseProps
-  extends MapConfig,
-  Omit<SVGProps<SVGSVGElement>, keyof MapConfig | 'children'> {
+  extends MapProps,
+  Omit<SVGProps<SVGSVGElement>, keyof MapProps | 'children'> {
   children?: ReactNode | MapBaseRenderProp
 }
 

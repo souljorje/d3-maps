@@ -33,7 +33,7 @@ export function subscribeWindow(
  */
 export const mapObjectState = ['default', 'hover', 'active'] as const
 export type MapObjectState = typeof mapObjectState[number]
-export interface MapObject<TStyle = unknown> {
+export interface MapObjectProps<TStyle = unknown> {
   styles?: Partial<Record<MapObjectState, TStyle>>
 }
 
@@ -76,7 +76,7 @@ export function getObjectStateUpdate(event: MapObjectEventType): MapObjectState 
  */
 export function resolveObjectStyle<TStyle>(
   state: MapObjectState,
-  styles?: MapObject<TStyle>['styles'],
+  styles?: MapObjectProps<TStyle>['styles'],
 ): TStyle | undefined {
   return styles?.[state] ?? styles?.default
 }

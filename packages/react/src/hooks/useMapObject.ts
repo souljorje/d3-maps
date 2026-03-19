@@ -1,7 +1,7 @@
 'use client'
 
 import type {
-  MapObject as CoreMapObject,
+  MapObjectProps as CoreMapObjectProps,
   MapObjectInteractionController,
   MapObjectState,
 } from '@d3-maps/core'
@@ -28,7 +28,7 @@ import { useLatest } from './useLatest'
 export type MapObjectStyle = CSSProperties
 
 export interface UseMapObjectOptions<TElement extends Element>
-  extends CoreMapObject<MapObjectStyle> {
+  extends CoreMapObjectProps<MapObjectStyle> {
   onMouseEnter?: MouseEventHandler<TElement>
   onMouseLeave?: MouseEventHandler<TElement>
   onMouseDown?: MouseEventHandler<TElement>

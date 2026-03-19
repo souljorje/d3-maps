@@ -102,6 +102,8 @@ const data: MapData = await fetch('/some-topojson.json').then((res) => res.json(
 
 ```vue [vue]
 <script setup lang="ts">
+import type { MapData } from '@d3-maps/core'
+
 import { MapBase, MapFeatures } from '@d3-maps/vue'
 defineProps<{
   data: MapData
@@ -118,6 +120,8 @@ defineProps<{
 == React
 
 ```tsx [react]
+import type { MapData } from '@d3-maps/core'
+
 import { MapBase, MapFeatures } from '@d3-maps/react'
 
 export function MapView({ data }: { data: MapData }) {
