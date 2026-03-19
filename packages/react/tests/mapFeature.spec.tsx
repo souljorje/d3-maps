@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react'
 
 import {
-  Map,
+  MapBase,
   MapFeature,
 } from '../src'
 import { InsideZoomContext } from '../src/hooks/useInsideZoom'
@@ -30,7 +30,7 @@ describe('mapFeature', () => {
     const onMouseUp = vi.fn()
 
     render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapFeature
           data-testid="map-feature"
           data={sampleGeoJson.features[0]}
@@ -41,7 +41,7 @@ describe('mapFeature', () => {
           }}
           onMouseUp={onMouseUp}
         />
-      </Map>,
+      </MapBase>,
     )
 
     const path = screen.getByTestId('map-feature')
@@ -61,7 +61,7 @@ describe('mapFeature', () => {
   it('resets active state on global mouseup when element mouseup is missed', () => {
     render(
       <InsideZoomContext.Provider value={true}>
-        <Map data={sampleGeoJson}>
+        <MapBase data={sampleGeoJson}>
           <MapFeature
             data-testid="map-feature"
             data={sampleGeoJson.features[0]}
@@ -70,7 +70,7 @@ describe('mapFeature', () => {
               active: { opacity: 0.7 },
             }}
           />
-        </Map>
+        </MapBase>
       </InsideZoomContext.Provider>,
     )
 

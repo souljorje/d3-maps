@@ -1,7 +1,7 @@
 import type { ExtendedFeature } from 'd3-geo'
 
 import type {
-  MapObject,
+  MapObjectProps,
 } from './mapObject'
 
 import { isStringOrNumber } from './utils'
@@ -16,8 +16,15 @@ export type MapFeature = (ExtendedFeature & Record<string, unknown>) | ExtendedF
 /**
  * Shared props contract for a single rendered feature.
  */
-export interface MapFeatureProps<TStyle = unknown> extends MapObject<TStyle> {
+export interface MapFeatureProps<TStyle = unknown> extends MapObjectProps<TStyle> {
   data: MapFeature
+}
+
+/**
+ * Shared props contract for feature collections rendered from the current map context.
+ */
+export interface MapFeaturesProps<TStyle = unknown> extends Omit<MapFeatureProps<TStyle>, 'data'> {
+  idKey?: string
 }
 
 /**

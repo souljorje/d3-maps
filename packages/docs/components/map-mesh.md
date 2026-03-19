@@ -22,20 +22,20 @@ Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
 
 ```vue
 <template>
-  <Map :data="topologyData">
+  <MapBase :data="topologyData">
     <MapFeatures fill="#fff" />
     <MapMesh stroke="#000"/>
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx
-<Map data={topologyData}>
+<MapBase data={topologyData}>
   <MapFeatures fill="#fff" />
   <MapMesh stroke="#000" />
-</Map>
+</MapBase>
 ```
 
 :::

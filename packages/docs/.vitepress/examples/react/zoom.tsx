@@ -4,7 +4,7 @@ import type {
 } from '@d3-maps/core'
 
 import {
-  Map,
+  MapBase,
   MapFeatures,
   MapGraticule,
   MapMarker,
@@ -70,7 +70,7 @@ export default function ZoomExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <Map
+        <MapBase
           data={mapData}
           projection={geoNaturalEarth1}
         >
@@ -100,7 +100,7 @@ export default function ZoomExample(): JSX.Element | null {
               ))
             }
           </MapZoom>
-        </Map>
+        </MapBase>
       )
     : null
 }

@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MapObject } from '@d3-maps/core'
+import type { MapFeaturesProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
 import { getFeatureKey } from '@d3-maps/core'
@@ -21,11 +21,7 @@ import { computed } from 'vue'
 import { useMapContext } from '../hooks/useMapContext'
 import MapFeature from './MapFeature.vue'
 
-interface Props extends MapObject<StyleValue> {
-  idKey?: string
-}
-
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<MapFeaturesProps<StyleValue>>(), {
   idKey: 'id',
 })
 

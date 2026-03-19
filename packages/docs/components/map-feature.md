@@ -19,7 +19,7 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
 
 ```vue
 <template>
-  <Map :data="mapData">
+  <MapBase :data="mapData">
     <MapFeatures #default="{ features }">
       <MapFeature
         v-for="feature in features"
@@ -39,14 +39,14 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
         }"
       />
     </MapFeatures>
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx
-<Map data={mapData}>
+<MapBase data={mapData}>
   <MapFeatures>
     {({ features }) => (
       <>
@@ -71,7 +71,7 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
       </>
     )}
   </MapFeatures>
-</Map>
+</MapBase>
 ```
 
 :::

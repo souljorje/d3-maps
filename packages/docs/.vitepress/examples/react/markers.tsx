@@ -1,7 +1,7 @@
 import type { MapData } from '@d3-maps/core'
 
 import {
-  Map,
+  MapBase,
   MapFeatures,
   MapGraticule,
   MapMarker,
@@ -50,7 +50,7 @@ export default function MarkersExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <Map data={mapData}>
+        <MapBase data={mapData}>
           <MapGraticule border />
           <MapFeatures fill="var(--vp-c-neutral-inverse)" />
           <MapMesh />
@@ -73,7 +73,7 @@ export default function MarkersExample(): JSX.Element | null {
               </MapMarker>
             ))
           }
-        </Map>
+        </MapBase>
       )
     : null
 }

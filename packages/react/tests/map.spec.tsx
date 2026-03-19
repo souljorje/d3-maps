@@ -6,7 +6,7 @@ import {
 } from '@testing-library/react'
 
 import {
-  Map,
+  MapBase,
   MapFeatures,
 } from '../src'
 import {
@@ -17,7 +17,7 @@ import {
 describe('map', () => {
   it('renders default viewBox from map defaults', () => {
     render(
-      <Map
+      <MapBase
         data={sampleGeoJson}
         data-testid="map-svg"
       />,
@@ -28,7 +28,7 @@ describe('map', () => {
 
   it('renders render-prop children with map context', () => {
     render(
-      <Map
+      <MapBase
         data={sampleGeoJson}
         width={420}
         data-testid="map-svg"
@@ -39,7 +39,7 @@ describe('map', () => {
             data-size={`${context.width}x${context.height}`}
           />
         )}
-      </Map>,
+      </MapBase>,
     )
 
     expect(screen.getByTestId('map-size-group').getAttribute('data-size')).toBe('420x210')
@@ -47,17 +47,17 @@ describe('map', () => {
 
   it('updates rendered features when map data prop changes', () => {
     const { container, rerender } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapFeatures />
-      </Map>,
+      </MapBase>,
     )
 
     expect(container.querySelectorAll('path')).toHaveLength(1)
 
     rerender(
-      <Map data={sampleGeoJsonTwoFeatures}>
+      <MapBase data={sampleGeoJsonTwoFeatures}>
         <MapFeatures />
-      </Map>,
+      </MapBase>,
     )
 
     expect(container.querySelectorAll('path')).toHaveLength(2)

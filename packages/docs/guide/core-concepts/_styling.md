@@ -17,7 +17,7 @@ const styles = {
 
 ```vue{9} [vue]
 <template>
-  <Map
+  <MapBase
     :data="data"
     :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
@@ -35,14 +35,14 @@ const styles = {
         <circle r="3" />
       </MapMarker>
     </MapZoom>
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx{8,12,14} [react]
-<Map
+<MapBase
   data={data}
   projection={geoEquirectangular}
   dataTransformer={dataTransformer}
@@ -60,7 +60,7 @@ const styles = {
       <circle r="3" />
     </MapMarker>
   </MapZoom>
-</Map>
+</MapBase>
 ```
 
 :::
@@ -74,7 +74,7 @@ You can define styles for map components via plain CSS
 | Component | CSS selector |
 | --- | --- |
 | Global defaults | `:root` |
-| [Map](/components/map) | `.d3-map` |
+| [MapBase](/components/map-base) | `.d3-map` |
 | [MapFeature](/components/map-feature) | `[name="feature"]` |
 | [MapMesh](/components/map-mesh) | `[name="mesh"]` |
 | [MapMarker](/components/map-marker) | `[name="marker"]` |

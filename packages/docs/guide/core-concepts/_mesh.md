@@ -8,28 +8,28 @@ To render borders use [MapMesh](/components/map-mesh) instead of applying `strok
 
 ```vue{8} [vue]
 <template>
-  <Map
+  <MapBase
     :data="data"
     :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
   >
     <MapFeatures />
     <MapMesh stroke="#fff" />
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx{7} [react]
-<Map
+<MapBase
   data={data}
   projection={geoEquirectangular}
   dataTransformer={dataTransformer}
 >
   <MapFeatures />
   <MapMesh stroke="#fff" />
-</Map>
+</MapBase>
 ```
 
 :::

@@ -94,7 +94,7 @@ import type { MapData } from '@d3-maps/core'
 const data: MapData = await fetch('/some-topojson.json').then((res) => res.json())
 ```
 
-2. Pass the data to the Map
+2. Pass the data to `MapBase`
 
 :::tabs key:framework
 
@@ -102,29 +102,33 @@ const data: MapData = await fetch('/some-topojson.json').then((res) => res.json(
 
 ```vue [vue]
 <script setup lang="ts">
-import { Map, MapFeatures } from '@d3-maps/vue'
+import type { MapData } from '@d3-maps/core'
+
+import { MapBase, MapFeatures } from '@d3-maps/vue'
 defineProps<{
   data: MapData
 }>()
 </script>
 
 <template>
-  <Map :data="data">
+  <MapBase :data="data">
     <MapFeatures />
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx [react]
-import { Map, MapFeatures } from '@d3-maps/react'
+import type { MapData } from '@d3-maps/core'
+
+import { MapBase, MapFeatures } from '@d3-maps/react'
 
 export function MapView({ data }: { data: MapData }) {
   return (
-    <Map data={data}>
+    <MapBase data={data}>
       <MapFeatures />
-    </Map>
+    </MapBase>
   )
 }
 ```

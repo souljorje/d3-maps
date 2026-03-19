@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react'
 
 import {
-  Map,
+  MapBase,
   MapFeature,
   MapFeatures,
 } from '../src'
@@ -16,9 +16,9 @@ import { sampleGeoJson } from './fixtures'
 describe('mapFeatures', () => {
   it('renders features by default', () => {
     const { container } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapFeatures />
-      </Map>,
+      </MapBase>,
     )
 
     expect(container.querySelectorAll('path').length).toBe(1)
@@ -26,7 +26,7 @@ describe('mapFeatures', () => {
 
   it('supports render-prop children', () => {
     const { container } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapFeatures>
           {({ features }) => (
             <g
@@ -44,7 +44,7 @@ describe('mapFeatures', () => {
             </g>
           )}
         </MapFeatures>
-      </Map>,
+      </MapBase>,
     )
 
     expect(screen.getByTestId('map-features-group').getAttribute('data-count')).toBe('1')
@@ -53,14 +53,14 @@ describe('mapFeatures', () => {
 
   it('forwards styles to default-rendered features', () => {
     const { container } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapFeatures
           styles={{
             default: { opacity: 0.9 },
             hover: { opacity: 0.7 },
           }}
         />
-      </Map>,
+      </MapBase>,
     )
 
     const path = container.querySelector('path')
@@ -72,9 +72,9 @@ describe('mapFeatures', () => {
 
   it('accepts native svg attrs on features group', () => {
     const { container } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapFeatures fill="darkorange" />
-      </Map>,
+      </MapBase>,
     )
 
     expect(container.querySelector('g[name="features"]')?.getAttribute('fill')).toBe('darkorange')

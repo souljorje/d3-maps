@@ -30,7 +30,9 @@ import {
 import { insideZoomKey } from '../hooks/useInsideZoom'
 import { useMapContext } from '../hooks/useMapContext'
 
-const props = withDefaults(defineProps<ZoomProps>(), {
+type MapZoomProps = ZoomProps
+
+const props = withDefaults(defineProps<MapZoomProps>(), {
   center: () => [0, 0] as [number, number],
   zoom: 1,
   minZoom: 1,

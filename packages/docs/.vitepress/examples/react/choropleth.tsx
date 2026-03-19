@@ -5,7 +5,7 @@ import type {
 
 import {
   MapFeature as D3MapFeature,
-  Map,
+  MapBase,
   MapFeatures,
 } from '@d3-maps/react'
 import { extent } from 'd3-array'
@@ -119,7 +119,7 @@ export default function ChoroplethExample(): JSX.Element {
   }
 
   return (
-    <Map
+    <MapBase
       data={mapData}
       dataTransformer={dataTransformer}
     >
@@ -148,6 +148,6 @@ export default function ChoroplethExample(): JSX.Element {
           </>
         )}
       </MapFeatures>
-    </Map>
+    </MapBase>
   )
 }

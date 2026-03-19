@@ -1,5 +1,5 @@
 <template>
-  <Map
+  <MapBase
     v-if="data"
     :projection="projection"
     :data="data"
@@ -25,7 +25,7 @@
       </g>
       <MapMesh />
     </MapZoom>
-  </Map>
+  </MapBase>
 </template>
 
 <script setup lang="ts">
