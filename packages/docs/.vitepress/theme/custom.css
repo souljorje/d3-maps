@@ -11,6 +11,10 @@
 }
 
 .d3-map {
+  text {
+    fill: var(--vp-c-brand-3);
+    font-weight: bold;
+  }
   [name='border']:not([stroke]) {
     stroke: var(--vp-c-border);
   }
@@ -27,10 +31,6 @@
     fill: var(--vp-c-text-1);
   }
   [name='marker'] {
-    text {
-      fill: var(--vp-c-brand-3);
-      font-weight: bold;
-    }
     circle {
       fill: var(--vp-c-brand-3)
     }

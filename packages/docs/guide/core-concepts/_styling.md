@@ -33,7 +33,10 @@ const styles = {
       </MapMarker>
       <MapLine
         :styles="styles"
-        :coordinates="[[-83.0457538, 42.331427], [-74.006, 40.7128]]"
+        :coordinates="[
+          [-83.0457538, 42.331427],
+          [-74.006, 40.7128],
+        ]"
       />
       <MapMesh stroke="#fff" />
       <MapGraticule stroke="#cbd5e1" />
@@ -61,7 +64,10 @@ const styles = {
     </MapMarker>
     <MapLine
       styles={styles}
-      coordinates={[[-83.0457538, 42.331427], [-74.006, 40.7128]]}
+      coordinates={[
+        [-83.0457538, 42.331427],
+        [-74.006, 40.7128],
+      ]}
     />
     <MapMesh stroke="#fff" />
     <MapGraticule stroke="#cbd5e1" />

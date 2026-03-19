@@ -52,7 +52,7 @@ export default function MarkersExample(): JSX.Element | null {
     ? (
         <Map data={mapData}>
           <MapGraticule border />
-          <MapFeatures fill="var(--vp-c-neutral-inverse)" />
+          <MapFeatures />
           <MapMesh />
           {
             cities.map((item) => (

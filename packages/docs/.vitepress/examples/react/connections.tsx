@@ -5,7 +5,6 @@ import {
   MapFeatures,
   MapLine,
   MapMarker,
-  MapMesh,
 } from '@d3-maps/react'
 import {
   useEffect,
@@ -22,13 +21,13 @@ const cities = [
   { name: 'Tbilisi', coordinates: [44.793, 41.7151] },
 ]
 
-const visitFlights = [
+const directFlights = [
   [cities[0], cities[1]],
   [cities[1], cities[2]],
   [cities[2], cities[3]],
 ]
 
-const returnRouteCoordinates = [
+const transitFlight = [
   cities[3].coordinates,
   cities[4].coordinates,
   cities[5].coordinates,
@@ -60,7 +59,6 @@ export default function ConnectionsExample(): JSX.Element | null {
     ? (
         <Map data={mapData}>
           <MapFeatures />
-          <MapMesh />
 
           {
             cities.map((city) => (
@@ -80,19 +78,21 @@ export default function ConnectionsExample(): JSX.Element | null {
             ))
           }
 
+          {/* Line per each connection */}
           {
-            visitFlights.map((flight) => (
+            directFlights.map(([flightFrom, flightTo]) => (
               <MapLine
-                key={`${flight[0].name}-${flight[1].name}`}
-                coordinates={[flight[0].coordinates, flight[1].coordinates]}
+                key={`${flightFrom.name}-${flightTo.name}`}
+                coordinates={[flightFrom.coordinates, flightTo.coordinates]}
                 strokeWidth={1.5}
                 markerEnd="url(#connections-arrow)"
               />
             ))
           }
 
+          {/* Single line for all connections */}
           <MapLine
-            coordinates={returnRouteCoordinates}
+            coordinates={transitFlight}
             strokeWidth={1.5}
             strokeDasharray="4 4"
             markerEnd="url(#connections-arrow)"
@@ -111,6 +111,7 @@ export default function ConnectionsExample(): JSX.Element | null {
             >
               <path
                 d="M 0 0 L 10 5 L 0 10 z"
+                fill="var(--vp-c-brand-3)"
               />
             </marker>
           </defs>
