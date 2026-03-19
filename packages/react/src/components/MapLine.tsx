@@ -19,6 +19,8 @@ export interface MapLineProps
 
 export function MapLine({
   coordinates,
+  custom = false,
+  curve,
   styles,
   onMouseEnter,
   onMouseLeave,
@@ -29,10 +31,12 @@ export function MapLine({
   const context = useMapContext()
 
   const path = useMemo(() => {
-    return getLinePath(context, coordinates)
+    return getLinePath(context, coordinates, custom, curve)
   }, [
     context,
     coordinates,
+    custom,
+    curve,
   ])
 
   const { style, ...events } = useMapObject<SVGPathElement>({

@@ -5,8 +5,6 @@
 ## Table of contents
 
 * [Functions](#functions)
-  * [getCustomLinePath()](#getcustomlinepath)
-  * [getGeographicLinePath()](#getgeographiclinepath)
   * [getLinePath()](#getlinepath)
 * [Interfaces](#interfaces)
   * [MapLineProps](#maplineprops)
@@ -15,48 +13,6 @@
   * [MapLineCurve](#maplinecurve)
 
 ## Functions
-
-### getCustomLinePath()
-
-```ts
-function getCustomLinePath(
-   context: MapContext | undefined, 
-   coordinates: MapLineCoordinates, 
-   curve?: MapLineCurve): string | undefined;
-```
-
-#### Parameters
-
-| Parameter | Type | Default value |
-| ------ | ------ | ------ |
-| `context` | [`MapContext`](map.md#mapcontext) | `undefined` | `undefined` |
-| `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) | `undefined` |
-| `curve` | [`MapLineCurve`](#maplinecurve) | `false` |
-
-#### Returns
-
-`string` | `undefined`
-
-***
-
-### getGeographicLinePath()
-
-```ts
-function getGeographicLinePath(context: MapContext | undefined, coordinates: MapLineCoordinates): string | undefined;
-```
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `context` | [`MapContext`](map.md#mapcontext) | `undefined` |
-| `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) |
-
-#### Returns
-
-`string` | `undefined`
-
-***
 
 ### getLinePath()
 
@@ -123,5 +79,5 @@ type MapLineCoordinates = [number, number][];
 ### MapLineCurve
 
 ```ts
-type MapLineCurve = boolean | CurveFactory | CurveFactoryLineOnly;
+type MapLineCurve = CurveFactory | CurveFactoryLineOnly;
 ```

@@ -18,6 +18,28 @@ const THREE_POINT_COORDINATES: [number, number][] = [
   [-98.5795, 39.8283],
   [-73.935242, 40.73061],
 ]
+function offsetCurve(context: {
+  moveTo: (x: number, y: number) => void
+  lineTo: (x: number, y: number) => void
+}) {
+  let pointIndex = 0
+
+  return {
+    lineStart() {
+      pointIndex = 0
+    },
+    lineEnd() {},
+    point(x: number, y: number) {
+      if (pointIndex === 0) {
+        context.moveTo(x, y)
+      } else {
+        context.lineTo(x, y + 1)
+      }
+
+      pointIndex += 1
+    },
+  }
+}
 
 describe('mapLine', () => {
   it('renders a projected path inside map context', () => {
@@ -74,5 +96,57 @@ describe('mapLine', () => {
     })
 
     expect(wrapper.find('[data-testid="map-line-multi-point"]').attributes('d')).toMatch(/^M/)
+  })
+
+  it('supports custom projected paths', () => {
+    const wrapper = mount(Map, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapLine, {
+          coordinates: THREE_POINT_COORDINATES,
+          custom: true,
+          'data-testid': 'map-line-custom',
+        }),
+      },
+    })
+
+    expect(wrapper.find('[data-testid="map-line-custom"]').attributes('d')).toMatch(/^M/)
+  })
+
+  it('uses the provided D3 curve for custom paths', async () => {
+    const wrapper = mount(Map, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapLine, {
+          coordinates: THREE_POINT_COORDINATES,
+          custom: true,
+          'data-testid': 'map-line-curved',
+        }),
+      },
+    })
+
+    const linearPath = wrapper.find('[data-testid="map-line-curved"]').attributes('d')
+
+    wrapper.unmount()
+
+    const curvedWrapper = mount(Map, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapLine, {
+          coordinates: THREE_POINT_COORDINATES,
+          custom: true,
+          curve: offsetCurve,
+          'data-testid': 'map-line-curved',
+        }),
+      },
+    })
+
+    expect(curvedWrapper.find('[data-testid="map-line-curved"]').attributes('d')).not.toBe(linearPath)
   })
 })

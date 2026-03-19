@@ -26,7 +26,12 @@ const props = defineProps<MapLineProps<StyleValue>>()
 const context = useMapContext()
 
 const path = computed<string | undefined>(() => {
-  return getLinePath(context?.value, props.coordinates)
+  return getLinePath(
+    context?.value,
+    props.coordinates,
+    props.custom,
+    props.curve,
+  )
 })
 
 const { style, ...events } = useMapObject(toRef(props, 'styles'))

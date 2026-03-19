@@ -9,6 +9,8 @@ Use it for geographic `LineString` paths between locations
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `coordinates` | `[number, number][]` | — | Geographic line coordinates in `[longitude, latitude]` position format |
+| `custom?` | `boolean` | `false` | Render the line from projected screen points instead of geographic `LineString` pathing |
+| `curve?` | `CurveFactory \| CurveFactoryLineOnly` | — | Used only when `custom` is enabled. Pass a D3 curve from `d3-shape` |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapLine
@@ -24,19 +26,37 @@ You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapL
   <Map :data="mapData">
     <MapFeatures />
     <MapLine
-      :coordinates="[[-122.4194, 37.7749], [-98.5795, 39.8283], [-73.935242, 40.73061]]"
+      :coordinates="[
+        [-122.4194, 37.7749],
+        [-98.5795, 39.8283],
+        [-73.935242, 40.73061],
+      ]"
+      custom
+      :curve="curveBasis"
     />
   </Map>
 </template>
+
+<script setup lang="ts">
+import { curveBasis } from 'd3-shape'
+</script>
 ```
 
 == React
 
 ```tsx
+import { curveBasis } from 'd3-shape'
+
 <Map data={mapData}>
   <MapFeatures />
   <MapLine
-    coordinates={[[-122.4194, 37.7749], [-98.5795, 39.8283], [-73.935242, 40.73061]]}
+    coordinates={[
+      [-122.4194, 37.7749],
+      [-98.5795, 39.8283],
+      [-73.935242, 40.73061],
+    ]}
+    custom
+    curve={curveBasis}
   />
 </Map>
 ```
@@ -48,3 +68,7 @@ Use native [`marker-start`](https://developer.mozilla.org/en-US/docs/Web/SVG/Ref
 
 See how it's done in [connections example](/examples/connections)
 :::
+
+Use default `MapLine` rendering when you want geodesic `LineString` behavior.
+
+Use `custom` when you want projected control over the path shape, and pass a D3 `curve` when you want interpolation beyond the default straight line.
