@@ -1,8 +1,7 @@
 # MapGraticule
 
-Renders graticule lines and optional outline as SVG `<path>` layers
-
-Outline is rendered only when `background` or `border` is provided
+Renders graticule lines and optional outline as SVG `<path>` layers.  
+Outline is rendered only when `background` or `border` is provided.  
 The outline is drawn as two paths: fill under lines and border over lines
 
 ## Props
@@ -12,7 +11,7 @@ The outline is drawn as two paths: fill under lines and border over lines
 | `background?` | `boolean \| string` | — | `true` renders background outline with no inline fill, `string` sets outline fill color |
 | `border?` | `boolean \| string` | — | `true` renders border outline with no inline stroke, `string` sets outline stroke color |
 | `config?` | [GraticuleConfig](/api/core/graticule#graticuleconfig) | — | See [usage](#config) below |
-| `styles?` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | Applies map-object interaction styles to the lines path |
+| `styles?` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 Use native SVG presentation attrs like `stroke` directly on `MapGraticule` lines.
 

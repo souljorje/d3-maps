@@ -6,7 +6,7 @@ Positions anything on the map based on coordinates
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `coordinates?` | `[number, number]` | — | Marker coordinates in `[longitude, latitude]` format. |
+| `coordinates?` | `[number, number]` | — | `[longitude, latitude]` |
 | `styles?` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 ## Usage

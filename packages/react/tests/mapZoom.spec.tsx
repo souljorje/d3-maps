@@ -43,6 +43,7 @@ describe('mapZoom', () => {
     const onZoom = vi.fn()
     const onZoomEnd = vi.fn()
     const config = { scaleExtent: [[1, 6]] as [[number, number]] }
+    const transition = { duration: 250 }
 
     const { rerender } = render(
       <Map data={sampleGeoJson}>
@@ -52,6 +53,7 @@ describe('mapZoom', () => {
           zoom={2}
           minZoom={1}
           maxZoom={6}
+          transition={transition}
           config={config}
           onZoomStart={onZoomStart}
           onZoom={onZoom}
@@ -66,6 +68,7 @@ describe('mapZoom', () => {
     expect(setupZoomSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         center: [11, 12],
+        transition,
         zoom: 2,
       }),
     )
@@ -86,6 +89,7 @@ describe('mapZoom', () => {
           zoom={3}
           minZoom={1}
           maxZoom={6}
+          transition={transition}
           config={config}
           onZoomStart={onZoomStart}
           onZoom={onZoom}
@@ -99,6 +103,7 @@ describe('mapZoom', () => {
     expect(applyZoomSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         center: [99, 100],
+        transition,
         zoom: 3,
       }),
     )

@@ -37,9 +37,9 @@ const props = withDefaults(defineProps<ZoomProps>(), {
 })
 
 const emit = defineEmits<{
-  (event: 'zoomstart', payload: ZoomEvent): void
+  (event: 'zoomStart', payload: ZoomEvent): void
   (event: 'zoom', payload: ZoomEvent): void
-  (event: 'zoomend', payload: ZoomEvent): void
+  (event: 'zoomEnd', payload: ZoomEvent): void
 }>()
 
 const container = ref<SVGGElement | null>(null)
@@ -52,12 +52,12 @@ const zoomBehavior = computed(() => {
     minZoom: props.minZoom,
     maxZoom: props.maxZoom,
     config: props.config,
-    onZoomStart: (event) => emit('zoomstart', event),
+    onZoomStart: (event) => emit('zoomStart', event),
     onZoom: (event) => {
       applyZoomGroupTransform(container.value, event.transform)
       emit('zoom', event)
     },
-    onZoomEnd: (event) => emit('zoomend', event),
+    onZoomEnd: (event) => emit('zoomEnd', event),
   })
 })
 
@@ -71,6 +71,7 @@ onMounted(() => {
         behavior,
         center: props.center,
         zoom: props.zoom,
+        transition: props.transition,
       })
     },
     {
@@ -83,6 +84,9 @@ onMounted(() => {
       props.center?.[0],
       props.center?.[1],
       props.zoom,
+      props.transition?.duration,
+      props.transition?.delay,
+      props.transition?.ease,
     ],
     () => {
       if (!container.value) return
@@ -91,6 +95,7 @@ onMounted(() => {
         behavior: zoomBehavior.value,
         center: props.center,
         zoom: props.zoom,
+        transition: props.transition,
       })
     },
   )

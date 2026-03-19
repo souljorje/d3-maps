@@ -70,6 +70,10 @@
   }
 }
 
+body {
+  line-height: 1.5;
+}
+
 .VPHome {
   margin-bottom: 0;
   .image-src {
@@ -100,6 +104,25 @@
   .VPButton.brand:hover {
     animation-play-state: paused;
     filter: brightness(1.05);
+  }
+}
+
+.vp-doc {
+  h2 {
+    margin: 32px 0 16px;
+  }
+  li p {
+    margin: 0
+  }
+  table {
+    display: table;
+    min-width: 100%;
+    th, td {
+      padding: 8px 12px;
+    }
+    code {
+      white-space: pre;
+    }
   }
 }
 

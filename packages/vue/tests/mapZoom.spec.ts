@@ -66,9 +66,10 @@ describe('mapZoom', () => {
   })
 
   it('wires zoom setup and transform updates', async () => {
-    const onZoomstart = vi.fn()
+    const onZoomStart = vi.fn()
     const onZoom = vi.fn()
-    const onZoomend = vi.fn()
+    const onZoomEnd = vi.fn()
+    const transition = { duration: 250 }
 
     const wrapper = mount(defineComponent({
       data() {
@@ -87,10 +88,11 @@ describe('mapZoom', () => {
             zoom: this.zoom,
             minZoom: 1,
             maxZoom: 6,
+            transition,
             config: { scaleExtent: [[1, 6]] },
-            onZoomstart,
+            onZoomStart,
             onZoom,
-            onZoomend,
+            onZoomEnd,
           }, {
             default: () => h('g', { 'data-testid': 'zoom-content' }),
           }),
@@ -104,13 +106,14 @@ describe('mapZoom', () => {
     expect(setupZoomSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         center: [11, 12],
+        transition,
         zoom: 2,
       }),
     )
     expect(applyZoomSpy).not.toHaveBeenCalled()
-    expect(onZoomstart).toHaveBeenCalled()
+    expect(onZoomStart).toHaveBeenCalled()
     expect(onZoom).toHaveBeenCalled()
-    expect(onZoomend).toHaveBeenCalled()
+    expect(onZoomEnd).toHaveBeenCalled()
     expect(zoomBehaviorOptions?.config).toEqual({ scaleExtent: [[1, 6]] })
     expect(wrapper.get('[data-testid="map-zoom-group"]').attributes('transform')).toContain('translate')
 
@@ -122,6 +125,7 @@ describe('mapZoom', () => {
     expect(applyZoomSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         center: [99, 100],
+        transition,
         zoom: 3,
       }),
     )

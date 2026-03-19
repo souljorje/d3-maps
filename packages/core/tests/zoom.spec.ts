@@ -8,6 +8,7 @@ import {
   applyZoomGroupTransform,
   createZoomBehavior,
   getInverseZoomScale,
+  getObjectZoomView,
   getZoomScale,
   ZOOM_DEFAULTS,
 } from '../src'
@@ -51,6 +52,34 @@ describe('zoom helpers', () => {
     const context = makeTestMapContext()
     const behavior = createZoomBehavior(context)
     expect(behavior.translateExtent()).toEqual([[0, 0], [400, 300]])
+  })
+
+  it('gets zoom view for an object from its projected bounds', () => {
+    const context = makeTestMapContext()
+    const feature = context.features[0]
+    const [[x0, y0], [x1, y1]] = context.path.bounds(feature)
+    const boundsWidth = x1 - x0
+    const boundsHeight = y1 - y0
+
+    const view = getObjectZoomView(context, feature, {
+      minZoom: 1,
+      maxZoom: 8,
+      padding: 0.1,
+    })
+
+    expect(view).toEqual({
+      center: [
+        (x0 + x1) / 2,
+        (y0 + y1) / 2,
+      ],
+      zoom: Math.min(
+        8,
+        Math.max(
+          1,
+          0.9 / Math.max(boundsWidth / context.width, boundsHeight / context.height),
+        ),
+      ),
+    })
   })
 
   it('reads zoom scale from different inputs', () => {

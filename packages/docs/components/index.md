@@ -1,6 +1,6 @@
 # Components
 
-Components are adapter-level building blocks for rendering maps and map objects.
+Components are adapter-level building blocks for rendering map layers
 
 - [Map](/components/map)
 - [MapFeatures](/components/map-features)

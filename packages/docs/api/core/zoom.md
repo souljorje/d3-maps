@@ -9,6 +9,7 @@
   * [applyZoomGroupTransform()](#applyzoomgrouptransform)
   * [createZoomBehavior()](#createzoombehavior)
   * [getInverseZoomScale()](#getinversezoomscale)
+  * [getObjectZoomView()](#getobjectzoomview)
   * [getZoomScale()](#getzoomscale)
   * [setupZoom()](#setupzoom)
 * [Variables](#variables)
@@ -17,6 +18,8 @@
   * [ApplyZoomOptions](#applyzoomoptions)
   * [D3ZoomEvent](#d3zoomevent)
   * [DefaultZoomBehavior()](#defaultzoombehavior)
+  * [ObjectZoomView](#objectzoomview)
+  * [ObjectZoomViewOptions](#objectzoomviewoptions)
   * [SetupZoomOptions](#setupzoomoptions)
   * [ZoomBehavior()](#zoombehavior)
   * [ZoomBehaviorOptions](#zoombehavioroptions)
@@ -25,6 +28,7 @@
   * [ZoomModifiers](#zoommodifiers)
   * [ZoomProps](#zoomprops)
   * [ZoomTransform](#zoomtransform)
+  * [ZoomTransition](#zoomtransition)
 * [Type Aliases](#type-aliases)
   * [ZoomScaleSource](#zoomscalesource)
   * [ZoomTargetElement](#zoomtargetelement)
@@ -109,6 +113,29 @@ function getInverseZoomScale(source: ZoomScaleSource, fallback?: number): number
 
 ***
 
+### getObjectZoomView()
+
+```ts
+function getObjectZoomView(
+   context: Pick<MapContext, "path" | "width" | "height">, 
+   object: GeoPermissibleObjects, 
+   options?: ObjectZoomViewOptions): ObjectZoomView | undefined;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `context` | `Pick`<[`MapContext`](map.md#mapcontext), `"path"` | `"width"` | `"height"`> |
+| `object` | `GeoPermissibleObjects` |
+| `options` | [`ObjectZoomViewOptions`](#objectzoomviewoptions) |
+
+#### Returns
+
+[`ObjectZoomView`](#objectzoomview) | `undefined`
+
+***
+
 ### getZoomScale()
 
 ```ts
@@ -190,6 +217,7 @@ zoom: number = 1;
 | <a id="property-behavior"></a> `behavior` | [`DefaultZoomBehavior`](#defaultzoombehavior) |
 | <a id="property-center"></a> `center?` | \[`number`, `number`] |
 | <a id="property-element"></a> `element` | [`ZoomTargetElement`](#zoomtargetelement) | `null` | `undefined` |
+| <a id="property-transition"></a> `transition?` | `false` | [`ZoomTransition`](#zoomtransition) |
 | <a id="property-zoom"></a> `zoom?` | `number` |
 
 ***
@@ -1250,6 +1278,29 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 
 ***
 
+### ObjectZoomView
+
+#### Properties
+
+| Property | Type |
+| ------ | ------ |
+| <a id="property-center-1"></a> `center` | \[`number`, `number`] |
+| <a id="property-zoom-1"></a> `zoom` | `number` |
+
+***
+
+### ObjectZoomViewOptions
+
+#### Properties
+
+| Property | Type |
+| ------ | ------ |
+| <a id="property-maxzoom"></a> `maxZoom?` | `number` |
+| <a id="property-minzoom"></a> `minZoom?` | `number` |
+| <a id="property-padding"></a> `padding?` | `number` |
+
+***
+
 ### SetupZoomOptions
 
 #### Extends
@@ -1261,9 +1312,10 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 | Property | Type | Overrides | Inherited from |
 | ------ | ------ | ------ | ------ |
 | <a id="property-behavior-1"></a> `behavior` | [`DefaultZoomBehavior`](#defaultzoombehavior) | - | [`ApplyZoomOptions`](#applyzoomoptions).[`behavior`](#property-behavior) |
-| <a id="property-center-1"></a> `center?` | \[`number`, `number`] | [`ApplyZoomOptions`](#applyzoomoptions).[`center`](#property-center) | - |
+| <a id="property-center-2"></a> `center?` | \[`number`, `number`] | [`ApplyZoomOptions`](#applyzoomoptions).[`center`](#property-center) | - |
 | <a id="property-element-1"></a> `element` | [`ZoomTargetElement`](#zoomtargetelement) | `null` | `undefined` | - | [`ApplyZoomOptions`](#applyzoomoptions).[`element`](#property-element) |
-| <a id="property-zoom-1"></a> `zoom?` | `number` | - | [`ApplyZoomOptions`](#applyzoomoptions).[`zoom`](#property-zoom) |
+| <a id="property-transition-1"></a> `transition?` | `false` | [`ZoomTransition`](#zoomtransition) | - | [`ApplyZoomOptions`](#applyzoomoptions).[`transition`](#property-transition) |
+| <a id="property-zoom-2"></a> `zoom?` | `number` | - | [`ApplyZoomOptions`](#applyzoomoptions).[`zoom`](#property-zoom) |
 
 ***
 
@@ -2197,14 +2249,15 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 
 | Property | Type | Description | Inherited from |
 | ------ | ------ | ------ | ------ |
-| <a id="property-center-2"></a> `center?` | \[`number`, `number`] | Projected map-space point to keep centered in the viewport. If omitted, changing `zoom` alone preserves the current viewport center. | [`ZoomProps`](#zoomprops).[`center`](#property-center-3) |
+| <a id="property-center-3"></a> `center?` | \[`number`, `number`] | Projected map-space point to keep centered in the viewport. If omitted, changing `zoom` alone preserves the current viewport center. | [`ZoomProps`](#zoomprops).[`center`](#property-center-4) |
 | <a id="property-config"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) | - | [`ZoomProps`](#zoomprops).[`config`](#property-config-1) |
-| <a id="property-maxzoom"></a> `maxZoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`maxZoom`](#property-maxzoom-1) |
-| <a id="property-minzoom"></a> `minZoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`minZoom`](#property-minzoom-1) |
+| <a id="property-maxzoom-1"></a> `maxZoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`maxZoom`](#property-maxzoom-2) |
+| <a id="property-minzoom-1"></a> `minZoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`minZoom`](#property-minzoom-2) |
 | <a id="property-onzoom"></a> `onZoom?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | - | [`ZoomEvents`](#zoomevents).[`onZoom`](#property-onzoom-1) |
 | <a id="property-onzoomend"></a> `onZoomEnd?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | - | [`ZoomEvents`](#zoomevents).[`onZoomEnd`](#property-onzoomend-1) |
 | <a id="property-onzoomstart"></a> `onZoomStart?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | - | [`ZoomEvents`](#zoomevents).[`onZoomStart`](#property-onzoomstart-1) |
-| <a id="property-zoom-2"></a> `zoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`zoom`](#property-zoom-3) |
+| <a id="property-transition-2"></a> `transition?` | [`ZoomTransition`](#zoomtransition) | - | [`ZoomProps`](#zoomprops).[`transition`](#property-transition-3) |
+| <a id="property-zoom-3"></a> `zoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`zoom`](#property-zoom-4) |
 
 ***
 
@@ -2295,11 +2348,12 @@ https://d3js.org/d3-zoom
 
 | Property | Type | Description |
 | ------ | ------ | ------ |
-| <a id="property-center-3"></a> `center?` | \[`number`, `number`] | Projected map-space point to keep centered in the viewport. If omitted, changing `zoom` alone preserves the current viewport center. |
+| <a id="property-center-4"></a> `center?` | \[`number`, `number`] | Projected map-space point to keep centered in the viewport. If omitted, changing `zoom` alone preserves the current viewport center. |
 | <a id="property-config-1"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) | - |
-| <a id="property-maxzoom-1"></a> `maxZoom?` | `number` | - |
-| <a id="property-minzoom-1"></a> `minZoom?` | `number` | - |
-| <a id="property-zoom-3"></a> `zoom?` | `number` | - |
+| <a id="property-maxzoom-2"></a> `maxZoom?` | `number` | - |
+| <a id="property-minzoom-2"></a> `minZoom?` | `number` | - |
+| <a id="property-transition-3"></a> `transition?` | [`ZoomTransition`](#zoomtransition) | - |
+| <a id="property-zoom-4"></a> `zoom?` | `number` | - |
 
 ***
 
@@ -2548,6 +2602,18 @@ where tx0 and ty0 is this transform’s translation and tk is this transform’s
 | <a id="property-k"></a> `k` | `readonly` | `number` | The scale factor k. This property should be considered read-only; instead of mutating a transform, use transform.scale and transform.translate to derive a new transform. Also see zoom.scaleBy, zoom.scaleTo and zoom.translateBy for convenience methods on the zoom behavior. |
 | <a id="property-x"></a> `x` | `readonly` | `number` | The translation amount tx along the x-axis. This property should be considered read-only; instead of mutating a transform, use transform.scale and transform.translate to derive a new transform. Also see zoom.scaleBy, zoom.scaleTo and zoom.translateBy for convenience methods on the zoom behavior. |
 | <a id="property-y"></a> `y` | `readonly` | `number` | The translation amount ty along the y-axis This property should be considered read-only; instead of mutating a transform, use transform.scale and transform.translate to derive a new transform. Also see zoom.scaleBy, zoom.scaleTo and zoom.translateBy for convenience methods on the zoom behavior. |
+
+***
+
+### ZoomTransition
+
+#### Properties
+
+| Property | Type |
+| ------ | ------ |
+| <a id="property-delay"></a> `delay?` | `number` |
+| <a id="property-duration-1"></a> `duration?` | `number` |
+| <a id="property-ease"></a> `ease?` | (`normalizedTime`: `number`) => `number` |
 
 ## Type Aliases
 

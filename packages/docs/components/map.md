@@ -7,8 +7,8 @@ Renders the root `<svg>` and provides a reactive map context to children.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `data` | [MapData](/api/core/map#mapdata) | — | TopoJSON or GeoJSON |
-| `width?` | `number` | `600` | Internal width used by projection fitting and path rendering. |
-| `height?` | `number` | `width / aspectRatio` | Internal height used by projection fitting and path rendering. |
+| `width?` | `number` | `600` |  |
+| `height?` | `number` | `width/aspectRatio` |  |
 | `aspectRatio?` | `number` | `2 / 1` | Used to derive `height` when `height` is not provided. |
 | `projection?` | `() => GeoProjection` | `geoNaturalEarth1` | d3-geo projection factory |
 | `projectionConfig?` | [ProjectionConfig](/api/core/map#projectionconfig) | — | See the [guide](#projectionconfig) below |

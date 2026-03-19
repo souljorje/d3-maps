@@ -77,9 +77,6 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 - `onMove` -> `onZoom`
 - `onMoveEnd` -> `onZoomEnd`
 
-`MapZoom` keeps the viewport centered when only `zoom` changes.
-Pass `center` to keep a projected point centered while zooming.
-
 ```tsx
 <Map data={data}>
   <MapZoom

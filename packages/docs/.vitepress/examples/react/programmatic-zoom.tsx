@@ -7,6 +7,7 @@ import type { JSX } from 'react'
 
 import {
   getFeatureKey,
+  getObjectZoomView,
   makeMapContext,
 } from '@d3-maps/core'
 import {
@@ -88,21 +89,15 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   }
 
   function zoomToFeature(feature: D3MapFeature, context: MapContext): void {
-    const { path, width, height } = context
-    const [[x0, y0], [x1, y1]] = path.bounds(feature)
-    const boundsWidth = x1 - x0
-    const boundsHeight = y1 - y0
+    const view = getObjectZoomView(context, feature, {
+      minZoom,
+      maxZoom,
+    })
 
-    if (!Number.isFinite(boundsWidth) || !Number.isFinite(boundsHeight) || boundsWidth <= 0 || boundsHeight <= 0) {
-      return
-    }
+    if (!view) return
 
-    setCenter([
-      (x0 + x1) / 2,
-      (y0 + y1) / 2,
-    ])
-    const fittedZoom = clampZoom(0.9 / Math.max(boundsWidth / width, boundsHeight / height))
-    setZoom(fittedZoom)
+    setCenter(view.center)
+    setZoom(view.zoom)
     setActiveCountryLabel(getFeatureLabel(feature))
   }
 
@@ -157,6 +152,9 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
             <Map
               data={mapData}
               aspectRatio={2 / 1}
+              projectionConfig={{
+                rotate: [[-11, 0]],
+              }}
             >
               {
                 (context) => (
@@ -165,6 +163,9 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
                     zoom={zoom}
                     minZoom={minZoom}
                     maxZoom={maxZoom}
+                    transition={{
+                      duration: 250,
+                    }}
                     config={{ filter: isDragOnlyFilter }}
                   >
                     <MapGraticule

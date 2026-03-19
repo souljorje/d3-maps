@@ -41,6 +41,7 @@ export function MapZoom({
   zoom,
   minZoom = ZOOM_DEFAULTS.minZoom,
   maxZoom = ZOOM_DEFAULTS.maxZoom,
+  transition,
   config,
   onZoomStart,
   onZoom,
@@ -94,6 +95,7 @@ export function MapZoom({
         ? [centerX, centerY]
         : undefined,
       zoom: resolvedZoom,
+      transition,
     })
   }, [
     zoomBehavior,
@@ -112,10 +114,12 @@ export function MapZoom({
         ? [centerX, centerY]
         : undefined,
       zoom: resolvedZoom,
+      transition,
     })
   }, [
     centerX,
     centerY,
+    transition,
     zoomBehavior,
     resolvedZoom,
   ])

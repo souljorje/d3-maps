@@ -1,8 +1,19 @@
 # useMapContext
 
-Reads the current map context from [Map](/components/map).
+Reads the current map context from [Map](/components/map)
 
-Returns `undefined` outside `Map`.
+Use it in custom layers when you need the resolved map size, normalized features, or the shared path generator
+
+Returns `undefined` outside `Map`
+
+## Return value
+
+| Adapter | Type |
+| --- | --- |
+| `@d3-maps/vue` | `ComputedRef<MapContext> \| undefined` |
+| `@d3-maps/react` | `MapContext \| undefined` |
+
+See [MapContext API](/api/core/map#mapcontext)
 
 ## Usage
 
@@ -18,7 +29,7 @@ import { useMapContext } from '@d3-maps/vue'
 const context = useMapContext()
 const featureCountLabel = computed(() => {
   if (!context) return null
-  return `${context.features.length} features`
+  return `${context.value.features.length} features`
 })
 </script>
 

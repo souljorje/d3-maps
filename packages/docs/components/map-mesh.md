@@ -1,10 +1,9 @@
 # MapMesh
 
-Renders a TopoJSON mesh as an SVG `<path>`.
+Renders a TopoJSON mesh as an SVG `<path>`.  
+Use it to draw shared borders/edges (for example country boundaries) on top of feature fills.
 
-Use this to draw shared borders/edges (for example country boundaries) on top of feature fills.
-
-> ℹ️  Works only with **TopoJSON** data
+_ℹ️ Works only with **TopoJSON** data_
 
 ## Props
 

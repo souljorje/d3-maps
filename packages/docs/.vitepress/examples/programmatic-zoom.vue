@@ -4,6 +4,9 @@
       v-if="data"
       :data="data"
       :aspect-ratio="2 / 1"
+      :projection-config="{
+        rotate: [[-11, 0]],
+      }"
     >
       <template #default="context">
         <MapZoom
@@ -11,6 +14,7 @@
           :zoom="zoom"
           :min-zoom="minZoom"
           :max-zoom="maxZoom"
+          :transition="{ duration: isTransitionOn ? 600 : 0 }"
           :config="{ filter: isDragOnlyFilter }"
         >
           <MapGraticule
@@ -86,18 +90,20 @@ import type {
 
 import {
   getFeatureKey,
+  getObjectZoomView,
   makeMapContext,
 } from '@d3-maps/core'
 import { withBase } from 'vitepress'
 import {
   computed,
+  nextTick,
   onMounted,
   ref,
 } from 'vue'
 
 const initialZoom = 1
 const minZoom = 1
-const maxZoom = 8
+const maxZoom = 16
 const zoomStep = 0.5
 
 const data = ref<MapData>()
@@ -120,12 +126,18 @@ onMounted(async () => {
   data.value = await response.json()
 })
 
+const isTransitionOn = ref(true)
+
 function zoomIn() {
+  isTransitionOn.value = false
   setZoom(zoom.value + zoomStep)
+  nextTick(() => isTransitionOn.value = true)
 }
 
 function zoomOut() {
+  isTransitionOn.value = false
   setZoom(zoom.value - zoomStep)
+  nextTick(() => isTransitionOn.value = true)
 }
 
 function resetView() {
@@ -156,21 +168,15 @@ function zoomToFeature(
   feature: MapFeature,
   context: MapContext,
 ) {
-  const { path, width, height } = context
-  const [[x0, y0], [x1, y1]] = path.bounds(feature)
-  const boundsWidth = x1 - x0
-  const boundsHeight = y1 - y0
+  const view = getObjectZoomView(context, feature, {
+    minZoom,
+    maxZoom,
+  })
 
-  if (!Number.isFinite(boundsWidth) || !Number.isFinite(boundsHeight) || boundsWidth <= 0 || boundsHeight <= 0) {
-    return
-  }
+  if (!view) return
 
-  const fittedZoom = clampZoom(0.9 / Math.max(boundsWidth / width, boundsHeight / height))
-  zoom.value = fittedZoom
-  center.value = [
-    (x0 + x1) / 2,
-    (y0 + y1) / 2,
-  ]
+  zoom.value = view.zoom
+  center.value = view.center
   activeCountryLabel.value = getFeatureLabel(feature)
 }
 
