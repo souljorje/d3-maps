@@ -2,16 +2,16 @@
 
 Renders a path between map locations
 
-Use it for geographic `LineString` paths between locations
-
 ## Props
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `coordinates` | `[number, number][]` | — | Geographic line coordinates in `[longitude, latitude]` position format |
-| `custom?` | `boolean` | `false` | Render the line from projected screen points instead of geographic `LineString` pathing |
+| `coordinates` | `[number, number][]` | — | `[longitude, latitude][]` |
+| `custom?` | `boolean` | `false` | Render using [d3-shape line](https://d3js.org/d3-shape/line) instead of default* |
 | `curve?` | `CurveFactory \| CurveFactoryLineOnly` | — | Used only when `custom` is enabled. See [d3-shape curve](https://d3js.org/d3-shape/curve) |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
+
+\* By default renders [great arc](https://en.wikipedia.org/wiki/Great-circle_distance) using [d3-geo path](https://d3js.org/d3-geo/path#_path) with `'LineString'`
 
 You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapLine
 
