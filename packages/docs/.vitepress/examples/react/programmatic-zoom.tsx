@@ -2,13 +2,17 @@ import type {
   MapFeature as D3MapFeature,
   MapContext,
   MapData,
+  ProjectionConfig,
 } from '@d3-maps/core'
-import type { JSX } from 'react'
+import type {
+  JSX,
+  KeyboardEvent as ReactKeyboardEvent,
+  MouseEvent as ReactMouseEvent,
+} from 'react'
 
 import {
   getFeatureKey,
   getObjectZoomView,
-  makeMapContext,
 } from '@d3-maps/core'
 import {
   Map,
@@ -17,10 +21,11 @@ import {
   MapGraticule,
   MapMesh,
   MapZoom,
+  useMapContext,
 } from '@d3-maps/react'
 import {
   useEffect,
-  useMemo,
+  useRef,
   useState,
 } from 'react'
 import { withBase } from 'vitepress'
@@ -29,20 +34,26 @@ const initialZoom = 1
 const minZoom = 1
 const maxZoom = 8
 const zoomStep = 0.5
+const projectionConfig: ProjectionConfig = {
+  rotate: [[-11, 0]],
+}
+const featureStyles = {
+  default: { fill: 'var(--vp-c-neutral-inverse)' },
+  hover: { fill: 'lightblue' },
+  active: { fill: 'skyblue' },
+  focus: {
+    fill: 'lightskyblue',
+    stroke: 'darkgreen',
+    strokeWidth: 1,
+  },
+}
 
 export default function ProgrammaticZoomExample(): JSX.Element | null {
   const [mapData, setMapData] = useState<MapData>()
   const [center, setCenter] = useState<[number, number]>()
   const [zoom, setZoom] = useState(initialZoom)
   const [activeCountryLabel, setActiveCountryLabel] = useState('World')
-
-  const mapContext = useMemo(() => {
-    return mapData
-      ? makeMapContext({
-          data: mapData,
-        })
-      : undefined
-  }, [mapData])
+  const mapRootRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     let isCancelled = false
@@ -77,15 +88,11 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
     setActiveCountryLabel('World')
   }
 
-  function zoomToRandomCountry(): void {
-    if (!mapContext?.features.length || !mapContext) return
-
-    const randomIndex = Math.floor(Math.random() * mapContext.features.length)
-    const feature = mapContext.features[randomIndex]
-
+  function zoomToRandomCountry(feature: D3MapFeature, index: number, context: MapContext): void {
     if (!feature) return
 
-    zoomToFeature(feature, mapContext)
+    zoomToFeature(feature, context)
+    focusFeatureByKey(String(getFeatureKey(feature, 'id', index)))
   }
 
   function zoomToFeature(feature: D3MapFeature, context: MapContext): void {
@@ -101,9 +108,41 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
     setActiveCountryLabel(getFeatureLabel(feature))
   }
 
+  function onFeatureClick(
+    feature: D3MapFeature,
+    context: MapContext,
+    event: ReactMouseEvent<SVGPathElement>,
+  ): void {
+    zoomToFeature(feature, context)
+    focusFeatureElement(event.currentTarget)
+  }
+
+  function onFeatureKeyDown(
+    feature: D3MapFeature,
+    context: MapContext,
+    event: ReactKeyboardEvent<SVGPathElement>,
+  ): void {
+    if (event.key !== 'Enter' && event.key !== ' ') return
+
+    event.preventDefault()
+    zoomToFeature(feature, context)
+    focusFeatureElement(event.currentTarget)
+  }
+
+  function focusFeatureByKey(featureKey: string): void {
+    const featureElement = mapRootRef.current?.querySelector<SVGPathElement>(
+      `[data-feature-key="${escapeAttributeValue(featureKey)}"]`,
+    )
+
+    focusFeatureElement(featureElement)
+  }
+
   return mapData
     ? (
-        <div className="grid gap-3">
+        <div
+          ref={mapRootRef}
+          className="grid gap-3"
+        >
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
@@ -152,40 +191,53 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
             <Map
               data={mapData}
               aspectRatio={2 / 1}
-              projectionConfig={{
-                rotate: [[-11, 0]],
-              }}
+              projectionConfig={projectionConfig}
             >
               {
                 (context) => (
-                  <MapZoom
-                    center={center}
-                    zoom={zoom}
-                    minZoom={minZoom}
-                    maxZoom={maxZoom}
-                    transition={{
-                      duration: 250,
-                    }}
-                    config={{ filter: isDragOnlyFilter }}
-                  >
-                    <MapGraticule
-                      border
-                      pointerEvents="none"
+                  <>
+                    <ProgrammaticZoomControls
+                      zoom={zoom}
+                      onZoomIn={zoomIn}
+                      onZoomOut={zoomOut}
+                      onResetView={resetView}
+                      onZoomToRandomCountry={zoomToRandomCountry}
                     />
-                    <MapFeatures fill="var(--vp-c-neutral-inverse)">
-                      {
-                        ({ features }) => features.map((feature, index) => (
-                          <MapFeature
-                            key={getFeatureKey(feature, 'id', index)}
-                            data={feature}
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => zoomToFeature(feature, context)}
-                          />
-                        ))
-                      }
-                    </MapFeatures>
-                    <MapMesh pointerEvents="none" />
-                  </MapZoom>
+                    <MapZoom
+                      center={center}
+                      zoom={zoom}
+                      minZoom={minZoom}
+                      maxZoom={maxZoom}
+                      transition={{
+                        duration: 250,
+                      }}
+                      config={{ filter: isDragOnlyFilter }}
+                    >
+                      <MapGraticule
+                        border
+                        pointerEvents="none"
+                      />
+                      <MapFeatures fill="var(--vp-c-neutral-inverse)">
+                        {
+                          ({ features }) => features.map((feature, index) => (
+                            <MapFeature
+                              key={getFeatureKey(feature, 'id', index)}
+                              data={feature}
+                              data-feature-key={String(getFeatureKey(feature, 'id', index))}
+                              aria-label={getFeatureLabel(feature)}
+                              role="button"
+                              tabIndex={0}
+                              style={{ cursor: 'pointer' }}
+                              styles={featureStyles}
+                              onClick={(event) => onFeatureClick(feature, context, event)}
+                              onKeyDown={(event) => onFeatureKeyDown(feature, context, event)}
+                            />
+                          ))
+                        }
+                      </MapFeatures>
+                      <MapMesh pointerEvents="none" />
+                    </MapZoom>
+                  </>
                 )
               }
             </Map>
@@ -210,5 +262,92 @@ function getFeatureLabel(feature: D3MapFeature): string {
     ?? feature.properties?.NAME
     ?? feature.id
     ?? 'Country',
+  )
+}
+
+function escapeAttributeValue(value: string): string {
+  return value.replaceAll('\\', '\\\\').replaceAll('"', '\\"')
+}
+
+function focusFeatureElement(element: SVGPathElement | null | undefined): void {
+  if (!element) return
+
+  try {
+    element.focus({ preventScroll: true })
+  } catch {
+    element.focus()
+  }
+}
+
+interface ProgrammaticZoomControlsProps {
+  zoom: number
+  onZoomIn: () => void
+  onZoomOut: () => void
+  onResetView: () => void
+  onZoomToRandomCountry: (feature: D3MapFeature, index: number, context: MapContext) => void
+}
+
+function ProgrammaticZoomControls({
+  zoom,
+  onZoomIn,
+  onZoomOut,
+  onResetView,
+  onZoomToRandomCountry,
+}: ProgrammaticZoomControlsProps): JSX.Element | null {
+  const context = useMapContext()
+
+  if (!context) return null
+
+  return (
+    <foreignObject
+      x={12}
+      y={12}
+      width={context.width - 24}
+      height={36}
+    >
+      <div
+        xmlns="http://www.w3.org/1999/xhtml"
+        className="flex flex-wrap items-center gap-2"
+      >
+        <button
+          type="button"
+          className="rounded border bg-white/90 px-3 py-1 text-sm"
+          onClick={onZoomOut}
+        >
+          -
+        </button>
+        <span className="text-sm text-[var(--vp-c-text-2)]">
+          {zoom.toFixed(1)}
+          x
+        </span>
+        <button
+          type="button"
+          className="rounded border bg-white/90 px-3 py-1 text-sm"
+          onClick={onZoomIn}
+        >
+          +
+        </button>
+        <button
+          type="button"
+          className="rounded border bg-white/90 px-3 py-1 text-sm"
+          disabled={!context.features.length}
+          onClick={() => {
+            const randomIndex = Math.floor(Math.random() * context.features.length)
+            const feature = context.features[randomIndex]
+            if (!feature) return
+            onZoomToRandomCountry(feature, randomIndex, context)
+          }}
+        >
+          Random
+        </button>
+        <button
+          type="button"
+          className="rounded border bg-white/90 px-3 py-1 text-sm"
+          onClick={onResetView}
+        >
+          Reset
+        </button>
+      </div>
+    </foreignObject>
   )
 }

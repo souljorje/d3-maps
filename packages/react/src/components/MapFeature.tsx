@@ -23,6 +23,8 @@ export function MapFeature({
   onMouseLeave,
   onMouseDown,
   onMouseUp,
+  onFocus,
+  onBlur,
   ...pathProps
 }: MapFeatureProps): ReactElement | null {
   const context = useMapContext()
@@ -37,6 +39,8 @@ export function MapFeature({
     onMouseLeave,
     onMouseDown,
     onMouseUp,
+    onFocus,
+    onBlur,
   })
 
   return (

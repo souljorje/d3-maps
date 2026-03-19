@@ -27,6 +27,8 @@ export interface UseMapObjectResult {
   onMouseleave: (event: MouseEvent) => void
   onMousedown: (event: MouseEvent) => void
   onMouseup: (event: MouseEvent) => void
+  onFocus: (event: FocusEvent) => void
+  onBlur: (event: FocusEvent) => void
 }
 
 export function useMapObject(
@@ -40,6 +42,8 @@ export function useMapObject(
     onMouseleave,
     onMouseup,
     onMousedown,
+    onFocus,
+    onBlur,
     dispose,
   }: MapObjectInteractionController<MouseEvent> = useMapObjectEvents((nextState) => {
     state.value = nextState
@@ -53,9 +57,23 @@ export function useMapObject(
 
   return {
     style,
-    onMouseenter,
-    onMouseleave,
-    onMousedown,
-    onMouseup,
+    onMouseenter: (_event) => {
+      onMouseenter()
+    },
+    onMouseleave: (_event) => {
+      onMouseleave()
+    },
+    onMousedown: (event) => {
+      onMousedown(event)
+    },
+    onMouseup: (_event) => {
+      onMouseup()
+    },
+    onFocus: (_event) => {
+      onFocus()
+    },
+    onBlur: (_event) => {
+      onBlur()
+    },
   }
 }

@@ -63,7 +63,7 @@ Shared props contract for a single rendered feature.
 | Property | Type | Inherited from |
 | ------ | ------ | ------ |
 | <a id="property-data"></a> `data` | [`MapFeature`](#mapfeature) | - |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObject`](mapObject.md#mapobject).[`styles`](mapObject.md#property-styles) |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"` | `"focus"`, `TStyle`>> | [`MapObject`](mapObject.md#mapobject).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases
 

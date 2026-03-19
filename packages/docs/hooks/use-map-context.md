@@ -64,3 +64,8 @@ function FeatureCountLabel() {
 ```
 
 :::
+
+## Best Practice
+
+- Use `useMapContext` in components rendered inside `Map`
+- Use `Map` slot/render-prop context when that already gives you what you need

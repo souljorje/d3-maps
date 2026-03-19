@@ -28,7 +28,7 @@
 ### getObjectStateUpdate()
 
 ```ts
-function getObjectStateUpdate(event: MapObjectEventType): "default" | "hover" | "active";
+function getObjectStateUpdate(event: MapObjectEventType): "default" | "hover" | "active" | "focus";
 ```
 
 Maps DOM event names to interaction state updates.
@@ -41,14 +41,14 @@ Maps DOM event names to interaction state updates.
 
 #### Returns
 
-`"default"` | `"hover"` | `"active"`
+`"default"` | `"hover"` | `"active"` | `"focus"`
 
 ***
 
 ### resolveObjectStyle()
 
 ```ts
-function resolveObjectStyle<TStyle>(state: "default" | "hover" | "active", styles?: Partial<Record<"default" | "hover" | "active", TStyle>>): TStyle | undefined;
+function resolveObjectStyle<TStyle>(state: "default" | "hover" | "active" | "focus", styles?: Partial<Record<"default" | "hover" | "active" | "focus", TStyle>>): TStyle | undefined;
 ```
 
 Resolves a style value for the current state (falls back to `default`).
@@ -63,8 +63,8 @@ Resolves a style value for the current state (falls back to `default`).
 
 | Parameter | Type |
 | ------ | ------ |
-| `state` | `"default"` | `"hover"` | `"active"` |
-| `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> |
+| `state` | `"default"` | `"hover"` | `"active"` | `"focus"` |
+| `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"` | `"focus"`, `TStyle`>> |
 
 #### Returns
 
@@ -100,7 +100,7 @@ function subscribeWindow(ev: string, listener: MapObjectGlobalMouseupListener): 
 ### useMapObjectEvents()
 
 ```ts
-function useMapObjectEvents<TTarget>(onStateChange?: (state: "default" | "hover" | "active") => void, recoverOnGlobalMouseup?: boolean): MapObjectInteractionController<TTarget>;
+function useMapObjectEvents<TTarget>(onStateChange?: (state: "default" | "hover" | "active" | "focus") => void, recoverOnGlobalMouseup?: boolean): MapObjectInteractionController<TTarget>;
 ```
 
 #### Type Parameters
@@ -113,7 +113,7 @@ function useMapObjectEvents<TTarget>(onStateChange?: (state: "default" | "hover"
 
 | Parameter | Type | Default value |
 | ------ | ------ | ------ |
-| `onStateChange?` | (`state`: `"default"` | `"hover"` | `"active"`) => `void` | `undefined` |
+| `onStateChange?` | (`state`: `"default"` | `"hover"` | `"active"` | `"focus"`) => `void` | `undefined` |
 | `recoverOnGlobalMouseup?` | `boolean` | `false` |
 
 #### Returns
@@ -125,7 +125,7 @@ function useMapObjectEvents<TTarget>(onStateChange?: (state: "default" | "hover"
 ### mapObjectState
 
 ```ts
-const mapObjectState: readonly ["default", "hover", "active"];
+const mapObjectState: readonly ["default", "hover", "active", "focus"];
 ```
 
 Supported interaction states for map objects.
@@ -149,7 +149,7 @@ Supported interaction states for map objects.
 
 | Property | Type |
 | ------ | ------ |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"` | `"focus"`, `TStyle`>> |
 
 ***
 
@@ -166,10 +166,12 @@ Supported interaction states for map objects.
 | Property | Type |
 | ------ | ------ |
 | <a id="property-dispose"></a> `dispose` | () => `void` |
-| <a id="property-onmousedown"></a> `onMousedown` | (`source?`: [`MapObjectMouseDownSource`](#mapobjectmousedownsource)<`TTarget`>) => `"default"` | `"hover"` | `"active"` |
-| <a id="property-onmouseenter"></a> `onMouseenter` | () => `"default"` | `"hover"` | `"active"` |
-| <a id="property-onmouseleave"></a> `onMouseleave` | () => `"default"` | `"hover"` | `"active"` |
-| <a id="property-onmouseup"></a> `onMouseup` | () => `"default"` | `"hover"` | `"active"` |
+| <a id="property-onblur"></a> `onBlur` | () => `"default"` | `"hover"` | `"active"` | `"focus"` |
+| <a id="property-onfocus"></a> `onFocus` | () => `"default"` | `"hover"` | `"active"` | `"focus"` |
+| <a id="property-onmousedown"></a> `onMousedown` | (`source?`: [`MapObjectMouseDownSource`](#mapobjectmousedownsource)<`TTarget`>) => `"default"` | `"hover"` | `"active"` | `"focus"` |
+| <a id="property-onmouseenter"></a> `onMouseenter` | () => `"default"` | `"hover"` | `"active"` | `"focus"` |
+| <a id="property-onmouseleave"></a> `onMouseleave` | () => `"default"` | `"hover"` | `"active"` | `"focus"` |
+| <a id="property-onmouseup"></a> `onMouseup` | () => `"default"` | `"hover"` | `"active"` | `"focus"` |
 
 ## Type Aliases
 
@@ -198,7 +200,7 @@ type MapObjectData = GeoGeometryObjects | ExtendedFeature;
 ### MapObjectEventType
 
 ```ts
-type MapObjectEventType = "mouseenter" | "mouseleave" | "mousedown" | "mouseup";
+type MapObjectEventType = "mouseenter" | "mouseleave" | "mousedown" | "mouseup" | "focus" | "blur";
 ```
 
 ***

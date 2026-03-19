@@ -97,3 +97,5 @@ export function Example({ data }: { data: MapData }) {
 ## Hooks
 
 - See [useMapContext](/hooks/use-map-context)
+
+For adapter code and docs examples, prefer [useMapContext](/hooks/use-map-context) or `Map` slot/render-prop context over rebuilding a separate map context manually

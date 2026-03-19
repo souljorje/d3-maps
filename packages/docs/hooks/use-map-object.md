@@ -3,6 +3,8 @@
 Provides interaction-state transitions and resolved styles for SVG elements.  
 Used internally by [MapFeature](/components/map-feature), [MapMarker](/components/map-marker), and [MapMesh](/components/map-mesh)
 
+`focus` styles work with real DOM focus, so the target element must be focusable
+
 ## Usage
 
 :::tabs key:framework
@@ -25,6 +27,9 @@ const styles: MapObjectStyles = {
   default: {
     opacity: 0.9,
   },
+  focus: {
+    stroke: 'darkgreen',
+  },
   hover: {
     opacity: 0.8,
   },
@@ -40,6 +45,7 @@ const { style, ...events } = useMapObject(styles)
   <path
     :d="d"
     :style="style"
+    tabindex="0"
     v-bind="events"
   />
 </template>
@@ -57,6 +63,9 @@ export function CustomFeaturePath({ d }: { d: string }) {
     default: {
       opacity: 0.9,
     },
+    focus: {
+      stroke: 'darkgreen',
+    },
     hover: {
       opacity: 0.8,
     },
@@ -72,6 +81,7 @@ export function CustomFeaturePath({ d }: { d: string }) {
   return (
     <path
       d={d}
+      tabIndex={0}
       style={style}
       {...events}
     />

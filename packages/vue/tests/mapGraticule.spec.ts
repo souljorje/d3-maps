@@ -124,7 +124,6 @@ describe('mapGraticule', () => {
     await lines.trigger('mousedown')
     expect((lines.element as SVGPathElement).style.opacity).toBe('0.5')
 
-    await lines.trigger('mouseleave')
     await lines.trigger('mouseup')
     expect((lines.element as SVGPathElement).style.opacity).toBe('0.7')
     expect(onMouseup).toHaveBeenCalledTimes(1)

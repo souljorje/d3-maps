@@ -8,33 +8,41 @@
         rotate: [[-11, 0]],
       }"
     >
-      <template #default="context">
-        <MapZoom
-          :center="center"
-          :zoom="zoom"
-          :min-zoom="minZoom"
-          :max-zoom="maxZoom"
-          :transition="{ duration: isTransitionOn ? 600 : 0 }"
-          :config="{ filter: isDragOnlyFilter }"
-        >
-          <MapGraticule
-            border
-            pointer-events="none"
-          />
-          <MapFeatures fill="var(--vp-c-neutral-inverse)">
-            <template #default="{ features: renderedFeatures }">
-              <MapFeature
-                v-for="(feature, index) in renderedFeatures"
-                :key="getFeatureKey(feature, 'id', index)"
-                :data="feature"
-                class="cursor-pointer"
-                @click="zoomToFeature(feature, context)"
-              />
-            </template>
-          </MapFeatures>
-          <MapMesh pointer-events="none" />
-        </MapZoom>
-      </template>
+      <MapZoom
+        :center="center"
+        :zoom="zoom"
+        :min-zoom="minZoom"
+        :max-zoom="maxZoom"
+        :transition="{ duration: isTransitionOn ? 600 : 0 }"
+        :config="{ filter: isDragOnlyFilter }"
+      >
+        <MapGraticule
+          border
+          pointer-events="none"
+        />
+        <MapFeatures fill="var(--vp-c-neutral-inverse)">
+          <template #default="{ features: renderedFeatures }">
+            <MapFeature
+              v-for="(feature, index) in renderedFeatures"
+              :key="getFeatureKey(feature, 'id', index)"
+              :data="feature"
+              :data-feature-key="String(getFeatureKey(feature, 'id', index))"
+              :aria-label="getFeatureLabel(feature)"
+              :styles="{
+                focus: {
+                  fill: 'lightskyblue',
+                },
+              }"
+              class="cursor-pointer"
+              role="button"
+              tabindex="0"
+              @click="onFeatureClick(feature, $event)"
+              @keydown="onFeatureKeydown(feature, $event)"
+            />
+          </template>
+        </MapFeatures>
+        <MapMesh pointer-events="none" />
+      </MapZoom>
     </Map>
   </div>
   <div class="flex flex-col justify-center items-center gap-1 mt-2">
@@ -83,7 +91,6 @@
 
 <script setup lang="ts">
 import type {
-  MapContext,
   MapData,
   MapFeature,
 } from '@d3-maps/core'
@@ -91,8 +98,8 @@ import type {
 import {
   getFeatureKey,
   getObjectZoomView,
-  makeMapContext,
 } from '@d3-maps/core'
+import { useMapContext } from '@d3-maps/vue'
 import { withBase } from 'vitepress'
 import {
   computed,
@@ -111,15 +118,9 @@ const center = ref<[number, number]>()
 const zoom = ref(initialZoom)
 const activeCountryLabel = ref('World')
 
-const mapContext = computed(() => {
-  return data.value
-    ? makeMapContext({
-        data: data.value,
-      })
-    : undefined
-})
+const mapContext = useMapContext()
 
-const features = computed(() => mapContext.value?.features ?? [])
+const features = computed(() => mapContext?.value.features ?? [])
 
 onMounted(async () => {
   const response = await fetch(withBase('/example-data/countries-110m.json'))
@@ -150,25 +151,23 @@ function setZoom(nextZoom: number) {
   zoom.value = clampZoom(nextZoom)
 }
 
-function zoomToRandomCountry() {
-  if (!features.value.length || !mapContext.value) return
+async function zoomToRandomCountry() {
+  if (!features.value.length) return
 
   const randomIndex = Math.floor(Math.random() * features.value.length)
   const feature = features.value[randomIndex]
 
   if (!feature) return
 
-  zoomToFeature(
-    feature,
-    mapContext.value,
-  )
+  zoomToFeature(feature)
+
+  await nextTick()
+  focusFeatureByKey(String(getFeatureKey(feature, 'id', randomIndex)))
 }
 
-function zoomToFeature(
-  feature: MapFeature,
-  context: MapContext,
-) {
-  const view = getObjectZoomView(context, feature, {
+function zoomToFeature(feature: MapFeature) {
+  if (!mapContext) return
+  const view = getObjectZoomView(mapContext.value, feature, {
     minZoom,
     maxZoom,
   })
@@ -178,6 +177,44 @@ function zoomToFeature(
   zoom.value = view.zoom
   center.value = view.center
   activeCountryLabel.value = getFeatureLabel(feature)
+}
+
+function onFeatureClick(
+  feature: MapFeature,
+  event: MouseEvent,
+) {
+  zoomToFeature(feature)
+  focusFeatureElement(event.currentTarget)
+}
+
+function onFeatureKeydown(
+  feature: MapFeature,
+  event: KeyboardEvent,
+) {
+  if (event.key !== 'Enter' && event.key !== ' ') return
+
+  event.preventDefault()
+  zoomToFeature(feature)
+  focusFeatureElement(event.currentTarget)
+}
+
+function focusFeatureByKey(featureKey: string) {
+  const featureElement = mapRoot.value?.querySelector<SVGPathElement>(
+    `[data-feature-key="${escapeAttributeValue(featureKey)}"]`,
+  )
+
+  focusFeatureElement(featureElement)
+}
+
+function focusFeatureElement(target: EventTarget | SVGPathElement | null | undefined) {
+  const element = target instanceof SVGPathElement ? target : null
+  if (!element) return
+
+  try {
+    element.focus({ preventScroll: true })
+  } catch {
+    element.focus()
+  }
 }
 
 function isDragOnlyFilter(event: Event) {
@@ -190,5 +227,9 @@ function clampZoom(value: number) {
 
 function getFeatureLabel(feature: MapFeature) {
   return feature.properties?.name ?? 'Country'
+}
+
+function escapeAttributeValue(value: string) {
+  return value.replaceAll('\\', '\\\\').replaceAll('"', '\\"')
 }
 </script>

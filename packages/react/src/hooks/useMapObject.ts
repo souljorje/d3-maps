@@ -7,6 +7,7 @@ import type {
 } from '@d3-maps/core'
 import type {
   CSSProperties,
+  FocusEventHandler,
   MouseEventHandler,
 } from 'react'
 
@@ -33,6 +34,8 @@ export interface UseMapObjectOptions<TElement extends Element>
   onMouseLeave?: MouseEventHandler<TElement>
   onMouseDown?: MouseEventHandler<TElement>
   onMouseUp?: MouseEventHandler<TElement>
+  onFocus?: FocusEventHandler<TElement>
+  onBlur?: FocusEventHandler<TElement>
 }
 
 export interface UseMapObjectResult<TElement extends Element> {
@@ -41,6 +44,8 @@ export interface UseMapObjectResult<TElement extends Element> {
   onMouseLeave: MouseEventHandler<TElement>
   onMouseDown: MouseEventHandler<TElement>
   onMouseUp: MouseEventHandler<TElement>
+  onFocus: FocusEventHandler<TElement>
+  onBlur: FocusEventHandler<TElement>
 }
 
 export function useMapObject<TElement extends Element>(
@@ -54,6 +59,8 @@ export function useMapObject<TElement extends Element>(
   const onMouseLeaveRef = useLatest(options.onMouseLeave)
   const onMouseDownRef = useLatest(options.onMouseDown)
   const onMouseUpRef = useLatest(options.onMouseUp)
+  const onFocusRef = useLatest(options.onFocus)
+  const onBlurRef = useLatest(options.onBlur)
 
   useEffect(() => {
     stateRef.current = state
@@ -97,11 +104,23 @@ export function useMapObject<TElement extends Element>(
     onMouseUpRef.current?.(event)
   }, [interactionController])
 
+  const onFocus = useCallback<FocusEventHandler<TElement>>((event) => {
+    interactionController.onFocus()
+    onFocusRef.current?.(event)
+  }, [interactionController])
+
+  const onBlur = useCallback<FocusEventHandler<TElement>>((event) => {
+    interactionController.onBlur()
+    onBlurRef.current?.(event)
+  }, [interactionController])
+
   return {
     style,
     onMouseEnter,
     onMouseLeave,
     onMouseDown,
     onMouseUp,
+    onFocus,
+    onBlur,
   }
 }
