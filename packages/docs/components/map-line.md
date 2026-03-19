@@ -10,7 +10,7 @@ Use it for geographic `LineString` paths between locations
 | --- | --- | --- | --- |
 | `coordinates` | `[number, number][]` | — | Geographic line coordinates in `[longitude, latitude]` position format |
 | `custom?` | `boolean` | `false` | Render the line from projected screen points instead of geographic `LineString` pathing |
-| `curve?` | `CurveFactory \| CurveFactoryLineOnly` | — | Used only when `custom` is enabled. Pass a D3 curve from `d3-shape` |
+| `curve?` | `CurveFactory \| CurveFactoryLineOnly` | — | Used only when `custom` is enabled. See [d3-shape curve](https://d3js.org/d3-shape/curve) |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapLine
