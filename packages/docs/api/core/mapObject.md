@@ -136,6 +136,7 @@ Supported interaction states for map objects.
 
 #### Extended by
 
+* [`MapAnnotationProps`](annotation.md#mapannotationprops)
 * [`MapFeatureProps`](feature.md#mapfeatureprops)
 * [`MapLineProps`](line.md#maplineprops)
 * [`MapMarkerProps`](marker.md#mapmarkerprops)

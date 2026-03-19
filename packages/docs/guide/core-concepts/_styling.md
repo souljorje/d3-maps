@@ -1,6 +1,6 @@
 ## Styling
 
-[MapFeature](/components/map-feature)*, [MapMarker](/components/map-marker), [MapMesh](/components/map-mesh), [MapGraticule](/components/map-graticule), and [MapLine](/components/map-line) accept a `styles` prop  
+[MapFeature](/components/map-feature)*, [MapMarker](/components/map-marker), [MapMesh](/components/map-mesh), [MapGraticule](/components/map-graticule), [MapLine](/components/map-line), and [MapAnnotation](/components/map-annotation) accept a `styles` prop  
 
 <!-- TODO: check if it works with Solid and svelte -->
 ```ts
@@ -93,9 +93,10 @@ You can define styles for map components via plain CSS
 | [MapGraticule](/components/map-graticule) border | `[name="border"]` |
 | [MapGraticule](/components/map-graticule) background | `[name="background"]` |
 | [MapLine](/components/map-line) | `[name="line"]` |
+| [MapAnnotation](/components/map-annotation) connector | `[name="annotation-line"]` |
 | [MapZoom](/components/map-zoom) | `[name="zoom"]` |
 
-`--d3m-stroke-w: 0.5` is the default line width for `background`, `graticule`, `feature`, and `mesh`, while `border` and `line` use `calc(var(--d3m-stroke-w) * 2)`
+`--d3m-stroke-w: 0.5` is the default line width for `background`, `graticule`, `feature`, and `mesh`, while `border`, `line`, and `annotation-line` use `calc(var(--d3m-stroke-w) * 2)`
 
 Source: [packages/core/src/index.css](https://github.com/souljorje/d3-maps/blob/main/packages/core/src/index.css)  
 Example (this site): [packages/docs/.vitepress/theme/custom.css](https://github.com/souljorje/d3-maps/blob/main/packages/docs/.vitepress/theme/custom.css)

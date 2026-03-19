@@ -1,8 +1,7 @@
 # Migrate from react-simple-maps
 
-[@d3-maps/react](/components/) is fully compatible* with [react-simple-maps](https://www.react-simple-maps.io/)  
+[@d3-maps/react](/components/) is fully compatible with [react-simple-maps](https://www.react-simple-maps.io/)  
 But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/issues) or [pull request](https://github.com/souljorje/d3-maps/pulls)  
-<sub>\* `Annotation` in development</sub>
 
 ## Migration checklist
 
@@ -15,6 +14,7 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 | Zoom wrapper | `ZoomableGroup` -> `MapZoom` |
 | Marker | `Marker` -> `MapMarker` |
 | Line | `Line` -> `MapLine` |
+| Annotation | `Annotation` -> `MapAnnotation` |
 | Graticule | `Graticule` -> `MapGraticule` |
 | Sphere | `Sphere` -> `MapGraticule` (`background`/`border`) |
 
@@ -148,27 +148,30 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 </Map>
 ```
 
-## 8. Migrate annotation patterns
+## 8. Migrate annotation component
 
-`Annotation` has no dedicated d3-maps component yet
-
-Use [MapLine](/components/map-line) for the connector and [MapMarker](/components/map-marker) for the label/anchor content
+`Annotation` -> [MapAnnotation](/components/map-annotation)
 
 ```tsx
 <Map data={data}>
   <MapFeatures />
-  <MapLine
-    coordinates={[
-      [-3.7038, 40.4168],
-      [2.3522, 48.8566],
-    ]}
-  />
-  <MapMarker coordinates={[2.3522, 48.8566]}>
-    <text y={-8} textAnchor="middle" fontSize={12}>
+  <MapAnnotation
+    coordinates={[2.3522, 48.8566]}
+    length={36}
+    angle={-35}
+    margin={10}
+    stroke="#ff6f26"
+    strokeWidth={2}
+  >
+    <text
+      y={-8}
+      textAnchor="middle"
+      fontSize={12}
+    >
       Paris
     </text>
     <circle r={3} />
-  </MapMarker>
+  </MapAnnotation>
 </Map>
 ```
 
@@ -184,4 +187,4 @@ Use [MapLine](/components/map-line) for the connector and [MapMarker](/component
 | [`ZoomableGroup`](https://www.react-simple-maps.io/docs/zoomable-group/) | [MapZoom](/components/map-zoom) |
 | [`Graticule`](https://www.react-simple-maps.io/docs/graticule/) | [MapGraticule](/components/map-graticule) |
 | [`Sphere`](https://www.react-simple-maps.io/docs/sphere/) | [MapGraticule](/components/map-graticule) (`background`/`border`) or a custom SVG layer |
-| [`Annotation`](https://www.react-simple-maps.io/docs/annotation/) | Use [MapLine](/components/map-line) & [MapMarker](/components/map-marker) together |
+| [`Annotation`](https://www.react-simple-maps.io/docs/annotation/) | [MapAnnotation](/components/map-annotation) |

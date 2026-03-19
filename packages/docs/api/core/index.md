@@ -2,6 +2,7 @@
 
 ## Modules
 
+* [annotation](annotation.md)
 * [feature](feature.md)
 * [graticule](graticule.md)
 * [line](line.md)

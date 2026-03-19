@@ -79,6 +79,7 @@ const docsSidebar = [
       { text: 'Map', link: '/components/map' },
       { text: 'MapFeatures', link: '/components/map-features' },
       { text: 'MapFeature', link: '/components/map-feature' },
+      { text: 'MapAnnotation', link: '/components/map-annotation' },
       { text: 'MapLine', link: '/components/map-line' },
       { text: 'MapMarker', link: '/components/map-marker' },
       { text: 'MapMesh', link: '/components/map-mesh' },

@@ -4,6 +4,7 @@ import { createApp } from 'vue'
 
 import {
   Map,
+  MapAnnotation,
   MapLine,
   MapMesh,
   plugin,
@@ -29,5 +30,12 @@ describe('@d3-maps/vue plugin', () => {
     app.use(plugin)
 
     expect(app.component('MapLine')).toBe(MapLine)
+  })
+
+  it('registers the MapAnnotation component', () => {
+    const app = createApp({ template: '<div />' })
+    app.use(plugin)
+
+    expect(app.component('MapAnnotation')).toBe(MapAnnotation)
   })
 })

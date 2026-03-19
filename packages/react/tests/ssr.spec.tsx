@@ -4,6 +4,7 @@ import { renderToString } from 'react-dom/server'
 
 import {
   Map,
+  MapAnnotation,
   MapFeatures,
   MapZoom,
 } from '../src'
@@ -15,11 +16,15 @@ describe('sSR', () => {
       <Map data={sampleGeoJson}>
         <MapZoom>
           <MapFeatures />
+          <MapAnnotation coordinates={[2.3522, 48.8566]}>
+            <text>Paris</text>
+          </MapAnnotation>
         </MapZoom>
       </Map>,
     )
 
     expect(html).toContain('<svg')
     expect(html).toContain('d3-map-zoom')
+    expect(html).toContain('name="annotation"')
   })
 })

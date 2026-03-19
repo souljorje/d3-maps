@@ -1,4 +1,5 @@
 import Map from './Map.vue'
+import MapAnnotation from './MapAnnotation.vue'
 import MapFeature from './MapFeature.vue'
 import MapFeatures from './MapFeatures.vue'
 import MapGraticule from './MapGraticule.vue'
@@ -9,6 +10,7 @@ import MapZoom from './MapZoom.vue'
 
 export {
   Map,
+  MapAnnotation,
   MapFeature,
   MapFeatures,
   MapGraticule,
