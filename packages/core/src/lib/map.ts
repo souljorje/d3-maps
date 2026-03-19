@@ -69,11 +69,6 @@ export interface MapProps {
 }
 
 /**
- * @deprecated Use `MapProps` instead.
- */
-export interface MapConfig extends MapProps {}
-
-/**
  * Fully computed, framework-agnostic map context.
  *
  * Adapters provide this context to child layers (features, markers, custom SVG).
