@@ -46,6 +46,10 @@ Source: [packes/core/src/lib/map.ts](https://github.com/souljorje/d3-maps/blob/m
 import type { MapData } from '@d3-maps/core'
 
 import { geoEquirectangular } from 'd3-geo'
+
+defineProps<{
+  data: MapData
+}>()
 </script>
 
 <template>

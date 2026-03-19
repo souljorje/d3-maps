@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MapMarkerProps } from '@d3-maps/core'
+import type { MapMarkerProps as CoreMapMarkerProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
 import { getMarkerTransform } from '@d3-maps/core'
@@ -22,7 +22,9 @@ import {
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
-const props = withDefaults(defineProps<MapMarkerProps<StyleValue>>(), {
+type MapMarkerProps = CoreMapMarkerProps<StyleValue>
+
+const props = withDefaults(defineProps<MapMarkerProps>(), {
   coordinates: () => [0, 0],
 })
 

@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MapFeatureProps } from '@d3-maps/core'
+import type { MapFeatureProps as CoreMapFeatureProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
 import {
@@ -19,7 +19,9 @@ import {
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
-const props = defineProps<MapFeatureProps<StyleValue>>()
+type MapFeatureProps = CoreMapFeatureProps<StyleValue>
+
+const props = defineProps<MapFeatureProps>()
 
 const { style, ...events } = useMapObject(toRef(props, 'styles'))
 

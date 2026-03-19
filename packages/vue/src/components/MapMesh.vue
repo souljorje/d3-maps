@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import type {
-  MapObject,
+  MapObjectProps,
 } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
@@ -22,9 +22,9 @@ import {
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
-interface Props extends MapObject<StyleValue> {}
+interface MapMeshProps extends MapObjectProps<StyleValue> {}
 
-const props = defineProps<Props>()
+const props = defineProps<MapMeshProps>()
 const context = useMapContext()
 
 const path = computed<string | undefined>(() => context?.value.renderMesh() ?? undefined)

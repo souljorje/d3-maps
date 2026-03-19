@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import type {
   GraticuleConfig,
-  MapObject,
+  MapObjectProps,
 } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
@@ -47,7 +47,7 @@ import {
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
-interface Props extends MapObject<StyleValue> {
+interface MapGraticuleProps extends MapObjectProps<StyleValue> {
   config?: GraticuleConfig
   background?: boolean | string
   border?: boolean | string
@@ -57,7 +57,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps<Props>()
+const props = defineProps<MapGraticuleProps>()
 const context = useMapContext()
 const attrs = useAttrs()
 

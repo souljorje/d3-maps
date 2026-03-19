@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import type {
-  MapConfig,
+  MapProps as CoreMapProps,
   MapContext,
 } from '@d3-maps/core'
 
@@ -22,7 +22,9 @@ import {
 
 import { mapContextKey } from '../hooks/useMapContext'
 
-const props = defineProps<MapConfig>()
+type MapProps = CoreMapProps
+
+const props = defineProps<MapProps>()
 
 defineSlots<{
   default?: (props: MapContext) => unknown

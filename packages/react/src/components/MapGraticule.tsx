@@ -1,6 +1,6 @@
 'use client'
 
-import type { GraticuleConfig, MapObject } from '@d3-maps/core'
+import type { GraticuleConfig, MapObjectProps } from '@d3-maps/core'
 import type {
   CSSProperties,
   ReactElement,
@@ -18,7 +18,7 @@ import { useMapObject } from '../hooks/useMapObject'
 
 export interface MapGraticuleProps
   extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style' | 'fill'>,
-  MapObject<CSSProperties> {
+  MapObjectProps<CSSProperties> {
   config?: GraticuleConfig
   background?: boolean | string
   border?: boolean | string
