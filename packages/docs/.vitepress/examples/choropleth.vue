@@ -1,5 +1,5 @@
 <template>
-  <Map
+  <MapBase
     v-if="mapData && choroplethData.length"
     :data-transformer="dataTransformer"
     :data="mapData"
@@ -20,7 +20,7 @@
         }"
       />
     </MapFeatures>
-  </Map>
+  </MapBase>
 </template>
 
 <script setup lang="ts">

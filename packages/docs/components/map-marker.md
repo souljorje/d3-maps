@@ -17,7 +17,7 @@ Positions anything on the map based on coordinates
 
 ```vue
 <template>
-  <Map :data="mapData">
+  <MapBase :data="mapData">
     <MapFeatures />
     <MapMesh stroke="slategray" />
     <MapMarker
@@ -36,14 +36,14 @@ Positions anything on the map based on coordinates
         r="3"
       />
     </MapMarker>
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx
-<Map data={mapData}>
+<MapBase data={mapData}>
   <MapFeatures />
   <MapMesh stroke="slategray" />
   {cities.map((item) => (
@@ -64,7 +64,7 @@ Positions anything on the map based on coordinates
       />
     </MapMarker>
   ))}
-</Map>
+</MapBase>
 ```
 
 :::

@@ -15,24 +15,24 @@ function dataTransformer(features) {
 
 ```vue{4} [vue]
 <template>
-  <Map
+  <MapBase
     :data="data"
     :data-transformer="dataTransformer"
   >
     <MapFeatures />
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx{3} [react]
-<Map
+<MapBase
   data={data}
   dataTransformer={dataTransformer}
 >
   <MapFeatures />
-</Map>
+</MapBase>
 ```
 
 :::

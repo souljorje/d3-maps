@@ -1,5 +1,5 @@
 <template>
-  <Map
+  <MapBase
     v-if="data"
     :data="data"
   >
@@ -15,12 +15,14 @@
         font-size="14"
         y="-6"
         text-anchor="middle"
-      >{{ item.city }}</text>
+      >
+        {{ item.city }}
+      </text>
       <circle
         r="3"
       />
     </MapMarker>
-  </Map>
+  </MapBase>
 </template>
 
 <script setup lang="ts">

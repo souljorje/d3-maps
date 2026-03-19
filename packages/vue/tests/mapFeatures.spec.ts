@@ -6,7 +6,7 @@ import { mount } from '@vue/test-utils'
 import { h } from 'vue'
 
 import {
-  Map,
+  MapBase,
   MapFeature,
   MapFeatures,
 } from '../src'
@@ -14,7 +14,7 @@ import { sampleGeoJson } from './fixtures'
 
 describe('mapFeatures', () => {
   it('renders features by default', () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },
@@ -27,7 +27,7 @@ describe('mapFeatures', () => {
   })
 
   it('supports scoped-slot children', () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },
@@ -54,7 +54,7 @@ describe('mapFeatures', () => {
   })
 
   it('forwards styles to default-rendered features', async () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },
@@ -76,7 +76,7 @@ describe('mapFeatures', () => {
   })
 
   it('accepts native svg attrs on features group', () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },

@@ -1,4 +1,4 @@
-# Map
+# MapBase
 
 Renders the root `<svg>` and provides a reactive map context to children.
 
@@ -49,7 +49,7 @@ import { geoEquirectangular } from 'd3-geo'
 </script>
 
 <template>
-  <Map
+  <MapBase
     :data="data"
     :data-transformer="(features) => features.map(/* some logic */)"
     :aspect-ratio="2 / 1"
@@ -61,7 +61,7 @@ import { geoEquirectangular } from 'd3-geo'
     }"
   >
     <MapFeatures />
-  </Map>
+  </MapBase>
 </template>
 ```
 
@@ -71,11 +71,11 @@ import { geoEquirectangular } from 'd3-geo'
 import type { MapData } from '@d3-maps/core'
 
 import { geoEquirectangular } from 'd3-geo'
-import { Map, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapFeatures } from '@d3-maps/react'
 
 export function Example({ data }: { data: MapData }) {
   return (
-    <Map
+    <MapBase
       data={data}
       dataTransformer={(features) => features.map(/* some logic */)}
       aspectRatio={2 / 1}
@@ -87,7 +87,7 @@ export function Example({ data }: { data: MapData }) {
       }}
     >
       <MapFeatures />
-    </Map>
+    </MapBase>
   )
 }
 ```

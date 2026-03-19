@@ -15,7 +15,7 @@ import { mount } from '@vue/test-utils'
 import { h } from 'vue'
 
 import {
-  Map,
+  MapBase,
   MapZoom,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
@@ -67,7 +67,7 @@ describe('mapZoom', () => {
     const onZoom = vi.fn()
     const onZoomend = vi.fn()
 
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },

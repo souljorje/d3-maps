@@ -1,8 +1,8 @@
 # useMapContext
 
-Reads the current map context from [Map](/components/map).
+Reads the current map context from [MapBase](/components/map-base).
 
-Returns `undefined` outside `Map`.
+Returns `undefined` outside `MapBase`.
 
 ## Usage
 

@@ -15,13 +15,13 @@ import { geoEquirectangular } from 'd3-geo'
 </script>
 
 <template>
-  <Map
+  <MapBase
     :data="data"
     :data-transformer="dataTransformer"
     :projection="geoEquirectangular"
   >
     <MapFeatures />
-  </Map>
+  </MapBase>
 </template>
 ```
 
@@ -30,20 +30,20 @@ import { geoEquirectangular } from 'd3-geo'
 ```tsx{1,6} [react]
 import { geoEquirectangular } from 'd3-geo'
 
-<Map
+<MapBase
   data={data}
   dataTransformer={dataTransformer}
   projection={geoEquirectangular}
 >
   <MapFeatures />
-</Map>
+</MapBase>
 ```
 
 :::
 
 ::: details
 
-- You can tweak a projection with [Map.projectionConfig](/components/map#props) (defaults are strong though)
+- You can tweak a projection with [MapBase.projectionConfig](/components/map-base#props) (defaults are strong though)
 - Projections are available in [d3-geo](https://github.com/d3/d3-geo) and [d3-geo-projection](https://github.com/d3/d3-geo-projection)
 - Here you can see [visualized projections](https://observablehq.com/@fil/d3-projections)
 :::

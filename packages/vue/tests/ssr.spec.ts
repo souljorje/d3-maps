@@ -7,7 +7,7 @@ import {
 import { renderToString } from 'vue/server-renderer'
 
 import {
-  Map,
+  MapBase,
   MapFeatures,
   MapZoom,
 } from '../src'
@@ -18,7 +18,7 @@ describe('SSR', () => {
   it('renders map component tree without DOM access errors', async () => {
     const app = createSSRApp({
       render: () =>
-        h(Map, { data: sampleGeoJson }, {
+        h(MapBase, { data: sampleGeoJson }, {
           default: () => h(MapZoom, null, {
             default: () => h(MapFeatures),
           }),

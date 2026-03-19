@@ -1,7 +1,7 @@
 import type { MapData } from '@d3-maps/core'
 
 import {
-  Map,
+  MapBase,
   MapFeatures,
   MapMesh,
 } from '@d3-maps/react'
@@ -32,10 +32,10 @@ export default function BasicExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <Map data={mapData}>
+        <MapBase data={mapData}>
           <MapFeatures />
           <MapMesh />
-        </Map>
+        </MapBase>
       )
     : null
 }
