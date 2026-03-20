@@ -10,7 +10,7 @@ Use when you need a callout, label, or badge offset from the original location
 | `coordinates` | `[number, number]` | — | Anchor coordinates `[longitude, latitude]` |
 | `length?` | `number` | `30` | Connector length in screen pixels |
 | `angle?` | `number` | `-45` | Connector angle in degrees |
-| `margin?` | `number` | `8` | Gap between the anchor point and the connector start |
+| `margin?` | `number` | `0` | Gap between the anchor point and the connector start |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 `styles` and native attributes are bound to the connector `<path>`, not the wrapper `<g>`
@@ -29,9 +29,9 @@ Interaction state is tracked on the outer annotation group so hover and active s
     <MapFeatures />
     <MapAnnotation
       :coordinates="[2.3522, 48.8566]"
-      :length="36"
-      :angle="-35"
-      :margin="10"
+      :length="40"
+      :angle="-90"
+      :margin="2"
       stroke="#ff6f26"
       :stroke-width="2"
     >
@@ -52,9 +52,9 @@ Interaction state is tracked on the outer annotation group so hover and active s
   <MapFeatures />
   <MapAnnotation
     coordinates={[2.3522, 48.8566]}
-    length={36}
-    angle={-35}
-    margin={10}
+    length={40}
+    angle={-90}
+    margin={2}
     stroke="#ff6f26"
     strokeWidth={2}
   >
