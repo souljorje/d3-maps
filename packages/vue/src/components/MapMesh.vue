@@ -27,7 +27,7 @@ interface Props extends MapObject<StyleValue> {}
 const props = defineProps<Props>()
 const context = useMapContext()
 
-const path = computed<string | undefined>(() => context?.value.renderMesh() ?? undefined)
+const path = computed<string | undefined>(() => context.value.renderMesh() ?? undefined)
 
 const { style, ...events } = useMapObject(toRef(props, 'styles'))
 </script>

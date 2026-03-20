@@ -13,6 +13,7 @@ Renders the root `<svg>` and provides a reactive map context to children.
 | `projection?` | `() => GeoProjection` | `geoNaturalEarth1` | d3-geo projection factory |
 | `projectionConfig?` | [ProjectionConfig](/api/core/map#projectionconfig) | — | See the [guide](#projectionconfig) below |
 | `dataTransformer?` | [DataTransformer](/api/core/map#datatransformer) | — | Optional transform applied to GeoJSON features before rendering |
+| `context?` | [MapContext](/api/core/map#mapcontext) | — | Optional externally created context. When provided, `Map` uses it instead of creating one from props, and `data` is not required |
 
 ### projectionConfig
 
@@ -96,6 +97,68 @@ export function Example({ data }: { data: MapData }) {
 
 ## Hooks
 
+- See [useCreateMapContext](/hooks/use-create-map-context)
 - See [useMapContext](/hooks/use-map-context)
 
 For adapter code and docs examples, prefer [useMapContext](/hooks/use-map-context) or `Map` slot/render-prop context over rebuilding a separate map context manually
+
+## Advanced Composition
+
+If controls or other consumers need the same map context outside the rendered `<svg>`, create the context once in the parent, pass it to sibling UI by prop, and pass the same object into `Map`.
+
+:::tabs key:framework
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import type { MapData } from '@d3-maps/core'
+
+import { computed } from 'vue'
+import { Map, MapFeatures, useCreateMapContext } from '@d3-maps/vue'
+
+const props = defineProps<{
+  data: MapData
+}>()
+
+const context = useCreateMapContext(computed(() => ({
+  data: props.data,
+  aspectRatio: 2 / 1,
+})))
+</script>
+
+<template>
+  <Toolbar :context="context" />
+  <Map :context="context">
+    <MapFeatures />
+  </Map>
+</template>
+```
+
+== React
+
+```tsx
+import type { MapData } from '@d3-maps/core'
+
+import { Map, MapFeatures, useCreateMapContext } from '@d3-maps/react'
+
+export function Example({ data }: { data: MapData }) {
+  const context = useCreateMapContext({
+    data,
+    aspectRatio: 2 / 1,
+  })
+
+  if (!context) return null
+
+  return (
+    <>
+      <Toolbar context={context} />
+      <Map context={context}>
+        <MapFeatures />
+      </Map>
+    </>
+  )
+}
+```
+
+:::

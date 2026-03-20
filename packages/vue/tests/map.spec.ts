@@ -8,6 +8,7 @@ import { h } from 'vue'
 import {
   Map,
   MapFeatures,
+  useCreateMapContext,
 } from '../src'
 import {
   sampleGeoJson,
@@ -60,5 +61,50 @@ describe('map', () => {
     })
 
     expect(wrapper.findAll('path')).toHaveLength(2)
+  })
+
+  it('renders with an external context object shared with sibling UI', () => {
+    const Toolbar = {
+      props: {
+        context: {
+          type: Object,
+          required: true,
+        },
+      },
+      setup(props: { context: MapContext }) {
+        return () => h('div', {
+          'data-testid': 'toolbar-count',
+        }, String(props.context.features.length))
+      },
+    }
+
+    const Harness = {
+      setup() {
+        const context = useCreateMapContext({
+          data: sampleGeoJson,
+          width: 420,
+        })
+
+        if (!context.value) return () => null
+
+        return () => [
+          h(Toolbar, {
+            context: context.value,
+          }),
+          h(Map, {
+            context: context.value,
+            'data-testid': 'map-svg',
+          }, {
+            default: () => h(MapFeatures),
+          }),
+        ]
+      },
+    }
+
+    const wrapper = mount(Harness)
+
+    expect(wrapper.get('[data-testid="toolbar-count"]').text()).toBe('1')
+    expect(wrapper.get('[data-testid="map-svg"]').attributes('viewBox')).toBe('0 0 420 210')
+    expect(wrapper.findAll('path')).toHaveLength(1)
   })
 })

@@ -8,6 +8,12 @@ import { inject } from 'vue'
 
 export const mapContextKey: InjectionKey<ComputedRef<MapContext>> = Symbol('MapContext')
 
-export function useMapContext(): ComputedRef<MapContext> | undefined {
-  return inject(mapContextKey)
+export function useMapContext(): ComputedRef<MapContext> {
+  const context = inject(mapContextKey)
+
+  if (!context) {
+    throw new Error('useMapContext must be used inside Map')
+  }
+
+  return context
 }

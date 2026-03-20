@@ -160,15 +160,11 @@ describe('mapGraticule', () => {
     expect(onMouseUp).toHaveBeenCalledTimes(1)
   })
 
-  it('renders graticule path outside map context without geometry', () => {
-    const { container } = render(
+  it('throws without map context', () => {
+    expect(() => render(
       <svg>
         <MapGraticule />
       </svg>,
-    )
-
-    const paths = container.querySelectorAll('path')
-    expect(paths).toHaveLength(1)
-    expect(paths[0]?.getAttribute('d')).toBeNull()
+    )).toThrowError('useMapContext must be used inside Map')
   })
 })

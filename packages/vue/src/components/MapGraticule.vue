@@ -62,12 +62,10 @@ const context = useMapContext()
 const attrs = useAttrs()
 
 const graticulePath = computed(() => {
-  if (!context?.value) return undefined
   return renderGraticule(context.value, props.config) ?? undefined
 })
 
 const outlinePath = computed(() => {
-  if (!context?.value) return undefined
   return renderOutline(context.value) ?? undefined
 })
 

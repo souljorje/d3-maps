@@ -25,5 +25,5 @@ const { style, ...events } = useMapObject(toRef(props, 'styles'))
 
 const context = useMapContext()
 
-const path = computed(() => context?.value.path(props.data) ?? undefined)
+const path = computed(() => context.value.path(props.data) ?? undefined)
 </script>

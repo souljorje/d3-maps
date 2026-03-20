@@ -169,11 +169,7 @@ describe('mapGraticule', () => {
     expect(secondOnMouseup).toHaveBeenCalledTimes(1)
   })
 
-  it('renders graticule path outside map context without geometry', () => {
-    const wrapper = mount(MapGraticule)
-    const paths = wrapper.findAll('path')
-
-    expect(paths).toHaveLength(1)
-    expect(paths[0]?.attributes('d')).toBeUndefined()
+  it('throws without map context', () => {
+    expect(() => mount(MapGraticule)).toThrowError('useMapContext must be used inside Map')
   })
 })

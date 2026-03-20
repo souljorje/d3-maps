@@ -89,6 +89,7 @@ const docsSidebar = [
     text: 'Hooks',
     items: [
       { text: 'Overview', link: '/hooks/' },
+      { text: 'useCreateMapContext', link: '/hooks/use-create-map-context' },
       { text: 'useMapContext', link: '/hooks/use-map-context' },
       { text: 'useMapObject', link: '/hooks/use-map-object' },
     ],

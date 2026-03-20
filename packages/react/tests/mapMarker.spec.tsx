@@ -29,17 +29,15 @@ describe('mapMarker', () => {
     expect(screen.getByTestId('map-marker').getAttribute('transform')).toMatch(/^translate\(/)
   })
 
-  it('uses fallback transform without map context', () => {
-    render(
+  it('throws without map context', () => {
+    expect(() => render(
       <svg>
         <MapMarker
           data-testid="fallback-map-marker"
           coordinates={[10, 10]}
         />
       </svg>,
-    )
-
-    expect(screen.getByTestId('fallback-map-marker').getAttribute('transform')).toBe('translate(0, 0)')
+    )).toThrowError('useMapContext must be used inside Map')
   })
 
   it('recomputes marker transform when map context changes', () => {

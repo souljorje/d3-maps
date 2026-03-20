@@ -27,7 +27,7 @@ export function MapMesh({
   const context = useMapContext()
 
   const path = useMemo(() => {
-    return context?.renderMesh() ?? undefined
+    return context.renderMesh() ?? undefined
   }, [context])
 
   const { style, ...events } = useMapObject<SVGPathElement>({

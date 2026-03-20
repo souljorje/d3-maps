@@ -138,26 +138,26 @@ export function applyZoom(options: ApplyZoomOptions): void {
 
   if (!target) return
 
-  if (options.center) {
-    const zoom = options.zoom ?? ZOOM_DEFAULTS.zoom
-    const extent = getBehaviorExtent(options.element, options.behavior)
-    const transform = getConstrainedZoomTransform(
-      options.behavior,
-      zoomIdentity
-        .translate(
-          (extent[0][0] + extent[1][0]) / 2,
-          (extent[0][1] + extent[1][1]) / 2,
-        )
-        .scale(zoom)
-        .translate(-options.center[0], -options.center[1]),
-      extent,
-    )
-
-    callWithTarget(target, options.behavior.transform, transform)
+  if (!options.center) {
+    callWithTarget(target, options.behavior.scaleTo, options.zoom ?? ZOOM_DEFAULTS.zoom)
     return
   }
 
-  callWithTarget(target, options.behavior.scaleTo, options.zoom ?? ZOOM_DEFAULTS.zoom)
+  const zoom = options.zoom ?? ZOOM_DEFAULTS.zoom
+  const extent = getBehaviorExtent(options.element, options.behavior)
+  const transform = getConstrainedZoomTransform(
+    options.behavior,
+    zoomIdentity
+      .translate(
+        (extent[0][0] + extent[1][0]) / 2,
+        (extent[0][1] + extent[1][1]) / 2,
+      )
+      .scale(zoom)
+      .translate(-options.center[0], -options.center[1]),
+    extent,
+  )
+
+  callWithTarget(target, options.behavior.transform, transform)
 }
 
 export function applyZoomGroupTransform(

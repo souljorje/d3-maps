@@ -4,14 +4,14 @@ Reads the current map context from [Map](/components/map)
 
 Use it in custom layers when you need the resolved map size, normalized features, or the shared path generator
 
-Returns `undefined` outside `Map`
+Throws if used outside `Map`
 
 ## Return value
 
 | Adapter | Type |
 | --- | --- |
-| `@d3-maps/vue` | `ComputedRef<MapContext> \| undefined` |
-| `@d3-maps/react` | `MapContext \| undefined` |
+| `@d3-maps/vue` | `ComputedRef<MapContext>` |
+| `@d3-maps/react` | `MapContext` |
 
 See [MapContext API](/api/core/map#mapcontext)
 
@@ -27,10 +27,7 @@ import { computed } from 'vue'
 import { useMapContext } from '@d3-maps/vue'
 
 const context = useMapContext()
-const featureCountLabel = computed(() => {
-  if (!context) return null
-  return `${context.value.features.length} features`
-})
+const featureCountLabel = computed(() => `${context.value.features.length} features`)
 </script>
 
 <template>
@@ -53,7 +50,6 @@ import { useMapContext } from '@d3-maps/react'
 
 function FeatureCountLabel() {
   const context = useMapContext()
-  if (!context) return null
 
   return (
     <text x={12} y={20} fontSize={14} fill="#111">
@@ -69,3 +65,4 @@ function FeatureCountLabel() {
 
 - Use `useMapContext` in components rendered inside `Map`
 - Use `Map` slot/render-prop context when that already gives you what you need
+- Use [useCreateMapContext](/hooks/use-create-map-context) in the parent and pass the same `context` object to both `Map` and any sibling UI that needs it

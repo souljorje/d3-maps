@@ -14,16 +14,12 @@ import { InsideZoomContext } from '../src/hooks/useInsideZoom'
 import { sampleGeoJson } from './fixtures'
 
 describe('mapFeature', () => {
-  it('renders path without map context', () => {
-    const { container } = render(
+  it('throws without map context', () => {
+    expect(() => render(
       <svg>
         <MapFeature data={sampleGeoJson.features[0]} />
       </svg>,
-    )
-
-    const path = container.querySelector('path')
-    expect(path).toBeTruthy()
-    expect(path?.getAttribute('d')).toBeNull()
+    )).toThrowError('useMapContext must be used inside Map')
   })
 
   it('resolves styles across interaction states', () => {

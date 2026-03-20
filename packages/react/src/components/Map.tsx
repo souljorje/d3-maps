@@ -10,68 +10,57 @@ import type {
   SVGProps,
 } from 'react'
 
-import { makeMapContext } from '@d3-maps/core'
-import { useMemo } from 'react'
-
-import { MapProvider } from './MapContext'
+import { useCreateMapContext } from '../hooks/useCreateMapContext'
+import { MapContextValue } from '../hooks/useMapContext'
 
 type MapRenderProp = (context: MapContext) => ReactNode
-
-export interface MapProps
-  extends MapConfig,
-  Omit<SVGProps<SVGSVGElement>, keyof MapConfig | 'children'> {
-  children?: ReactNode | MapRenderProp
+type BaseMapProps = Omit<SVGProps<SVGSVGElement>, keyof MapConfig | 'children'>
+type MapConfigProps = MapConfig & {
+  context?: undefined
 }
+type MapContextProps = Partial<MapConfig> & {
+  context: MapContext
+}
+
+export type MapProps = BaseMapProps & {
+  children?: ReactNode | MapRenderProp
+} & (MapConfigProps | MapContextProps)
 
 function isRenderProp(children: MapProps['children']): children is MapRenderProp {
   return typeof children === 'function'
 }
 
-export function Map({
-  width,
-  height,
-  aspectRatio,
-  projection,
-  projectionConfig,
-  data,
-  dataTransformer,
-  children,
-  className,
-  ...svgProps
-}: MapProps): ReactElement {
-  const context = useMemo(() => {
-    return makeMapContext({
-      width,
-      height,
-      aspectRatio,
-      projection,
-      projectionConfig,
-      data,
-      dataTransformer,
-    })
-  }, [
-    width,
-    height,
-    aspectRatio,
-    projection,
-    projectionConfig,
-    data,
-    dataTransformer,
-  ])
+export function Map(props: MapProps): ReactElement {
+  const {
+    children,
+    className,
+    context: providedContext,
+    ...svgProps
+  } = props
+
+  const resolvedContext = useCreateMapContext(props, providedContext)
+
+  if (!resolvedContext) {
+    throw new Error('Map requires data or context')
+  }
 
   const resolvedChildren = isRenderProp(children)
-    ? children(context)
+    ? children(resolvedContext)
     : children
 
+  const mergedClassName = className
+    ? `d3-map ${className}`
+    : 'd3-map'
+
   return (
-    <MapProvider context={context}>
+    <MapContextValue.Provider value={resolvedContext}>
       <svg
         {...svgProps}
-        className={`d3-map ${className ?? ''}`}
-        viewBox={`0 0 ${context.width} ${context.height}`}
+        className={mergedClassName}
+        viewBox={`0 0 ${resolvedContext.width} ${resolvedContext.height}`}
       >
         {resolvedChildren}
       </svg>
-    </MapProvider>
+    </MapContextValue.Provider>
   )
 }

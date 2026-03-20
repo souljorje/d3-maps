@@ -28,15 +28,13 @@ describe('mapMarker', () => {
     expect(wrapper.get('[data-testid="map-marker"]').attributes('transform')).toMatch(/^translate\(/)
   })
 
-  it('uses fallback transform without map context', () => {
-    const wrapper = mount(MapMarker, {
+  it('throws without map context', () => {
+    expect(() => mount(MapMarker, {
       props: {
         'data-testid': 'fallback-map-marker',
         coordinates: [10, 10],
       },
-    })
-
-    expect(wrapper.get('[data-testid="fallback-map-marker"]').attributes('transform')).toBe('translate(0, 0)')
+    })).toThrowError('useMapContext must be used inside Map')
   })
 
   it('recomputes marker transform when map context changes', async () => {

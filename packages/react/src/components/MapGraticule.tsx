@@ -38,7 +38,6 @@ export function MapGraticule({
   const context = useMapContext()
 
   const graticulePath = useMemo(() => {
-    if (!context) return undefined
     return renderGraticule(context, config) ?? undefined
   }, [context, config])
 
@@ -49,7 +48,7 @@ export function MapGraticule({
   const shouldRenderOutline = showBackground || showBorder
 
   const outlinePath = useMemo(() => {
-    if (!context || !shouldRenderOutline) return undefined
+    if (!shouldRenderOutline) return undefined
     return renderOutline(context) ?? undefined
   }, [context, shouldRenderOutline])
 

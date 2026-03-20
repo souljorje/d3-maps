@@ -30,7 +30,7 @@ export function MapFeature({
   const context = useMapContext()
 
   const path = useMemo(() => {
-    return context?.path(data) ?? undefined
+    return context.path(data) ?? undefined
   }, [context, data])
 
   const { style, ...events } = useMapObject<SVGPathElement>({

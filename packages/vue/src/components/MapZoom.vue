@@ -48,7 +48,7 @@ const context = useMapContext()
 provide(insideZoomKey, true)
 
 const zoomBehavior = computed(() => {
-  return createZoomBehavior(context?.value, {
+  return createZoomBehavior(context.value, {
     minZoom: props.minZoom,
     maxZoom: props.maxZoom,
     config: props.config,

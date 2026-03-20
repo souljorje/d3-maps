@@ -30,7 +30,7 @@ export interface MapFeatureProps<TStyle = unknown> extends MapObject<TStyle> {
  */
 export function getFeatureKey(
   feature: MapFeature,
-  idKey = 'id',
+  idKey: string = 'id',
   index: number,
 ): string | number {
   const directValue = feature[idKey as keyof MapFeature]

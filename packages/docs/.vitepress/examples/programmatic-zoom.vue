@@ -1,105 +1,107 @@
 <template>
-  <div class="relative aspect-2/1">
-    <Map
-      v-if="data"
-      :data="data"
-      :aspect-ratio="2 / 1"
-      :projection-config="{
-        rotate: [[-11, 0]],
-      }"
-    >
-      <MapZoom
-        :center="center"
-        :zoom="zoom"
-        :min-zoom="minZoom"
-        :max-zoom="maxZoom"
-        :transition="{ duration: isTransitionOn ? 600 : 0 }"
-        :config="{ filter: isDragOnlyFilter }"
+  <div
+    v-if="mapContext"
+    ref="mapRoot"
+    class="grid gap-3"
+  >
+    <div class="relative aspect-2/1">
+      <Map
+        :context="mapContext"
       >
-        <MapGraticule
-          border
-          pointer-events="none"
-        />
-        <MapFeatures fill="var(--vp-c-neutral-inverse)">
-          <template #default="{ features: renderedFeatures }">
-            <MapFeature
-              v-for="(feature, index) in renderedFeatures"
-              :key="getFeatureKey(feature, 'id', index)"
-              :data="feature"
-              :data-feature-key="String(getFeatureKey(feature, 'id', index))"
-              :aria-label="getFeatureLabel(feature)"
-              :styles="{
-                focus: {
-                  fill: 'lightskyblue',
-                },
-              }"
-              class="cursor-pointer"
-              role="button"
-              tabindex="0"
-              @click="onFeatureClick(feature, $event)"
-              @keydown="onFeatureKeydown(feature, $event)"
-            />
-          </template>
-        </MapFeatures>
-        <MapMesh pointer-events="none" />
-      </MapZoom>
-    </Map>
-  </div>
-  <div class="flex flex-col justify-center items-center gap-1 mt-2">
-    <div class="flex gap-2 flex-wrap justify-center">
-      <button
-        type="button"
-        class="flex items-center justify-center rounded-full w-7 h-7 border!"
-        @click="zoomOut"
-      >
-        -
-      </button>
+        <MapZoom
+          :center="center"
+          :zoom="zoom"
+          :min-zoom="minZoom"
+          :max-zoom="maxZoom"
+          :transition="{ duration: isTransitionOn ? 600 : 0 }"
+          :config="{ filter: isDragOnlyFilter }"
+        >
+          <MapGraticule
+            border
+            pointer-events="none"
+          />
+          <MapFeatures fill="var(--vp-c-neutral-inverse)">
+            <template #default="{ features: renderedFeatures }">
+              <MapFeature
+                v-for="(feature, index) in renderedFeatures"
+                :key="getFeatureKey(feature, 'id', index)"
+                :data="feature"
+                :data-feature-key="getFeatureKey(feature, 'id', index)"
+                :aria-label="getFeatureLabel(feature)"
+                :styles="{
+                  focus: {
+                    fill: 'lightskyblue',
+                  },
+                }"
+                class="cursor-pointer"
+                role="button"
+                tabindex="0"
+                @click="onFeatureClick(feature, $event)"
+                @keydown="onFeatureKeydown(feature, $event)"
+              />
+            </template>
+          </MapFeatures>
+          <MapMesh pointer-events="none" />
+        </MapZoom>
+      </Map>
+    </div>
+    <div class="flex flex-col justify-center items-center gap-2">
       <div>
-        {{ zoom.toFixed(1) }}x
+        Focus: {{ activeCountryLabel }}
       </div>
-      <button
-        type="button"
-        class="flex items-center justify-center rounded-full w-7 h-7 border!"
-        @click="zoomIn"
-      >
-        +
-      </button>
-      <button
-        type="button"
-        class="flex rounded border! px-3! h-7"
-        :disabled="!features.length"
-        @click="zoomToRandomCountry"
-      >
-        Random
-      </button>
-      <button
-        type="button"
-        class="flex rounded border! px-3! h-7"
-        @click="resetView"
-      >
-        Reset
-      </button>
-    </div>
-    <div class="text-sm text-(--vp-c-text-2)">
-      Click any country to zoom to it. Drag enabled, wheel zoom disabled.
-    </div>
-    <div class="text-sm text-(--vp-c-text-2)">
-      Focus: {{ activeCountryLabel }}
+      <div class="flex gap-2 flex-wrap justify-center">
+        <button
+          type="button"
+          class="flex items-center justify-center rounded-full w-7 h-7 border!"
+          @click="zoomOut"
+        >
+          -
+        </button>
+        <div>
+          {{ zoom.toFixed(1) }}x
+        </div>
+        <button
+          type="button"
+          class="flex items-center justify-center rounded-full w-7 h-7 border!"
+          @click="zoomIn"
+        >
+          +
+        </button>
+        <button
+          type="button"
+          class="flex rounded border! px-3! h-7"
+          @click="zoomToRandomCountry"
+        >
+          Random
+        </button>
+        <button
+          type="button"
+          class="flex rounded border! px-3! h-7"
+          @click="resetView"
+        >
+          Reset
+        </button>
+      </div>
+      <div class="text-sm text-(--vp-c-text-2)">
+        Click any country to zoom to it. Drag enabled, wheel zoom disabled.
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import type {
+  MapFeature as D3MapFeature,
+  MapConfig,
   MapData,
-  MapFeature,
+  ProjectionConfig,
 } from '@d3-maps/core'
 
 import {
   getFeatureKey,
   getObjectZoomView,
 } from '@d3-maps/core'
-import { useMapContext } from '@d3-maps/vue'
+import { useCreateMapContext } from '@d3-maps/vue'
 import { withBase } from 'vitepress'
 import {
   computed,
@@ -112,15 +114,23 @@ const initialZoom = 1
 const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
-
+const projectionConfig: ProjectionConfig = {
+  rotate: [[-11, 0]],
+}
 const data = ref<MapData>()
 const center = ref<[number, number]>()
 const zoom = ref(initialZoom)
 const activeCountryLabel = ref('World')
+const mapRoot = ref<HTMLElement | null>(null)
 
-const mapContext = useMapContext()
+const mapContext = useCreateMapContext(computed<MapConfig | undefined>(() => {
+  if (!data.value) return undefined
 
-const features = computed(() => mapContext?.value.features ?? [])
+  return {
+    data: data.value,
+    projectionConfig,
+  }
+}))
 
 onMounted(async () => {
   const response = await fetch(withBase('/example-data/countries-110m.json'))
@@ -129,16 +139,18 @@ onMounted(async () => {
 
 const isTransitionOn = ref(true)
 
-function zoomIn() {
+async function zoomIn() {
   isTransitionOn.value = false
   setZoom(zoom.value + zoomStep)
-  nextTick(() => isTransitionOn.value = true)
+  await nextTick()
+  isTransitionOn.value = true
 }
 
-function zoomOut() {
+async function zoomOut() {
   isTransitionOn.value = false
   setZoom(zoom.value - zoomStep)
-  nextTick(() => isTransitionOn.value = true)
+  await nextTick()
+  isTransitionOn.value = true
 }
 
 function resetView() {
@@ -152,21 +164,19 @@ function setZoom(nextZoom: number) {
 }
 
 async function zoomToRandomCountry() {
-  if (!features.value.length) return
+  if (!mapContext.value) return
 
-  const randomIndex = Math.floor(Math.random() * features.value.length)
-  const feature = features.value[randomIndex]
-
-  if (!feature) return
+  const randomIndex = Math.floor(Math.random() * mapContext.value.features.length)
+  const feature = mapContext.value.features[randomIndex]
 
   zoomToFeature(feature)
-
   await nextTick()
-  focusFeatureByKey(String(getFeatureKey(feature, 'id', randomIndex)))
+  focusFeatureByKey(getFeatureKey(feature, 'id', randomIndex))
 }
 
-function zoomToFeature(feature: MapFeature) {
-  if (!mapContext) return
+function zoomToFeature(feature: D3MapFeature) {
+  if (!mapContext.value) return
+
   const view = getObjectZoomView(mapContext.value, feature, {
     minZoom,
     maxZoom,
@@ -180,7 +190,7 @@ function zoomToFeature(feature: MapFeature) {
 }
 
 function onFeatureClick(
-  feature: MapFeature,
+  feature: D3MapFeature,
   event: MouseEvent,
 ) {
   zoomToFeature(feature)
@@ -188,7 +198,7 @@ function onFeatureClick(
 }
 
 function onFeatureKeydown(
-  feature: MapFeature,
+  feature: D3MapFeature,
   event: KeyboardEvent,
 ) {
   if (event.key !== 'Enter' && event.key !== ' ') return
@@ -198,9 +208,9 @@ function onFeatureKeydown(
   focusFeatureElement(event.currentTarget)
 }
 
-function focusFeatureByKey(featureKey: string) {
+function focusFeatureByKey(featureKey: string | number) {
   const featureElement = mapRoot.value?.querySelector<SVGPathElement>(
-    `[data-feature-key="${escapeAttributeValue(featureKey)}"]`,
+    `[data-feature-key="${String(featureKey)}"]`,
   )
 
   focusFeatureElement(featureElement)
@@ -225,11 +235,7 @@ function clampZoom(value: number) {
   return Math.min(maxZoom, Math.max(minZoom, value))
 }
 
-function getFeatureLabel(feature: MapFeature) {
+function getFeatureLabel(feature: D3MapFeature) {
   return feature.properties?.name ?? 'Country'
-}
-
-function escapeAttributeValue(value: string) {
-  return value.replaceAll('\\', '\\\\').replaceAll('"', '\\"')
 }
 </script>
