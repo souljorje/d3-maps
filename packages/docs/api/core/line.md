@@ -47,14 +47,14 @@ Coordinates must be `[longitude, latitude]`.
 ### getPointsLinePath()
 
 ```ts
-function getPointsLinePath(points: [number, number][], curve?: MapLineCurve): string | undefined;
+function getPointsLinePath(points: MapLineCoordinates, curve?: MapLineCurve): string | undefined;
 ```
 
 #### Parameters
 
 | Parameter | Type | Default value |
 | ------ | ------ | ------ |
-| `points` | \[`number`, `number`]\[] | `undefined` |
+| `points` | [`MapLineCoordinates`](#maplinecoordinates) | `undefined` |
 | `curve` | [`MapLineCurve`](#maplinecurve) | `curveLinear` |
 
 #### Returns

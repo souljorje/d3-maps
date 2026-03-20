@@ -29,7 +29,7 @@ describe('mapMarker', () => {
     expect(screen.getByTestId('map-marker').getAttribute('transform')).toMatch(/^translate\(/)
   })
 
-  it('uses fallback transform without map context', () => {
+  it('does not render without map context', () => {
     render(
       <svg>
         <MapMarker
@@ -39,7 +39,7 @@ describe('mapMarker', () => {
       </svg>,
     )
 
-    expect(screen.getByTestId('fallback-map-marker').getAttribute('transform')).toBe('translate(0, 0)')
+    expect(screen.queryByTestId('fallback-map-marker')).toBeNull()
   })
 
   it('recomputes marker transform when map context changes', () => {
@@ -71,5 +71,19 @@ describe('mapMarker', () => {
 
     const nextTransform = screen.getByTestId('map-marker-recomputed').getAttribute('transform')
     expect(nextTransform).not.toBe(initialTransform)
+  })
+
+  it('allows overriding the outer group name', () => {
+    render(
+      <MapBase data={sampleGeoJson}>
+        <MapMarker
+          data-testid="map-marker"
+          coordinates={[10, 10]}
+          name="annotation"
+        />
+      </MapBase>,
+    )
+
+    expect(screen.getByTestId('map-marker').getAttribute('name')).toBe('annotation')
   })
 })

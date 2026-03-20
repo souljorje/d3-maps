@@ -4,6 +4,7 @@ import type {
 } from 'd3-geo'
 
 import {
+  isDefined,
   isElement,
   isObject,
 } from './utils'
@@ -16,17 +17,6 @@ export type MapObjectGlobalMouseupSubscription = (
   listener: MapObjectGlobalMouseupListener,
 ) => (() => void)
 function noop(): void {}
-
-export function subscribeWindow(
-  ev: string,
-  listener: MapObjectGlobalMouseupListener,
-): () => void {
-  if (typeof window === 'undefined') return noop
-  window.addEventListener(ev, listener, true)
-  return () => {
-    window.removeEventListener(ev, listener, true)
-  }
-}
 
 /**
  * Supported interaction states for map objects.
@@ -157,5 +147,16 @@ function isHoveredSource(source: unknown): boolean {
     return target.matches(':hover')
   } catch {
     return false
+  }
+}
+
+function subscribeWindow(
+  ev: string,
+  listener: MapObjectGlobalMouseupListener,
+): () => void {
+  if (!isDefined(window)) return noop
+  window.addEventListener(ev, listener, true)
+  return () => {
+    window.removeEventListener(ev, listener, true)
   }
 }

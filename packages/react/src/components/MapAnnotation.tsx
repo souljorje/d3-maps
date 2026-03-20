@@ -13,12 +13,12 @@ import {
 } from '@d3-maps/core'
 import { useMemo } from 'react'
 
-import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
+import { MapMarker } from './MapMarker'
 
 export interface MapAnnotationProps
   extends CoreMapAnnotationProps<CSSProperties>,
-  Omit<SVGProps<SVGGElement>, 'children' | 'transform'> {
+  Omit<SVGProps<SVGPathElement>, 'children' | 'd'> {
   children?: ReactNode
 }
 
@@ -31,17 +31,13 @@ export function MapAnnotation({
   children,
   ...pathProps
 }: MapAnnotationProps): ReactElement | null {
-  const context = useMapContext()
-
   const geometry = useMemo(() => {
-    return getAnnotationGeometry(context, coordinates, {
+    return getAnnotationGeometry({
       length,
       angle,
       margin,
     })
   }, [
-    context,
-    coordinates,
     length,
     angle,
     margin,
@@ -49,32 +45,18 @@ export function MapAnnotation({
 
   const { style, ...events } = useMapObject<SVGGElement>({
     styles,
-    onMouseEnter: pathProps.onMouseEnter,
-    onMouseLeave: pathProps.onMouseLeave,
-    onMouseDown: pathProps.onMouseDown,
-    onMouseUp: pathProps.onMouseUp,
   })
 
-  if (!geometry) return null
-
-  const {
-    onMouseEnter: _onMouseEnter,
-    onMouseLeave: _onMouseLeave,
-    onMouseDown: _onMouseDown,
-    onMouseUp: _onMouseUp,
-    ...groupProps
-  } = pathProps
-
   return (
-    <g
-      {...groupProps}
-      transform={geometry.anchorTransform}
+    <MapMarker
+      coordinates={coordinates}
       name="annotation"
       {...events}
     >
-      <g transform={geometry.connectorTransform}>
+      <g transform={geometry.lineTransform}>
         <path
-          d={geometry.connectorPath}
+          {...pathProps}
+          d={geometry.linePath}
           style={style}
           fill="none"
           name="annotation-line"
@@ -86,6 +68,6 @@ export function MapAnnotation({
       >
         {children}
       </g>
-    </g>
+    </MapMarker>
   )
 }

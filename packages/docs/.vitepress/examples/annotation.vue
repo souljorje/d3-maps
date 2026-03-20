@@ -4,38 +4,30 @@
     :data="data"
   >
     <MapFeatures />
-    <MapAnnotation
-      :coordinates="[2.3522, 48.8566]"
-      :length="36"
-      :angle="-35"
-      :margin="10"
-      :stroke-width="2"
-      stroke="#ff6f26"
+    <template
+      v-for="sity in sities"
+      :key="sity.name"
     >
-      <text
-        y="-6"
-        text-anchor="middle"
-        font-size="12"
+      <MapAnnotation
+        :coordinates="sity.coordinates"
+        :stroke="sity.color"
+        :length="40"
+        :angle="195"
+        :margin="4"
       >
-        Paris
-      </text>
-    </MapAnnotation>
-    <MapAnnotation
-      :coordinates="[-73.935242, 40.73061]"
-      :length="52"
-      :angle="-20"
-      :margin="4"
-      :stroke-width="2"
-      stroke="#2563eb"
-    >
-      <text
-        y="-6"
-        text-anchor="middle"
-        font-size="12"
-      >
-        New York
-      </text>
-    </MapAnnotation>
+        <text
+          y="-4"
+          text-anchor="middle"
+          font-size="12"
+          :fill="sity.color"
+        >
+          {{ sity.name }}
+        </text>
+      </MapAnnotation>
+      <MapMarker :coordinates="sity.coordinates">
+        <circle :fill="sity.color" r="3" />
+      </MapMarker>
+    </template>
   </MapBase>
 </template>
 
@@ -45,7 +37,25 @@ import type { MapData } from '@d3-maps/core'
 import { withBase } from 'vitepress'
 import { onMounted, ref } from 'vue'
 
+interface Sity {
+  name: string
+  coordinates: [number, number]
+  color: string
+}
+
 const data = ref<MapData>()
+const sities: Sity[] = [
+  {
+    name: 'Paris',
+    coordinates: [2.3522, 48.8566],
+    color: '#ff6f26',
+  },
+  {
+    name: 'New York',
+    coordinates: [-73.935242, 40.73061],
+    color: '#2563eb',
+  },
+]
 
 onMounted(async () => {
   const response = await fetch(withBase('/example-data/countries-110m.json'))

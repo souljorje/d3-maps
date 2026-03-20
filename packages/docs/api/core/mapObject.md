@@ -7,7 +7,6 @@
 * [Functions](#functions)
   * [getObjectStateUpdate()](#getobjectstateupdate)
   * [resolveObjectStyle()](#resolveobjectstyle)
-  * [subscribeWindow()](#subscribewindow)
   * [useMapObjectEvents()](#usemapobjectevents)
 * [Variables](#variables)
   * [mapObjectState](#mapobjectstate)
@@ -69,31 +68,6 @@ Resolves a style value for the current state (falls back to `default`).
 #### Returns
 
 `TStyle` | `undefined`
-
-***
-
-### subscribeWindow()
-
-```ts
-function subscribeWindow(ev: string, listener: MapObjectGlobalMouseupListener): () => void;
-```
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `ev` | `string` |
-| `listener` | [`MapObjectGlobalMouseupListener`](#mapobjectglobalmouseuplistener) |
-
-#### Returns
-
-```ts
-(): void;
-```
-
-##### Returns
-
-`void`
 
 ***
 

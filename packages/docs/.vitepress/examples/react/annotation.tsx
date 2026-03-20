@@ -11,6 +11,25 @@ import {
 } from 'react'
 import { withBase } from 'vitepress'
 
+interface Sity {
+  name: string
+  coordinates: [number, number]
+  color: string
+}
+
+const sities: Sity[] = [
+  {
+    name: 'Paris',
+    coordinates: [2.3522, 48.8566],
+    color: '#ff6f26',
+  },
+  {
+    name: 'New York',
+    coordinates: [-73.935242, 40.73061],
+    color: '#2563eb',
+  },
+]
+
 export default function AnnotationExample(): JSX.Element | null {
   const [mapData, setMapData] = useState<MapData>()
 
@@ -37,38 +56,25 @@ export default function AnnotationExample(): JSX.Element | null {
     ? (
         <MapBase data={mapData}>
           <MapFeatures />
-          <MapAnnotation
-            coordinates={[2.3522, 48.8566]}
-            length={36}
-            angle={-35}
-            margin={10}
-            stroke="#ff6f26"
-            strokeWidth={2}
-          >
-            <text
-              y={-6}
-              textAnchor="middle"
-              fontSize={12}
+          {sities.map((sity) => (
+            <MapAnnotation
+              key={sity.name}
+              coordinates={sity.coordinates}
+              stroke={sity.color}
+              length={40}
+              angle={-90}
+              margin={2}
+              strokeWidth={2}
             >
-              Paris
-            </text>
-          </MapAnnotation>
-          <MapAnnotation
-            coordinates={[-73.935242, 40.73061]}
-            length={52}
-            angle={-20}
-            margin={4}
-            stroke="#2563eb"
-            strokeWidth={2}
-          >
-            <text
-              y={-6}
-              textAnchor="middle"
-              fontSize={12}
-            >
-              New York
-            </text>
-          </MapAnnotation>
+              <text
+                y={-6}
+                textAnchor="middle"
+                fontSize={12}
+              >
+                {sity.name}
+              </text>
+            </MapAnnotation>
+          ))}
         </MapBase>
       )
     : null

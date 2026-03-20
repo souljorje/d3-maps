@@ -1,24 +1,21 @@
 # MapAnnotation
 
-Anchors arbitrary SVG content to a map point with a connector path
-
-Use it when you need a callout, label, or badge offset from the original location
+Anchors arbitrary SVG content to a map point with a connector line path.  
+Use when you need a callout, label, or badge offset from the original location
 
 ## Props
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `coordinates` | `[number, number]` | — | Anchor coordinates in `[longitude, latitude]` |
+| `coordinates` | `[number, number]` | — | Anchor coordinates `[longitude, latitude]` |
 | `length?` | `number` | `30` | Connector length in screen pixels |
 | `angle?` | `number` | `-45` | Connector angle in degrees |
 | `margin?` | `number` | `8` | Gap between the anchor point and the connector start |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
-Native SVG path attrs like `stroke`, `strokeWidth`, and `marker-end` are applied to the connector path
+`styles` and native attributes are bound to the connector `<path>`, not the wrapper `<g>`
 
-The annotation content is always user-provided slot or children content
-
-`styles` also target the connector path, not the slotted content
+Interaction state is tracked on the outer annotation group so hover and active styles work for the whole annotation
 
 ## Usage
 
@@ -41,7 +38,7 @@ The annotation content is always user-provided slot or children content
       <text
         font-size="12"
         text-anchor="middle"
-        y="-8"
+        y="-6"
       >Paris</text>
     </MapAnnotation>
   </MapBase>
@@ -64,7 +61,7 @@ The annotation content is always user-provided slot or children content
     <text
       fontSize={12}
       textAnchor="middle"
-      y={-8}
+      y={-6}
     >
       Paris
     </text>

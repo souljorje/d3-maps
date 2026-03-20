@@ -47,7 +47,7 @@ export function getLinePath(
 function getCustomLinePath(
   context: MapContext,
   coordinates: MapLineCoordinates,
-  curve: MapLineCurve = curveLinear,
+  curve?: MapLineCurve,
 ): string | undefined {
   const projection = context.projection
 
@@ -59,11 +59,9 @@ function getCustomLinePath(
 }
 
 export function getPointsLinePath(
-  points: [number, number][],
+  points: MapLineCoordinates,
   curve: MapLineCurve = curveLinear,
 ): string | undefined {
-  if (points.length < 2) return undefined
-
   return line<[number, number]>()
     .curve(curve)(points) ?? undefined
 }

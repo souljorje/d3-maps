@@ -1,16 +1,16 @@
 <template>
   <g
+    v-if="transform"
     :transform="transform"
     :style="style"
-    v-bind="events"
-    name="marker"
+    :name="props.name"
+    v-on="events"
   >
     <slot />
   </g>
 </template>
 
 <script setup lang="ts">
-import type { MapMarkerProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
 import { getMarkerTransform } from '@d3-maps/core'
@@ -22,8 +22,14 @@ import {
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
-const props = withDefaults(defineProps<MapMarkerProps<StyleValue>>(), {
-  coordinates: () => [0, 0],
+interface Props {
+  coordinates: [number, number]
+  styles?: Partial<Record<'default' | 'hover' | 'active', StyleValue>>
+  name?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  name: 'marker',
 })
 
 const context = useMapContext()

@@ -1,4 +1,3 @@
-import type { MapContext } from './map'
 import type { MapObjectProps } from './mapObject'
 
 import { getPointsLinePath } from './line'
@@ -14,44 +13,35 @@ export interface MapAnnotationProps<TStyle = unknown> extends MapObjectProps<TSt
 }
 
 export interface MapAnnotationGeometry {
-  anchorTransform: string
-  connectorTransform: string
-  connectorPath: string
+  lineTransform: string
+  linePath?: string
   contentTransform: string
 }
 
 export const MAP_ANNOTATION_DEFAULTS = {
   length: 30,
   angle: -45,
-  margin: 8,
+  margin: 0,
 } as const
 
-export function getAnnotationGeometry(
-  context: MapContext | undefined,
-  coordinates: MapAnnotationCoordinates,
-  {
-    length = MAP_ANNOTATION_DEFAULTS.length,
-    angle = MAP_ANNOTATION_DEFAULTS.angle,
-    margin = MAP_ANNOTATION_DEFAULTS.margin,
-  }: Omit<MapAnnotationProps, 'coordinates' | 'styles'> = {},
-): MapAnnotationGeometry | undefined {
-  const projected = context?.projection(coordinates)
-  if (!projected) return undefined
-
-  const connectorEndX = margin + length
-  const radians = angle * Math.PI / 180
-  const contentX = Math.cos(radians) * connectorEndX
-  const contentY = Math.sin(radians) * connectorEndX
-  const connectorPath = getPointsLinePath([
+export function getAnnotationGeometry({
+  length = MAP_ANNOTATION_DEFAULTS.length,
+  angle = MAP_ANNOTATION_DEFAULTS.angle,
+  margin = MAP_ANNOTATION_DEFAULTS.margin,
+}: Partial<MapAnnotationProps> = {}): MapAnnotationGeometry {
+  const lineEndX = margin + length
+  const linePath = getPointsLinePath([
     [margin, 0],
-    [connectorEndX, 0],
+    [lineEndX, 0],
   ])
-  if (!connectorPath) return undefined
+
+  const radians = angle * Math.PI / 180
+  const contentX = Math.cos(radians) * lineEndX
+  const contentY = Math.sin(radians) * lineEndX
 
   return {
-    anchorTransform: makeTransform(...projected),
-    connectorTransform: `rotate(${angle})`,
-    connectorPath,
+    lineTransform: `rotate(${angle})`,
+    linePath,
     contentTransform: makeTransform(contentX, contentY),
   }
 }

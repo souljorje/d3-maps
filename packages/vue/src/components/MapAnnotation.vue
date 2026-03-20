@@ -1,13 +1,13 @@
 <template>
-  <g
-    v-if="geometry"
-    :transform="geometry.anchorTransform"
+  <MapMarker
+    :coordinates="coordinates"
     name="annotation"
-    v-bind="groupAttrs"
+    v-on="events"
   >
-    <g :transform="geometry.connectorTransform">
+    <g :transform="geometry.lineTransform">
       <path
-        :d="geometry.connectorPath"
+        v-bind="$attrs"
+        :d="geometry.linePath"
         :style="style"
         fill="none"
         name="annotation-line"
@@ -19,7 +19,7 @@
     >
       <slot />
     </g>
-  </g>
+  </MapMarker>
 </template>
 
 <script setup lang="ts">
@@ -30,33 +30,23 @@ import { getAnnotationGeometry } from '@d3-maps/core'
 import {
   computed,
   toRef,
-  useAttrs,
 } from 'vue'
 
-import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
+import MapMarker from './MapMarker.vue'
 
 defineOptions({
   inheritAttrs: false,
 })
 
 const props = defineProps<MapAnnotationProps<StyleValue>>()
-const attrs = useAttrs()
-
-const context = useMapContext()
 const { style, ...events } = useMapObject(toRef(props, 'styles'))
-const groupAttrs = computed(() => {
-  return {
-    ...attrs,
-    ...events,
-  }
-})
 
-const geometry = computed(() => {
-  return getAnnotationGeometry(context?.value, props.coordinates, {
+const geometry = computed(() => (
+  getAnnotationGeometry({
     length: props.length,
     angle: props.angle,
     margin: props.margin,
   })
-})
+))
 </script>

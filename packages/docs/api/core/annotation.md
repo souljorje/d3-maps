@@ -19,23 +19,18 @@
 ### getAnnotationGeometry()
 
 ```ts
-function getAnnotationGeometry(
-   context: MapContext | undefined, 
-   coordinates: MapAnnotationCoordinates, 
-   __namedParameters?: Omit<MapAnnotationProps, "coordinates" | "styles">): MapAnnotationGeometry | undefined;
+function getAnnotationGeometry(__namedParameters?: Partial<MapAnnotationProps>): MapAnnotationGeometry;
 ```
 
 #### Parameters
 
 | Parameter | Type |
 | ------ | ------ |
-| `context` | [`MapContext`](map.md#mapcontext) | `undefined` |
-| `coordinates` | [`MapAnnotationCoordinates`](#mapannotationcoordinates) |
-| `__namedParameters` | `Omit`<[`MapAnnotationProps`](#mapannotationprops), `"coordinates"` | `"styles"`> |
+| `__namedParameters` | `Partial`<[`MapAnnotationProps`](#mapannotationprops)> |
 
 #### Returns
 
-[`MapAnnotationGeometry`](#mapannotationgeometry) | `undefined`
+[`MapAnnotationGeometry`](#mapannotationgeometry)
 
 ## Variables
 
@@ -45,7 +40,7 @@ function getAnnotationGeometry(
 const MAP_ANNOTATION_DEFAULTS: {
   angle: -45;
   length: 30;
-  margin: 8;
+  margin: 0;
 };
 ```
 
@@ -66,7 +61,7 @@ readonly length: 30 = 30;
 ##### margin
 
 ```ts
-readonly margin: 8 = 8;
+readonly margin: 0 = 0;
 ```
 
 ## Interfaces
@@ -77,10 +72,9 @@ readonly margin: 8 = 8;
 
 | Property | Type |
 | ------ | ------ |
-| <a id="property-anchortransform"></a> `anchorTransform` | `string` |
-| <a id="property-connectorpath"></a> `connectorPath` | `string` |
-| <a id="property-connectortransform"></a> `connectorTransform` | `string` |
 | <a id="property-contenttransform"></a> `contentTransform` | `string` |
+| <a id="property-linepath"></a> `linePath?` | `string` |
+| <a id="property-linetransform"></a> `lineTransform` | `string` |
 
 ***
 

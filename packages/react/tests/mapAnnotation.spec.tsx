@@ -1,4 +1,8 @@
-import { describe, expect, it } from 'vitest'
+import {
+  describe,
+  expect,
+  it,
+} from 'vitest'
 
 import {
   render,
@@ -17,7 +21,7 @@ describe('mapAnnotation', () => {
       <MapBase data={sampleGeoJson}>
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
-          data-testid="annotation"
+          data-testid="annotation-line"
           stroke="#ff6f26"
         >
           <text>Paris</text>
@@ -25,8 +29,10 @@ describe('mapAnnotation', () => {
       </MapBase>,
     )
 
-    expect(screen.getByTestId('annotation').getAttribute('name')).toBe('annotation')
-    expect(container.querySelector('[name="annotation-line"]')?.getAttribute('d')).toMatch(/^M/)
+    expect(container.querySelector('[name="annotation"]')?.getAttribute('transform')).toMatch(/^translate/)
+    expect(screen.getByTestId('annotation-line').getAttribute('name')).toBe('annotation-line')
+    expect(screen.getByTestId('annotation-line').getAttribute('d')).toMatch(/^M/)
+    expect(screen.getByTestId('annotation-line').getAttribute('stroke')).toBe('#ff6f26')
     expect(screen.getByText('Paris')).toBeTruthy()
     expect(container.querySelector('[name="annotation-content"]')?.getAttribute('transform')).toMatch(/^translate/)
     expect(container.querySelector('[name="annotation-content"]')?.getAttribute('transform')).not.toContain('rotate')
@@ -37,14 +43,14 @@ describe('mapAnnotation', () => {
       <svg>
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
-          data-testid="annotation"
+          data-testid="annotation-line"
         >
           <text>Paris</text>
         </MapAnnotation>
       </svg>,
     )
 
-    expect(screen.queryByTestId('annotation')).toBeNull()
+    expect(screen.queryByTestId('annotation-line')).toBeNull()
     expect(screen.queryByText('Paris')).toBeNull()
   })
 })

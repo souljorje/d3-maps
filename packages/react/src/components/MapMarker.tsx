@@ -13,30 +13,32 @@ import { useMemo } from 'react'
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
-const DEFAULT_COORDINATES: [number, number] = [0, 0]
-
 export interface MapMarkerProps
   extends CoreMapMarkerProps<CSSProperties>,
-  Omit<SVGProps<SVGGElement>, 'style'> {}
+  Omit<SVGProps<SVGGElement>, 'style'> {
+  name?: string
+}
 
 export function MapMarker({
-  coordinates = DEFAULT_COORDINATES,
+  coordinates,
   styles,
   children,
+  name = 'marker',
   onMouseEnter,
   onMouseLeave,
   onMouseDown,
   onMouseUp,
   ...groupProps
-}: MapMarkerProps): ReactElement {
+}: MapMarkerProps): ReactElement | null {
   const context = useMapContext()
 
   const transform = useMemo(() => {
+    if (!coordinates) return undefined
     return getMarkerTransform(context, coordinates)
   }, [
     context,
-    coordinates[0],
-    coordinates[1],
+    coordinates?.[0],
+    coordinates?.[1],
   ])
 
   const { style, ...events } = useMapObject<SVGGElement>({
@@ -47,12 +49,14 @@ export function MapMarker({
     onMouseUp,
   })
 
+  if (!transform) return null
+
   return (
     <g
       {...groupProps}
       transform={transform}
       style={style}
-      name="marker"
+      name={name}
       {...events}
     >
       {children}
