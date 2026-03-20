@@ -3,13 +3,14 @@
     v-if="geometry"
     :transform="geometry.anchorTransform"
     name="annotation"
+    v-bind="groupAttrs"
   >
     <g :transform="geometry.connectorTransform">
       <path
         :d="geometry.connectorPath"
         :style="style"
         fill="none"
-        v-bind="pathAttrs"
+        name="annotation-line"
       />
     </g>
     <g
@@ -44,14 +45,10 @@ const attrs = useAttrs()
 
 const context = useMapContext()
 const { style, ...events } = useMapObject(toRef(props, 'styles'))
-const name = computed(() => {
-  return typeof attrs.name === 'string' ? attrs.name : 'annotation-line'
-})
-const pathAttrs = computed(() => {
+const groupAttrs = computed(() => {
   return {
     ...attrs,
     ...events,
-    name: name.value,
   }
 })
 

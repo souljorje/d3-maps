@@ -17,7 +17,7 @@ describe('mapAnnotation', () => {
       <Map data={sampleGeoJson}>
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
-          data-testid="annotation-path"
+          data-testid="annotation"
           stroke="#ff6f26"
         >
           <text>Paris</text>
@@ -25,7 +25,8 @@ describe('mapAnnotation', () => {
       </Map>,
     )
 
-    expect(screen.getByTestId('annotation-path').getAttribute('d')).toMatch(/^M/)
+    expect(screen.getByTestId('annotation').getAttribute('name')).toBe('annotation')
+    expect(container.querySelector('[name="annotation-line"]')?.getAttribute('d')).toMatch(/^M/)
     expect(screen.getByText('Paris')).toBeTruthy()
     expect(container.querySelector('[name="annotation-content"]')?.getAttribute('transform')).toMatch(/^translate/)
     expect(container.querySelector('[name="annotation-content"]')?.getAttribute('transform')).not.toContain('rotate')
@@ -36,14 +37,14 @@ describe('mapAnnotation', () => {
       <svg>
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
-          data-testid="annotation-path"
+          data-testid="annotation"
         >
           <text>Paris</text>
         </MapAnnotation>
       </svg>,
     )
 
-    expect(screen.queryByTestId('annotation-path')).toBeNull()
+    expect(screen.queryByTestId('annotation')).toBeNull()
     expect(screen.queryByText('Paris')).toBeNull()
   })
 })

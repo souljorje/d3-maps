@@ -18,14 +18,15 @@ describe('mapAnnotation', () => {
       slots: {
         default: () => h(MapAnnotation, {
           coordinates: [2.3522, 48.8566],
-          'data-testid': 'annotation-path',
+          'data-testid': 'annotation',
         }, {
           default: () => h('text', 'Paris'),
         }),
       },
     })
 
-    expect(wrapper.get('[data-testid="annotation-path"]').attributes('d')).toMatch(/^M/)
+    expect(wrapper.get('[data-testid="annotation"]').attributes('name')).toBe('annotation')
+    expect(wrapper.find('[name="annotation-line"]').attributes('d')).toMatch(/^M/)
     expect(wrapper.text()).toContain('Paris')
     expect(wrapper.find('[name="annotation-content"]').attributes('transform')).toMatch(/^translate/)
     expect(wrapper.find('[name="annotation-content"]').attributes('transform')).not.toContain('rotate')
@@ -35,14 +36,14 @@ describe('mapAnnotation', () => {
     const wrapper = mount(MapAnnotation, {
       props: {
         coordinates: [2.3522, 48.8566],
-        'data-testid': 'annotation-path',
+        'data-testid': 'annotation',
       },
       slots: {
         default: () => h('text', 'Paris'),
       },
     })
 
-    expect(wrapper.find('[data-testid="annotation-path"]').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="annotation"]').exists()).toBe(false)
     expect(wrapper.text()).toBe('')
   })
 })

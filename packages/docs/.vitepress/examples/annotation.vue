@@ -13,7 +13,7 @@
       stroke="#ff6f26"
     >
       <text
-        y="-8"
+        y="-6"
         text-anchor="middle"
         font-size="12"
       >Paris</text>
@@ -27,7 +27,7 @@
       stroke="#2563eb"
     >
       <text
-        y="-8"
+        y="-6"
         text-anchor="middle"
         font-size="12"
       >New York</text>

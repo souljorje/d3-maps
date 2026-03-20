@@ -46,7 +46,7 @@ export default function AnnotationExample(): JSX.Element | null {
             strokeWidth={2}
           >
             <text
-              y={-8}
+              y={-6}
               textAnchor="middle"
               fontSize={12}
             >
@@ -62,7 +62,7 @@ export default function AnnotationExample(): JSX.Element | null {
             strokeWidth={2}
           >
             <text
-              y={-8}
+              y={-6}
               textAnchor="middle"
               fontSize={12}
             >

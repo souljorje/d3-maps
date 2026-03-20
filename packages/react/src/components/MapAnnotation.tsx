@@ -18,7 +18,7 @@ import { useMapObject } from '../hooks/useMapObject'
 
 export interface MapAnnotationProps
   extends CoreMapAnnotationProps<CSSProperties>,
-  Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style' | 'transform'> {
+  Omit<SVGProps<SVGGElement>, 'children' | 'transform'> {
   children?: ReactNode
 }
 
@@ -47,7 +47,7 @@ export function MapAnnotation({
     margin,
   ])
 
-  const { style, ...events } = useMapObject<SVGPathElement>({
+  const { style, ...events } = useMapObject<SVGGElement>({
     styles,
     onMouseEnter: pathProps.onMouseEnter,
     onMouseLeave: pathProps.onMouseLeave,
@@ -62,24 +62,22 @@ export function MapAnnotation({
     onMouseLeave: _onMouseLeave,
     onMouseDown: _onMouseDown,
     onMouseUp: _onMouseUp,
-    fill,
-    name,
-    ...restPathProps
+    ...groupProps
   } = pathProps
 
   return (
     <g
+      {...groupProps}
       transform={geometry.anchorTransform}
       name="annotation"
+      {...events}
     >
       <g transform={geometry.connectorTransform}>
         <path
-          {...restPathProps}
           d={geometry.connectorPath}
           style={style}
-          fill={fill ?? 'none'}
-          name={name ?? 'annotation-line'}
-          {...events}
+          fill="none"
+          name="annotation-line"
         />
       </g>
       <g
