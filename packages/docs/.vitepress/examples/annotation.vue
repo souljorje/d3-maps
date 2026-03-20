@@ -5,12 +5,12 @@
   >
     <MapFeatures />
     <template
-      v-for="sity in sities"
-      :key="sity.name"
+      v-for="city in cities"
+      :key="city.name"
     >
       <MapAnnotation
-        :coordinates="sity.coordinates"
-        :stroke="sity.color"
+        :coordinates="city.coordinates"
+        :stroke="city.color"
         :length="40"
         :angle="195"
         :margin="4"
@@ -19,13 +19,13 @@
           y="-4"
           text-anchor="middle"
           font-size="12"
-          :fill="sity.color"
+          :fill="city.color"
         >
-          {{ sity.name }}
+          {{ city.name }}
         </text>
       </MapAnnotation>
-      <MapMarker :coordinates="sity.coordinates">
-        <circle :fill="sity.color" r="3" />
+      <MapMarker :coordinates="city.coordinates">
+        <circle :fill="city.color" r="3" />
       </MapMarker>
     </template>
   </MapBase>
@@ -37,14 +37,14 @@ import type { MapData } from '@d3-maps/core'
 import { withBase } from 'vitepress'
 import { onMounted, ref } from 'vue'
 
-interface Sity {
+interface City {
   name: string
   coordinates: [number, number]
   color: string
 }
 
 const data = ref<MapData>()
-const sities: Sity[] = [
+const cities: City[] = [
   {
     name: 'Paris',
     coordinates: [2.3522, 48.8566],
