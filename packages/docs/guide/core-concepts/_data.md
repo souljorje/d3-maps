@@ -1,6 +1,6 @@
 ## Data
 
-[Map](/components/map) accepts either GeoJSON or TopoJSON and then transforms it into GeoJSON.  
+[MapBase](/components/map-base) accepts either GeoJSON or TopoJSON and then transforms it into GeoJSON.  
 Both used for geo data encoding, but **TopoJSON is recommended**, it's smaller.
 
 Simply pass `data` prop to render the basic map
@@ -11,18 +11,18 @@ Simply pass `data` prop to render the basic map
 
 ```vue [vue]
 <template>
-  <Map :data="data">
+  <MapBase :data="data">
     <MapFeatures />
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx [react]
-<Map data={data}>
+<MapBase data={data}>
   <MapFeatures />
-</Map>
+</MapBase>
 ```
 
 :::

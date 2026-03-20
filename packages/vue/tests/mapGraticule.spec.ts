@@ -4,13 +4,13 @@ import { mount } from '@vue/test-utils'
 import { h } from 'vue'
 
 import {
-  Map,
+  MapBase,
   MapGraticule,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
 function mountWithMapGraticule(props: Record<string, unknown> = {}) {
-  return mount(Map, {
+  return mount(MapBase, {
     props: {
       data: sampleGeoJson,
     },
@@ -136,7 +136,7 @@ describe('mapGraticule', () => {
     let onMouseup = firstOnMouseup
     let stroke = '#334155'
 
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
         width: 600,
@@ -168,13 +168,5 @@ describe('mapGraticule', () => {
     await updatedLines.trigger('mouseup')
     expect(firstOnMouseup).toHaveBeenCalledTimes(1)
     expect(secondOnMouseup).toHaveBeenCalledTimes(1)
-  })
-
-  it('renders graticule path outside map context without geometry', () => {
-    const wrapper = mount(MapGraticule)
-    const paths = wrapper.findAll('path')
-
-    expect(paths).toHaveLength(1)
-    expect(paths[0]?.attributes('d')).toBeUndefined()
   })
 })

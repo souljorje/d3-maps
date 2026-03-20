@@ -8,30 +8,30 @@ Use [MapGraticule](/components/map-graticule) to draw latitude and longitude gri
 
 ```vue{7} [vue]
 <template>
-  <Map
+  <MapBase
     :data="data"
-    :projection="geoMercator"
+    :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
   >
-    <MapGraticule stroke="#cbd5e1" />
+    <MapGraticule border />
     <MapFeatures />
     <MapMesh stroke="#fff" />
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx{6} [react]
-<Map
+<MapBase
   data={data}
-  projection={geoMercator}
+  projection={geoEquirectangular}
   dataTransformer={dataTransformer}
 >
-  <MapGraticule stroke="#cbd5e1" />
+  <MapGraticule border />
   <MapFeatures />
   <MapMesh stroke="#fff" />
-</Map>
+</MapBase>
 ```
 
 :::

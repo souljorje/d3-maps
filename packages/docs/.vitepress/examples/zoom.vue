@@ -1,5 +1,5 @@
 <template>
-  <Map
+  <MapBase
     v-if="data"
     :data="data"
     :projection="projection"
@@ -18,14 +18,16 @@
             font-size="14"
             y="-8"
             text-anchor="middle"
-          >{{ item.city }}</text>
+          >
+            {{ item.city }}
+          </text>
           <circle
             r="3"
           />
         </g>
       </MapMarker>
     </MapZoom>
-  </Map>
+  </MapBase>
 </template>
 
 <script setup lang="ts">

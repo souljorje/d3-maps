@@ -1,5 +1,5 @@
 <template>
-  <Map
+  <MapBase
     v-if="data"
     :data="data"
   >
@@ -15,7 +15,9 @@
         :y="city.name === 'Tbilisi' ? -8 : 14"
         font-size="12"
         text-anchor="middle"
-      >{{ city.name }}</text>
+      >
+        {{ city.name }}
+      </text>
     </MapMarker>
 
     <!-- Line per each connection -->
@@ -52,7 +54,7 @@
         />
       </marker>
     </defs>
-  </Map>
+  </MapBase>
 </template>
 
 <script setup lang="ts">

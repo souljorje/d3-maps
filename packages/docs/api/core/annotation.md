@@ -88,7 +88,7 @@ readonly margin: 8 = 8;
 
 #### Extends
 
-* [`MapObject`](mapObject.md#mapobject)<`TStyle`>
+* [`MapObjectProps`](mapObject.md#mapobjectprops)<`TStyle`>
 
 #### Type Parameters
 
@@ -104,7 +104,7 @@ readonly margin: 8 = 8;
 | <a id="property-coordinates"></a> `coordinates` | [`MapAnnotationCoordinates`](#mapannotationcoordinates) | - |
 | <a id="property-length"></a> `length?` | `number` | - |
 | <a id="property-margin"></a> `margin?` | `number` | - |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObject`](mapObject.md#mapobject).[`styles`](mapObject.md#property-styles) |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases
 

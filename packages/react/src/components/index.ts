@@ -1,5 +1,5 @@
-export { Map } from './Map'
 export { MapAnnotation } from './MapAnnotation'
+export { MapBase } from './MapBase'
 export { MapFeature } from './MapFeature'
 export { MapFeatures } from './MapFeatures'
 export { MapGraticule } from './MapGraticule'

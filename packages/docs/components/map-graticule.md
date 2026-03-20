@@ -32,7 +32,7 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
 
 ```vue
 <template>
-  <Map :data="mapData">
+  <MapBase :data="mapData">
     <MapFeatures fill="#f1f5f9" />
     <MapGraticule
       stroke="#94a3b8"
@@ -43,14 +43,14 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
         precision: 2.5,
       }"
     />
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx
-<Map data={mapData}>
+<MapBase data={mapData}>
   <MapFeatures fill="#f1f5f9" />
   <MapGraticule
     stroke="#94a3b8"
@@ -61,7 +61,7 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
       precision: 2.5,
     }}
   />
-</Map>
+</MapBase>
 ```
 
 :::

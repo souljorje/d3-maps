@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils'
 import { h } from 'vue'
 
 import {
-  Map,
+  MapBase,
   MapLine,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
@@ -43,7 +43,7 @@ function offsetCurve(context: {
 
 describe('mapLine', () => {
   it('renders a projected path inside map context', () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },
@@ -59,7 +59,7 @@ describe('mapLine', () => {
   })
 
   it('recomputes path when map context changes', async () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
         width: 300,
@@ -83,7 +83,7 @@ describe('mapLine', () => {
   })
 
   it('renders a path for multi-point coordinates', () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },
@@ -99,7 +99,7 @@ describe('mapLine', () => {
   })
 
   it('supports custom projected paths', () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },
@@ -116,7 +116,7 @@ describe('mapLine', () => {
   })
 
   it('uses the provided D3 curve for custom paths', async () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },
@@ -133,7 +133,7 @@ describe('mapLine', () => {
 
     wrapper.unmount()
 
-    const curvedWrapper = mount(Map, {
+    const curvedWrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },

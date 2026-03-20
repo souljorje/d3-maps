@@ -9,6 +9,7 @@
   * [renderOutline()](#renderoutline)
 * [Interfaces](#interfaces)
   * [GraticuleConfig](#graticuleconfig)
+  * [MapGraticuleProps](#mapgraticuleprops)
 
 ## Functions
 
@@ -75,3 +76,28 @@ https://d3js.org/d3-geo/shape#geoGraticule
 | <a id="property-step"></a> `step?` | \[\[`number`, `number`]] | `MethodsToModifiers.step` |
 | <a id="property-stepmajor"></a> `stepMajor?` | \[\[`number`, `number`]] | `MethodsToModifiers.stepMajor` |
 | <a id="property-stepminor"></a> `stepMinor?` | \[\[`number`, `number`]] | `MethodsToModifiers.stepMinor` |
+
+***
+
+### MapGraticuleProps
+
+Shared props contract for graticule layers.
+
+#### Extends
+
+* [`MapObjectProps`](mapObject.md#mapobjectprops)<`TStyle`>
+
+#### Type Parameters
+
+| Type Parameter | Default type |
+| ------ | ------ |
+| `TStyle` | `unknown` |
+
+#### Properties
+
+| Property | Type | Inherited from |
+| ------ | ------ | ------ |
+| <a id="property-background"></a> `background?` | `string` | `boolean` | - |
+| <a id="property-border"></a> `border?` | `string` | `boolean` | - |
+| <a id="property-config"></a> `config?` | [`GraticuleConfig`](#graticuleconfig) | - |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |

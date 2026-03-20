@@ -1,6 +1,6 @@
 'use client'
 
-import type { MapObject } from '@d3-maps/core'
+import type { MapObjectProps } from '@d3-maps/core'
 import type {
   CSSProperties,
   ReactElement,
@@ -14,7 +14,7 @@ import { useMapObject } from '../hooks/useMapObject'
 
 export interface MapMeshProps
   extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style'>,
-  MapObject<CSSProperties> {}
+  MapObjectProps<CSSProperties> {}
 
 export function MapMesh({
   styles,

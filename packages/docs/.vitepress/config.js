@@ -76,7 +76,7 @@ const docsSidebar = [
     text: 'Components',
     items: [
       { text: 'Overview', link: '/components/' },
-      { text: 'Map', link: '/components/map' },
+      { text: 'MapBase', link: '/components/map-base' },
       { text: 'MapFeatures', link: '/components/map-features' },
       { text: 'MapFeature', link: '/components/map-feature' },
       { text: 'MapAnnotation', link: '/components/map-annotation' },

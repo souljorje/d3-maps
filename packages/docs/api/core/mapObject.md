@@ -12,8 +12,8 @@
 * [Variables](#variables)
   * [mapObjectState](#mapobjectstate)
 * [Interfaces](#interfaces)
-  * [MapObject](#mapobject-1)
   * [MapObjectInteractionController](#mapobjectinteractioncontroller)
+  * [MapObjectProps](#mapobjectprops)
 * [Type Aliases](#type-aliases)
   * [ElementMapObjectMouseDownSource](#elementmapobjectmousedownsource)
   * [MapObjectData](#mapobjectdata)
@@ -132,29 +132,6 @@ Supported interaction states for map objects.
 
 ## Interfaces
 
-### MapObject
-
-#### Extended by
-
-* [`MapAnnotationProps`](annotation.md#mapannotationprops)
-* [`MapFeatureProps`](feature.md#mapfeatureprops)
-* [`MapLineProps`](line.md#maplineprops)
-* [`MapMarkerProps`](marker.md#mapmarkerprops)
-
-#### Type Parameters
-
-| Type Parameter | Default type |
-| ------ | ------ |
-| `TStyle` | `unknown` |
-
-#### Properties
-
-| Property | Type |
-| ------ | ------ |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> |
-
-***
-
 ### MapObjectInteractionController
 
 #### Type Parameters
@@ -172,6 +149,30 @@ Supported interaction states for map objects.
 | <a id="property-onmouseenter"></a> `onMouseenter` | () => `"default"` | `"hover"` | `"active"` |
 | <a id="property-onmouseleave"></a> `onMouseleave` | () => `"default"` | `"hover"` | `"active"` |
 | <a id="property-onmouseup"></a> `onMouseup` | () => `"default"` | `"hover"` | `"active"` |
+
+***
+
+### MapObjectProps
+
+#### Extended by
+
+* [`MapAnnotationProps`](annotation.md#mapannotationprops)
+* [`MapFeatureProps`](feature.md#mapfeatureprops)
+* [`MapGraticuleProps`](graticule.md#mapgraticuleprops)
+* [`MapLineProps`](line.md#maplineprops)
+* [`MapMarkerProps`](marker.md#mapmarkerprops)
+
+#### Type Parameters
+
+| Type Parameter | Default type |
+| ------ | ------ |
+| `TStyle` | `unknown` |
+
+#### Properties
+
+| Property | Type |
+| ------ | ------ |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> |
 
 ## Type Aliases
 

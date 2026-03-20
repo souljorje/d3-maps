@@ -10,10 +10,10 @@ Switch to slot/render-function when each feature needs custom render logic.
 
 ```vue{7-15} [vue]
 <template>
-  <Map
+  <MapBase
     :data="data"
     :data-transformer="dataTransformer"
-    :projection="geoMercator"
+    :projection="geoEquirectangular"
   >
     <MapFeatures>
       <template #default="{ features }">
@@ -24,17 +24,17 @@ Switch to slot/render-function when each feature needs custom render logic.
         />
       </template>
     </MapFeatures>
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx{6-17} [react]
-<Map
+<MapBase
   data={data}
   dataTransformer={dataTransformer}
-  projection={geoMercator}
+  projection={geoEquirectangular}
 >
   <MapFeatures>
     {({ features }) => (
@@ -48,7 +48,7 @@ Switch to slot/render-function when each feature needs custom render logic.
       </>
     )}
   </MapFeatures>
-</Map>
+</MapBase>
 ```
 
 :::

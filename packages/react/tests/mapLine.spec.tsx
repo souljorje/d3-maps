@@ -6,7 +6,7 @@ import {
 } from '@testing-library/react'
 
 import {
-  Map,
+  MapBase,
   MapLine,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
@@ -46,13 +46,13 @@ function offsetCurve(context: {
 describe('mapLine', () => {
   it('renders projected line path inside map context', () => {
     render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapLine
           data-testid="map-line"
           coordinates={LINE_COORDINATES}
           stroke="#ff6f26"
         />
-      </Map>,
+      </MapBase>,
     )
 
     const line = screen.getByTestId('map-line')
@@ -61,12 +61,12 @@ describe('mapLine', () => {
 
   it('uses default fill value', () => {
     render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapLine
           data-testid="map-line-fill"
           coordinates={LINE_COORDINATES}
         />
-      </Map>,
+      </MapBase>,
     )
 
     expect(screen.getByTestId('map-line-fill').getAttribute('fill')).toBe('none')
@@ -87,7 +87,7 @@ describe('mapLine', () => {
 
   it('recomputes line path when map context changes', () => {
     const { rerender } = render(
-      <Map
+      <MapBase
         data={sampleGeoJson}
         width={300}
       >
@@ -95,13 +95,13 @@ describe('mapLine', () => {
           data-testid="map-line-recomputed"
           coordinates={LINE_COORDINATES}
         />
-      </Map>,
+      </MapBase>,
     )
 
     const initialPath = screen.getByTestId('map-line-recomputed').getAttribute('d')
 
     rerender(
-      <Map
+      <MapBase
         data={sampleGeoJson}
         width={700}
       >
@@ -109,7 +109,7 @@ describe('mapLine', () => {
           data-testid="map-line-recomputed"
           coordinates={LINE_COORDINATES}
         />
-      </Map>,
+      </MapBase>,
     )
 
     const nextPath = screen.getByTestId('map-line-recomputed').getAttribute('d')
@@ -118,12 +118,12 @@ describe('mapLine', () => {
 
   it('renders a path for multi-point coordinates', () => {
     render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapLine
           data-testid="map-line-multi-point"
           coordinates={THREE_POINT_COORDINATES}
         />
-      </Map>,
+      </MapBase>,
     )
 
     expect(screen.getByTestId('map-line-multi-point').getAttribute('d')).toMatch(/^M/)
@@ -131,13 +131,13 @@ describe('mapLine', () => {
 
   it('supports custom projected paths', () => {
     render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapLine
           data-testid="map-line-custom"
           coordinates={THREE_POINT_COORDINATES}
           custom
         />
-      </Map>,
+      </MapBase>,
     )
 
     expect(screen.getByTestId('map-line-custom').getAttribute('d')).toMatch(/^M/)
@@ -145,26 +145,26 @@ describe('mapLine', () => {
 
   it('uses the provided D3 curve for custom paths', () => {
     const { rerender } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapLine
           data-testid="map-line-curved"
           coordinates={THREE_POINT_COORDINATES}
           custom
         />
-      </Map>,
+      </MapBase>,
     )
 
     const linearPath = screen.getByTestId('map-line-curved').getAttribute('d')
 
     rerender(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapLine
           data-testid="map-line-curved"
           coordinates={THREE_POINT_COORDINATES}
           custom
           curve={offsetCurve}
         />
-      </Map>,
+      </MapBase>,
     )
 
     expect(screen.getByTestId('map-line-curved').getAttribute('d')).not.toBe(linearPath)

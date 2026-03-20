@@ -23,7 +23,7 @@ You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapL
 
 ```vue
 <template>
-  <Map :data="mapData">
+  <MapBase :data="mapData">
     <MapFeatures />
     <MapLine
       :coordinates="[
@@ -34,7 +34,7 @@ You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapL
       custom
       :curve="curveBasis"
     />
-  </Map>
+  </MapBase>
 </template>
 
 <script setup lang="ts">
@@ -47,7 +47,7 @@ import { curveBasis } from 'd3-shape'
 ```tsx
 import { curveBasis } from 'd3-shape'
 
-<Map data={mapData}>
+<MapBase data={mapData}>
   <MapFeatures />
   <MapLine
     coordinates={[
@@ -58,7 +58,7 @@ import { curveBasis } from 'd3-shape'
     custom
     curve={curveBasis}
   />
-</Map>
+</MapBase>
 ```
 
 :::

@@ -28,7 +28,7 @@ The annotation content is always user-provided slot or children content
 
 ```vue
 <template>
-  <Map :data="mapData">
+  <MapBase :data="mapData">
     <MapFeatures />
     <MapAnnotation
       :coordinates="[2.3522, 48.8566]"
@@ -44,14 +44,14 @@ The annotation content is always user-provided slot or children content
         y="-8"
       >Paris</text>
     </MapAnnotation>
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx
-<Map data={mapData}>
+<MapBase data={mapData}>
   <MapFeatures />
   <MapAnnotation
     coordinates={[2.3522, 48.8566]}
@@ -69,7 +69,7 @@ The annotation content is always user-provided slot or children content
       Paris
     </text>
   </MapAnnotation>
-</Map>
+</MapBase>
 ```
 
 :::

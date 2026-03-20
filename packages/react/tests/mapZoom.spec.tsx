@@ -5,7 +5,7 @@ import {
   screen,
 } from '@testing-library/react'
 
-import { Map } from '../src/components/Map'
+import { MapBase } from '../src/components/MapBase'
 import { MapZoom } from '../src/components/MapZoom'
 import { sampleGeoJson } from './fixtures'
 
@@ -44,7 +44,7 @@ describe('mapZoom', () => {
     const onZoomEnd = vi.fn()
 
     render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapZoom
           data-testid="map-zoom-group"
           center={[11, 12]}
@@ -58,7 +58,7 @@ describe('mapZoom', () => {
         >
           <g data-testid="zoom-content" />
         </MapZoom>
-      </Map>,
+      </MapBase>,
     )
 
     expect(setupZoomSpy).toHaveBeenCalled()

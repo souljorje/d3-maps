@@ -3,19 +3,19 @@ import { describe, expect, it } from 'vitest'
 import { createApp } from 'vue'
 
 import {
-  Map,
   MapAnnotation,
+  MapBase,
   MapLine,
   MapMesh,
   plugin,
 } from '../src'
 
 describe('@d3-maps/vue plugin', () => {
-  it('registers the Map component', () => {
+  it('registers the MapBase component', () => {
     const app = createApp({ template: '<div />' })
     app.use(plugin)
 
-    expect(app.component('Map')).toBe(Map)
+    expect(app.component('MapBase')).toBe(MapBase)
   })
 
   it('registers the MapMesh component', () => {

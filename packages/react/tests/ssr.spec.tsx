@@ -3,24 +3,25 @@ import { describe, expect, it } from 'vitest'
 import { renderToString } from 'react-dom/server'
 
 import {
-  Map,
   MapAnnotation,
+  MapBase,
   MapFeatures,
   MapZoom,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
-describe('sSR', () => {
+// eslint-disable-next-line test/prefer-lowercase-title
+describe('SSR', () => {
   it('renders map component tree without DOM access errors', () => {
     const html = renderToString(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapZoom>
           <MapFeatures />
           <MapAnnotation coordinates={[2.3522, 48.8566]}>
             <text>Paris</text>
           </MapAnnotation>
         </MapZoom>
-      </Map>,
+      </MapBase>,
     )
 
     expect(html).toContain('<svg')

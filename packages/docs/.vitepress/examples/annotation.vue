@@ -1,5 +1,5 @@
 <template>
-  <Map
+  <MapBase
     v-if="data"
     :data="data"
   >
@@ -16,7 +16,9 @@
         y="-6"
         text-anchor="middle"
         font-size="12"
-      >Paris</text>
+      >
+        Paris
+      </text>
     </MapAnnotation>
     <MapAnnotation
       :coordinates="[-73.935242, 40.73061]"
@@ -30,9 +32,11 @@
         y="-6"
         text-anchor="middle"
         font-size="12"
-      >New York</text>
+      >
+        New York
+      </text>
     </MapAnnotation>
-  </Map>
+  </MapBase>
 </template>
 
 <script setup lang="ts">

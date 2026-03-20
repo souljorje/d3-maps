@@ -1,8 +1,8 @@
 import type { MapData } from '@d3-maps/core'
 
 import {
-  Map,
   MapAnnotation,
+  MapBase,
   MapFeatures,
 } from '@d3-maps/react'
 import {
@@ -35,7 +35,7 @@ export default function AnnotationExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <Map data={mapData}>
+        <MapBase data={mapData}>
           <MapFeatures />
           <MapAnnotation
             coordinates={[2.3522, 48.8566]}
@@ -69,7 +69,7 @@ export default function AnnotationExample(): JSX.Element | null {
               New York
             </text>
           </MapAnnotation>
-        </Map>
+        </MapBase>
       )
     : null
 }

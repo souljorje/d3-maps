@@ -1,7 +1,7 @@
 import type { MapData } from '@d3-maps/core'
 
 import {
-  Map,
+  MapBase,
   MapFeatures,
   MapGraticule,
   MapMesh,
@@ -36,14 +36,14 @@ export default function GraticuleExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <Map data={mapData}>
+        <MapBase data={mapData}>
           <MapGraticule
             background
             border
           />
           <MapFeatures />
           <MapMesh />
-        </Map>
+        </MapBase>
       )
     : null
 }

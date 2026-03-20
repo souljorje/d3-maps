@@ -8,34 +8,34 @@ Wrap layers with [MapZoom](/components/map-zoom) to enable pan and zoom
 
 ```vue{7,11} [vue]
 <template>
-  <Map
+  <MapBase
     :data="data"
-    :projection="geoMercator"
+    :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
   >
     <MapZoom>
+      <MapGraticule border />
       <MapFeatures />
       <MapMesh stroke="#fff" />
-      <MapGraticule stroke="#cbd5e1" />
     </MapZoom>
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx{6,10} [react]
-<Map
+<MapBase
   data={data}
-  projection={geoMercator}
+  projection={geoEquirectangular}
   dataTransformer={dataTransformer}
 >
   <MapZoom>
+    <MapGraticule border />
     <MapFeatures />
     <MapMesh stroke="#fff" />
-    <MapGraticule stroke="#cbd5e1" />
   </MapZoom>
-</Map>
+</MapBase>
 ```
 
 :::

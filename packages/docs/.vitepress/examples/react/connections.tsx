@@ -1,7 +1,7 @@
 import type { MapData } from '@d3-maps/core'
 
 import {
-  Map,
+  MapBase,
   MapFeatures,
   MapLine,
   MapMarker,
@@ -57,7 +57,7 @@ export default function ConnectionsExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <Map data={mapData}>
+        <MapBase data={mapData}>
           <MapFeatures />
 
           {
@@ -115,7 +115,7 @@ export default function ConnectionsExample(): JSX.Element | null {
               />
             </marker>
           </defs>
-        </Map>
+        </MapBase>
       )
     : null
 }

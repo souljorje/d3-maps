@@ -1,8 +1,8 @@
 'use client'
 
 import type {
-  MapConfig,
   MapContext,
+  MapProps,
 } from '@d3-maps/core'
 import type {
   ReactElement,
@@ -15,19 +15,19 @@ import { useMemo } from 'react'
 
 import { MapProvider } from './MapContext'
 
-type MapRenderProp = (context: MapContext) => ReactNode
+type MapBaseRenderProp = (context: MapContext) => ReactNode
 
-export interface MapProps
-  extends MapConfig,
-  Omit<SVGProps<SVGSVGElement>, keyof MapConfig | 'children'> {
-  children?: ReactNode | MapRenderProp
+export interface MapBaseProps
+  extends MapProps,
+  Omit<SVGProps<SVGSVGElement>, keyof MapProps | 'children'> {
+  children?: ReactNode | MapBaseRenderProp
 }
 
-function isRenderProp(children: MapProps['children']): children is MapRenderProp {
+function isRenderProp(children: MapBaseProps['children']): children is MapBaseRenderProp {
   return typeof children === 'function'
 }
 
-export function Map({
+export function MapBase({
   width,
   height,
   aspectRatio,
@@ -38,7 +38,7 @@ export function Map({
   children,
   className,
   ...svgProps
-}: MapProps): ReactElement {
+}: MapBaseProps): ReactElement {
   const context = useMemo(() => {
     return makeMapContext({
       width,

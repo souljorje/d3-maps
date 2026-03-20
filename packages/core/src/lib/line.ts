@@ -4,7 +4,7 @@ import type {
 } from 'd3-shape'
 
 import type { MapContext } from './map'
-import type { MapObject } from './mapObject'
+import type { MapObjectProps } from './mapObject'
 
 import { curveLinear, line } from 'd3-shape'
 
@@ -14,7 +14,7 @@ export type MapLineCurve = CurveFactory | CurveFactoryLineOnly
 /**
  * Shared props contract for geographic line layers.
  */
-export interface MapLineProps<TStyle = unknown> extends MapObject<TStyle> {
+export interface MapLineProps<TStyle = unknown> extends MapObjectProps<TStyle> {
   coordinates: MapLineCoordinates
   custom?: boolean
   curve?: MapLineCurve
@@ -55,6 +55,13 @@ function getCustomLinePath(
     .map((coordinate) => projection(coordinate))
     .filter((point): point is [number, number] => point != null)
 
+  return getPointsLinePath(points, curve)
+}
+
+export function getPointsLinePath(
+  points: [number, number][],
+  curve: MapLineCurve = curveLinear,
+): string | undefined {
   if (points.length < 2) return undefined
 
   return line<[number, number]>()

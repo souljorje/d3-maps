@@ -26,6 +26,8 @@ Let's build the map step by step to understand how the library works
 
 <!--@include: ./_responsiveness.md-->
 
+<!--@include: ./_combined-example.md-->
+
 ## That's it
 
 What's next?

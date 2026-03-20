@@ -1,11 +1,11 @@
 <template>
-  <Map
+  <MapBase
     v-if="data"
     :data="data"
   >
     <MapFeatures />
     <MapMesh />
-  </Map>
+  </MapBase>
 </template>
 
 <script setup lang="ts">

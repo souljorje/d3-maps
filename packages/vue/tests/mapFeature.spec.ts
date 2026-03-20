@@ -7,28 +7,17 @@ import {
 } from 'vue'
 
 import {
-  Map,
+  MapBase,
   MapFeature,
 } from '../src'
 import { insideZoomKey } from '../src/hooks/useInsideZoom'
 import { sampleGeoJson } from './fixtures'
 
 describe('mapFeature', () => {
-  it('renders path without map context', () => {
-    const wrapper = mount(MapFeature, {
-      props: {
-        data: sampleGeoJson.features[0],
-      },
-    })
-
-    const path = wrapper.get('path')
-    expect(path.attributes('d')).toBeUndefined()
-  })
-
   it('resolves styles across interaction states', async () => {
     const onMouseup = vi.fn()
 
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },
@@ -61,7 +50,7 @@ describe('mapFeature', () => {
   })
 
   it('resets active state on global mouseup when element mouseup is missed', async () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       global: {
         provide: {
           [insideZoomKey as symbol]: true,

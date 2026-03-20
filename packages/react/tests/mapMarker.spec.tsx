@@ -6,7 +6,7 @@ import {
 } from '@testing-library/react'
 
 import {
-  Map,
+  MapBase,
   MapMarker,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
@@ -14,7 +14,7 @@ import { sampleGeoJson } from './fixtures'
 describe('mapMarker', () => {
   it('uses projection transform from context', () => {
     render(
-      <Map
+      <MapBase
         data={sampleGeoJson}
         width={400}
         height={300}
@@ -23,7 +23,7 @@ describe('mapMarker', () => {
           data-testid="map-marker"
           coordinates={[10, 10]}
         />
-      </Map>,
+      </MapBase>,
     )
 
     expect(screen.getByTestId('map-marker').getAttribute('transform')).toMatch(/^translate\(/)
@@ -44,7 +44,7 @@ describe('mapMarker', () => {
 
   it('recomputes marker transform when map context changes', () => {
     const { rerender } = render(
-      <Map
+      <MapBase
         data={sampleGeoJson}
         width={300}
       >
@@ -52,13 +52,13 @@ describe('mapMarker', () => {
           data-testid="map-marker-recomputed"
           coordinates={[5, 5]}
         />
-      </Map>,
+      </MapBase>,
     )
 
     const initialTransform = screen.getByTestId('map-marker-recomputed').getAttribute('transform')
 
     rerender(
-      <Map
+      <MapBase
         data={sampleGeoJson}
         width={700}
       >
@@ -66,7 +66,7 @@ describe('mapMarker', () => {
           data-testid="map-marker-recomputed"
           coordinates={[5, 5]}
         />
-      </Map>,
+      </MapBase>,
     )
 
     const nextTransform = screen.getByTestId('map-marker-recomputed').getAttribute('transform')

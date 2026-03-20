@@ -5,9 +5,9 @@
 <!-- TODO: check if it works with Solid and svelte -->
 ```ts
 const styles = {
-  default: { fill: 'green' }, // default state
-  hover: { fill: 'green', opacity: 0.8 }, // on hover
-  active: { fill: 'darkgreen' }, // on mousedown
+  default: { fill: 'lightblue' }, // default state
+  hover: { fill: 'skyblue' }, // on hover
+  active: { fill: 'lightskyblue' }, // on mousedown
 }
 ```
 
@@ -15,64 +15,52 @@ const styles = {
 
 == Vue
 
-```vue{8,10} [vue]
+```vue{9} [vue]
 <template>
-  <Map
+  <MapBase
     :data="data"
-    :projection="geoMercator"
+    :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
   >
     <MapZoom>
+      <MapGraticule border />
       <MapFeatures :styles="styles"/>
-      <MapMarker 
-        :styles="styles"
-        :coordinates="[-83.0457538, 42.331427]"
-      >
-        <text>Sweet home 🧡</text> 
-        <circle r="3" />  
-      </MapMarker>
-      <MapLine
-        :styles="styles"
-        :coordinates="[
-          [-83.0457538, 42.331427],
-          [-74.006, 40.7128],
-        ]"
-      />
       <MapMesh stroke="#fff" />
-      <MapGraticule stroke="#cbd5e1" />
+      <MapMarker :coordinates="[-83.0457538, 42.331427]">
+        <text
+          font-size="14"
+          y="-6"
+          text-anchor="middle"
+        >Sweet home 🧡</text>
+        <circle r="3" />
+      </MapMarker>
     </MapZoom>
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
-```tsx{7,9} [react]
-<Map
+```tsx{8,12,14} [react]
+<MapBase
   data={data}
-  projection={geoMercator}
+  projection={geoEquirectangular}
   dataTransformer={dataTransformer}
 >
   <MapZoom>
+    <MapGraticule border />
     <MapFeatures styles={styles} />
-    <MapMarker
-      styles={styles}
-      coordinates={[-83.0457538, 42.331427]}
-    >
-      <text>Sweet home 🧡</text>
+    <MapMesh stroke="#fff" />
+    <MapMarker coordinates={[-83.0457538, 42.331427]}>
+      <text
+        fontSize={14}
+        y={-6}
+        textAnchor={"middle"}
+      >Sweet home 🧡</text>
       <circle r="3" />
     </MapMarker>
-    <MapLine
-      styles={styles}
-      coordinates={[
-        [-83.0457538, 42.331427],
-        [-74.006, 40.7128],
-      ]}
-    />
-    <MapMesh stroke="#fff" />
-    <MapGraticule stroke="#cbd5e1" />
   </MapZoom>
-</Map>
+</MapBase>
 ```
 
 :::
@@ -85,7 +73,7 @@ You can define styles for map components via plain CSS
 
 | Component | CSS selector |
 | --- | --- |
-| [Map](/components/map) | `.d3-map` |
+| [MapBase](/components/map-base) | `.d3-map` |
 | [MapFeature](/components/map-feature) | `[name="feature"]` |
 | [MapMesh](/components/map-mesh) | `[name="mesh"]` |
 | [MapMarker](/components/map-marker) | `[name="marker"]` |

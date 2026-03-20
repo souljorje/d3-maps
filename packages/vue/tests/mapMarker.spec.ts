@@ -4,14 +4,14 @@ import { mount } from '@vue/test-utils'
 import { h } from 'vue'
 
 import {
-  Map,
+  MapBase,
   MapMarker,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
 describe('mapMarker', () => {
   it('uses projection transform from context', () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
         width: 400,
@@ -28,19 +28,8 @@ describe('mapMarker', () => {
     expect(wrapper.get('[data-testid="map-marker"]').attributes('transform')).toMatch(/^translate\(/)
   })
 
-  it('uses fallback transform without map context', () => {
-    const wrapper = mount(MapMarker, {
-      props: {
-        'data-testid': 'fallback-map-marker',
-        coordinates: [10, 10],
-      },
-    })
-
-    expect(wrapper.get('[data-testid="fallback-map-marker"]').attributes('transform')).toBe('translate(0, 0)')
-  })
-
   it('recomputes marker transform when map context changes', async () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
         width: 300,

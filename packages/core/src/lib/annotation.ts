@@ -1,11 +1,12 @@
 import type { MapContext } from './map'
-import type { MapObject } from './mapObject'
+import type { MapObjectProps } from './mapObject'
 
+import { getPointsLinePath } from './line'
 import { makeTransform } from './utils'
 
 export type MapAnnotationCoordinates = [number, number]
 
-export interface MapAnnotationProps<TStyle = unknown> extends MapObject<TStyle> {
+export interface MapAnnotationProps<TStyle = unknown> extends MapObjectProps<TStyle> {
   coordinates: MapAnnotationCoordinates
   length?: number
   angle?: number
@@ -41,11 +42,16 @@ export function getAnnotationGeometry(
   const radians = angle * Math.PI / 180
   const contentX = Math.cos(radians) * connectorEndX
   const contentY = Math.sin(radians) * connectorEndX
+  const connectorPath = getPointsLinePath([
+    [margin, 0],
+    [connectorEndX, 0],
+  ])
+  if (!connectorPath) return undefined
 
   return {
     anchorTransform: makeTransform(...projected),
     connectorTransform: `rotate(${angle})`,
-    connectorPath: `M ${margin} 0 L ${connectorEndX} 0`,
+    connectorPath,
     contentTransform: makeTransform(contentX, contentY),
   }
 }

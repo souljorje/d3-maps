@@ -6,15 +6,15 @@ import {
 } from '@testing-library/react'
 
 import {
-  Map,
   MapAnnotation,
+  MapBase,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
 describe('mapAnnotation', () => {
   it('renders connector and content inside map context', () => {
     const { container } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation"
@@ -22,7 +22,7 @@ describe('mapAnnotation', () => {
         >
           <text>Paris</text>
         </MapAnnotation>
-      </Map>,
+      </MapBase>,
     )
 
     expect(screen.getByTestId('annotation').getAttribute('name')).toBe('annotation')

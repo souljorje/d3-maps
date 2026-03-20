@@ -8,6 +8,7 @@
   * [getFeatureKey()](#getfeaturekey)
 * [Interfaces](#interfaces)
   * [MapFeatureProps](#mapfeatureprops)
+  * [MapFeaturesProps](#mapfeaturesprops)
 * [Type Aliases](#type-aliases)
   * [MapFeature](#mapfeature)
 
@@ -50,7 +51,7 @@ Shared props contract for a single rendered feature.
 
 #### Extends
 
-* [`MapObject`](mapObject.md#mapobject)<`TStyle`>
+* [`MapObjectProps`](mapObject.md#mapobjectprops)<`TStyle`>
 
 #### Type Parameters
 
@@ -63,7 +64,30 @@ Shared props contract for a single rendered feature.
 | Property | Type | Inherited from |
 | ------ | ------ | ------ |
 | <a id="property-data"></a> `data` | [`MapFeature`](#mapfeature) | - |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObject`](mapObject.md#mapobject).[`styles`](mapObject.md#property-styles) |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
+
+***
+
+### MapFeaturesProps
+
+Shared props contract for feature collections rendered from the current map context.
+
+#### Extends
+
+* `Omit`<[`MapFeatureProps`](#mapfeatureprops)<`TStyle`>, `"data"`>
+
+#### Type Parameters
+
+| Type Parameter | Default type |
+| ------ | ------ |
+| `TStyle` | `unknown` |
+
+#### Properties
+
+| Property | Type | Inherited from |
+| ------ | ------ | ------ |
+| <a id="property-idkey"></a> `idKey?` | `string` | - |
+| <a id="property-styles-1"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | `Omit.styles` |
 
 ## Type Aliases
 

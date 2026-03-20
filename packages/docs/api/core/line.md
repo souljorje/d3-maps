@@ -6,6 +6,7 @@
 
 * [Functions](#functions)
   * [getLinePath()](#getlinepath)
+  * [getPointsLinePath()](#getpointslinepath)
 * [Interfaces](#interfaces)
   * [MapLineProps](#maplineprops)
 * [Type Aliases](#type-aliases)
@@ -41,6 +42,25 @@ Coordinates must be `[longitude, latitude]`.
 
 `string` | `undefined`
 
+***
+
+### getPointsLinePath()
+
+```ts
+function getPointsLinePath(points: [number, number][], curve?: MapLineCurve): string | undefined;
+```
+
+#### Parameters
+
+| Parameter | Type | Default value |
+| ------ | ------ | ------ |
+| `points` | \[`number`, `number`]\[] | `undefined` |
+| `curve` | [`MapLineCurve`](#maplinecurve) | `curveLinear` |
+
+#### Returns
+
+`string` | `undefined`
+
 ## Interfaces
 
 ### MapLineProps
@@ -49,7 +69,7 @@ Shared props contract for geographic line layers.
 
 #### Extends
 
-* [`MapObject`](mapObject.md#mapobject)<`TStyle`>
+* [`MapObjectProps`](mapObject.md#mapobjectprops)<`TStyle`>
 
 #### Type Parameters
 
@@ -64,7 +84,7 @@ Shared props contract for geographic line layers.
 | <a id="property-coordinates"></a> `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) | - |
 | <a id="property-curve"></a> `curve?` | [`MapLineCurve`](#maplinecurve) | - |
 | <a id="property-custom"></a> `custom?` | `boolean` | - |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObject`](mapObject.md#mapobject).[`styles`](mapObject.md#property-styles) |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases
 

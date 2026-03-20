@@ -7,8 +7,8 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 
 | Step | Change |
 | --- | --- |
-| Data | `Geographies.geography` -> `Map.data` |
-| Data transform | `Geographies.parseGeographies` -> `Map.dataTransformer` |
+| Data | `Geographies.geography` -> `MapBase.data` |
+| Data transform | `Geographies.parseGeographies` -> `MapBase.dataTransformer` |
 | Style prop | `Geography.style` -> `MapFeature.styles` |
 | Style states | `style.pressed` -> `styles.active` |
 | Zoom wrapper | `ZoomableGroup` -> `MapZoom` |
@@ -20,13 +20,13 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 
 ## 1. Migrate data
 
-- `Geographies.geography` -> `Map.data`  
-  `Map.data` supports only data objects, not URLs, data fetching is non-opinionated
-- `Geographies.parseGeographies` -> `Map.dataTransformer`  
+- `Geographies.geography` -> `MapBase.data`  
+  `MapBase.data` supports only data objects, not URLs, data fetching is non-opinionated
+- `Geographies.parseGeographies` -> `MapBase.dataTransformer`  
 
 ```tsx
 import type { MapData } from '@d3-maps/core'
-import { Map, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapFeatures } from '@d3-maps/react'
 import { useEffect, useState } from 'react'
 
 export function WorldMap() {
@@ -41,12 +41,12 @@ export function WorldMap() {
   if (!data) return null
 
   return (
-    <Map
+    <MapBase
       data={data}
       dataTransformer={(features) => features.filter((f) => f.properties?.name !== 'Antarctica')}
     >
       <MapFeatures />
-    </Map>
+    </MapBase>
   )
 }
 ```
@@ -78,7 +78,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 - `onMoveEnd` -> `onZoomEnd`
 
 ```tsx
-<Map data={data}>
+<MapBase data={data}>
   <MapZoom
     center={[0, 0]}
     zoom={1}
@@ -90,7 +90,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
   >
     <MapFeatures />
   </MapZoom>
-</Map>
+</MapBase>
 ```
 
 ## 4. Rename marker component
@@ -109,10 +109,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 `Graticule` -> [MapGraticule](/components/map-graticule).
 
 ```tsx
-<Map data={data}>
-  <MapGraticule />
-  <MapFeatures />
-</Map>
+<MapGraticule />
 ```
 
 ## 6. Migrate sphere component
@@ -120,10 +117,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 `Sphere` -> [MapGraticule](/components/map-graticule) with `background` and/or `border`.
 
 ```tsx
-<Map data={data}>
-  <MapGraticule background="#eee" border="#333" />
-  <MapFeatures />
-</Map>
+<MapGraticule background="#eee" border="#333" />
 ```
 
 ## 7. Rename line component
@@ -146,7 +140,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 `Annotation` -> [MapAnnotation](/components/map-annotation)
 
 ```tsx
-<Map data={data}>
+<MapBase data={data}>
   <MapFeatures />
   <MapAnnotation
     coordinates={[2.3522, 48.8566]}
@@ -164,14 +158,14 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
       Paris
     </text>
   </MapAnnotation>
-</Map>
+</MapBase>
 ```
 
 ## Component mapping
 
 | react-simple-maps | d3-maps |
 | --- | --- |
-| [ComposableMap](https://www.react-simple-maps.io/docs/composable-map/) | [Map](/components/map) |
+| [ComposableMap](https://www.react-simple-maps.io/docs/composable-map/) | [MapBase](/components/map-base) |
 | [Geographies](https://www.react-simple-maps.io/docs/geographies/) | [MapFeatures](/components/map-features) |
 | [Geography](https://www.react-simple-maps.io/docs/geography/) | [MapFeature](/components/map-feature) |
 | [Marker](https://www.react-simple-maps.io/docs/marker/) | [MapMarker](/components/map-marker) |

@@ -21,7 +21,7 @@ describe('getAnnotationGeometry', () => {
     expect(geometry).toEqual({
       anchorTransform: `translate(${context.projection!(ANCHOR)![0]}, ${context.projection!(ANCHOR)![1]}) scale(1)`,
       connectorTransform: 'rotate(0)',
-      connectorPath: 'M 10 0 L 30 0',
+      connectorPath: 'M10,0L30,0',
       contentTransform: 'translate(30, 0) scale(1)',
     })
   })
@@ -36,6 +36,6 @@ describe('getAnnotationGeometry', () => {
 
     expect(geometry?.anchorTransform).not.toContain('rotate')
     expect(geometry?.connectorTransform).toBe('rotate(-15)')
-    expect(geometry?.connectorPath).toBe('M 0 0 L 40 0')
+    expect(geometry?.connectorPath).toBe('M0,0L40,0')
   })
 })
