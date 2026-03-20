@@ -9,7 +9,10 @@
 </template>
 
 <script setup lang="ts">
-import type { MapConfig, MapContext } from '@d3-maps/core'
+import type {
+  MapContext,
+  MapProps,
+} from '@d3-maps/core'
 
 import {
   computed,
@@ -20,15 +23,15 @@ import {
 import { useCreateMapContext } from '../hooks/useCreateMapContext'
 import { mapContextKey } from '../hooks/useMapContext'
 
-type MapConfigProps = MapConfig & {
+type MapConfigProps = MapProps & {
   context?: undefined
 }
-type MapContextProps = Partial<MapConfig> & {
+type MapContextProps = Partial<MapProps> & {
   context: MapContext
 }
-type MapProps = MapConfigProps | MapContextProps
+type Props = MapConfigProps | MapContextProps
 
-const props = defineProps<MapProps>()
+const props = defineProps<Props>()
 
 defineSlots<{
   default?: (props: MapContext) => unknown

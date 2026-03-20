@@ -1,6 +1,6 @@
 import type {
-  MapConfig,
   MapContext,
+  MapProps,
 } from '@d3-maps/core'
 import type {
   ComputedRef,
@@ -14,7 +14,7 @@ import {
 } from 'vue'
 
 export function useCreateMapContext(
-  config?: MaybeRef<Partial<MapConfig> | undefined>,
+  config?: MaybeRef<Partial<MapProps> | undefined>,
   context?: MaybeRef<MapContext | undefined>,
 ): ComputedRef<MapContext | undefined> {
   return computed(() => {
@@ -24,6 +24,6 @@ export function useCreateMapContext(
     const resolvedConfig = unref(config)
     if (!resolvedConfig?.data) return undefined
 
-    return makeMapContext(resolvedConfig as MapConfig)
+    return makeMapContext(resolvedConfig as MapProps)
   })
 }

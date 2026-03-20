@@ -33,13 +33,13 @@ bun add @d3-maps/react
 ## Usage
 
 ```tsx
-import { Map, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapFeatures } from '@d3-maps/react'
 
 export function App({ mapData }: { mapData: unknown }) {
   return (
-    <Map data={mapData}>
+    <MapBase data={mapData}>
       <MapFeatures />
-    </Map>
+    </MapBase>
   )
 }
 ```

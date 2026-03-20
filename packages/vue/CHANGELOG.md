@@ -1,5 +1,18 @@
 # @d3-maps/vue
 
+## 0.7.0
+
+### Minor Changes
+
+- [#23](https://github.com/souljorje/d3-maps/pull/23) [`c961754`](https://github.com/souljorje/d3-maps/commit/c961754f2b0f1790d07ae5c6f111645fd41ead6d) Thanks [@souljorje](https://github.com/souljorje)! - Renamed `Map` component to `MapBase`.
+
+- [#23](https://github.com/souljorje/d3-maps/pull/23) [`c961754`](https://github.com/souljorje/d3-maps/commit/c961754f2b0f1790d07ae5c6f111645fd41ead6d) Thanks [@souljorje](https://github.com/souljorje)! - rename shared component input types to use the props suffix
+
+### Patch Changes
+
+- Updated dependencies [[`c961754`](https://github.com/souljorje/d3-maps/commit/c961754f2b0f1790d07ae5c6f111645fd41ead6d)]:
+  - @d3-maps/core@0.7.0
+
 ## 0.6.0
 
 ### Minor Changes

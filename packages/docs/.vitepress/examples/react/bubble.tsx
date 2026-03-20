@@ -7,7 +7,7 @@ import {
   getInverseZoomScale,
 } from '@d3-maps/core'
 import {
-  Map,
+  MapBase,
   MapFeatures,
   MapMarker,
   MapMesh,
@@ -106,7 +106,7 @@ export default function BubbleExample(): JSX.Element {
   }
 
   return (
-    <Map
+    <MapBase
       data={mapData}
       projection={geoAlbersUsa}
     >
@@ -134,6 +134,6 @@ export default function BubbleExample(): JSX.Element {
         </g>
         <MapMesh />
       </MapZoom>
-    </Map>
+    </MapBase>
   )
 }

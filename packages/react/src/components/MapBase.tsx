@@ -1,8 +1,8 @@
 'use client'
 
 import type {
-  MapConfig,
   MapContext,
+  MapProps,
 } from '@d3-maps/core'
 import type {
   ReactElement,
@@ -13,24 +13,24 @@ import type {
 import { useCreateMapContext } from '../hooks/useCreateMapContext'
 import { MapContextValue } from '../hooks/useMapContext'
 
-type MapRenderProp = (context: MapContext) => ReactNode
-type BaseMapProps = Omit<SVGProps<SVGSVGElement>, keyof MapConfig | 'children'>
-type MapConfigProps = MapConfig & {
+type MapBaseRenderProp = (context: MapContext) => ReactNode
+type BaseMapProps = Omit<SVGProps<SVGSVGElement>, keyof MapProps | 'children'>
+type MapConfigProps = MapProps & {
   context?: undefined
 }
-type MapContextProps = Partial<MapConfig> & {
+type MapContextProps = Partial<MapProps> & {
   context: MapContext
 }
 
-export type MapProps = BaseMapProps & {
-  children?: ReactNode | MapRenderProp
+export type MapBaseProps = BaseMapProps & {
+  children?: ReactNode | MapBaseRenderProp
 } & (MapConfigProps | MapContextProps)
 
-function isRenderProp(children: MapProps['children']): children is MapRenderProp {
+function isRenderProp(children: MapBaseProps['children']): children is MapBaseRenderProp {
   return typeof children === 'function'
 }
 
-export function Map(props: MapProps): ReactElement {
+export function MapBase(props: MapBaseProps): ReactElement {
   const {
     children,
     className,
@@ -41,7 +41,7 @@ export function Map(props: MapProps): ReactElement {
   const resolvedContext = useCreateMapContext(props, providedContext)
 
   if (!resolvedContext) {
-    throw new Error('Map requires data or context')
+    throw new Error('MapBase requires data or context')
   }
 
   const resolvedChildren = isRenderProp(children)

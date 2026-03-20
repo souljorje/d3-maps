@@ -12,8 +12,8 @@
   * [makeMesh()](#makemesh)
   * [makeProjection()](#makeprojection)
 * [Interfaces](#interfaces)
-  * [MapConfig](#mapconfig)
   * [MapContext](#mapcontext)
+  * [MapProps](#mapprops)
   * [ProjectionConfig](#projectionconfig)
 * [Type Aliases](#type-aliases)
   * [DataTransformer()](#datatransformer)
@@ -87,16 +87,16 @@ Normalizes input map data to GeoJSON features.
 ### makeMapContext()
 
 ```ts
-function makeMapContext(__namedParameters: MapConfig): MapContext;
+function makeMapContext(__namedParameters: MapProps): MapContext;
 ```
 
-Creates a full [MapContext](#mapcontext) from a [MapConfig](#mapconfig).
+Creates a full [MapContext](#mapcontext) from a [MapProps](#mapprops).
 
 #### Parameters
 
 | Parameter | Type |
 | ------ | ------ |
-| `__namedParameters` | [`MapConfig`](#mapconfig) |
+| `__namedParameters` | [`MapProps`](#mapprops) |
 
 #### Returns
 
@@ -153,26 +153,6 @@ Creates a configured projection and fits it to the provided GeoJSON (if present)
 
 ## Interfaces
 
-### MapConfig
-
-Input configuration for creating a map context.
-
-In adapters, this is usually passed as component props.
-
-#### Properties
-
-| Property | Type | Description |
-| ------ | ------ | ------ |
-| <a id="property-aspectratio"></a> `aspectRatio?` | `number` | - |
-| <a id="property-data"></a> `data` | [`MapData`](#mapdata) | TopoJSON or GeoJSON input. TopoJSON is automatically converted to GeoJSON features. |
-| <a id="property-datatransformer"></a> `dataTransformer?` | [`DataTransformer`](#datatransformer) | Optional feature transformer (filter/augment/normalize features). |
-| <a id="property-height"></a> `height?` | `number` | - |
-| <a id="property-projection"></a> `projection?` | () => `GeoProjection` | Projection factory from d3-geo (or a compatible implementation). Example: `geoNaturalEarth1`. |
-| <a id="property-projectionconfig"></a> `projectionConfig?` | [`ProjectionConfig`](#projectionconfig) | Projection method arguments passed to the created projection |
-| <a id="property-width"></a> `width?` | `number` | - |
-
-***
-
 ### MapContext
 
 Fully computed, framework-agnostic map context.
@@ -184,11 +164,31 @@ Adapters provide this context to child layers (features, markers, custom SVG).
 | Property | Type | Description |
 | ------ | ------ | ------ |
 | <a id="property-features"></a> `features` | [`MapFeature`](feature.md#mapfeature)\[] | Normalized feature list after optional transformation. |
-| <a id="property-height-1"></a> `height` | `number` | Resolved SVG height used by the map. |
+| <a id="property-height"></a> `height` | `number` | Resolved SVG height used by the map. |
 | <a id="property-path"></a> `path` | `GeoPath` | Shared path generator bound to the map projection. |
-| <a id="property-projection-1"></a> `projection` | `GeoProjection` | Configured projection instance shared by map layers. |
+| <a id="property-projection"></a> `projection` | `GeoProjection` | Configured projection instance shared by map layers. |
 | <a id="property-rendermesh"></a> `renderMesh` | () => `string` | `null` | Renders a TopoJSON mesh path when one is available. |
-| <a id="property-width-1"></a> `width` | `number` | Resolved SVG width used by the map. |
+| <a id="property-width"></a> `width` | `number` | Resolved SVG width used by the map. |
+
+***
+
+### MapProps
+
+Shared props contract for the `Map` component.
+
+In adapters, this is usually passed as component props.
+
+#### Properties
+
+| Property | Type | Description |
+| ------ | ------ | ------ |
+| <a id="property-aspectratio"></a> `aspectRatio?` | `number` | - |
+| <a id="property-data"></a> `data` | [`MapData`](#mapdata) | TopoJSON or GeoJSON input. TopoJSON is automatically converted to GeoJSON features. |
+| <a id="property-datatransformer"></a> `dataTransformer?` | [`DataTransformer`](#datatransformer) | Optional feature transformer (filter/augment/normalize features). |
+| <a id="property-height-1"></a> `height?` | `number` | - |
+| <a id="property-projection-1"></a> `projection?` | () => `GeoProjection` | Projection factory from d3-geo (or a compatible implementation). Example: `geoNaturalEarth1`. |
+| <a id="property-projectionconfig"></a> `projectionConfig?` | [`ProjectionConfig`](#projectionconfig) | Projection method arguments passed to the created projection |
+| <a id="property-width-1"></a> `width?` | `number` | - |
 
 ***
 

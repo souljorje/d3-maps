@@ -6,7 +6,7 @@ import { mount } from '@vue/test-utils'
 import { h } from 'vue'
 
 import {
-  Map,
+  MapBase,
   MapFeatures,
   useCreateMapContext,
 } from '../src'
@@ -17,7 +17,7 @@ import {
 
 describe('map', () => {
   it('renders default viewBox from map defaults', () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
         'data-testid': 'map-svg',
@@ -28,7 +28,7 @@ describe('map', () => {
   })
 
   it('renders scoped-slot children with map context', () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
         width: 420,
@@ -45,7 +45,7 @@ describe('map', () => {
   })
 
   it('updates rendered features when map data prop changes', async () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },
@@ -91,7 +91,7 @@ describe('map', () => {
           h(Toolbar, {
             context: context.value,
           }),
-          h(Map, {
+          h(MapBase, {
             context: context.value,
             'data-testid': 'map-svg',
           }, {

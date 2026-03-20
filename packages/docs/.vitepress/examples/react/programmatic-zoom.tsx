@@ -14,7 +14,7 @@ import {
   getObjectZoomView,
 } from '@d3-maps/core'
 import {
-  Map,
+  MapBase,
   MapFeature,
   MapFeatures,
   MapGraticule,
@@ -150,7 +150,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
       className="grid gap-3"
     >
       <div style={{ aspectRatio: '2 / 1' }}>
-        <Map
+        <MapBase
           context={mapContext}
         >
           <MapZoom
@@ -189,7 +189,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
             </MapFeatures>
             <MapMesh pointerEvents="none" />
           </MapZoom>
-        </Map>
+        </MapBase>
       </div>
 
       <div className="flex flex-col items-center justify-center gap-2">

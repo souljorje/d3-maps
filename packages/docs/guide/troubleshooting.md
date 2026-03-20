@@ -3,7 +3,7 @@
 ## Blank map
 
 - Ensure the map container has a height (see [Responsiveness](/guide/core-concepts/#responsiveness))
-- Ensure `data` is loaded before rendering [Map](/components/map)
+- Ensure `data` is loaded before rendering [MapBase](/components/map-base)
 
 ## Markers appear in the wrong place
 

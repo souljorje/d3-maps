@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react'
 
 import {
-  Map,
+  MapBase,
   MapGraticule,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
@@ -15,12 +15,12 @@ import { sampleGeoJson } from './fixtures'
 describe('mapGraticule', () => {
   it('renders graticule lines inside map context', () => {
     render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapGraticule
           data-testid="map-graticule-lines"
           stroke="#334155"
         />
-      </Map>,
+      </MapBase>,
     )
 
     const lines = screen.getByTestId('map-graticule-lines')
@@ -31,9 +31,9 @@ describe('mapGraticule', () => {
 
   it('does not render outline path when background and border are absent', () => {
     const { container } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapGraticule data-testid="map-graticule-lines" />
-      </Map>,
+      </MapBase>,
     )
 
     expect(container.querySelectorAll('path')).toHaveLength(1)
@@ -41,12 +41,12 @@ describe('mapGraticule', () => {
 
   it('renders outline path when only background is provided', () => {
     const { container } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapGraticule
           data-testid="map-graticule-lines"
           background="#fef3c7"
         />
-      </Map>,
+      </MapBase>,
     )
 
     const [outlineFill, lines] = Array.from(container.querySelectorAll('path'))
@@ -60,12 +60,12 @@ describe('mapGraticule', () => {
 
   it('renders background outline without inline color when background is true', () => {
     const { container } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapGraticule
           data-testid="map-graticule-lines"
           background
         />
-      </Map>,
+      </MapBase>,
     )
 
     const [outlineFill, lines] = Array.from(container.querySelectorAll('path'))
@@ -77,12 +77,12 @@ describe('mapGraticule', () => {
 
   it('renders outline path when only border is provided', () => {
     const { container } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapGraticule
           data-testid="map-graticule-lines"
           border="#1e293b"
         />
-      </Map>,
+      </MapBase>,
     )
 
     const [lines, outlineStroke] = Array.from(container.querySelectorAll('path'))
@@ -95,12 +95,12 @@ describe('mapGraticule', () => {
 
   it('renders border outline without inline color when border is true', () => {
     const { container } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapGraticule
           data-testid="map-graticule-lines"
           border
         />
-      </Map>,
+      </MapBase>,
     )
 
     const [lines, outlineStroke] = Array.from(container.querySelectorAll('path'))
@@ -112,13 +112,13 @@ describe('mapGraticule', () => {
 
   it('renders fill-outline under lines and border-outline above lines', () => {
     const { container } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapGraticule
           data-testid="map-graticule-lines"
           background="#f8fafc"
           border="#475569"
         />
-      </Map>,
+      </MapBase>,
     )
 
     const [outlineFill, lines, outlineStroke] = Array.from(container.querySelectorAll('path'))
@@ -133,7 +133,7 @@ describe('mapGraticule', () => {
     const onMouseUp = vi.fn()
 
     render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapGraticule
           data-testid="map-graticule-lines"
           styles={{
@@ -143,7 +143,7 @@ describe('mapGraticule', () => {
           }}
           onMouseUp={onMouseUp}
         />
-      </Map>,
+      </MapBase>,
     )
 
     const lines = screen.getByTestId('map-graticule-lines')

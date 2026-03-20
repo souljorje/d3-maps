@@ -38,11 +38,11 @@ export interface ProjectionConfig
   extends Omit<MethodsToModifiers<GeoProjection>, 'invert' | 'stream'> {}
 
 /**
- * Input configuration for creating a map context.
+ * Shared props contract for the `Map` component.
  *
  * In adapters, this is usually passed as component props.
  */
-export interface MapConfig {
+export interface MapProps {
   width?: number
   height?: number
   aspectRatio?: number
@@ -164,7 +164,7 @@ export function makeMesh(geoData: MapData): MapMesh | undefined {
 }
 
 /**
- * Creates a full {@link MapContext} from a {@link MapConfig}.
+ * Creates a full {@link MapContext} from a {@link MapProps}.
  */
 export function makeMapContext({
   width = 600,
@@ -174,7 +174,7 @@ export function makeMapContext({
   dataTransformer,
   projection: providedProjection = geoNaturalEarth1,
   projectionConfig,
-}: MapConfig): MapContext {
+}: MapProps): MapContext {
   const features = makeFeatures(data, dataTransformer)
 
   const height = passedHeight || (width / aspectRatio)

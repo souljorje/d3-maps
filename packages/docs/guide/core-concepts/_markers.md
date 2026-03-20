@@ -11,7 +11,7 @@ Add any points to the map with [MapMarker](/components/map-marker)
 
 ```vue{11-18} [vue]
 <template>
-  <Map
+  <MapBase
     :data="data"
     :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
@@ -29,14 +29,14 @@ Add any points to the map with [MapMarker](/components/map-marker)
         <circle r="3" />
       </MapMarker>
     </MapZoom>
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx{10-17} [react]
-<Map
+<MapBase
   data={data}
   projection={geoEquirectangular}
   dataTransformer={dataTransformer}
@@ -47,14 +47,14 @@ Add any points to the map with [MapMarker](/components/map-marker)
     <MapMesh stroke="#fff" />
     <MapMarker coordinates={[-83.0457538, 42.331427]}>
       <text
-        font-size={14}
+        fontSize={14}
         y={-6}
-        text-anchor={"middle"}
+        textAnchor={"middle"}
       >Sweet home 🧡</text>
       <circle r="3" />
     </MapMarker>
   </MapZoom>
-</Map>
+</MapBase>
 ```
 
 :::

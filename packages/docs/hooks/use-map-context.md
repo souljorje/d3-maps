@@ -1,10 +1,8 @@
 # useMapContext
 
-Reads the current map context from [Map](/components/map)
-
-Use it in custom layers when you need the resolved map size, normalized features, or the shared path generator
-
-Throws if used outside `Map`
+Reads the current map context from [MapBase](/components/map-base).  
+Use it in custom layers when you need the resolved map size, normalized features, or the shared path generator.  
+Throws an error if used outside `MapBase`
 
 ## Return value
 

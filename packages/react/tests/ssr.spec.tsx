@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { renderToString } from 'react-dom/server'
 
 import {
-  Map,
+  MapBase,
   MapFeatures,
   MapZoom,
 } from '../src'
@@ -13,11 +13,11 @@ import { sampleGeoJson } from './fixtures'
 describe('SSR', () => {
   it('renders map component tree without DOM access errors', () => {
     const html = renderToString(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapZoom>
           <MapFeatures />
         </MapZoom>
-      </Map>,
+      </MapBase>,
     )
 
     expect(html).toContain('<svg')

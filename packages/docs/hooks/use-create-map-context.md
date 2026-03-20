@@ -2,7 +2,7 @@
 
 Creates a reusable map context in the parent
 
-Use it when `Map` and sibling UI should share the same resolved map state
+Use it when `MapBase` and sibling UI should share the same resolved map state
 
 ## Return value
 
@@ -17,12 +17,11 @@ See [MapContext API](/api/core/map#mapcontext)
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `config?` | `MapConfig` | Used to create a new context when `context` is not provided |
-| `context?` | `MapContext` | Optional existing context to reuse instead of creating a new one |
+| `config?` | `MapProps` | Used to create a new context when `context` is not provided |
 
 ## Usage
 
-Create the context once in the parent, pass it to sibling UI by prop, and pass the same object into `Map`
+Create the context once in the parent, pass it to sibling UI by prop, and pass the same object into `MapBase`
 
 :::tabs key:framework
 
@@ -33,7 +32,7 @@ Create the context once in the parent, pass it to sibling UI by prop, and pass t
 import type { MapData } from '@d3-maps/core'
 
 import { computed } from 'vue'
-import { Map, MapFeatures, useCreateMapContext } from '@d3-maps/vue'
+import { useCreateMapContext } from '@d3-maps/vue'
 
 const props = defineProps<{
   data: MapData
@@ -47,9 +46,9 @@ const context = useCreateMapContext(computed(() => ({
 
 <template>
   <Toolbar :context="context" />
-  <Map :context="context">
+  <MapBase :context="context">
     <MapFeatures />
-  </Map>
+  </MapBase>
 </template>
 ```
 
@@ -58,7 +57,7 @@ const context = useCreateMapContext(computed(() => ({
 ```tsx
 import type { MapData } from '@d3-maps/core'
 
-import { Map, MapFeatures, useCreateMapContext } from '@d3-maps/react'
+import { MapBase, MapFeatures, useCreateMapContext } from '@d3-maps/react'
 
 export function Example({ data }: { data: MapData }) {
   const context = useCreateMapContext({
@@ -71,9 +70,9 @@ export function Example({ data }: { data: MapData }) {
   return (
     <>
       <Toolbar context={context} />
-      <Map context={context}>
+      <MapBase context={context}>
         <MapFeatures />
-      </Map>
+      </MapBase>
     </>
   )
 }
@@ -85,6 +84,6 @@ If neither `config.data` nor `context` is available yet, the hook returns `undef
 
 ## Best Practice
 
-- Use `useCreateMapContext` in the parent when controls, toolbars, or other sibling UI need the same map context as `Map`
-- Use [useMapContext](/hooks/use-map-context) inside custom layers rendered under `Map`
-- Use `Map` slot or render-prop context when that already gives you what you need
+- Use `useCreateMapContext` in the parent when controls, toolbars, or other sibling UI need the same map context as `MapBase`
+- Use [useMapContext](/hooks/use-map-context) inside custom layers rendered under `MapBase`
+- Use `MapBase` slot or render-prop context when that already gives you what you need

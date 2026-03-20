@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils'
 import { h } from 'vue'
 
 import {
-  Map,
+  MapBase,
   MapMesh,
 } from '../src'
 import {
@@ -14,7 +14,7 @@ import {
 
 describe('mapMesh', () => {
   it('renders mesh for topology data with default fill', () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleTopology,
       },
@@ -30,7 +30,7 @@ describe('mapMesh', () => {
   })
 
   it('renders mesh path without topology geometry', () => {
-    const wrapper = mount(Map, {
+    const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },

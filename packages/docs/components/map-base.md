@@ -1,4 +1,4 @@
-# Map
+# MapBase
 
 Renders the root `<svg>` and provides a reactive map context to children.
 
@@ -13,7 +13,7 @@ Renders the root `<svg>` and provides a reactive map context to children.
 | `projection?` | `() => GeoProjection` | `geoNaturalEarth1` | d3-geo projection factory |
 | `projectionConfig?` | [ProjectionConfig](/api/core/map#projectionconfig) | — | See the [guide](#projectionconfig) below |
 | `dataTransformer?` | [DataTransformer](/api/core/map#datatransformer) | — | Optional transform applied to GeoJSON features before rendering |
-| `context?` | [MapContext](/api/core/map#mapcontext) | — | Optional externally created context. When provided, `Map` uses it instead of creating one from props, and `data` is not required |
+| `context?` | [MapContext](/api/core/map#mapcontext) | — | Optional externally created context. When provided, `MapBase` uses it instead of creating one from props, and `data` is not required |
 
 ### projectionConfig
 
@@ -47,10 +47,14 @@ Source: [packes/core/src/lib/map.ts](https://github.com/souljorje/d3-maps/blob/m
 import type { MapData } from '@d3-maps/core'
 
 import { geoEquirectangular } from 'd3-geo'
+
+defineProps<{
+  data: MapData
+}>()
 </script>
 
 <template>
-  <Map
+  <MapBase
     :data="data"
     :data-transformer="(features) => features.map(/* some logic */)"
     :aspect-ratio="2 / 1"
@@ -62,7 +66,7 @@ import { geoEquirectangular } from 'd3-geo'
     }"
   >
     <MapFeatures />
-  </Map>
+  </MapBase>
 </template>
 ```
 
@@ -72,11 +76,11 @@ import { geoEquirectangular } from 'd3-geo'
 import type { MapData } from '@d3-maps/core'
 
 import { geoEquirectangular } from 'd3-geo'
-import { Map, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapFeatures } from '@d3-maps/react'
 
 export function Example({ data }: { data: MapData }) {
   return (
-    <Map
+    <MapBase
       data={data}
       dataTransformer={(features) => features.map(/* some logic */)}
       aspectRatio={2 / 1}
@@ -88,7 +92,7 @@ export function Example({ data }: { data: MapData }) {
       }}
     >
       <MapFeatures />
-    </Map>
+    </MapBase>
   )
 }
 ```
@@ -100,11 +104,11 @@ export function Example({ data }: { data: MapData }) {
 - See [useCreateMapContext](/hooks/use-create-map-context)
 - See [useMapContext](/hooks/use-map-context)
 
-For adapter code and docs examples, prefer [useMapContext](/hooks/use-map-context) or `Map` slot/render-prop context over rebuilding a separate map context manually
+For adapter code and docs examples, prefer [useMapContext](/hooks/use-map-context) or `MapBase` slot/render-prop context over rebuilding a separate map context manually
 
 ## Advanced Composition
 
-If controls or other consumers need the same map context outside the rendered `<svg>`, create the context once in the parent, pass it to sibling UI by prop, and pass the same object into `Map`.
+If controls or other consumers need the same map context outside the rendered `<svg>`, create the context once in the parent, pass it to sibling UI by prop, and pass the same object into `MapBase`.
 
 :::tabs key:framework
 
@@ -115,7 +119,7 @@ If controls or other consumers need the same map context outside the rendered `<
 import type { MapData } from '@d3-maps/core'
 
 import { computed } from 'vue'
-import { Map, MapFeatures, useCreateMapContext } from '@d3-maps/vue'
+import { useCreateMapContext } from '@d3-maps/vue'
 
 const props = defineProps<{
   data: MapData
@@ -129,9 +133,9 @@ const context = useCreateMapContext(computed(() => ({
 
 <template>
   <Toolbar :context="context" />
-  <Map :context="context">
+  <MapBase :context="context">
     <MapFeatures />
-  </Map>
+  </MapBase>
 </template>
 ```
 
@@ -140,7 +144,7 @@ const context = useCreateMapContext(computed(() => ({
 ```tsx
 import type { MapData } from '@d3-maps/core'
 
-import { Map, MapFeatures, useCreateMapContext } from '@d3-maps/react'
+import { MapBase, MapFeatures, useCreateMapContext } from '@d3-maps/react'
 
 export function Example({ data }: { data: MapData }) {
   const context = useCreateMapContext({
@@ -153,9 +157,9 @@ export function Example({ data }: { data: MapData }) {
   return (
     <>
       <Toolbar context={context} />
-      <Map context={context}>
+      <MapBase context={context}>
         <MapFeatures />
-      </Map>
+      </MapBase>
     </>
   )
 }

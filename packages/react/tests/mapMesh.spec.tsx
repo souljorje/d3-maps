@@ -6,7 +6,7 @@ import {
 } from '@testing-library/react'
 
 import {
-  Map,
+  MapBase,
   MapMesh,
 } from '../src'
 import {
@@ -17,12 +17,12 @@ import {
 describe('mapMesh', () => {
   it('renders mesh for topology data with default fill', () => {
     render(
-      <Map data={sampleTopology}>
+      <MapBase data={sampleTopology}>
         <MapMesh
           data-testid="map-mesh"
           stroke="#000"
         />
-      </Map>,
+      </MapBase>,
     )
 
     const mesh = screen.getByTestId('map-mesh')
@@ -31,9 +31,9 @@ describe('mapMesh', () => {
 
   it('renders mesh path without topology geometry', () => {
     const { container } = render(
-      <Map data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
         <MapMesh />
-      </Map>,
+      </MapBase>,
     )
 
     const path = container.querySelector('path')

@@ -18,7 +18,7 @@ import {
 } from 'vue'
 
 import {
-  Map,
+  MapBase,
   MapZoom,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
@@ -79,7 +79,7 @@ describe('mapZoom', () => {
         }
       },
       render() {
-        return h(Map, {
+        return h(MapBase, {
           data: sampleGeoJson,
         }, {
           default: () => h(MapZoom, {

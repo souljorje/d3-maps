@@ -21,7 +21,7 @@ To use `focus` styles, make the path focusable with `tabindex="0"` / `tabIndex={
 
 ```vue
 <template>
-  <Map :data="mapData">
+  <MapBase :data="mapData">
     <MapFeatures #default="{ features }">
       <MapFeature
         v-for="feature in features"
@@ -47,14 +47,14 @@ To use `focus` styles, make the path focusable with `tabindex="0"` / `tabIndex={
         tabindex="0"
       />
     </MapFeatures>
-  </Map>
+  </MapBase>
 </template>
 ```
 
 == React
 
 ```tsx
-<Map data={mapData}>
+<MapBase data={mapData}>
   <MapFeatures>
     {({ features }) => (
       <>
@@ -85,7 +85,7 @@ To use `focus` styles, make the path focusable with `tabindex="0"` / `tabIndex={
       </>
     )}
   </MapFeatures>
-</Map>
+</MapBase>
 ```
 
 :::

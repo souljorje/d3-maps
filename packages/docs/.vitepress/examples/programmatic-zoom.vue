@@ -5,7 +5,7 @@
     class="grid gap-3"
   >
     <div class="relative aspect-2/1">
-      <Map
+      <MapBase
         :context="mapContext"
       >
         <MapZoom
@@ -43,7 +43,7 @@
           </MapFeatures>
           <MapMesh pointer-events="none" />
         </MapZoom>
-      </Map>
+      </MapBase>
     </div>
     <div class="flex flex-col justify-center items-center gap-2">
       <div>
@@ -92,7 +92,6 @@
 <script setup lang="ts">
 import type {
   MapFeature as D3MapFeature,
-  MapConfig,
   MapData,
   ProjectionConfig,
 } from '@d3-maps/core'
@@ -123,9 +122,7 @@ const zoom = ref(initialZoom)
 const activeCountryLabel = ref('World')
 const mapRoot = ref<HTMLElement | null>(null)
 
-const mapContext = useCreateMapContext(computed<MapConfig | undefined>(() => {
-  if (!data.value) return undefined
-
+const mapContext = useCreateMapContext(computed(() => {
   return {
     data: data.value,
     projectionConfig,

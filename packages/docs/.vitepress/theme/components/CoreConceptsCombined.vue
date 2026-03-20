@@ -1,6 +1,6 @@
 <template>
   <div style="aspect-ratio: 2 / 1">
-    <Map
+    <MapBase
       v-if="data"
       :data="data"
       :data-transformer="dataTransformer"
@@ -24,11 +24,13 @@
             font-size="14"
             y="-6"
             text-anchor="middle"
-          >Sweet home 🧡</text>
+          >
+            Sweet home 🧡
+          </text>
           <circle r="3" />
         </MapMarker>
       </MapZoom>
-    </Map>
+    </MapBase>
   </div>
 </template>
 
