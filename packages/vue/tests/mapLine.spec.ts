@@ -149,4 +149,38 @@ describe('mapLine', () => {
 
     expect(curvedWrapper.find('[data-testid="map-line-curved"]').attributes('d')).not.toBe(linearPath)
   })
+
+  it('uses the manual connector renderer when curve is numeric', () => {
+    const linearWrapper = mount(MapBase, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapLine, {
+          coordinates: THREE_POINT_COORDINATES,
+          custom: true,
+          'data-testid': 'map-line-curved',
+        }),
+      },
+    })
+
+    const linearPath = linearWrapper.find('[data-testid="map-line-curved"]').attributes('d')
+    linearWrapper.unmount()
+
+    const connectorWrapper = mount(MapBase, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapLine, {
+          coordinates: THREE_POINT_COORDINATES,
+          custom: true,
+          curve: 0.5,
+          'data-testid': 'map-line-curved',
+        }),
+      },
+    })
+
+    expect(connectorWrapper.find('[data-testid="map-line-curved"]').attributes('d')).not.toBe(linearPath)
+  })
 })

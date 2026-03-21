@@ -15,6 +15,29 @@ import {
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
+function offsetCurve(context: {
+  moveTo: (x: number, y: number) => void
+  lineTo: (x: number, y: number) => void
+}) {
+  let pointIndex = 0
+
+  return {
+    lineStart() {
+      pointIndex = 0
+    },
+    lineEnd() {},
+    point(x: number, y: number) {
+      if (pointIndex === 0) {
+        context.moveTo(x, y)
+      } else {
+        context.lineTo(x, y + 1)
+      }
+
+      pointIndex += 1
+    },
+  }
+}
+
 describe('mapAnnotation', () => {
   it('renders connector and content inside map context', () => {
     const { container } = render(
@@ -52,5 +75,63 @@ describe('mapAnnotation', () => {
 
     expect(screen.queryByTestId('annotation-line')).toBeNull()
     expect(screen.queryByText('Paris')).toBeNull()
+  })
+
+  it('uses the provided D3 curve for the connector path', () => {
+    const { rerender } = render(
+      <MapBase data={sampleGeoJson}>
+        <MapAnnotation
+          coordinates={[2.3522, 48.8566]}
+          data-testid="annotation-line"
+        >
+          <text>Paris</text>
+        </MapAnnotation>
+      </MapBase>,
+    )
+
+    const linearPath = screen.getByTestId('annotation-line').getAttribute('d')
+
+    rerender(
+      <MapBase data={sampleGeoJson}>
+        <MapAnnotation
+          coordinates={[2.3522, 48.8566]}
+          data-testid="annotation-line"
+          curve={offsetCurve}
+        >
+          <text>Paris</text>
+        </MapAnnotation>
+      </MapBase>,
+    )
+
+    expect(screen.getByTestId('annotation-line').getAttribute('d')).not.toBe(linearPath)
+  })
+
+  it('uses the manual connector renderer when curve is numeric', () => {
+    const { rerender } = render(
+      <MapBase data={sampleGeoJson}>
+        <MapAnnotation
+          coordinates={[2.3522, 48.8566]}
+          data-testid="annotation-line"
+        >
+          <text>Paris</text>
+        </MapAnnotation>
+      </MapBase>,
+    )
+
+    const linearPath = screen.getByTestId('annotation-line').getAttribute('d')
+
+    rerender(
+      <MapBase data={sampleGeoJson}>
+        <MapAnnotation
+          coordinates={[2.3522, 48.8566]}
+          data-testid="annotation-line"
+          curve={0.5}
+        >
+          <text>Paris</text>
+        </MapAnnotation>
+      </MapBase>,
+    )
+
+    expect(screen.getByTestId('annotation-line').getAttribute('d')).not.toBe(linearPath)
   })
 })

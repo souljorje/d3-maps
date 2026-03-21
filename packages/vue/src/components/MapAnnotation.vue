@@ -47,6 +47,7 @@ const geometry = computed(() => (
     length: props.length,
     angle: props.angle,
     margin: props.margin,
+    curve: props.curve,
   })
 ))
 </script>

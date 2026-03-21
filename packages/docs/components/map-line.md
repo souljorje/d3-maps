@@ -8,7 +8,7 @@ Renders a path between map locations
 | --- | --- | --- | --- |
 | `coordinates` | `[number, number][]` | — | `[longitude, latitude][]` |
 | `custom?` | `boolean` | `false` | Render using [d3-shape line](https://d3js.org/d3-shape/line) instead of default* |
-| `curve?` | `CurveFactory \| CurveFactoryLineOnly` | — | Used only when `custom` is enabled. See [d3-shape curve](https://d3js.org/d3-shape/curve) |
+| `curve?` | `number \| CurveFactory \| CurveFactoryLineOnly` | — | Used only when `custom` is enabled. A function uses D3 interpolation, a number uses the manual connector renderer |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 \* By default renders [great arc](https://en.wikipedia.org/wiki/Great-circle_distance) using [d3-geo path](https://d3js.org/d3-geo/path#_path) with `'LineString'`
@@ -71,4 +71,6 @@ See how it's done in [connections example](/examples/connections)
 
 Use default `MapLine` rendering when you want geodesic `LineString` behavior.
 
-Use `custom` when you want projected control over the path shape, and pass a D3 `curve` when you want interpolation beyond the default straight line.
+Use `custom` when you want projected control over the path shape.
+
+Pass a D3 `curve` function for D3 interpolation, or pass a number like `0.5` to use the manual connector renderer.

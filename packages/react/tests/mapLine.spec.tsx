@@ -169,4 +169,31 @@ describe('mapLine', () => {
 
     expect(screen.getByTestId('map-line-curved').getAttribute('d')).not.toBe(linearPath)
   })
+
+  it('uses the manual connector renderer when curve is numeric', () => {
+    const { rerender } = render(
+      <MapBase data={sampleGeoJson}>
+        <MapLine
+          data-testid="map-line-curved"
+          coordinates={THREE_POINT_COORDINATES}
+          custom
+        />
+      </MapBase>,
+    )
+
+    const linearPath = screen.getByTestId('map-line-curved').getAttribute('d')
+
+    rerender(
+      <MapBase data={sampleGeoJson}>
+        <MapLine
+          data-testid="map-line-curved"
+          coordinates={THREE_POINT_COORDINATES}
+          custom
+          curve={0.5}
+        />
+      </MapBase>,
+    )
+
+    expect(screen.getByTestId('map-line-curved').getAttribute('d')).not.toBe(linearPath)
+  })
 })

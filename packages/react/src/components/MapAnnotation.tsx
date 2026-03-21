@@ -27,6 +27,7 @@ export function MapAnnotation({
   length,
   angle,
   margin,
+  curve,
   styles,
   children,
   ...pathProps
@@ -36,11 +37,13 @@ export function MapAnnotation({
       length,
       angle,
       margin,
+      curve,
     })
   }, [
     length,
     angle,
     margin,
+    curve,
   ])
 
   const { style, ...events } = useMapObject<SVGGElement>({

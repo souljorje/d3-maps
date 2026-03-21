@@ -4,6 +4,7 @@ import {
   MapAnnotation,
   MapBase,
   MapFeatures,
+  MapMarker,
 } from '@d3-maps/react'
 import {
   useEffect,
@@ -11,13 +12,13 @@ import {
 } from 'react'
 import { withBase } from 'vitepress'
 
-interface Sity {
+interface City {
   name: string
   coordinates: [number, number]
   color: string
 }
 
-const sities: Sity[] = [
+const cities: City[] = [
   {
     name: 'Paris',
     coordinates: [2.3522, 48.8566],
@@ -56,24 +57,37 @@ export default function AnnotationExample(): JSX.Element | null {
     ? (
         <MapBase data={mapData}>
           <MapFeatures />
-          {sities.map((sity) => (
+          {cities.map((city) => (
             <MapAnnotation
-              key={sity.name}
-              coordinates={sity.coordinates}
-              stroke={sity.color}
+              key={city.name}
+              coordinates={city.coordinates}
+              stroke={city.color}
               length={40}
               angle={-90}
               margin={2}
+              curve={0.5}
               strokeWidth={2}
             >
               <text
                 y={-6}
                 textAnchor="middle"
                 fontSize={12}
+                fill={city.color}
               >
-                {sity.name}
+                {city.name}
               </text>
             </MapAnnotation>
+          ))}
+          {cities.map((city) => (
+            <MapMarker
+              key={`${city.name}-marker`}
+              coordinates={city.coordinates}
+            >
+              <circle
+                fill={city.color}
+                r={3}
+              />
+            </MapMarker>
           ))}
         </MapBase>
       )

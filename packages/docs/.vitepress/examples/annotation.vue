@@ -12,11 +12,13 @@
         :coordinates="city.coordinates"
         :stroke="city.color"
         :length="40"
-        :angle="195"
-        :margin="4"
+        :angle="-90"
+        :margin="2"
+        :curve="0.5"
+        :stroke-width="2"
       >
         <text
-          y="-4"
+          y="-6"
           text-anchor="middle"
           font-size="12"
           :fill="city.color"

@@ -13,6 +13,29 @@ import {
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
+function offsetCurve(context: {
+  moveTo: (x: number, y: number) => void
+  lineTo: (x: number, y: number) => void
+}) {
+  let pointIndex = 0
+
+  return {
+    lineStart() {
+      pointIndex = 0
+    },
+    lineEnd() {},
+    point(x: number, y: number) {
+      if (pointIndex === 0) {
+        context.moveTo(x, y)
+      } else {
+        context.lineTo(x, y + 1)
+      }
+
+      pointIndex += 1
+    },
+  }
+}
+
 describe('mapAnnotation', () => {
   it('renders connector and content inside map context', () => {
     const wrapper = mount(MapBase, {
@@ -54,5 +77,77 @@ describe('mapAnnotation', () => {
 
     expect(wrapper.find('[data-testid="annotation-line"]').exists()).toBe(false)
     expect(wrapper.text()).not.toContain('Paris')
+  })
+
+  it('uses the provided D3 curve for the connector path', () => {
+    const linearWrapper = mount(MapBase, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapAnnotation, {
+          coordinates: [2.3522, 48.8566],
+          'data-testid': 'annotation-line',
+        }, {
+          default: () => h('text', 'Paris'),
+        }),
+      },
+    })
+
+    const linearPath = linearWrapper.find('[data-testid="annotation-line"]').attributes('d')
+    linearWrapper.unmount()
+
+    const curvedWrapper = mount(MapBase, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapAnnotation, {
+          coordinates: [2.3522, 48.8566],
+          curve: offsetCurve,
+          'data-testid': 'annotation-line',
+        }, {
+          default: () => h('text', 'Paris'),
+        }),
+      },
+    })
+
+    expect(curvedWrapper.find('[data-testid="annotation-line"]').attributes('d')).not.toBe(linearPath)
+  })
+
+  it('uses the manual connector renderer when curve is numeric', () => {
+    const linearWrapper = mount(MapBase, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapAnnotation, {
+          coordinates: [2.3522, 48.8566],
+          'data-testid': 'annotation-line',
+        }, {
+          default: () => h('text', 'Paris'),
+        }),
+      },
+    })
+
+    const linearPath = linearWrapper.find('[data-testid="annotation-line"]').attributes('d')
+    linearWrapper.unmount()
+
+    const curvedWrapper = mount(MapBase, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapAnnotation, {
+          coordinates: [2.3522, 48.8566],
+          curve: 0.5,
+          'data-testid': 'annotation-line',
+        }, {
+          default: () => h('text', 'Paris'),
+        }),
+      },
+    })
+
+    expect(curvedWrapper.find('[data-testid="annotation-line"]').attributes('d')).not.toBe(linearPath)
   })
 })
