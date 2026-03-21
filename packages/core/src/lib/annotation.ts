@@ -20,7 +20,7 @@ export interface MapAnnotationProps<TStyle = unknown> extends MapObjectProps<TSt
 
 export interface MapAnnotationGeometry {
   lineTransform: string
-  linePath: string | null
+  linePath?: string
   contentTransform: string
 }
 
