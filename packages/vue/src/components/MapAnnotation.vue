@@ -2,13 +2,14 @@
   <MapMarker
     :coordinates="coordinates"
     name="annotation"
-    v-on="events"
   >
     <g :transform="geometry.lineTransform">
-      <path
+      <MapLine
         v-bind="$attrs"
-        :d="geometry.linePath"
-        :style="style"
+        :coordinates="geometry.lineCoordinates"
+        cartesian
+        :curve="curve"
+        :styles="styles"
         fill="none"
         name="annotation-line"
       />
@@ -27,12 +28,9 @@ import type { MapAnnotationProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
 import { getAnnotationGeometry } from '@d3-maps/core'
-import {
-  computed,
-  toRef,
-} from 'vue'
+import { computed } from 'vue'
 
-import { useMapObject } from '../hooks/useMapObject'
+import MapLine from './MapLine.vue'
 import MapMarker from './MapMarker.vue'
 
 defineOptions({
@@ -40,7 +38,6 @@ defineOptions({
 })
 
 const props = defineProps<MapAnnotationProps<StyleValue>>()
-const { style, ...events } = useMapObject(toRef(props, 'styles'))
 
 const geometry = computed(() => (
   getAnnotationGeometry({

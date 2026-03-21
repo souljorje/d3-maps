@@ -67,6 +67,24 @@ describe('getLinePath', () => {
     expect(connectorPath).toBeDefined()
     expect(connectorPath).not.toBe(d3Path)
   })
+
+  it('renders cartesian paths without map context', () => {
+    const path = getLinePath(undefined, [
+      [0, 0],
+      [40, 0],
+    ], false, undefined, true)
+
+    expect(path).toBe('M0,0L40,0')
+  })
+
+  it('renders cartesian connector paths without map context', () => {
+    const path = getLinePath(undefined, [
+      [0, 0],
+      [40, 0],
+    ], false, 0.5, true)
+
+    expect(path).toBe('M0,0Q30,0 40,0')
+  })
 })
 
 describe('getConnectorLinePath', () => {

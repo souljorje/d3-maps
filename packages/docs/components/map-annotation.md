@@ -22,6 +22,8 @@ Use `curve` when you want a shaped connector instead of a straight segment.
 
 Pass a D3 curve factory for D3 interpolation, or pass a number like `0.5` to use the manual connector renderer.
 
+Internally the connector is rendered through `MapLine` in cartesian mode.
+
 ## Usage
 
 :::tabs key:framework

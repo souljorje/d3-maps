@@ -85,6 +85,23 @@ describe('mapLine', () => {
     expect(screen.getByTestId('map-line-fallback').getAttribute('d')).toBeNull()
   })
 
+  it('renders cartesian paths without map context', () => {
+    render(
+      <svg>
+        <MapLine
+          data-testid="map-line-cartesian"
+          coordinates={[
+            [0, 0],
+            [40, 0],
+          ]}
+          cartesian
+        />
+      </svg>,
+    )
+
+    expect(screen.getByTestId('map-line-cartesian').getAttribute('d')).toBe('M0,0L40,0')
+  })
+
   it('recomputes line path when map context changes', () => {
     const { rerender } = render(
       <MapBase

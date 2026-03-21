@@ -7,8 +7,9 @@ Renders a path between map locations
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `coordinates` | `[number, number][]` | — | `[longitude, latitude][]` |
+| `cartesian?` | `boolean` | `false` | Treat `coordinates` as local SVG points and skip map projection |
 | `custom?` | `boolean` | `false` | Render using [d3-shape line](https://d3js.org/d3-shape/line) instead of default* |
-| `curve?` | `number \| CurveFactory \| CurveFactoryLineOnly` | — | Used only when `custom` is enabled. A function uses D3 interpolation, a number uses the manual connector renderer |
+| `curve?` | `number \| CurveFactory \| CurveFactoryLineOnly` | — | Used when `custom` or `cartesian` is enabled. A function uses D3 interpolation, a number uses the manual connector renderer |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 \* By default renders [great arc](https://en.wikipedia.org/wiki/Great-circle_distance) using [d3-geo path](https://d3js.org/d3-geo/path#_path) with `'LineString'`
@@ -70,6 +71,8 @@ See how it's done in [connections example](/examples/connections)
 :::
 
 Use default `MapLine` rendering when you want geodesic `LineString` behavior.
+
+Use `cartesian` when you already have local SVG points and do not want map projection.
 
 Use `custom` when you want projected control over the path shape.
 

@@ -74,7 +74,7 @@ readonly margin: 0 = 0;
 | Property | Type |
 | ------ | ------ |
 | <a id="property-contenttransform"></a> `contentTransform` | `string` |
-| <a id="property-linepath"></a> `linePath?` | `string` |
+| <a id="property-linecoordinates"></a> `lineCoordinates` | [`MapAnnotationCoordinates`](#mapannotationcoordinates)\[] |
 | <a id="property-linetransform"></a> `lineTransform` | `string` |
 
 ***

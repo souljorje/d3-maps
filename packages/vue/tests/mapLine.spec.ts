@@ -82,6 +82,23 @@ describe('mapLine', () => {
     expect(nextPath).not.toBe(initialPath)
   })
 
+  it('renders cartesian paths without map context', () => {
+    const wrapper = mount(MapLine, {
+      props: {
+        coordinates: [
+          [0, 0],
+          [40, 0],
+        ],
+        cartesian: true,
+      },
+      attrs: {
+        'data-testid': 'map-line-cartesian',
+      },
+    })
+
+    expect(wrapper.find('[data-testid="map-line-cartesian"]').attributes('d')).toBe('M0,0L40,0')
+  })
+
   it('renders a path for multi-point coordinates', () => {
     const wrapper = mount(MapBase, {
       props: {

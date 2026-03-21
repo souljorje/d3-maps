@@ -19,9 +19,11 @@ export interface MapLineProps
 
 export function MapLine({
   coordinates,
+  cartesian = false,
   custom = false,
   curve,
   styles,
+  name = 'line',
   onMouseEnter,
   onMouseLeave,
   onMouseDown,
@@ -31,12 +33,13 @@ export function MapLine({
   const context = useMapContext()
 
   const path = useMemo(() => {
-    return getLinePath(context, coordinates, custom, curve)
+    return getLinePath(context, coordinates, custom, curve, cartesian)
   }, [
     context,
     coordinates,
     custom,
     curve,
+    cartesian,
   ])
 
   const { style, ...events } = useMapObject<SVGPathElement>({
@@ -55,7 +58,7 @@ export function MapLine({
       d={path}
       style={style}
       fill={fill}
-      name="line"
+      name={name}
       {...events}
     />
   )

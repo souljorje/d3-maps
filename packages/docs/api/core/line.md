@@ -5,6 +5,7 @@
 ## Table of contents
 
 * [Functions](#functions)
+  * [getCartesianLinePath()](#getcartesianlinepath)
   * [getConnectorLinePath()](#getconnectorlinepath)
   * [getLinePath()](#getlinepath)
   * [getLineStringPath()](#getlinestringpath)
@@ -19,6 +20,25 @@
   * [MapLineCustomCurve](#maplinecustomcurve)
 
 ## Functions
+
+### getCartesianLinePath()
+
+```ts
+function getCartesianLinePath(coordinates: MapLineCoordinates, curve?: MapLineCustomCurve): string | undefined;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) |
+| `curve?` | [`MapLineCustomCurve`](#maplinecustomcurve) |
+
+#### Returns
+
+`string` | `undefined`
+
+***
 
 ### getConnectorLinePath()
 
@@ -46,7 +66,8 @@ function getLinePath(
    context: MapContext | undefined, 
    coordinates: MapLineCoordinates, 
    custom?: boolean, 
-   curve?: MapLineCustomCurve): string | undefined;
+   curve?: MapLineCustomCurve, 
+   cartesian?: boolean): string | undefined;
 ```
 
 Computes an SVG path for a geographic line between coordinates.
@@ -61,6 +82,7 @@ Coordinates must be `[longitude, latitude]`.
 | `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) | `undefined` |
 | `custom` | `boolean` | `false` |
 | `curve?` | [`MapLineCustomCurve`](#maplinecustomcurve) | `undefined` |
+| `cartesian?` | `boolean` | `false` |
 
 #### Returns
 
@@ -170,6 +192,7 @@ Shared props contract for geographic line layers.
 
 | Property | Type | Inherited from |
 | ------ | ------ | ------ |
+| <a id="property-cartesian"></a> `cartesian?` | `boolean` | - |
 | <a id="property-coordinates"></a> `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) | - |
 | <a id="property-curve"></a> `curve?` | [`MapLineCustomCurve`](#maplinecustomcurve) | - |
 | <a id="property-custom"></a> `custom?` | `boolean` | - |

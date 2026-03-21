@@ -13,7 +13,7 @@ import {
 } from '@d3-maps/core'
 import { useMemo } from 'react'
 
-import { useMapObject } from '../hooks/useMapObject'
+import { MapLine } from './MapLine'
 import { MapMarker } from './MapMarker'
 
 export interface MapAnnotationProps
@@ -46,21 +46,18 @@ export function MapAnnotation({
     curve,
   ])
 
-  const { style, ...events } = useMapObject<SVGGElement>({
-    styles,
-  })
-
   return (
     <MapMarker
       coordinates={coordinates}
       name="annotation"
-      {...events}
     >
       <g transform={geometry.lineTransform}>
-        <path
+        <MapLine
           {...pathProps}
-          d={geometry.linePath}
-          style={style}
+          coordinates={geometry.lineCoordinates}
+          cartesian
+          curve={curve}
+          styles={styles}
           fill="none"
           name="annotation-line"
         />

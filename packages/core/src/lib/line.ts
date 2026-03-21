@@ -19,6 +19,7 @@ export type MapLineCustomCurve = MapLineCurve | number
  */
 export interface MapLineProps<TStyle = unknown> extends MapObjectProps<TStyle> {
   coordinates: MapLineCoordinates
+  cartesian?: boolean
   custom?: boolean
   curve?: MapLineCustomCurve
 }
@@ -33,7 +34,12 @@ export function getLinePath(
   coordinates: MapLineCoordinates,
   custom = false,
   curve?: MapLineCustomCurve,
+  cartesian = false,
 ): string | undefined {
+  if (cartesian) {
+    return getCartesianLinePath(coordinates, curve)
+  }
+
   if (!custom) {
     return getLineStringPath(context, coordinates)
   }
@@ -43,6 +49,17 @@ export function getLinePath(
   }
 
   return getProjectedLinePath(context, coordinates, curve)
+}
+
+export function getCartesianLinePath(
+  coordinates: MapLineCoordinates,
+  curve?: MapLineCustomCurve,
+): string | undefined {
+  if (isNumber(curve)) {
+    return getConnectorLinePath(coordinates, curve)
+  }
+
+  return getPointsLinePath(coordinates, curve)
 }
 
 export function getLineStringPath(
