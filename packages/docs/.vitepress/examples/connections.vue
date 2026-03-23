@@ -33,6 +33,8 @@
     <MapLine
       :coordinates="transitFlight"
       :stroke-width="1.5"
+      custom
+      :curve-offset="[0, 0.1]"
       stroke-dasharray="4 4"
       marker-end="url(#connections-arrow)"
     />
@@ -43,7 +45,7 @@
       :coordinates="returnFlight"
       custom
       :curve="curveBasis"
-      :curve-offset="[-0.2, -0.3]"
+      :curve-offset="[0, 0.3]"
       :stroke-width="1.5"
       stroke-dasharray="2 2"
       marker-end="url(#connections-arrow)"

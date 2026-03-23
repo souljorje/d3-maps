@@ -125,18 +125,21 @@ describe('getLinePath', () => {
 })
 
 describe('createMidPoint', () => {
-  it('creates a segment-relative midpoint with an optional curveOffset', () => {
+  it('creates a midpoint with segment-relative curveOffset percentages', () => {
     expect(createMidPoint([
       [0, 0],
       [40, 20],
-    ], [0.2, -0.5])).toEqual([38, -6])
+    ], [0.2, -0.5])).toEqual([
+      18,
+      34,
+    ])
   })
 
-  it('uses the second curveOffset value as perpendicular segment offset', () => {
+  it('treats a positive perpendicular curveOffset as the right-hand side of the segment', () => {
     expect(createMidPoint([
       [0, 0],
       [0, 100],
-    ], [0, 1])).toEqual([-100, 50])
+    ], [0, 1])).toEqual([100, 50])
   })
 })
 

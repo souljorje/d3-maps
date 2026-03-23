@@ -9,8 +9,8 @@ Renders a path between map locations
 | `coordinates` | `[number, number][]` | — | `[longitude, latitude][]` |
 | `cartesian?` | `boolean` | `false` | Treat `coordinates` as local SVG points and skip map projection |
 | `custom?` | `boolean` | `false` | Render using [d3-shape line](https://d3js.org/d3-shape/line) instead of default |
-| `curve?` | `number \| CurveFactory \| CurveFactoryLineOnly` | — | Number `0..1` maps to `curveCardinal.tension(1 - value)`. Function is any [d3-shape curve](https://d3js.org/d3-shape/curve). Works only with `custom` or `cartesian`. |
-| `curveOffset?` | `[along: number, normal: number]` | — | Adds a midpoint between each coordinate pair. First value moves the midpoint toward start/end, second moves it perpendicular to the segment. Both values are percentages of the full segment length in the `-1..1` range |
+| `curve?` | `number \| CurveFactory \| CurveFactoryLineOnly` | — | Number `0..1` sets bend intensity. Function is any [d3-shape curve](https://d3js.org/d3-shape/curve). Works only with `custom` or `cartesian`. |
+| `curveOffset?` | `[lengthwise: number, crosswise: number]` | — | Adds a point between each coordinate pair. Values are percentages `-1..1` from the distance between the pair |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapLine
@@ -22,7 +22,7 @@ You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapL
 **Curves**
 
 By default renders a [great arc](https://en.wikipedia.org/wiki/Great-circle_distance) using [d3-geo path](https://d3js.org/d3-geo/path#_path) with `'LineString'`.  
-To control line bending use `custom` or `cartesian`, then pass `curve` and optional `curveOffset`. `curveOffset` is segment-relative, not screen-axis-relative. See interactive [curve examples](https://www.d3indepth.com/examples-merged/shapes/curve-explorer/)
+To control line bending use `custom` or `cartesian`, then pass `curve` and optional `curveOffset`. `curveOffset` is segment-relative, not screen-axis-relative. Positive perpendicular bends to the right-hand side of the line direction, so a rightward line bends down and a downward line bends right. See interactive [curve examples](https://www.d3indepth.com/examples-merged/shapes/curve-explorer/)
 
 **Edges ←→**
 
