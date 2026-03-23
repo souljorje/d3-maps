@@ -79,7 +79,7 @@ catalogs:
       specifier: ^3.0.0
       version: 3.0.0
     d3-shape:
-      specifier: ^3.2.0
+      specifier: 3.2.0
       version: 3.2.0
     d3-zoom:
       specifier: ^3.0.0
@@ -270,6 +270,9 @@ importers:
       d3-scale:
         specifier: 'catalog:'
         version: 4.0.2
+      d3-shape:
+        specifier: 'catalog:'
+        version: 3.2.0
       vue:
         specifier: 'catalog:'
         version: 3.5.25(typescript@5.9.3)
@@ -286,6 +289,9 @@ importers:
       '@types/d3-scale':
         specifier: 'catalog:'
         version: 4.0.9
+      '@types/d3-shape':
+        specifier: 'catalog:'
+        version: 3.1.8
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18

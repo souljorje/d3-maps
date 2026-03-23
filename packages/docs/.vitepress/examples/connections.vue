@@ -20,7 +20,7 @@
       </text>
     </MapMarker>
 
-    <!-- Line per each connection -->
+    <!-- Path per each connection -->
     <MapLine
       v-for="[flightFrom, flightTo] in directFlights"
       :key="`${flightFrom.name}-${flightTo.name}`"
@@ -29,11 +29,23 @@
       marker-end="url(#connections-arrow)"
     />
 
-    <!-- Single line for all connections -->
+    <!-- Single path for all connections -->
     <MapLine
       :coordinates="transitFlight"
       :stroke-width="1.5"
       stroke-dasharray="4 4"
+      marker-end="url(#connections-arrow)"
+    />
+
+    <!-- Custom curved path for manual display control,
+    instead of native render -->
+    <MapLine
+      :coordinates="returnFlight"
+      custom
+      :curve="curveBasis"
+      :curve-offset="[0.2, 0.9]"
+      :stroke-width="1.5"
+      stroke-dasharray="2 2"
       marker-end="url(#connections-arrow)"
     />
 
@@ -60,6 +72,7 @@
 <script setup lang="ts">
 import type { MapData } from '@d3-maps/core'
 
+import { curveBasis } from 'd3-shape'
 import { withBase } from 'vitepress'
 import { onMounted, ref } from 'vue'
 
@@ -67,21 +80,27 @@ const cities = [
   { name: 'San Francisco', coordinates: [-122.4194, 37.7749] },
   { name: 'New York', coordinates: [-73.935242, 40.73061] },
   { name: 'London', coordinates: [-0.1276, 51.5072] },
-  { name: 'Tokyo', coordinates: [139.6503, 35.6762] },
-  { name: 'Dubai ', coordinates: [55.2708, 25.2048] },
   { name: 'Tbilisi', coordinates: [44.793, 41.7151] },
+  { name: 'Dubai ', coordinates: [55.2708, 25.2048] },
+  { name: 'Tokyo', coordinates: [139.6503, 35.6762] },
 ]
 
 const directFlights = [
   [cities[0], cities[1]],
   [cities[1], cities[2]],
   [cities[2], cities[3]],
+  [cities[5], cities[0]],
 ]
 
 const transitFlight = [
   cities[3].coordinates,
   cities[4].coordinates,
   cities[5].coordinates,
+]
+
+const returnFlight = [
+  cities[5].coordinates,
+  cities[0].coordinates,
 ]
 
 const data = ref<MapData>()
