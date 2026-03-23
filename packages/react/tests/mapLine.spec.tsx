@@ -238,7 +238,7 @@ describe('mapLine', () => {
             [40, 0],
           ]}
           cartesian
-          midpoint={[0, -0.4]}
+          midpoint={[0, -40]}
         />
       </svg>,
     )

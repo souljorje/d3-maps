@@ -224,7 +224,7 @@ describe('mapLine', () => {
           [40, 0],
         ],
         cartesian: true,
-        midpoint: [0, -0.4],
+        midpoint: [0, -40],
       },
       attrs: {
         'data-testid': 'map-line-midpoint',

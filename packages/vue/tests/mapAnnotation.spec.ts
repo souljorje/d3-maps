@@ -88,7 +88,7 @@ describe('mapAnnotation', () => {
         default: () => h(MapAnnotation, {
           coordinates: [2.3522, 48.8566],
           'data-testid': 'annotation-line',
-          midpoint: [0, -0.4],
+          midpoint: [0, -40],
         }, {
           default: () => h('text', 'Paris'),
         }),
@@ -106,7 +106,7 @@ describe('mapAnnotation', () => {
         default: () => h(MapAnnotation, {
           coordinates: [2.3522, 48.8566],
           curve: midpointCurve,
-          midpoint: [0, -0.4],
+          midpoint: [0, -40],
           'data-testid': 'annotation-line',
         }, {
           default: () => h('text', 'Paris'),

@@ -83,7 +83,7 @@ describe('mapAnnotation', () => {
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"
-          midpoint={[0, -0.4]}
+          midpoint={[0, -40]}
         >
           <text>Paris</text>
         </MapAnnotation>
@@ -98,7 +98,7 @@ describe('mapAnnotation', () => {
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"
           curve={midpointCurve}
-          midpoint={[0, -0.4]}
+          midpoint={[0, -40]}
         >
           <text>Paris</text>
         </MapAnnotation>

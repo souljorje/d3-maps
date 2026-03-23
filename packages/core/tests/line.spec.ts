@@ -99,7 +99,7 @@ describe('getLinePath', () => {
         [40, 0],
       ],
       cartesian: true,
-      midpoint: [0, -0.4],
+      midpoint: [0, -40],
     })
 
     expect(path).toMatch(/^M0,0C/)
@@ -129,7 +129,7 @@ describe('createMidPoint', () => {
     expect(createMidPoint([
       [0, 0],
       [40, 20],
-    ], [0.2, -0.5])).toEqual([
+    ], [20, -50])).toEqual([
       18,
       34,
     ])
@@ -139,7 +139,7 @@ describe('createMidPoint', () => {
     expect(createMidPoint([
       [0, 0],
       [0, 100],
-    ], [0, 1])).toEqual([100, 50])
+    ], [0, 100])).toEqual([100, 50])
   })
 })
 
@@ -156,7 +156,7 @@ describe('getLineWithMidpoints', () => {
 
   it('inserts midpoints for multi-point paths', () => {
     const linearPath = getDefaultLine(THREE_POINT_COORDINATES)
-    const midpointPath = getLineWithMidpoints(THREE_POINT_COORDINATES, curveNatural, [0, -0.2])
+    const midpointPath = getLineWithMidpoints(THREE_POINT_COORDINATES, curveNatural, [0, -20])
 
     expect(midpointPath).toMatch(/^M/)
     expect(midpointPath).not.toBe(linearPath)

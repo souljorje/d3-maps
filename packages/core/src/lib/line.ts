@@ -84,7 +84,7 @@ export function createMidPoint(
   midpoint: MapLineMidpoint = [0, 0],
 ): [number, number] {
   const [[startX, startY], [endX, endY]] = pointsPair
-  const [offsetAlong, offsetPerpendicular] = midpoint
+  const [lengthwise, crosswise] = midpoint
   const midX = (startX + endX) / 2
   const midY = (startY + endY) / 2
   const dx = endX - startX
@@ -99,6 +99,8 @@ export function createMidPoint(
   const unitY = dy / length
   const perpendicularX = unitY
   const perpendicularY = -unitX
+  const offsetAlong = lengthwise / 100
+  const offsetPerpendicular = crosswise / 100
 
   return [
     midX + (unitX * length * offsetAlong) + (perpendicularX * length * offsetPerpendicular),

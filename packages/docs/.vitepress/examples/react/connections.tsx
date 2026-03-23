@@ -111,7 +111,7 @@ export default function ConnectionsExample(): JSX.Element | null {
             coordinates={returnFlight}
             custom
             curve={curveBasis}
-            curveOffset={[0, 0.3]}
+            midpoint={[0, 25]}
             strokeWidth={1.5}
             strokeDasharray="2 2"
             markerEnd="url(#connections-arrow)"

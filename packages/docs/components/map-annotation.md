@@ -33,7 +33,7 @@ Interaction state is tracked on the wrapper `<g>`.
       :length="40"
       :angle="-90"
       :margin="2"
-      :midpoint="[0, -0.5]"
+      :midpoint="[0, -50]"
       stroke="#ff6f26"
       :stroke-width="2"
     >
@@ -58,7 +58,7 @@ Interaction state is tracked on the wrapper `<g>`.
     length={40}
     angle={-90}
     margin={2}
-    midpoint={[0, -0.5]}
+    midpoint={[0, -50]}
     stroke="#ff6f26"
     strokeWidth={2}
   >
