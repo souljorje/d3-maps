@@ -28,7 +28,7 @@ export function MapAnnotation({
   angle,
   margin,
   curve,
-  curveOffset,
+  midpoint,
   styles,
   children,
   ...pathProps
@@ -56,7 +56,7 @@ export function MapAnnotation({
           coordinates={geometry.lineCoordinates}
           cartesian
           curve={curve}
-          curveOffset={curveOffset}
+          midpoint={midpoint}
           styles={styles}
           fill="none"
           name="annotation-line"

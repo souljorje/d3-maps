@@ -30,7 +30,7 @@ interface Props extends MapObjectProps<StyleValue> {
   cartesian?: boolean
   custom?: boolean
   curve?: MapLineCurve
-  curveOffset?: [number, number]
+  midpoint?: [number, number]
 }
 
 defineOptions({
@@ -54,7 +54,7 @@ const path = computed<string | undefined>(() => {
       custom: props.custom,
       curve: props.curve,
       cartesian: props.cartesian,
-      curveOffset: props.curveOffset,
+      midpoint: props.midpoint,
     },
   )
 })

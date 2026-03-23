@@ -110,9 +110,9 @@ readonly margin: 0 = 0;
 | <a id="property-angle-1"></a> `angle?` | `number` | - |
 | <a id="property-coordinates"></a> `coordinates` | [`MapAnnotationCoordinates`](#mapannotationcoordinates) | - |
 | <a id="property-curve"></a> `curve?` | [`MapLineCurve`](line.md#maplinecurve) | - |
-| <a id="property-curveoffset"></a> `curveOffset?` | [`MapLineCurveOffset`](line.md#maplinecurveoffset) | - |
 | <a id="property-length-1"></a> `length?` | `number` | - |
 | <a id="property-margin-1"></a> `margin?` | `number` | - |
+| <a id="property-midpoint"></a> `midpoint?` | [`MapLineMidpoint`](line.md#maplinemidpoint) | - |
 | <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases

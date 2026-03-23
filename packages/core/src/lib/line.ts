@@ -7,22 +7,20 @@ import type { MapContext } from './map'
 import type { MapObjectProps } from './mapObject'
 
 import {
-  curveCardinal,
+  curveNatural,
   line,
 } from 'd3-shape'
 
-import { isFunction, isNumber } from './utils'
-
 export type MapLineCoordinates = [number, number][]
-export type MapLineCurve = CurveFactory | CurveFactoryLineOnly | number
-export type MapLineCurveOffset = [number, number]
+export type MapLineCurve = CurveFactory | CurveFactoryLineOnly
+export type MapLineMidpoint = [number, number]
 
 export interface MapLineOptions {
   coordinates: MapLineCoordinates
   cartesian?: boolean
   custom?: boolean
   curve?: MapLineCurve
-  curveOffset?: MapLineCurveOffset
+  midpoint?: MapLineMidpoint
 }
 
 export interface MapLineProps<TStyle = unknown> extends MapObjectProps<TStyle>, MapLineOptions {}
@@ -31,10 +29,10 @@ export function getLinePath(
   context: MapContext | undefined,
   {
     coordinates,
-    curve,
+    curve = curveNatural,
     custom = false,
     cartesian = false,
-    curveOffset,
+    midpoint,
   }: MapLineOptions,
 ): string | undefined {
   if (!cartesian && !custom) {
@@ -50,8 +48,8 @@ export function getLinePath(
     ? coordinates
     : getProjectedPoints(context, coordinates)
 
-  if (curveOffset && (curveOffset[0] !== 0 || curveOffset[1] !== 0)) {
-    return getLineWithMidpoints(resolvedCoordinates, curve, curveOffset)
+  if (midpoint && (midpoint[0] !== 0 || midpoint[1] !== 0)) {
+    return getLineWithMidpoints(resolvedCoordinates, curve, midpoint)
   }
 
   return getDefaultLine(resolvedCoordinates, curve)
@@ -68,14 +66,6 @@ function getProjectedPoints(
     .filter((point): point is [number, number] => point != null)
 }
 
-function resolveCurve(curve?: MapLineCurve): CurveFactory | CurveFactoryLineOnly | undefined {
-  if (isFunction(curve)) return curve as CurveFactory | CurveFactoryLineOnly
-  if (isNumber(curve)) {
-    return curveCardinal.tension(1 - Math.min(1, Math.max(0, curve)))
-  }
-  return undefined
-}
-
 export function getDefaultLine(
   points: MapLineCoordinates,
   curve?: MapLineCurve,
@@ -83,21 +73,18 @@ export function getDefaultLine(
   if (points.length < 2) return undefined
 
   const linePath = line<[number, number]>()
-  const resolvedCurve = resolveCurve(curve)
 
-  if (resolvedCurve) {
-    linePath.curve(resolvedCurve)
-  }
+  if (curve) linePath.curve(curve)
 
   return linePath(points) ?? undefined
 }
 
 export function createMidPoint(
   pointsPair: [[number, number], [number, number]],
-  curveOffset: MapLineCurveOffset = [0, 0],
+  midpoint: MapLineMidpoint = [0, 0],
 ): [number, number] {
   const [[startX, startY], [endX, endY]] = pointsPair
-  const [offsetAlong, offsetPerpendicular] = curveOffset
+  const [offsetAlong, offsetPerpendicular] = midpoint
   const midX = (startX + endX) / 2
   const midY = (startY + endY) / 2
   const dx = endX - startX
@@ -121,8 +108,8 @@ export function createMidPoint(
 
 export function getLineWithMidpoints(
   points: MapLineCoordinates,
-  curve: MapLineCurve = 0.5,
-  curveOffset?: MapLineCurveOffset,
+  curve?: MapLineCurve,
+  midpoint?: MapLineMidpoint,
 ): string | undefined {
   if (points.length < 2) return undefined
 
@@ -130,7 +117,7 @@ export function getLineWithMidpoints(
     if (index === 0) return [point]
 
     return [
-      createMidPoint([points[index - 1], point], curveOffset),
+      createMidPoint([points[index - 1], point], midpoint),
       point,
     ]
   })

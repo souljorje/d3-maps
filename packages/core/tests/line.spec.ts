@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import {
   curveBasis,
-  curveCardinal,
+  curveNatural,
 } from 'd3-shape'
 
 import {
@@ -80,23 +80,6 @@ describe('getLinePath', () => {
     expect(curvedPath).not.toBe(linearPath)
   })
 
-  it('uses midpoint rendering for numeric curves', () => {
-    const context = makeTestMapContext()
-
-    const linearPath = getLinePath(context, {
-      coordinates: THREE_POINT_COORDINATES,
-      custom: true,
-    })
-    const midpointPath = getLinePath(context, {
-      coordinates: THREE_POINT_COORDINATES,
-      custom: true,
-      curve: 0.5,
-    })
-
-    expect(midpointPath).toBeDefined()
-    expect(midpointPath).not.toBe(linearPath)
-  })
-
   it('renders cartesian paths without map context', () => {
     const path = getLinePath(undefined, {
       coordinates: [
@@ -109,23 +92,40 @@ describe('getLinePath', () => {
     expect(path).toBe('M0,0L40,0')
   })
 
-  it('uses midpoint rendering when curveOffset is provided', () => {
+  it('uses midpoint rendering when midpoint is provided', () => {
     const path = getLinePath(undefined, {
       coordinates: [
         [0, 0],
         [40, 0],
       ],
       cartesian: true,
-      curveOffset: [0, -0.4],
+      midpoint: [0, -0.4],
     })
 
     expect(path).toMatch(/^M0,0C/)
     expect(path).not.toBe('M0,0L40,0')
   })
+
+  it('uses curveNatural by default for custom and cartesian paths', () => {
+    const coordinates: [number, number][] = [
+      [0, 0],
+      [20, 10],
+      [40, 0],
+    ]
+
+    expect(getLinePath(undefined, {
+      coordinates,
+      cartesian: true,
+    })).toBe(getLinePath(undefined, {
+      coordinates,
+      cartesian: true,
+      curve: curveNatural,
+    }))
+  })
 })
 
 describe('createMidPoint', () => {
-  it('creates a midpoint with segment-relative curveOffset percentages', () => {
+  it('creates a midpoint with segment-relative midpoint percentages', () => {
     expect(createMidPoint([
       [0, 0],
       [40, 20],
@@ -135,7 +135,7 @@ describe('createMidPoint', () => {
     ])
   })
 
-  it('treats a positive perpendicular curveOffset as the right-hand side of the segment', () => {
+  it('treats a positive perpendicular midpoint as the right-hand side of the segment', () => {
     expect(createMidPoint([
       [0, 0],
       [0, 100],
@@ -148,7 +148,7 @@ describe('getLineWithMidpoints', () => {
     const path = getLineWithMidpoints([
       [0, 0],
       [40, 0],
-    ], 0.5)
+    ], curveNatural)
 
     expect(path).toMatch(/^M0,0C/)
     expect(path).not.toBe('M0,0L40,0')
@@ -156,27 +156,9 @@ describe('getLineWithMidpoints', () => {
 
   it('inserts midpoints for multi-point paths', () => {
     const linearPath = getDefaultLine(THREE_POINT_COORDINATES)
-    const midpointPath = getLineWithMidpoints(THREE_POINT_COORDINATES, 0.5, [0, -0.2])
+    const midpointPath = getLineWithMidpoints(THREE_POINT_COORDINATES, curveNatural, [0, -0.2])
 
     expect(midpointPath).toMatch(/^M/)
     expect(midpointPath).not.toBe(linearPath)
-  })
-
-  it('clamps numeric curves into the supported range', () => {
-    const lowCurvePath = getLineWithMidpoints([
-      [0, 0],
-      [40, 0],
-    ], -1)
-    const highCurvePath = getLineWithMidpoints([
-      [0, 0],
-      [40, 0],
-    ], 4)
-
-    expect(lowCurvePath).toBe(getDefaultLine([
-      [0, 0],
-      [20, 0],
-      [40, 0],
-    ], curveCardinal.tension(1)))
-    expect(highCurvePath).not.toBe(lowCurvePath)
   })
 })

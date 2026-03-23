@@ -20,7 +20,7 @@ const THREE_POINT_COORDINATES: [number, number][] = [
   [-98.5795, 39.8283],
   [-73.935242, 40.73061],
 ]
-function curveOffsetCurve(context: {
+function midpointCurve(context: {
   moveTo: (x: number, y: number) => void
   lineTo: (x: number, y: number) => void
 }) {
@@ -179,7 +179,7 @@ describe('mapLine', () => {
           data-testid="map-line-curved"
           coordinates={THREE_POINT_COORDINATES}
           custom
-          curve={curveOffsetCurve}
+          curve={midpointCurve}
         />
       </MapBase>,
     )
@@ -187,7 +187,7 @@ describe('mapLine', () => {
     expect(screen.getByTestId('map-line-curved').getAttribute('d')).not.toBe(linearPath)
   })
 
-  it('uses the manual connector renderer when curve is numeric', () => {
+  it('uses curveNatural by default for custom paths', () => {
     const { rerender } = render(
       <MapBase data={sampleGeoJson}>
         <MapLine
@@ -206,46 +206,43 @@ describe('mapLine', () => {
           data-testid="map-line-curved"
           coordinates={THREE_POINT_COORDINATES}
           custom
-          curve={0.5}
         />
       </MapBase>,
     )
 
-    expect(screen.getByTestId('map-line-curved').getAttribute('d')).not.toBe(linearPath)
+    expect(screen.getByTestId('map-line-curved').getAttribute('d')).toBe(linearPath)
   })
 
-  it('applies midpoint curveOffset for numeric connector paths', () => {
+  it('applies midpoint shaping for curved connector paths', () => {
     const { rerender } = render(
       <svg>
         <MapLine
-          data-testid="map-line-curveOffset"
+          data-testid="map-line-midpoint"
           coordinates={[
             [0, 0],
             [40, 0],
           ]}
           cartesian
-          curve={0.5}
         />
       </svg>,
     )
 
-    const basePath = screen.getByTestId('map-line-curveOffset').getAttribute('d')
+    const basePath = screen.getByTestId('map-line-midpoint').getAttribute('d')
 
     rerender(
       <svg>
         <MapLine
-          data-testid="map-line-curveOffset"
+          data-testid="map-line-midpoint"
           coordinates={[
             [0, 0],
             [40, 0],
           ]}
           cartesian
-          curve={0.5}
-          curveOffset={[0, -0.4]}
+          midpoint={[0, -0.4]}
         />
       </svg>,
     )
 
-    expect(screen.getByTestId('map-line-curveOffset').getAttribute('d')).not.toBe(basePath)
+    expect(screen.getByTestId('map-line-midpoint').getAttribute('d')).not.toBe(basePath)
   })
 })

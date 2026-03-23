@@ -11,8 +11,8 @@ Use when you need a callout, label, or badge offset from the original location
 | `length?` | `number` | `30` | Connector length in screen pixels |
 | `angle?` | `number` | `-45` | Connector angle in degrees |
 | `margin?` | `number` | `0` | Gap between the anchor point and the connector start |
-| `curve?` | `number \| CurveFactory \| CurveFactoryLineOnly` | — | See [`MapLine.curve`](/components/map-line#props) |
-| `curveOffset?` | `[lengthwise: number, crosswise: number]` | — | See [`MapLine.curveOffset`](/components/map-line#props) |
+| `curve?` | `CurveFactory \| CurveFactoryLineOnly` | `curveNatural` | See [`MapLine.curve`](/components/map-line#props) |
+| `midpoint?` | `[lengthwise: number, crosswise: number]` | — | See [`MapLine.midpoint`](/components/map-line#props) |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 `styles` and native attributes are bound to the connector `<path>`.  
@@ -33,8 +33,7 @@ Interaction state is tracked on the wrapper `<g>`.
       :length="40"
       :angle="-90"
       :margin="2"
-      :curve="0.5"
-      :curveOffset="[0, -0.5]"
+      :midpoint="[0, -0.5]"
       stroke="#ff6f26"
       :stroke-width="2"
     >
@@ -59,8 +58,7 @@ Interaction state is tracked on the wrapper `<g>`.
     length={40}
     angle={-90}
     margin={2}
-    curve={0.5}
-    curveOffset={[0, -0.5]}
+    midpoint={[0, -0.5]}
     stroke="#ff6f26"
     strokeWidth={2}
   >

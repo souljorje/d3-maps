@@ -33,8 +33,6 @@
     <MapLine
       :coordinates="transitFlight"
       :stroke-width="1.5"
-      custom
-      :curve-offset="[0, 0.1]"
       stroke-dasharray="4 4"
       marker-end="url(#connections-arrow)"
     />

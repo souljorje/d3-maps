@@ -76,6 +76,18 @@
   }
 }
 
+.vp-doc {
+  table {
+    th, td {
+      padding: 10px 12px;
+      line-height: 1.5;
+      &:last-child {
+        min-width: 200px;
+      }
+    }
+  }
+}
+
 .VPHome {
   margin-bottom: 0;
   .image-src {

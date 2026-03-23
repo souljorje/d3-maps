@@ -15,7 +15,7 @@ import {
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
-function curveOffsetCurve(context: {
+function midpointCurve(context: {
   moveTo: (x: number, y: number) => void
   lineTo: (x: number, y: number) => void
 }) {
@@ -83,7 +83,7 @@ describe('mapAnnotation', () => {
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"
-          curveOffset={[0, -0.4]}
+          midpoint={[0, -0.4]}
         >
           <text>Paris</text>
         </MapAnnotation>
@@ -97,39 +97,8 @@ describe('mapAnnotation', () => {
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"
-          curve={curveOffsetCurve}
-          curveOffset={[0, -0.4]}
-        >
-          <text>Paris</text>
-        </MapAnnotation>
-      </MapBase>,
-    )
-
-    expect(screen.getByTestId('annotation-line').getAttribute('d')).not.toBe(linearPath)
-  })
-
-  it('uses the manual connector renderer when curve is numeric', () => {
-    const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
-        <MapAnnotation
-          coordinates={[2.3522, 48.8566]}
-          data-testid="annotation-line"
-          curveOffset={[0, -0.5]}
-        >
-          <text>Paris</text>
-        </MapAnnotation>
-      </MapBase>,
-    )
-
-    const linearPath = screen.getByTestId('annotation-line').getAttribute('d')
-
-    rerender(
-      <MapBase data={sampleGeoJson}>
-        <MapAnnotation
-          coordinates={[2.3522, 48.8566]}
-          data-testid="annotation-line"
-          curve={1}
-          curveOffset={[0, -0.5]}
+          curve={midpointCurve}
+          midpoint={[0, -0.4]}
         >
           <text>Paris</text>
         </MapAnnotation>

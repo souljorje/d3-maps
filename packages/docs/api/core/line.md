@@ -15,14 +15,14 @@
 * [Type Aliases](#type-aliases)
   * [MapLineCoordinates](#maplinecoordinates)
   * [MapLineCurve](#maplinecurve)
-  * [MapLineCurveOffset](#maplinecurveoffset)
+  * [MapLineMidpoint](#maplinemidpoint)
 
 ## Functions
 
 ### createMidPoint()
 
 ```ts
-function createMidPoint(pointsPair: [[number, number], [number, number]], curveOffset?: MapLineCurveOffset): [number, number];
+function createMidPoint(pointsPair: [[number, number], [number, number]], midpoint?: MapLineMidpoint): [number, number];
 ```
 
 #### Parameters
@@ -30,7 +30,7 @@ function createMidPoint(pointsPair: [[number, number], [number, number]], curveO
 | Parameter | Type |
 | ------ | ------ |
 | `pointsPair` | \[\[`number`, `number`], \[`number`, `number`]] |
-| `curveOffset` | [`MapLineCurveOffset`](#maplinecurveoffset) |
+| `midpoint` | [`MapLineMidpoint`](#maplinemidpoint) |
 
 #### Returns
 
@@ -82,16 +82,16 @@ function getLinePath(context: MapContext | undefined, __namedParameters: MapLine
 function getLineWithMidpoints(
    points: MapLineCoordinates, 
    curve?: MapLineCurve, 
-   curveOffset?: MapLineCurveOffset): string | undefined;
+   midpoint?: MapLineMidpoint): string | undefined;
 ```
 
 #### Parameters
 
-| Parameter | Type | Default value |
-| ------ | ------ | ------ |
-| `points` | [`MapLineCoordinates`](#maplinecoordinates) | `undefined` |
-| `curve` | [`MapLineCurve`](#maplinecurve) | `0.5` |
-| `curveOffset?` | [`MapLineCurveOffset`](#maplinecurveoffset) | `undefined` |
+| Parameter | Type |
+| ------ | ------ |
+| `points` | [`MapLineCoordinates`](#maplinecoordinates) |
+| `curve?` | [`MapLineCurve`](#maplinecurve) |
+| `midpoint?` | [`MapLineMidpoint`](#maplinemidpoint) |
 
 #### Returns
 
@@ -112,8 +112,8 @@ function getLineWithMidpoints(
 | <a id="property-cartesian"></a> `cartesian?` | `boolean` |
 | <a id="property-coordinates"></a> `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) |
 | <a id="property-curve"></a> `curve?` | [`MapLineCurve`](#maplinecurve) |
-| <a id="property-curveoffset"></a> `curveOffset?` | [`MapLineCurveOffset`](#maplinecurveoffset) |
 | <a id="property-custom"></a> `custom?` | `boolean` |
+| <a id="property-midpoint"></a> `midpoint?` | [`MapLineMidpoint`](#maplinemidpoint) |
 
 ***
 
@@ -136,8 +136,8 @@ function getLineWithMidpoints(
 | <a id="property-cartesian-1"></a> `cartesian?` | `boolean` | [`MapLineOptions`](#maplineoptions).[`cartesian`](#property-cartesian) |
 | <a id="property-coordinates-1"></a> `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) | [`MapLineOptions`](#maplineoptions).[`coordinates`](#property-coordinates) |
 | <a id="property-curve-1"></a> `curve?` | [`MapLineCurve`](#maplinecurve) | [`MapLineOptions`](#maplineoptions).[`curve`](#property-curve) |
-| <a id="property-curveoffset-1"></a> `curveOffset?` | [`MapLineCurveOffset`](#maplinecurveoffset) | [`MapLineOptions`](#maplineoptions).[`curveOffset`](#property-curveoffset) |
 | <a id="property-custom-1"></a> `custom?` | `boolean` | [`MapLineOptions`](#maplineoptions).[`custom`](#property-custom) |
+| <a id="property-midpoint-1"></a> `midpoint?` | [`MapLineMidpoint`](#maplinemidpoint) | [`MapLineOptions`](#maplineoptions).[`midpoint`](#property-midpoint) |
 | <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases
@@ -153,13 +153,13 @@ type MapLineCoordinates = [number, number][];
 ### MapLineCurve
 
 ```ts
-type MapLineCurve = CurveFactory | CurveFactoryLineOnly | number;
+type MapLineCurve = CurveFactory | CurveFactoryLineOnly;
 ```
 
 ***
 
-### MapLineCurveOffset
+### MapLineMidpoint
 
 ```ts
-type MapLineCurveOffset = [number, number];
+type MapLineMidpoint = [number, number];
 ```

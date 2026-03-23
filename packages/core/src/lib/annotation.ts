@@ -1,4 +1,4 @@
-import type { MapLineCurve, MapLineCurveOffset } from './line'
+import type { MapLineCurve, MapLineMidpoint } from './line'
 import type { MapObjectProps } from './mapObject'
 
 import { makeTransform } from './utils'
@@ -11,7 +11,7 @@ export interface MapAnnotationProps<TStyle = unknown> extends MapObjectProps<TSt
   angle?: number
   margin?: number
   curve?: MapLineCurve
-  curveOffset?: MapLineCurveOffset
+  midpoint?: MapLineMidpoint
 }
 
 export interface MapAnnotationGeometry {

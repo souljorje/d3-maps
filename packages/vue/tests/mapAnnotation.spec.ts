@@ -13,7 +13,7 @@ import {
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
-function curveOffsetCurve(context: {
+function midpointCurve(context: {
   moveTo: (x: number, y: number) => void
   lineTo: (x: number, y: number) => void
 }) {
@@ -88,7 +88,7 @@ describe('mapAnnotation', () => {
         default: () => h(MapAnnotation, {
           coordinates: [2.3522, 48.8566],
           'data-testid': 'annotation-line',
-          curveOffset: [0, -0.4],
+          midpoint: [0, -0.4],
         }, {
           default: () => h('text', 'Paris'),
         }),
@@ -105,46 +105,8 @@ describe('mapAnnotation', () => {
       slots: {
         default: () => h(MapAnnotation, {
           coordinates: [2.3522, 48.8566],
-          curve: curveOffsetCurve,
-          curveOffset: [0, -0.4],
-          'data-testid': 'annotation-line',
-        }, {
-          default: () => h('text', 'Paris'),
-        }),
-      },
-    })
-
-    expect(curvedWrapper.find('[data-testid="annotation-line"]').attributes('d')).not.toBe(linearPath)
-  })
-
-  it('uses the manual connector renderer when curve is numeric', () => {
-    const linearWrapper = mount(MapBase, {
-      props: {
-        data: sampleGeoJson,
-      },
-      slots: {
-        default: () => h(MapAnnotation, {
-          coordinates: [2.3522, 48.8566],
-          'data-testid': 'annotation-line',
-          curveOffset: [0, -0.5],
-        }, {
-          default: () => h('text', 'Paris'),
-        }),
-      },
-    })
-
-    const linearPath = linearWrapper.find('[data-testid="annotation-line"]').attributes('d')
-    linearWrapper.unmount()
-
-    const curvedWrapper = mount(MapBase, {
-      props: {
-        data: sampleGeoJson,
-      },
-      slots: {
-        default: () => h(MapAnnotation, {
-          coordinates: [2.3522, 48.8566],
-          curve: 1,
-          curveOffset: [0, -0.5],
+          curve: midpointCurve,
+          midpoint: [0, -0.4],
           'data-testid': 'annotation-line',
         }, {
           default: () => h('text', 'Paris'),

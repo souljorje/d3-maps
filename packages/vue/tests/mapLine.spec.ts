@@ -18,7 +18,7 @@ const THREE_POINT_COORDINATES: [number, number][] = [
   [-98.5795, 39.8283],
   [-73.935242, 40.73061],
 ]
-function curveOffsetCurve(context: {
+function midpointCurve(context: {
   moveTo: (x: number, y: number) => void
   lineTo: (x: number, y: number) => void
 }) {
@@ -158,7 +158,7 @@ describe('mapLine', () => {
         default: () => h(MapLine, {
           coordinates: THREE_POINT_COORDINATES,
           custom: true,
-          curve: curveOffsetCurve,
+          curve: midpointCurve,
           'data-testid': 'map-line-curved',
         }),
       },
@@ -167,7 +167,7 @@ describe('mapLine', () => {
     expect(curvedWrapper.find('[data-testid="map-line-curved"]').attributes('d')).not.toBe(linearPath)
   })
 
-  it('uses the manual connector renderer when curve is numeric', () => {
+  it('uses curveNatural by default for custom paths', () => {
     const linearWrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
@@ -192,16 +192,15 @@ describe('mapLine', () => {
         default: () => h(MapLine, {
           coordinates: THREE_POINT_COORDINATES,
           custom: true,
-          curve: 0.5,
           'data-testid': 'map-line-curved',
         }),
       },
     })
 
-    expect(connectorWrapper.find('[data-testid="map-line-curved"]').attributes('d')).not.toBe(linearPath)
+    expect(connectorWrapper.find('[data-testid="map-line-curved"]').attributes('d')).toBe(linearPath)
   })
 
-  it('applies midpoint curveOffset for numeric connector paths', () => {
+  it('applies midpoint shaping for curved connector paths', () => {
     const baseWrapper = mount(MapLine, {
       props: {
         coordinates: [
@@ -209,31 +208,29 @@ describe('mapLine', () => {
           [40, 0],
         ],
         cartesian: true,
-        curve: 0.5,
       },
       attrs: {
-        'data-testid': 'map-line-curveOffset',
+        'data-testid': 'map-line-midpoint',
       },
     })
 
-    const basePath = baseWrapper.find('[data-testid="map-line-curveOffset"]').attributes('d')
+    const basePath = baseWrapper.find('[data-testid="map-line-midpoint"]').attributes('d')
     baseWrapper.unmount()
 
-    const curveOffsetWrapper = mount(MapLine, {
+    const midpointWrapper = mount(MapLine, {
       props: {
         coordinates: [
           [0, 0],
           [40, 0],
         ],
         cartesian: true,
-        curve: 0.5,
-        curveOffset: [0, -0.4],
+        midpoint: [0, -0.4],
       },
       attrs: {
-        'data-testid': 'map-line-curveOffset',
+        'data-testid': 'map-line-midpoint',
       },
     })
 
-    expect(curveOffsetWrapper.find('[data-testid="map-line-curveOffset"]').attributes('d')).not.toBe(basePath)
+    expect(midpointWrapper.find('[data-testid="map-line-midpoint"]').attributes('d')).not.toBe(basePath)
   })
 })

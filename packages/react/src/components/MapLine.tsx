@@ -22,7 +22,7 @@ export function MapLine({
   cartesian = false,
   custom = false,
   curve,
-  curveOffset,
+  midpoint,
   styles,
   name = 'line',
   onMouseEnter,
@@ -39,7 +39,7 @@ export function MapLine({
       custom,
       curve,
       cartesian,
-      curveOffset,
+      midpoint,
     })
   }, [
     context,
@@ -47,7 +47,7 @@ export function MapLine({
     custom,
     curve,
     cartesian,
-    curveOffset,
+    midpoint,
   ])
 
   const { style, ...events } = useMapObject<SVGPathElement>({

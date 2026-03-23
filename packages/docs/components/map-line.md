@@ -9,11 +9,24 @@ Renders a path between map locations
 | `coordinates` | `[number, number][]` | — | `[longitude, latitude][]` |
 | `cartesian?` | `boolean` | `false` | Treat `coordinates` as local SVG points and skip map projection |
 | `custom?` | `boolean` | `false` | Render using [d3-shape line](https://d3js.org/d3-shape/line) instead of default |
-| `curve?` | `number \| CurveFactory \| CurveFactoryLineOnly` | — | Number `0..1` sets bend intensity. Function is any [d3-shape curve](https://d3js.org/d3-shape/curve). Works only with `custom` or `cartesian`. |
-| `curveOffset?` | `[lengthwise: number, crosswise: number]` | — | Adds a point between each coordinate pair. Values are percentages `-1..1` from the distance between the pair |
+| `curve?` | `CurveFactory \| CurveFactoryLineOnly` | `curveNatural` | Any [d3-shape curve](https://d3js.org/d3-shape/curve). Works only with `custom` or `cartesian` |
+| `midpoint?` | `[lengthwise: number, crosswise: number]` | — | Adds a point between each coordinate pair. Value sets position relative to the line center in % from its length. |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapLine
+
+::: details `midpoint` usage
+
+Line bend depending on `midpoint[1]` value
+
+| Line direction | Positive | Negative |
+| --- | --- | --- |
+| → | Up | Down |
+| ← | Down | Up |
+| ↓ | Left | Right |
+| ↑ | Right | Left |
+
+:::
 
 ## Usage
 
@@ -21,8 +34,8 @@ You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapL
 
 **Curves**
 
-By default renders a [great arc](https://en.wikipedia.org/wiki/Great-circle_distance) using [d3-geo path](https://d3js.org/d3-geo/path#_path) with `'LineString'`.  
-To control line bending use `custom` or `cartesian`, then pass `curve` and optional `curveOffset`. `curveOffset` is segment-relative, not screen-axis-relative. Positive perpendicular bends to the right-hand side of the line direction, so a rightward line bends down and a downward line bends right. See interactive [curve examples](https://www.d3indepth.com/examples-merged/shapes/curve-explorer/)
+By default renders a [great arc](https://en.wikipedia.org/wiki/Great-circle_distance) using [d3-geo path](https://d3js.org/d3-geo/path#_path) with `'LineString'` (looks ok usually).  
+To control line bending use `custom` + `midpoint` + `curve`. See interactive [curve examples](https://www.d3indepth.com/examples-merged/shapes/curve-explorer/)
 
 **Edges ←→**
 

@@ -9,7 +9,7 @@
         :coordinates="geometry.lineCoordinates"
         cartesian
         :curve="curve"
-        :curve-offset="curveOffset"
+        :midpoint="midpoint"
         :styles="styles"
         fill="none"
         name="annotation-line"
