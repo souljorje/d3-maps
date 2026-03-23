@@ -20,7 +20,7 @@ const THREE_POINT_COORDINATES: [number, number][] = [
   [-98.5795, 39.8283],
   [-73.935242, 40.73061],
 ]
-function offsetCurve(context: {
+function curveOffsetCurve(context: {
   moveTo: (x: number, y: number) => void
   lineTo: (x: number, y: number) => void
 }) {
@@ -179,7 +179,7 @@ describe('mapLine', () => {
           data-testid="map-line-curved"
           coordinates={THREE_POINT_COORDINATES}
           custom
-          curve={offsetCurve}
+          curve={curveOffsetCurve}
         />
       </MapBase>,
     )
@@ -212,5 +212,40 @@ describe('mapLine', () => {
     )
 
     expect(screen.getByTestId('map-line-curved').getAttribute('d')).not.toBe(linearPath)
+  })
+
+  it('applies midpoint curveOffset for numeric connector paths', () => {
+    const { rerender } = render(
+      <svg>
+        <MapLine
+          data-testid="map-line-curveOffset"
+          coordinates={[
+            [0, 0],
+            [40, 0],
+          ]}
+          cartesian
+          curve={0.5}
+        />
+      </svg>,
+    )
+
+    const basePath = screen.getByTestId('map-line-curveOffset').getAttribute('d')
+
+    rerender(
+      <svg>
+        <MapLine
+          data-testid="map-line-curveOffset"
+          coordinates={[
+            [0, 0],
+            [40, 0],
+          ]}
+          cartesian
+          curve={0.5}
+          curveOffset={[0, -0.4]}
+        />
+      </svg>,
+    )
+
+    expect(screen.getByTestId('map-line-curveOffset').getAttribute('d')).not.toBe(basePath)
   })
 })

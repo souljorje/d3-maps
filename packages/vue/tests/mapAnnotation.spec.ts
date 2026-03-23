@@ -13,7 +13,7 @@ import {
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
-function offsetCurve(context: {
+function curveOffsetCurve(context: {
   moveTo: (x: number, y: number) => void
   lineTo: (x: number, y: number) => void
 }) {
@@ -88,6 +88,7 @@ describe('mapAnnotation', () => {
         default: () => h(MapAnnotation, {
           coordinates: [2.3522, 48.8566],
           'data-testid': 'annotation-line',
+          curveOffset: [0, -0.4],
         }, {
           default: () => h('text', 'Paris'),
         }),
@@ -104,7 +105,8 @@ describe('mapAnnotation', () => {
       slots: {
         default: () => h(MapAnnotation, {
           coordinates: [2.3522, 48.8566],
-          curve: offsetCurve,
+          curve: curveOffsetCurve,
+          curveOffset: [0, -0.4],
           'data-testid': 'annotation-line',
         }, {
           default: () => h('text', 'Paris'),
@@ -124,6 +126,7 @@ describe('mapAnnotation', () => {
         default: () => h(MapAnnotation, {
           coordinates: [2.3522, 48.8566],
           'data-testid': 'annotation-line',
+          curveOffset: [0, -0.5],
         }, {
           default: () => h('text', 'Paris'),
         }),
@@ -140,7 +143,8 @@ describe('mapAnnotation', () => {
       slots: {
         default: () => h(MapAnnotation, {
           coordinates: [2.3522, 48.8566],
-          curve: 0.5,
+          curve: 1,
+          curveOffset: [0, -0.5],
           'data-testid': 'annotation-line',
         }, {
           default: () => h('text', 'Paris'),

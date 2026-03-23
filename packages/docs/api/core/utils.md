@@ -16,11 +16,13 @@
   * [isString()](#isstring)
   * [isStringOrNumber()](#isstringornumber)
   * [makeTransform()](#maketransform)
+  * [noop()](#noop)
 * [Type Aliases](#type-aliases)
   * [AnyFn()](#anyfn)
   * [HasArgs](#hasargs)
   * [MethodsToModifiers](#methodstomodifiers)
   * [ModifierArgs](#modifierargs)
+  * [Noop](#noop-1)
   * [OverloadedArgs](#overloadedargs)
   * [OwnKeys](#ownkeys)
   * [SetterArgs](#setterargs)
@@ -267,6 +269,18 @@ function makeTransform(
 
 `string`
 
+***
+
+### noop()
+
+```ts
+function noop(): void;
+```
+
+#### Returns
+
+`void`
+
 ## Type Aliases
 
 ### AnyFn()
@@ -354,6 +368,14 @@ Converts method parameters to modifiers values
 | Type Parameter |
 | ------ |
 | `P` *extends* `unknown`\[] |
+
+***
+
+### Noop
+
+```ts
+type Noop = typeof noop;
+```
 
 ***
 

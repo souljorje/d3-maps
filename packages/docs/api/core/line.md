@@ -5,53 +5,51 @@
 ## Table of contents
 
 * [Functions](#functions)
-  * [getCartesianLinePath()](#getcartesianlinepath)
-  * [getConnectorLinePath()](#getconnectorlinepath)
+  * [createMidPoint()](#createmidpoint)
+  * [getDefaultLine()](#getdefaultline)
   * [getLinePath()](#getlinepath)
-  * [getLineStringPath()](#getlinestringpath)
-  * [getPointsLinePath()](#getpointslinepath)
-  * [getProjectedConnectorPath()](#getprojectedconnectorpath)
-  * [getProjectedLinePath()](#getprojectedlinepath)
+  * [getLineWithMidpoints()](#getlinewithmidpoints)
 * [Interfaces](#interfaces)
+  * [MapLineOptions](#maplineoptions)
   * [MapLineProps](#maplineprops)
 * [Type Aliases](#type-aliases)
   * [MapLineCoordinates](#maplinecoordinates)
   * [MapLineCurve](#maplinecurve)
-  * [MapLineCustomCurve](#maplinecustomcurve)
+  * [MapLineCurveOffset](#maplinecurveoffset)
 
 ## Functions
 
-### getCartesianLinePath()
+### createMidPoint()
 
 ```ts
-function getCartesianLinePath(coordinates: MapLineCoordinates, curve?: MapLineCustomCurve): string | undefined;
+function createMidPoint(pointsPair: [[number, number], [number, number]], curveOffset?: MapLineCurveOffset): [number, number];
 ```
 
 #### Parameters
 
 | Parameter | Type |
 | ------ | ------ |
-| `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) |
-| `curve?` | [`MapLineCustomCurve`](#maplinecustomcurve) |
+| `pointsPair` | \[\[`number`, `number`], \[`number`, `number`]] |
+| `curveOffset` | [`MapLineCurveOffset`](#maplinecurveoffset) |
 
 #### Returns
 
-`string` | `undefined`
+\[`number`, `number`]
 
 ***
 
-### getConnectorLinePath()
+### getDefaultLine()
 
 ```ts
-function getConnectorLinePath(points: MapLineCoordinates, curve?: number): string | undefined;
+function getDefaultLine(points: MapLineCoordinates, curve?: MapLineCurve): string | undefined;
 ```
 
 #### Parameters
 
-| Parameter | Type | Default value |
-| ------ | ------ | ------ |
-| `points` | [`MapLineCoordinates`](#maplinecoordinates) | `undefined` |
-| `curve` | `number` | `0.5` |
+| Parameter | Type |
+| ------ | ------ |
+| `points` | [`MapLineCoordinates`](#maplinecoordinates) |
+| `curve?` | [`MapLineCurve`](#maplinecurve) |
 
 #### Returns
 
@@ -62,38 +60,7 @@ function getConnectorLinePath(points: MapLineCoordinates, curve?: number): strin
 ### getLinePath()
 
 ```ts
-function getLinePath(
-   context: MapContext | undefined, 
-   coordinates: MapLineCoordinates, 
-   custom?: boolean, 
-   curve?: MapLineCustomCurve, 
-   cartesian?: boolean): string | undefined;
-```
-
-Computes an SVG path for a geographic line between coordinates.
-
-Coordinates must be `[longitude, latitude]`.
-
-#### Parameters
-
-| Parameter | Type | Default value |
-| ------ | ------ | ------ |
-| `context` | [`MapContext`](map.md#mapcontext) | `undefined` | `undefined` |
-| `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) | `undefined` |
-| `custom` | `boolean` | `false` |
-| `curve?` | [`MapLineCustomCurve`](#maplinecustomcurve) | `undefined` |
-| `cartesian?` | `boolean` | `false` |
-
-#### Returns
-
-`string` | `undefined`
-
-***
-
-### getLineStringPath()
-
-```ts
-function getLineStringPath(context: MapContext | undefined, coordinates: MapLineCoordinates): string | undefined;
+function getLinePath(context: MapContext | undefined, __namedParameters: MapLineOptions): string | undefined;
 ```
 
 #### Parameters
@@ -101,7 +68,7 @@ function getLineStringPath(context: MapContext | undefined, coordinates: MapLine
 | Parameter | Type |
 | ------ | ------ |
 | `context` | [`MapContext`](map.md#mapcontext) | `undefined` |
-| `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) |
+| `__namedParameters` | [`MapLineOptions`](#maplineoptions) |
 
 #### Returns
 
@@ -109,10 +76,13 @@ function getLineStringPath(context: MapContext | undefined, coordinates: MapLine
 
 ***
 
-### getPointsLinePath()
+### getLineWithMidpoints()
 
 ```ts
-function getPointsLinePath(points: MapLineCoordinates, curve?: MapLineCurve): string | undefined;
+function getLineWithMidpoints(
+   points: MapLineCoordinates, 
+   curve?: MapLineCurve, 
+   curveOffset?: MapLineCurveOffset): string | undefined;
 ```
 
 #### Parameters
@@ -120,53 +90,8 @@ function getPointsLinePath(points: MapLineCoordinates, curve?: MapLineCurve): st
 | Parameter | Type | Default value |
 | ------ | ------ | ------ |
 | `points` | [`MapLineCoordinates`](#maplinecoordinates) | `undefined` |
-| `curve` | [`MapLineCurve`](#maplinecurve) | `curveLinear` |
-
-#### Returns
-
-`string` | `undefined`
-
-***
-
-### getProjectedConnectorPath()
-
-```ts
-function getProjectedConnectorPath(
-   context: MapContext | undefined, 
-   coordinates: MapLineCoordinates, 
-   curve?: number): string | undefined;
-```
-
-#### Parameters
-
-| Parameter | Type | Default value |
-| ------ | ------ | ------ |
-| `context` | [`MapContext`](map.md#mapcontext) | `undefined` | `undefined` |
-| `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) | `undefined` |
-| `curve` | `number` | `0.5` |
-
-#### Returns
-
-`string` | `undefined`
-
-***
-
-### getProjectedLinePath()
-
-```ts
-function getProjectedLinePath(
-   context: MapContext | undefined, 
-   coordinates: MapLineCoordinates, 
-   curve?: MapLineCurve): string | undefined;
-```
-
-#### Parameters
-
-| Parameter | Type | Default value |
-| ------ | ------ | ------ |
-| `context` | [`MapContext`](map.md#mapcontext) | `undefined` | `undefined` |
-| `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) | `undefined` |
-| `curve` | [`MapLineCurve`](#maplinecurve) | `curveLinear` |
+| `curve` | [`MapLineCurve`](#maplinecurve) | `0.5` |
+| `curveOffset?` | [`MapLineCurveOffset`](#maplinecurveoffset) | `undefined` |
 
 #### Returns
 
@@ -174,13 +99,29 @@ function getProjectedLinePath(
 
 ## Interfaces
 
-### MapLineProps
+### MapLineOptions
 
-Shared props contract for geographic line layers.
+#### Extended by
+
+* [`MapLineProps`](#maplineprops)
+
+#### Properties
+
+| Property | Type |
+| ------ | ------ |
+| <a id="property-cartesian"></a> `cartesian?` | `boolean` |
+| <a id="property-coordinates"></a> `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) |
+| <a id="property-curve"></a> `curve?` | [`MapLineCurve`](#maplinecurve) |
+| <a id="property-curveoffset"></a> `curveOffset?` | [`MapLineCurveOffset`](#maplinecurveoffset) |
+| <a id="property-custom"></a> `custom?` | `boolean` |
+
+***
+
+### MapLineProps
 
 #### Extends
 
-* [`MapObjectProps`](mapObject.md#mapobjectprops)<`TStyle`>
+* [`MapObjectProps`](mapObject.md#mapobjectprops)<`TStyle`>.[`MapLineOptions`](#maplineoptions)
 
 #### Type Parameters
 
@@ -192,10 +133,11 @@ Shared props contract for geographic line layers.
 
 | Property | Type | Inherited from |
 | ------ | ------ | ------ |
-| <a id="property-cartesian"></a> `cartesian?` | `boolean` | - |
-| <a id="property-coordinates"></a> `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) | - |
-| <a id="property-curve"></a> `curve?` | [`MapLineCustomCurve`](#maplinecustomcurve) | - |
-| <a id="property-custom"></a> `custom?` | `boolean` | - |
+| <a id="property-cartesian-1"></a> `cartesian?` | `boolean` | [`MapLineOptions`](#maplineoptions).[`cartesian`](#property-cartesian) |
+| <a id="property-coordinates-1"></a> `coordinates` | [`MapLineCoordinates`](#maplinecoordinates) | [`MapLineOptions`](#maplineoptions).[`coordinates`](#property-coordinates) |
+| <a id="property-curve-1"></a> `curve?` | [`MapLineCurve`](#maplinecurve) | [`MapLineOptions`](#maplineoptions).[`curve`](#property-curve) |
+| <a id="property-curveoffset-1"></a> `curveOffset?` | [`MapLineCurveOffset`](#maplinecurveoffset) | [`MapLineOptions`](#maplineoptions).[`curveOffset`](#property-curveoffset) |
+| <a id="property-custom-1"></a> `custom?` | `boolean` | [`MapLineOptions`](#maplineoptions).[`custom`](#property-custom) |
 | <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases
@@ -211,13 +153,13 @@ type MapLineCoordinates = [number, number][];
 ### MapLineCurve
 
 ```ts
-type MapLineCurve = CurveFactory | CurveFactoryLineOnly;
+type MapLineCurve = CurveFactory | CurveFactoryLineOnly | number;
 ```
 
 ***
 
-### MapLineCustomCurve
+### MapLineCurveOffset
 
 ```ts
-type MapLineCustomCurve = MapLineCurve | number;
+type MapLineCurveOffset = [number, number];
 ```

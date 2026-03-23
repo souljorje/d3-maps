@@ -7,6 +7,7 @@ import {
   isDefined,
   isElement,
   isObject,
+  noop,
 } from './utils'
 
 export type MapObjectData = GeoGeometryObjects | ExtendedFeature
@@ -16,7 +17,6 @@ export type MapObjectGlobalMouseupListener = () => void
 export type MapObjectGlobalMouseupSubscription = (
   listener: MapObjectGlobalMouseupListener,
 ) => (() => void)
-function noop(): void {}
 
 /**
  * Supported interaction states for map objects.

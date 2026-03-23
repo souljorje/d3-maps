@@ -14,7 +14,6 @@
         :length="40"
         :angle="-90"
         :margin="2"
-        :curve="0.5"
         :stroke-width="2"
       >
         <text

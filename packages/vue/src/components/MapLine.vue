@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import type {
   MapLineCoordinates,
-  MapLineCustomCurve,
+  MapLineCurve,
   MapObjectProps,
 } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
@@ -29,7 +29,8 @@ interface Props extends MapObjectProps<StyleValue> {
   coordinates: MapLineCoordinates
   cartesian?: boolean
   custom?: boolean
-  curve?: MapLineCustomCurve
+  curve?: MapLineCurve
+  curveOffset?: [number, number]
 }
 
 defineOptions({
@@ -48,10 +49,13 @@ const context = useMapContext()
 const path = computed<string | undefined>(() => {
   return getLinePath(
     context?.value,
-    props.coordinates,
-    props.custom,
-    props.curve,
-    props.cartesian,
+    {
+      coordinates: props.coordinates,
+      custom: props.custom,
+      curve: props.curve,
+      cartesian: props.cartesian,
+      curveOffset: props.curveOffset,
+    },
   )
 })
 

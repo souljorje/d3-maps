@@ -66,6 +66,7 @@ export default function AnnotationExample(): JSX.Element | null {
               angle={-90}
               margin={2}
               curve={0.5}
+              curveOffset={[0, -0.5]}
               strokeWidth={2}
             >
               <text

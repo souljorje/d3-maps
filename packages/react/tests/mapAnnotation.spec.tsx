@@ -15,7 +15,7 @@ import {
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
-function offsetCurve(context: {
+function curveOffsetCurve(context: {
   moveTo: (x: number, y: number) => void
   lineTo: (x: number, y: number) => void
 }) {
@@ -83,6 +83,7 @@ describe('mapAnnotation', () => {
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"
+          curveOffset={[0, -0.4]}
         >
           <text>Paris</text>
         </MapAnnotation>
@@ -96,7 +97,8 @@ describe('mapAnnotation', () => {
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"
-          curve={offsetCurve}
+          curve={curveOffsetCurve}
+          curveOffset={[0, -0.4]}
         >
           <text>Paris</text>
         </MapAnnotation>
@@ -112,6 +114,7 @@ describe('mapAnnotation', () => {
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"
+          curveOffset={[0, -0.5]}
         >
           <text>Paris</text>
         </MapAnnotation>
@@ -125,7 +128,8 @@ describe('mapAnnotation', () => {
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"
-          curve={0.5}
+          curve={1}
+          curveOffset={[0, -0.5]}
         >
           <text>Paris</text>
         </MapAnnotation>

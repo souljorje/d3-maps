@@ -6,92 +6,55 @@ import type {
 import type { MapContext } from './map'
 import type { MapObjectProps } from './mapObject'
 
-import { curveLinear, line } from 'd3-shape'
+import {
+  curveCardinal,
+  line,
+} from 'd3-shape'
 
-import { isNumber } from './utils'
+import { isFunction, isNumber } from './utils'
 
 export type MapLineCoordinates = [number, number][]
-export type MapLineCurve = CurveFactory | CurveFactoryLineOnly
-export type MapLineCustomCurve = MapLineCurve | number
+export type MapLineCurve = CurveFactory | CurveFactoryLineOnly | number
+export type MapLineCurveOffset = [number, number]
 
-/**
- * Shared props contract for geographic line layers.
- */
-export interface MapLineProps<TStyle = unknown> extends MapObjectProps<TStyle> {
+export interface MapLineOptions {
   coordinates: MapLineCoordinates
   cartesian?: boolean
   custom?: boolean
-  curve?: MapLineCustomCurve
+  curve?: MapLineCurve
+  curveOffset?: MapLineCurveOffset
 }
 
-/**
- * Computes an SVG path for a geographic line between coordinates.
- *
- * Coordinates must be `[longitude, latitude]`.
- */
+export interface MapLineProps<TStyle = unknown> extends MapObjectProps<TStyle>, MapLineOptions {}
+
 export function getLinePath(
   context: MapContext | undefined,
-  coordinates: MapLineCoordinates,
-  custom = false,
-  curve?: MapLineCustomCurve,
-  cartesian = false,
-): string | undefined {
-  if (cartesian) {
-    return getCartesianLinePath(coordinates, curve)
-  }
-
-  if (!custom) {
-    return getLineStringPath(context, coordinates)
-  }
-
-  if (isNumber(curve)) {
-    return getProjectedConnectorPath(context, coordinates, curve)
-  }
-
-  return getProjectedLinePath(context, coordinates, curve)
-}
-
-export function getCartesianLinePath(
-  coordinates: MapLineCoordinates,
-  curve?: MapLineCustomCurve,
-): string | undefined {
-  if (isNumber(curve)) {
-    return getConnectorLinePath(coordinates, curve)
-  }
-
-  return getPointsLinePath(coordinates, curve)
-}
-
-export function getLineStringPath(
-  context: MapContext | undefined,
-  coordinates: MapLineCoordinates,
-): string | undefined {
-  if (!context || coordinates.length < 2) return undefined
-
-  return context.path({
-    type: 'LineString',
+  {
     coordinates,
-  }) ?? undefined
-}
-
-export function getProjectedLinePath(
-  context: MapContext | undefined,
-  coordinates: MapLineCoordinates,
-  curve: MapLineCurve = curveLinear,
+    curve,
+    custom = false,
+    cartesian = false,
+    curveOffset,
+  }: MapLineOptions,
 ): string | undefined {
-  const points = getProjectedPoints(context, coordinates)
+  if (!cartesian && !custom) {
+    if (!context || coordinates.length < 2) return undefined
 
-  return getPointsLinePath(points, curve)
-}
+    return context.path({
+      type: 'LineString',
+      coordinates,
+    }) ?? undefined
+  }
 
-export function getProjectedConnectorPath(
-  context: MapContext | undefined,
-  coordinates: MapLineCoordinates,
-  curve = 0.5,
-): string | undefined {
-  const points = getProjectedPoints(context, coordinates)
+  const resolvedCoordinates = cartesian
+    ? coordinates
+    : getProjectedPoints(context, coordinates)
 
-  return getConnectorLinePath(points, curve)
+  if (curveOffset && (curveOffset[0] !== 0 || curveOffset[1] !== 0)) {
+    return getLineWithMidpoints(resolvedCoordinates, curve, curveOffset)
+  }
+
+  return getDefaultLine(resolvedCoordinates, curve)
 }
 
 function getProjectedPoints(
@@ -105,40 +68,61 @@ function getProjectedPoints(
     .filter((point): point is [number, number] => point != null)
 }
 
-export function getPointsLinePath(
+function resolveCurve(curve?: MapLineCurve): CurveFactory | CurveFactoryLineOnly | undefined {
+  if (isFunction(curve)) return curve as CurveFactory | CurveFactoryLineOnly
+  if (isNumber(curve)) {
+    return curveCardinal.tension(1 - Math.min(1, Math.max(0, curve)))
+  }
+  return undefined
+}
+
+export function getDefaultLine(
   points: MapLineCoordinates,
-  curve: MapLineCurve = curveLinear,
+  curve?: MapLineCurve,
 ): string | undefined {
   if (points.length < 2) return undefined
 
-  return line<[number, number]>()
-    .curve(curve)(points) ?? undefined
+  const linePath = line<[number, number]>()
+  const resolvedCurve = resolveCurve(curve)
+
+  if (resolvedCurve) {
+    linePath.curve(resolvedCurve)
+  }
+
+  return linePath(points) ?? undefined
 }
 
-export function getConnectorLinePath(
+export function createMidPoint(
+  pointsPair: [[number, number], [number, number]],
+  curveOffset: MapLineCurveOffset = [0, 0],
+): [number, number] {
+  const [[startX, startY], [endX, endY]] = pointsPair
+  const [offsetX, offsetY] = curveOffset
+  const midX = (startX + endX) / 2
+  const midY = (startY + endY) / 2
+  const halfLength = Math.hypot(endX - startX, endY - startY) / 2
+
+  return [
+    midX + ((midX || halfLength) * offsetX),
+    midY + ((midY || halfLength) * offsetY),
+  ]
+}
+
+export function getLineWithMidpoints(
   points: MapLineCoordinates,
-  curve = 0.5,
+  curve: MapLineCurve = 0.5,
+  curveOffset?: MapLineCurveOffset,
 ): string | undefined {
   if (points.length < 2) return undefined
 
-  const normalizedCurve = normalizeConnectorCurve(curve)
-  const [startPoint, ...nextPoints] = points
+  const pointsWithMidpoints = points.flatMap((point, index) => {
+    if (index === 0) return [point]
 
-  return nextPoints.reduce((path, endPoint, index) => {
-    const start = points[index]
-    const dx = start[0] - endPoint[0]
-    const dy = start[1] - endPoint[1]
-    const curveX = (dx / 2) * normalizedCurve
-    const curveY = (dy / 2) * normalizedCurve
-    const controlX = start[0] + (-dx / 2) - curveX
-    const controlY = start[1] + (-dy / 2) + curveY
+    return [
+      createMidPoint([points[index - 1], point], curveOffset),
+      point,
+    ]
+  })
 
-    return `${path}Q${controlX},${controlY} ${endPoint[0]},${endPoint[1]}`
-  }, `M${startPoint[0]},${startPoint[1]}`)
-}
-
-function normalizeConnectorCurve(curve: number): number {
-  if (!Number.isFinite(curve)) return 0.5
-
-  return Math.min(1, Math.max(0, curve))
+  return getDefaultLine(pointsWithMidpoints, curve)
 }

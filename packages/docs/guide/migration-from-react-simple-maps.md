@@ -161,8 +161,6 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 </MapBase>
 ```
 
-You can also pass a D3 `curve` function or a numeric `curve` like `0.5` when you want a shaped connector instead of a straight callout line
-
 ## Component mapping
 
 | react-simple-maps | d3-maps |

@@ -1,17 +1,17 @@
-import type { MapLineCustomCurve } from './line'
+import type { MapLineCurve, MapLineCurveOffset } from './line'
 import type { MapObjectProps } from './mapObject'
 
 import { makeTransform } from './utils'
 
 export type MapAnnotationCoordinates = [number, number]
-export type MapAnnotationCurve = MapLineCustomCurve
 
 export interface MapAnnotationProps<TStyle = unknown> extends MapObjectProps<TStyle> {
   coordinates: MapAnnotationCoordinates
   length?: number
   angle?: number
   margin?: number
-  curve?: MapAnnotationCurve
+  curve?: MapLineCurve
+  curveOffset?: MapLineCurveOffset
 }
 
 export interface MapAnnotationGeometry {
@@ -32,10 +32,8 @@ export function getAnnotationGeometry({
   margin = MAP_ANNOTATION_DEFAULTS.margin,
 }: Partial<MapAnnotationProps> = {}): MapAnnotationGeometry {
   const lineEndX = margin + length
-  const lineCoordinates: MapAnnotationCoordinates[] = [
-    [margin, 0],
-    [lineEndX, 0],
-  ]
+  const start = [margin, 0] as [number, number]
+  const end = [lineEndX, 0] as [number, number]
 
   const radians = angle * Math.PI / 180
   const contentX = Math.cos(radians) * lineEndX
@@ -43,7 +41,7 @@ export function getAnnotationGeometry({
 
   return {
     lineTransform: `rotate(${angle})`,
-    lineCoordinates,
+    lineCoordinates: [start, end],
     contentTransform: makeTransform(contentX, contentY),
   }
 }

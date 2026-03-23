@@ -18,7 +18,7 @@ const THREE_POINT_COORDINATES: [number, number][] = [
   [-98.5795, 39.8283],
   [-73.935242, 40.73061],
 ]
-function offsetCurve(context: {
+function curveOffsetCurve(context: {
   moveTo: (x: number, y: number) => void
   lineTo: (x: number, y: number) => void
 }) {
@@ -158,7 +158,7 @@ describe('mapLine', () => {
         default: () => h(MapLine, {
           coordinates: THREE_POINT_COORDINATES,
           custom: true,
-          curve: offsetCurve,
+          curve: curveOffsetCurve,
           'data-testid': 'map-line-curved',
         }),
       },
@@ -199,5 +199,41 @@ describe('mapLine', () => {
     })
 
     expect(connectorWrapper.find('[data-testid="map-line-curved"]').attributes('d')).not.toBe(linearPath)
+  })
+
+  it('applies midpoint curveOffset for numeric connector paths', () => {
+    const baseWrapper = mount(MapLine, {
+      props: {
+        coordinates: [
+          [0, 0],
+          [40, 0],
+        ],
+        cartesian: true,
+        curve: 0.5,
+      },
+      attrs: {
+        'data-testid': 'map-line-curveOffset',
+      },
+    })
+
+    const basePath = baseWrapper.find('[data-testid="map-line-curveOffset"]').attributes('d')
+    baseWrapper.unmount()
+
+    const curveOffsetWrapper = mount(MapLine, {
+      props: {
+        coordinates: [
+          [0, 0],
+          [40, 0],
+        ],
+        cartesian: true,
+        curve: 0.5,
+        curveOffset: [0, -0.4],
+      },
+      attrs: {
+        'data-testid': 'map-line-curveOffset',
+      },
+    })
+
+    expect(curveOffsetWrapper.find('[data-testid="map-line-curveOffset"]').attributes('d')).not.toBe(basePath)
   })
 })

@@ -31,29 +31,30 @@ describe('getAnnotationGeometry', () => {
     })
   })
 
-  it('keeps connector coordinates in local rotated space', () => {
+  it('keeps numeric-curve connector coordinates in local rotated space', () => {
     const geometry = getAnnotationGeometry({
       angle: -15,
       margin: 0,
       length: 40,
+      curve: 0.5,
     })
 
-    expect(geometry?.lineTransform).toBe('rotate(-15)')
-    expect(geometry?.lineCoordinates).toEqual([
+    expect(geometry.lineTransform).toBe('rotate(-15)')
+    expect(geometry.lineCoordinates).toEqual([
       [0, 0],
       [40, 0],
     ])
   })
 
-  it('computes local line coordinates from length and margin', () => {
+  it('keeps connector geometry independent from curve interpolation', () => {
     const geometry = getAnnotationGeometry({
       length: 40,
-      margin: 6,
+      margin: 2,
     })
 
     expect(geometry.lineCoordinates).toEqual([
-      [6, 0],
-      [46, 0],
+      [2, 0],
+      [42, 0],
     ])
   })
 })
