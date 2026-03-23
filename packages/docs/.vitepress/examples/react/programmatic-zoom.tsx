@@ -1,12 +1,10 @@
 import type {
   MapFeature as D3MapFeature,
   MapData,
-  ProjectionConfig,
 } from '@d3-maps/core'
 import type {
   JSX,
   KeyboardEvent as ReactKeyboardEvent,
-  MouseEvent as ReactMouseEvent,
 } from 'react'
 
 import {
@@ -33,9 +31,7 @@ const initialZoom = 1
 const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
-const projectionConfig: ProjectionConfig = {
-  rotate: [[-11, 0]],
-}
+
 export default function ProgrammaticZoomExample(): JSX.Element | null {
   const [mapData, setMapData] = useState<MapData>()
   const [center, setCenter] = useState<[number, number]>()
@@ -48,7 +44,6 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
     mapData
       ? {
           data: mapData,
-          projectionConfig,
         }
       : undefined,
   )
@@ -107,10 +102,8 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
 
   function onFeatureClick(
     feature: D3MapFeature,
-    event: ReactMouseEvent<SVGPathElement>,
   ): void {
     zoomToFeature(feature)
-    focusFeatureElement(event.currentTarget)
   }
 
   function onFeatureKeyDown(
@@ -132,8 +125,11 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
 
     zoomToFeature(feature)
 
+    const featureKey = getFeatureKey(feature)
+    if (featureKey === undefined) return
+
     await Promise.resolve()
-    focusFeatureByKey(getFeatureKey(feature, 'id', randomIndex))
+    focusFeatureByKey(featureKey)
   }
 
   function focusFeatureByKey(featureKey: string | number): void {
@@ -172,7 +168,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
                 <MapFeature
                   key={getFeatureKey(feature, 'id', index)}
                   data={feature}
-                  data-feature-key={getFeatureKey(feature, 'id', index)}
+                  data-feature-key={getFeatureKey(feature)}
                   aria-label={getFeatureLabel(feature)}
                   role="button"
                   tabIndex={0}
@@ -182,7 +178,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
                       fill: 'lightskyblue',
                     },
                   }}
-                  onClick={(event) => onFeatureClick(feature, event)}
+                  onClick={() => onFeatureClick(feature)}
                   onKeyDown={(event) => onFeatureKeyDown(feature, event)}
                 />
               ))}

@@ -23,10 +23,10 @@
           <MapFeatures fill="var(--vp-c-neutral-inverse)">
             <template #default="{ features: renderedFeatures }">
               <MapFeature
-                v-for="(feature, index) in renderedFeatures"
-                :key="getFeatureKey(feature, 'id', index)"
+                v-for="(feature) in renderedFeatures"
+                :key="getFeatureKey(feature)"
                 :data="feature"
-                :data-feature-key="getFeatureKey(feature, 'id', index)"
+                :data-feature-key="getFeatureKey(feature)"
                 :aria-label="getFeatureLabel(feature)"
                 :styles="{
                   focus: {
@@ -36,8 +36,8 @@
                 class="cursor-pointer"
                 role="button"
                 tabindex="0"
-                @click="onFeatureClick(feature, $event)"
-                @keydown="onFeatureKeydown(feature, $event)"
+                @click="zoomToFeature(feature)"
+                @keydown.enter.space.prevent="zoomToFeature(feature)"
               />
             </template>
           </MapFeatures>
@@ -93,7 +93,6 @@
 import type {
   MapFeature as D3MapFeature,
   MapData,
-  ProjectionConfig,
 } from '@d3-maps/core'
 
 import {
@@ -113,9 +112,6 @@ const initialZoom = 1
 const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
-const projectionConfig: ProjectionConfig = {
-  rotate: [[-11, 0]],
-}
 const data = ref<MapData>()
 const center = ref<[number, number]>()
 const zoom = ref(initialZoom)
@@ -125,7 +121,6 @@ const mapRoot = ref<HTMLElement | null>(null)
 const mapContext = useCreateMapContext(computed(() => {
   return {
     data: data.value,
-    projectionConfig,
   }
 }))
 
@@ -166,9 +161,13 @@ async function zoomToRandomCountry() {
   const randomIndex = Math.floor(Math.random() * mapContext.value.features.length)
   const feature = mapContext.value.features[randomIndex]
 
-  zoomToFeature(feature)
-  await nextTick()
-  focusFeatureByKey(getFeatureKey(feature, 'id', randomIndex))
+  const featureElement = mapRoot.value?.querySelector<SVGPathElement>(
+    `[data-feature-key="${getFeatureKey(feature)}"]`,
+  )
+  if (featureElement) {
+    zoomToFeature(feature)
+    featureElement.focus({ preventScroll: true })
+  }
 }
 
 function zoomToFeature(feature: D3MapFeature) {
@@ -184,44 +183,6 @@ function zoomToFeature(feature: D3MapFeature) {
   zoom.value = view.zoom
   center.value = view.center
   activeCountryLabel.value = getFeatureLabel(feature)
-}
-
-function onFeatureClick(
-  feature: D3MapFeature,
-  event: MouseEvent,
-) {
-  zoomToFeature(feature)
-  focusFeatureElement(event.currentTarget)
-}
-
-function onFeatureKeydown(
-  feature: D3MapFeature,
-  event: KeyboardEvent,
-) {
-  if (event.key !== 'Enter' && event.key !== ' ') return
-
-  event.preventDefault()
-  zoomToFeature(feature)
-  focusFeatureElement(event.currentTarget)
-}
-
-function focusFeatureByKey(featureKey: string | number) {
-  const featureElement = mapRoot.value?.querySelector<SVGPathElement>(
-    `[data-feature-key="${String(featureKey)}"]`,
-  )
-
-  focusFeatureElement(featureElement)
-}
-
-function focusFeatureElement(target: EventTarget | SVGPathElement | null | undefined) {
-  const element = target instanceof SVGPathElement ? target : null
-  if (!element) return
-
-  try {
-    element.focus({ preventScroll: true })
-  } catch {
-    element.focus()
-  }
 }
 
 function isDragOnlyFilter(event: Event) {

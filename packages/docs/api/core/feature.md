@@ -20,7 +20,7 @@
 function getFeatureKey(
    feature: MapFeature, 
    idKey?: string, 
-   index: number): string | number;
+   fallback?: string | number): string | number | undefined;
 ```
 
 Resolves a stable key for a feature.
@@ -29,7 +29,7 @@ Checks:
 
 1. `feature[idKey]`
 2. `feature.properties[idKey]`
-3. fallback to the list index
+3. optional fallback value supplied by the caller
 
 #### Parameters
 
@@ -37,11 +37,11 @@ Checks:
 | ------ | ------ | ------ |
 | `feature` | [`MapFeature`](#mapfeature) | `undefined` |
 | `idKey` | `string` | `'id'` |
-| `index` | `number` | `undefined` |
+| `fallback?` | `string` | `number` | `undefined` |
 
 #### Returns
 
-`string` | `number`
+`string` | `number` | `undefined`
 
 ## Interfaces
 
