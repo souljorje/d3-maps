@@ -43,7 +43,7 @@
       :coordinates="returnFlight"
       custom
       :curve="curveBasis"
-      :curve-offset="[0.2, 0.9]"
+      :curve-offset="[-0.2, -0.3]"
       :stroke-width="1.5"
       stroke-dasharray="2 2"
       marker-end="url(#connections-arrow)"

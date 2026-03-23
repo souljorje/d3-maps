@@ -38,15 +38,11 @@ export function MapAnnotation({
       length,
       angle,
       margin,
-      curve,
-      curveOffset,
     })
   }, [
     length,
     angle,
     margin,
-    curve,
-    curveOffset,
   ])
 
   return (

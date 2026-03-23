@@ -10,6 +10,7 @@
   * [MAP\_ANNOTATION\_DEFAULTS](#map_annotation_defaults)
 * [Interfaces](#interfaces)
   * [MapAnnotationGeometry](#mapannotationgeometry)
+  * [MapAnnotationGeometryOptions](#mapannotationgeometryoptions)
   * [MapAnnotationProps](#mapannotationprops)
 * [Type Aliases](#type-aliases)
   * [MapAnnotationCoordinates](#mapannotationcoordinates)
@@ -19,14 +20,14 @@
 ### getAnnotationGeometry()
 
 ```ts
-function getAnnotationGeometry(__namedParameters?: Partial<MapAnnotationProps>): MapAnnotationGeometry;
+function getAnnotationGeometry(__namedParameters?: MapAnnotationGeometryOptions): MapAnnotationGeometry;
 ```
 
 #### Parameters
 
 | Parameter | Type |
 | ------ | ------ |
-| `__namedParameters` | `Partial`<[`MapAnnotationProps`](#mapannotationprops)> |
+| `__namedParameters` | [`MapAnnotationGeometryOptions`](#mapannotationgeometryoptions) |
 
 #### Returns
 
@@ -78,6 +79,18 @@ readonly margin: 0 = 0;
 
 ***
 
+### MapAnnotationGeometryOptions
+
+#### Properties
+
+| Property | Type |
+| ------ | ------ |
+| <a id="property-angle"></a> `angle?` | `number` |
+| <a id="property-length"></a> `length?` | `number` |
+| <a id="property-margin"></a> `margin?` | `number` |
+
+***
+
 ### MapAnnotationProps
 
 #### Extends
@@ -94,12 +107,12 @@ readonly margin: 0 = 0;
 
 | Property | Type | Inherited from |
 | ------ | ------ | ------ |
-| <a id="property-angle"></a> `angle?` | `number` | - |
+| <a id="property-angle-1"></a> `angle?` | `number` | - |
 | <a id="property-coordinates"></a> `coordinates` | [`MapAnnotationCoordinates`](#mapannotationcoordinates) | - |
 | <a id="property-curve"></a> `curve?` | [`MapLineCurve`](line.md#maplinecurve) | - |
 | <a id="property-curveoffset"></a> `curveOffset?` | [`MapLineCurveOffset`](line.md#maplinecurveoffset) | - |
-| <a id="property-length"></a> `length?` | `number` | - |
-| <a id="property-margin"></a> `margin?` | `number` | - |
+| <a id="property-length-1"></a> `length?` | `number` | - |
+| <a id="property-margin-1"></a> `margin?` | `number` | - |
 | <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases

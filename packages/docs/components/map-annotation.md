@@ -12,11 +12,13 @@ Use when you need a callout, label, or badge offset from the original location
 | `angle?` | `number` | `-45` | Connector angle in degrees |
 | `margin?` | `number` | `0` | Gap between the anchor point and the connector start |
 | `curve?` | `number \| CurveFactory \| CurveFactoryLineOnly` | — | See [`MapLine.curve`](/components/map-line#props) |
-| `curveOffset?` | `[number, number]` | — | See [`MapLine.curveOffset`](/components/map-line#props) |
+| `curveOffset?` | `[along: number, normal: number]` | — | See [`MapLine.curveOffset`](/components/map-line#props) |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 `styles` and native attributes are bound to the connector `<path>`.  
 Interaction state is tracked on the wrapper `<g>`.
+
+The connector is rendered by `MapLine` in cartesian mode, so `curve` and `curveOffset` follow the same behavior as `MapLine`
 
 ## Usage
 

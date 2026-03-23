@@ -9,8 +9,8 @@ Renders a path between map locations
 | `coordinates` | `[number, number][]` | — | `[longitude, latitude][]` |
 | `cartesian?` | `boolean` | `false` | Treat `coordinates` as local SVG points and skip map projection |
 | `custom?` | `boolean` | `false` | Render using [d3-shape line](https://d3js.org/d3-shape/line) instead of default |
-| `curve?` | `number \| CurveFactory \| CurveFactoryLineOnly` | — | Number `0..1` sets bend intensity. Function is any [d3-shape curve](https://d3js.org/d3-shape/curve). Works only with `custom` or `cartesian`. |
-| `curveOffset?` | `[x: number, y: number]` | — | Adds a midpoint between each coordinate with provided offset percentages `-1..1` |
+| `curve?` | `number \| CurveFactory \| CurveFactoryLineOnly` | — | Number `0..1` maps to `curveCardinal.tension(1 - value)`. Function is any [d3-shape curve](https://d3js.org/d3-shape/curve). Works only with `custom` or `cartesian`. |
+| `curveOffset?` | `[along: number, normal: number]` | — | Adds a midpoint between each coordinate pair. First value moves the midpoint toward start/end, second moves it perpendicular to the segment. Both values are percentages of the full segment length in the `-1..1` range |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapLine
@@ -21,8 +21,8 @@ You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapL
 
 **Curves**
 
-By default renders a [great arc](https://en.wikipedia.org/wiki/Great-circle_distance) using [d3-geo path](https://d3js.org/d3-geo/path#_path) with `'LineString'` (looks ok usually).  
-To control line bending use `custom` + `curve` + `curveOffset`. See interactive [curve examples](https://www.d3indepth.com/examples-merged/shapes/curve-explorer/)
+By default renders a [great arc](https://en.wikipedia.org/wiki/Great-circle_distance) using [d3-geo path](https://d3js.org/d3-geo/path#_path) with `'LineString'`.  
+To control line bending use `custom` or `cartesian`, then pass `curve` and optional `curveOffset`. `curveOffset` is segment-relative, not screen-axis-relative. See interactive [curve examples](https://www.d3indepth.com/examples-merged/shapes/curve-explorer/)
 
 **Edges ←→**
 

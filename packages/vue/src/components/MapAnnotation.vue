@@ -8,7 +8,6 @@
         v-bind="$attrs"
         :coordinates="geometry.lineCoordinates"
         cartesian
-        custom
         :curve="curve"
         :curve-offset="curveOffset"
         :styles="styles"
@@ -26,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MapAnnotationProps, MapLineCurveOffset } from '@d3-maps/core'
+import type { MapAnnotationProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
 import { getAnnotationGeometry } from '@d3-maps/core'
@@ -39,19 +38,13 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps<Props>()
-
-interface Props extends MapAnnotationProps<StyleValue> {
-  curveOffset?: MapLineCurveOffset
-}
+const props = defineProps<MapAnnotationProps<StyleValue>>()
 
 const geometry = computed(() => (
   getAnnotationGeometry({
     length: props.length,
     angle: props.angle,
     margin: props.margin,
-    curve: props.curve,
-    curveOffset: props.curveOffset,
   })
 ))
 </script>

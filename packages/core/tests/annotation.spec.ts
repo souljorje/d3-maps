@@ -31,12 +31,11 @@ describe('getAnnotationGeometry', () => {
     })
   })
 
-  it('keeps numeric-curve connector coordinates in local rotated space', () => {
+  it('keeps connector coordinates in local rotated space', () => {
     const geometry = getAnnotationGeometry({
       angle: -15,
       margin: 0,
       length: 40,
-      curve: 0.5,
     })
 
     expect(geometry.lineTransform).toBe('rotate(-15)')

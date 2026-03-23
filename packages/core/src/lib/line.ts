@@ -97,14 +97,25 @@ export function createMidPoint(
   curveOffset: MapLineCurveOffset = [0, 0],
 ): [number, number] {
   const [[startX, startY], [endX, endY]] = pointsPair
-  const [offsetX, offsetY] = curveOffset
+  const [offsetAlong, offsetNormal] = curveOffset
   const midX = (startX + endX) / 2
   const midY = (startY + endY) / 2
-  const halfLength = Math.hypot(endX - startX, endY - startY) / 2
+  const dx = endX - startX
+  const dy = endY - startY
+  const length = Math.hypot(dx, dy)
+
+  if (length === 0) {
+    return [midX, midY]
+  }
+
+  const unitX = dx / length
+  const unitY = dy / length
+  const normalX = -unitY
+  const normalY = unitX
 
   return [
-    midX + ((midX || halfLength) * offsetX),
-    midY + ((midY || halfLength) * offsetY),
+    midX + (unitX * length * offsetAlong) + (normalX * length * offsetNormal),
+    midY + (unitY * length * offsetAlong) + (normalY * length * offsetNormal),
   ]
 }
 

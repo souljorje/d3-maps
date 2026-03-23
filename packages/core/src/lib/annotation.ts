@@ -20,6 +20,12 @@ export interface MapAnnotationGeometry {
   contentTransform: string
 }
 
+export interface MapAnnotationGeometryOptions {
+  length?: number
+  angle?: number
+  margin?: number
+}
+
 export const MAP_ANNOTATION_DEFAULTS = {
   length: 30,
   angle: -45,
@@ -30,7 +36,7 @@ export function getAnnotationGeometry({
   length = MAP_ANNOTATION_DEFAULTS.length,
   angle = MAP_ANNOTATION_DEFAULTS.angle,
   margin = MAP_ANNOTATION_DEFAULTS.margin,
-}: Partial<MapAnnotationProps> = {}): MapAnnotationGeometry {
+}: MapAnnotationGeometryOptions = {}): MapAnnotationGeometry {
   const lineEndX = margin + length
   const start = [margin, 0] as [number, number]
   const end = [lineEndX, 0] as [number, number]
