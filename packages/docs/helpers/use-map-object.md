@@ -1,6 +1,6 @@
 # useMapObject
 
-Provides interaction-state transitions and resolved styles for SVG elements.  
+Provides interaction-state transitions and resolved styles for SVG elements  
 Used internally by [MapFeature](/components/map-feature), [MapMarker](/components/map-marker), and [MapMesh](/components/map-mesh)
 
 `focus` styles work with real DOM focus, so the target element must be focusable

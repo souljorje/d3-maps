@@ -10,6 +10,6 @@ Components are adapter-level building blocks for rendering map layers
 - [MapGraticule](/components/map-graticule)
 - [MapZoom](/components/map-zoom)
 
-Need hooks for custom layers and interactions?
+Need helpers for custom layers and interactions?
 
-- [Hooks](/hooks/)
+- [Helpers](/helpers/)

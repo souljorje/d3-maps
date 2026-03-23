@@ -90,6 +90,6 @@ To use `focus` styles, make the path focusable with `tabindex="0"` / `tabIndex={
 
 :::
 
-## Hooks
+## Helpers
 
-- See [useMapObject](/hooks/use-map-object)
+- See [useMapObject](/helpers/use-map-object)

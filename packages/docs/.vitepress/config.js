@@ -86,12 +86,14 @@ const docsSidebar = [
     ],
   },
   {
-    text: 'Hooks',
+    text: 'Helpers',
     items: [
-      { text: 'Overview', link: '/hooks/' },
-      { text: 'useCreateMapContext', link: '/hooks/use-create-map-context' },
-      { text: 'useMapContext', link: '/hooks/use-map-context' },
-      { text: 'useMapObject', link: '/hooks/use-map-object' },
+      { text: 'Overview', link: '/helpers/' },
+      { text: 'useCreateMapContext', link: '/helpers/use-create-map-context' },
+      { text: 'useMapContext', link: '/helpers/use-map-context' },
+      { text: 'useMapObject', link: '/helpers/use-map-object' },
+      { text: 'getFeatureKey', link: '/helpers/get-feature-key' },
+      { text: 'getZoomView', link: '/helpers/get-zoom-view' },
     ],
   },
   {

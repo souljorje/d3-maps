@@ -139,5 +139,5 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 | [`ZoomableGroup`](https://www.react-simple-maps.io/docs/zoomable-group/) | [MapZoom](/components/map-zoom) |
 | [`Graticule`](https://www.react-simple-maps.io/docs/graticule/) | [MapGraticule](/components/map-graticule) |
 | [`Sphere`](https://www.react-simple-maps.io/docs/sphere/) | [MapGraticule](/components/map-graticule) (`background`/`border`) or a custom SVG layer |
-| [`Annotation`](https://www.react-simple-maps.io/docs/annotation/) | Custom layer using [useMapObject](/hooks/use-map-object) + [useMapContext](/hooks/use-map-context) |
-| [`Line`](https://www.react-simple-maps.io/docs/line/) | Custom layer using [useMapObject](/hooks/use-map-object) + [useMapContext](/hooks/use-map-context) |
+| [`Annotation`](https://www.react-simple-maps.io/docs/annotation/) | Custom layer using [useMapObject](/helpers/use-map-object) + [useMapContext](/helpers/use-map-context) |
+| [`Line`](https://www.react-simple-maps.io/docs/line/) | Custom layer using [useMapObject](/helpers/use-map-object) + [useMapContext](/helpers/use-map-context) |

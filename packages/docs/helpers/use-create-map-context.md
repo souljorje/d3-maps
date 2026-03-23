@@ -81,10 +81,10 @@ export function Example({ data }: { data: MapData }) {
 
 :::
 
-If neither `config.data` nor `context` is available yet, the hook returns `undefined`
+If neither `config.data` nor `context` is available yet, the helper returns `undefined`
 
 ## Best Practice
 
 - Use `useCreateMapContext` in the parent when controls, toolbars, or other sibling UI need the same map context as `MapBase`
-- Use [useMapContext](/hooks/use-map-context) inside custom layers rendered under `MapBase`
+- Use [useMapContext](/helpers/use-map-context) inside custom layers rendered under `MapBase`
 - Use `MapBase` slot or render-prop context when that already gives you what you need

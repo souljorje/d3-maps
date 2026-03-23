@@ -99,12 +99,12 @@ export function Example({ data }: { data: MapData }) {
 
 :::
 
-## Hooks
+## Helpers
 
-- See [useCreateMapContext](/hooks/use-create-map-context)
-- See [useMapContext](/hooks/use-map-context)
+- See [useCreateMapContext](/helpers/use-create-map-context)
+- See [useMapContext](/helpers/use-map-context)
 
-For adapter code and docs examples, prefer [useMapContext](/hooks/use-map-context) or `MapBase` slot/render-prop context over rebuilding a separate map context manually
+For adapter code and docs examples, prefer [useMapContext](/helpers/use-map-context) or `MapBase` slot/render-prop context over rebuilding a separate map context manually
 
 ## Advanced Composition
 

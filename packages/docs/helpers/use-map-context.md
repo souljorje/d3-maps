@@ -1,7 +1,7 @@
 # useMapContext
 
-Reads the current map context from [MapBase](/components/map-base).  
-Use it in custom layers when you need the resolved map size, normalized features, or the shared path generator.  
+Reads the current map context from [MapBase](/components/map-base)  
+Use it in custom layers when you need the resolved map size, normalized features, or the shared path generator  
 Throws an error if used outside `MapBase`
 
 ## Return value
@@ -63,4 +63,4 @@ function FeatureCountLabel() {
 
 - Use `useMapContext` in components rendered inside `MapBase`
 - Use `MapBase` slot/render-prop context when that already gives you what you need
-- Use [useCreateMapContext](/hooks/use-create-map-context) in the parent and pass the same `context` object to both `MapBase` and any sibling UI that needs it
+- Use [useCreateMapContext](/helpers/use-create-map-context) in the parent and pass the same `context` object to both `MapBase` and any sibling UI that needs it
