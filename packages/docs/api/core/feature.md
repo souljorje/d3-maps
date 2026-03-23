@@ -29,7 +29,7 @@ Checks:
 
 1. `feature[idKey]`
 2. `feature.properties[idKey]`
-3. optional fallback value supplied by the caller
+3. optional fallback value
 
 #### Parameters
 

@@ -115,8 +115,6 @@ body {
     margin: 0
   }
   table {
-    display: table;
-    min-width: 100%;
     th, td {
       padding: 8px 12px;
     }

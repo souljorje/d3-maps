@@ -61,6 +61,6 @@ function FeatureCountLabel() {
 
 ## Best Practice
 
-- Use `useMapContext` in components rendered inside `Map`
-- Use `Map` slot/render-prop context when that already gives you what you need
-- Use [useCreateMapContext](/hooks/use-create-map-context) in the parent and pass the same `context` object to both `Map` and any sibling UI that needs it
+- Use `useMapContext` in components rendered inside `MapBase`
+- Use `MapBase` slot/render-prop context when that already gives you what you need
+- Use [useCreateMapContext](/hooks/use-create-map-context) in the parent and pass the same `context` object to both `MapBase` and any sibling UI that needs it
