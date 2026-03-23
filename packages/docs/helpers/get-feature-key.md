@@ -6,11 +6,11 @@ Use it when you need a stable identifier for rendering or DOM targeting
 
 ## Parameters
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `feature` | [MapFeature](/api/core/feature#mapfeature) | Feature to inspect |
-| `idKey?` | `string` | Key checked on the feature and then on `feature.properties`, defaults to `'id'` |
-| `fallback?` | `string \| number` | Optional fallback value returned when no key is found |
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `feature` | [MapFeature](/api/core/feature#mapfeature) | `—` | Feature to inspect |
+| `idKey?` | `string` | `'id'` | Key checked on the feature and then on `feature.properties` |
+| `fallback?` | `string \| number` | `—` | Optional fallback value returned when no key is found |
 
 ## Behavior
 

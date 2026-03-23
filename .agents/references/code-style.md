@@ -24,5 +24,7 @@ Code conventions for all packages and docs custom code.
 | --- | --- |
 | .md references | Write `.md` file mentions as relative links with readable titles (example: `[Code Style](code-style.md)`). |
 | Link-title backticks | Do not use backticks in markdown link titles. |
+| Parameter tables | Use four columns for parameter tables in docs: `Parameter`, `Type`, `Default`, `Description`. |
+| Missing defaults | In parameter tables, use `—` when a parameter has no default value. |
 | File trees | Use repository tree style defined in [Architecture](architecture.md). |
 | AGENTS verbosity | Prefer concise, scannable structure over long prose. |

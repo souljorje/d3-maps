@@ -15,10 +15,10 @@ See [MapContext API](/api/core/map#mapcontext)
 
 ## Parameters
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `config?` | `MapProps` | Used to create a new context when `context` is not provided |
-| `context?` | `MapContext` | Optional existing context to reuse instead of creating a new one |
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `config?` | `MapProps` | `—` | Used to create a new context when `context` is not provided |
+| `context?` | `MapContext` | `—` | Optional existing context to reuse instead of creating a new one |
 
 ## Usage
 
