@@ -30,7 +30,7 @@ interface City {
   population: number
 }
 
-export default function BubbleExample(): JSX.Element {
+export default function BubbleMapExample(): JSX.Element {
   const [mapData, setMapData] = useState<MapData>()
   const [cities, setCities] = useState<City[]>([])
   const [markerScale, setMarkerScale] = useState(1)

@@ -23,7 +23,7 @@ interface CountryStat {
   value: number
 }
 
-export default function ChoroplethExample(): JSX.Element {
+export default function ChoroplethMapExample(): JSX.Element {
   const [mapData, setMapData] = useState<MapData>()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)

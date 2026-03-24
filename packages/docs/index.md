@@ -22,7 +22,7 @@ features:
     details: Zoom, drag, mesh, markers, and more
     icon: 💪
   - title: Reactive
-    details: Props update trigger rerender
+    details: Props change triggers rerender
     icon: ⚛️
   - title: Responsive
     details: By default, without rerenders
