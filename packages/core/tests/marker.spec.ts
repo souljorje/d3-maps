@@ -11,6 +11,8 @@ describe('getMarkerTransform', () => {
   it('uses projection from map context', () => {
     const context = makeTestMapContext()
     const transform = getMarkerTransform(context, [10, 20])
+    expect(transform).toBeDefined()
+    if (!transform) return
     expect(transform.startsWith('translate(')).toBe(true)
   })
 })
