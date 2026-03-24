@@ -4,7 +4,6 @@ import type {
 } from 'd3-geo'
 
 import {
-  isDefined,
   isElement,
   isObject,
   noop,
@@ -154,7 +153,7 @@ function subscribeWindow(
   ev: string,
   listener: MapObjectGlobalMouseupListener,
 ): () => void {
-  if (!isDefined(window)) return noop
+  if (typeof window === 'undefined') return noop
   window.addEventListener(ev, listener, true)
   return () => {
     window.removeEventListener(ev, listener, true)
