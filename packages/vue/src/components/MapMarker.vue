@@ -4,7 +4,7 @@
     :transform="transform"
     :style="style"
     :name="name"
-    v-on="events"
+    v-bind="events"
   >
     <slot />
   </g>
