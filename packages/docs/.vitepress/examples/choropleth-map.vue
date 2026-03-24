@@ -4,7 +4,7 @@
     :data-transformer="dataTransformer"
     :data="mapData"
   >
-    <MapFeatures v-slot="{ features }">
+    <template #default="{ features }">
       <MapFeature
         v-for="feature in features"
         :key="String(feature.id)"
@@ -19,7 +19,7 @@
           },
         }"
       />
-    </MapFeatures>
+    </template>
   </MapBase>
 </template>
 

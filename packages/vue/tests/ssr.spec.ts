@@ -7,6 +7,7 @@ import {
 import { renderToString } from 'vue/server-renderer'
 
 import {
+  MapAnnotation,
   MapBase,
   MapFeatures,
   MapZoom,
@@ -20,7 +21,12 @@ describe('SSR', () => {
       render: () =>
         h(MapBase, { data: sampleGeoJson }, {
           default: () => h(MapZoom, null, {
-            default: () => h(MapFeatures),
+            default: () => [
+              h(MapFeatures),
+              h(MapAnnotation, { coordinates: [2.3522, 48.8566] }, {
+                default: () => h('text', 'Paris'),
+              }),
+            ],
           }),
         }),
     })
@@ -28,5 +34,6 @@ describe('SSR', () => {
 
     expect(html).toContain('<svg')
     expect(html).toContain('name="zoom"')
+    expect(html).toContain('name="annotation"')
   })
 })

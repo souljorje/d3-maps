@@ -3,17 +3,15 @@
     v-if="data"
     :data="data"
   >
-    <MapGraticule border />
-    <MapFeatures fill="var(--vp-c-neutral-inverse)" />
-    <MapMesh />
+    <MapFeatures />
     <MapMarker
       v-for="item in cities"
       :key="item.city"
       :coordinates="[item.lon, item.lat]"
     >
       <text
-        font-size="14"
-        y="-6"
+        font-size="12"
+        y="-8"
         text-anchor="middle"
       >
         {{ item.city }}

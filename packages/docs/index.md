@@ -17,10 +17,13 @@ hero:
 features:
   - title: Simple
     details: Drop-in components, powerful defaults
-    icon: 😌
+    icon: ✨
   - title: Feature rich
     details: Zoom, drag, mesh, markers, and more
     icon: 💪
+  - title: Reactive
+    details: Props change triggers rerender
+    icon: ⚛️
   - title: Responsive
     details: By default, without rerenders
     icon: 📱
@@ -28,9 +31,6 @@ features:
     details: And treeshakable ESM
     icon: 🪶
   - title: SSR friendly
-    details: It's just an SVG, can be server-sendered
+    details: Server-rendered, interactive on client
     icon: 🗄️
-  - title: Universal
-    details: Supports TopoJSON and GeoJSON
-    icon: 📄
 ---

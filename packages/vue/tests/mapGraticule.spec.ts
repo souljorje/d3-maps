@@ -169,12 +169,4 @@ describe('mapGraticule', () => {
     expect(firstOnMouseup).toHaveBeenCalledTimes(1)
     expect(secondOnMouseup).toHaveBeenCalledTimes(1)
   })
-
-  it('renders graticule path outside map context without geometry', () => {
-    const wrapper = mount(MapGraticule)
-    const paths = wrapper.findAll('path')
-
-    expect(paths).toHaveLength(1)
-    expect(paths[0]?.attributes('d')).toBeUndefined()
-  })
 })

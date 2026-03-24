@@ -76,7 +76,7 @@ export interface MapProps {
 export interface MapContext {
   width: number
   height: number
-  projection?: GeoProjection
+  projection: GeoProjection
   features: MapFeature[]
   path: GeoPath
   renderMesh: () => ReturnType<GeoPath>

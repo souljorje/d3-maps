@@ -8,10 +8,16 @@
   [name="graticule"],
   [name="feature"],
   [name="mesh"] {
-    stroke-width: var(--d3m-stroke-w)
+    &:not([stroke-width]) {
+      stroke-width: var(--d3m-stroke-w)
+    }
   }
-  [name="border"] {
-    stroke-width: var(--d3m-stroke-w * 2)
+  [name="border"],
+  [name="line"],
+  [name="annotation-line"] {
+    &:not([stroke-width]) {
+      stroke-width: calc(var(--d3m-stroke-w) * 2);
+    }
   }
   [name="zoom"] path {
     vector-effect: non-scaling-stroke;

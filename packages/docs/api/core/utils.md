@@ -7,18 +7,22 @@
 * [Functions](#functions)
   * [applyModifiers()](#applymodifiers)
   * [isDefined()](#isdefined)
+  * [isElement()](#iselement)
   * [isFunction()](#isfunction)
   * [isNullish()](#isnullish)
   * [isNumber()](#isnumber)
+  * [isObject()](#isobject)
   * [isPlainObject()](#isplainobject)
   * [isString()](#isstring)
   * [isStringOrNumber()](#isstringornumber)
   * [makeTransform()](#maketransform)
+  * [noop()](#noop)
 * [Type Aliases](#type-aliases)
   * [AnyFn()](#anyfn)
   * [HasArgs](#hasargs)
   * [MethodsToModifiers](#methodstomodifiers)
   * [ModifierArgs](#modifierargs)
+  * [Noop](#noop-1)
   * [OverloadedArgs](#overloadedargs)
   * [OwnKeys](#ownkeys)
   * [SetterArgs](#setterargs)
@@ -100,6 +104,24 @@ function isDefined<T>(value: T | null | undefined): value is T;
 
 ***
 
+### isElement()
+
+```ts
+function isElement(value: unknown): value is Element;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `value` | `unknown` |
+
+#### Returns
+
+`value is Element`
+
+***
+
 ### isFunction()
 
 ```ts
@@ -151,6 +173,24 @@ function isNumber(value: unknown): value is number;
 #### Returns
 
 `value is number`
+
+***
+
+### isObject()
+
+```ts
+function isObject(value: unknown): value is object;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `value` | `unknown` |
+
+#### Returns
+
+`value is object`
 
 ***
 
@@ -228,6 +268,18 @@ function makeTransform(
 #### Returns
 
 `string`
+
+***
+
+### noop()
+
+```ts
+function noop(): void;
+```
+
+#### Returns
+
+`void`
 
 ## Type Aliases
 
@@ -316,6 +368,14 @@ Converts method parameters to modifiers values
 | Type Parameter |
 | ------ |
 | `P` *extends* `unknown`\[] |
+
+***
+
+### Noop
+
+```ts
+type Noop = typeof noop;
+```
 
 ***
 

@@ -32,6 +32,9 @@ export function makeTransform(x: number, y: number, k?: number): string {
   return `translate(${x}, ${y}) scale(${k ?? 1})`
 }
 
+export function noop(): void {}
+export type Noop = typeof noop
+
 export type AnyFn = (...args: any) => any
 
 /**

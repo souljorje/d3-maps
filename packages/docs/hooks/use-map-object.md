@@ -2,7 +2,7 @@
 
 Provides interaction-state transitions and resolved styles for custom map SVG elements.
 
-Used internally by [MapFeature](/components/map-feature), [MapMarker](/components/map-marker), and [MapMesh](/components/map-mesh)
+Used internally by [MapFeature](/components/map-feature), [MapLine](/components/map-line), [MapAnnotation](/components/map-annotation), [MapMarker](/components/map-marker), and [MapMesh](/components/map-mesh)
 
 ## Usage
 
@@ -12,7 +12,8 @@ Used internally by [MapFeature](/components/map-feature), [MapMarker](/component
 
 ```vue
 <script setup lang="ts">
-import type { MapObjectStyles } from '@d3-maps/vue'
+import type { MapObject } from '@d3-maps/core'
+import type { StyleValue } from 'vue'
 
 import { useMapObject } from '@d3-maps/vue'
 
@@ -22,7 +23,7 @@ interface Props {
 
 defineProps<Props>()
 
-const styles: MapObjectStyles = {
+const styles: MapObject<StyleValue>['styles'] = {
   default: {
     opacity: 0.9,
   },
@@ -49,12 +50,13 @@ const { style, ...events } = useMapObject(styles)
 == React
 
 ```tsx
-import type { MapObjectStyles } from '@d3-maps/react'
+import type { MapObject } from '@d3-maps/core'
+import type { CSSProperties } from 'react'
 
 import { useMapObject } from '@d3-maps/react'
 
 export function CustomFeaturePath({ d }: { d: string }) {
-  const styles: MapObjectStyles = {
+  const styles: MapObject<CSSProperties>['styles'] = {
     default: {
       opacity: 0.9,
     },
