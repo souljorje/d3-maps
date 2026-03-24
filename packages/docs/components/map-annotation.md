@@ -75,4 +75,4 @@ Interaction state is tracked on the wrapper `<g>`.
 
 :::
 
-See [annotation example](/examples/annotation) for a few callout layouts
+See [annotations example](/examples/annotations) for a few callout layouts

@@ -27,7 +27,7 @@ const cities: City[] = [
   {
     name: 'New York',
     coordinates: [-73.935242, 40.73061],
-    color: '#2563eb',
+    color: '#60a5fa',
   },
 ]
 
@@ -63,7 +63,7 @@ export default function AnnotationExample(): JSX.Element | null {
               coordinates={city.coordinates}
               stroke={city.color}
               length={40}
-              angle={-90}
+              angle={-165}
               margin={2}
               midpoint={[0, -50]}
               strokeWidth={2}
