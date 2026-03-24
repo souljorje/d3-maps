@@ -39,7 +39,7 @@ function getAnnotationGeometry(__namedParameters?: MapAnnotationGeometryOptions)
 
 ```ts
 const MAP_ANNOTATION_DEFAULTS: {
-  angle: -45;
+  angle: -90;
   length: 30;
   margin: 0;
 };
@@ -50,7 +50,7 @@ const MAP_ANNOTATION_DEFAULTS: {
 ##### angle
 
 ```ts
-readonly angle: -45 = -45;
+readonly angle: -90 = -90;
 ```
 
 ##### length

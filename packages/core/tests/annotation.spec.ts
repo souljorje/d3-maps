@@ -5,12 +5,12 @@ import { getAnnotationGeometry } from '../src'
 describe('getAnnotationGeometry', () => {
   it('uses default geometry values when no options are provided', () => {
     expect(getAnnotationGeometry()).toEqual({
-      lineTransform: 'rotate(-45)',
+      lineTransform: 'rotate(-90)',
       lineCoordinates: [
         [0, 0],
         [30, 0],
       ],
-      contentTransform: 'translate(21.213203435596427, -21.213203435596423) scale(1)',
+      contentTransform: 'translate(1.83697019872103e-15, -30) scale(1)',
     })
   })
 

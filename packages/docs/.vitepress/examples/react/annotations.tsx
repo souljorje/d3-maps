@@ -62,7 +62,7 @@ export default function AnnotationExample(): JSX.Element | null {
               key={city.name}
               coordinates={city.coordinates}
               stroke={city.color}
-              length={40}
+              length={35}
               angle={-165}
               margin={2}
               midpoint={[0, -50]}

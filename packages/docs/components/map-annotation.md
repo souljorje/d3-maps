@@ -9,7 +9,7 @@ Use when you need a callout, label, or badge offset from the original location
 | --- | --- | --- | --- |
 | `coordinates` | `[number, number]` | — | Anchor coordinates `[longitude, latitude]` |
 | `length?` | `number` | `30` | Connector length in screen pixels |
-| `angle?` | `number` | `-45` | Connector angle in degrees |
+| `angle?` | `number` | `-90` | Connector angle in degrees |
 | `margin?` | `number` | `0` | Gap between the anchor point and the connector start |
 | `curve?` | `CurveFactory \| CurveFactoryLineOnly` | `curveNatural` | See [`MapLine.curve`](/components/map-line#props) |
 | `midpoint?` | `[lengthwise: number, crosswise: number]` | — | See [`MapLine.midpoint`](/components/map-line#props) |

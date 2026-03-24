@@ -11,7 +11,7 @@
       <MapAnnotation
         :coordinates="city.coordinates"
         :stroke="city.color"
-        :length="40"
+        :length="35"
         :angle="-165"
         :margin="2"
         :stroke-width="2"
