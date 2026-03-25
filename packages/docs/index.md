@@ -19,7 +19,7 @@ features:
     details: Drop-in components, powerful defaults
     icon: 😌
   - title: Feature rich
-    details: Zoom, drag, mesh, markers, and more
+    details: Zoom, drag, lines, markers, and more
     icon: 💪
   - title: Responsive
     details: By default, without rerenders

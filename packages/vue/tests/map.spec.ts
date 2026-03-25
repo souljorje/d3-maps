@@ -1,9 +1,13 @@
 import { describe, expect, it } from 'vitest'
 
 import type { MapContext } from '@d3-maps/core'
+import type { PropType } from 'vue'
 
 import { mount } from '@vue/test-utils'
-import { h } from 'vue'
+import {
+  defineComponent,
+  h,
+} from 'vue'
 
 import {
   MapBase,
@@ -64,42 +68,45 @@ describe('map', () => {
   })
 
   it('renders with an external context object shared with sibling UI', () => {
-    const Toolbar = {
+    const Toolbar = defineComponent({
       props: {
         context: {
-          type: Object,
+          type: Object as PropType<MapContext>,
           required: true,
         },
       },
-      setup(props: { context: MapContext }) {
+      setup(props) {
         return () => h('div', {
           'data-testid': 'toolbar-count',
         }, String(props.context.features.length))
       },
-    }
+    })
 
-    const Harness = {
+    const Harness = defineComponent({
       setup() {
         const context = useCreateMapContext({
           data: sampleGeoJson,
           width: 420,
         })
 
-        if (!context.value) return () => null
+        return () => {
+          const mapContext = context.value
+          if (!mapContext) return null
 
-        return () => [
-          h(Toolbar, {
-            context: context.value,
-          }),
-          h(MapBase, {
-            context: context.value,
-            'data-testid': 'map-svg',
-          }, {
-            default: () => h(MapFeatures),
-          }),
-        ]
+          return [
+            h(Toolbar, {
+              context: mapContext,
+            }),
+            h(MapBase as any, {
+              context: mapContext,
+              'data-testid': 'map-svg',
+            }, {
+              default: () => h(MapFeatures),
+            }),
+          ]
+        }
       },
-    }
+    })
 
     const wrapper = mount(Harness)
 

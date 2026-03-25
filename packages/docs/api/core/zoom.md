@@ -11,6 +11,7 @@
   * [getInverseZoomScale()](#getinversezoomscale)
   * [getObjectZoomView()](#getobjectzoomview)
   * [getZoomScale()](#getzoomscale)
+  * [getZoomViewportCenter()](#getzoomviewportcenter)
   * [setupZoom()](#setupzoom)
 * [Variables](#variables)
   * [ZOOM\_DEFAULTS](#zoom_defaults)
@@ -30,6 +31,7 @@
   * [ZoomTransform](#zoomtransform)
   * [ZoomTransition](#zoomtransition)
 * [Type Aliases](#type-aliases)
+  * [ZoomObject](#zoomobject)
   * [ZoomScaleSource](#zoomscalesource)
   * [ZoomTargetElement](#zoomtargetelement)
 
@@ -40,6 +42,8 @@
 ```ts
 function applyZoom(options: ApplyZoomOptions): void;
 ```
+
+Applies the current controlled zoom state to the target zoom behavior.
 
 #### Parameters
 
@@ -62,6 +66,8 @@ function applyZoomGroupTransform(element: Element | null | undefined, transform:
   | undefined): void;
 ```
 
+Mirrors a D3 zoom transform onto the rendered zoom group element.
+
 #### Parameters
 
 | Parameter | Type |
@@ -81,6 +87,8 @@ function applyZoomGroupTransform(element: Element | null | undefined, transform:
 function createZoomBehavior(context?: MapContext, options?: ZoomBehaviorOptions): DefaultZoomBehavior;
 ```
 
+Creates a D3 zoom behavior configured for the current map viewport.
+
 #### Parameters
 
 | Parameter | Type |
@@ -99,6 +107,8 @@ function createZoomBehavior(context?: MapContext, options?: ZoomBehaviorOptions)
 ```ts
 function getInverseZoomScale(source: ZoomScaleSource, fallback?: number): number;
 ```
+
+Returns the inverse zoom scale, with a safe fallback for invalid or zero values.
 
 #### Parameters
 
@@ -122,6 +132,8 @@ function getObjectZoomView(
    options?: ObjectZoomViewOptions): ObjectZoomView | undefined;
 ```
 
+Computes a centered zoom target that fits the given object inside the viewport.
+
 #### Parameters
 
 | Parameter | Type |
@@ -142,6 +154,8 @@ function getObjectZoomView(
 function getZoomScale(source: ZoomScaleSource): number;
 ```
 
+Reads a zoom scale from a number, transform, or zoom event-like object.
+
 #### Parameters
 
 | Parameter | Type |
@@ -154,11 +168,34 @@ function getZoomScale(source: ZoomScaleSource): number;
 
 ***
 
+### getZoomViewportCenter()
+
+```ts
+function getZoomViewportCenter(context: Pick<MapContext, "width" | "height">, transform: Pick<ZoomTransform, "invert">): [number, number];
+```
+
+Returns the projected map-space point currently centered in the viewport.
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `context` | `Pick`<[`MapContext`](map.md#mapcontext), `"width"` | `"height"`> |
+| `transform` | `Pick`<[`ZoomTransform`](#zoomtransform), `"invert"`> |
+
+#### Returns
+
+\[`number`, `number`]
+
+***
+
 ### setupZoom()
 
 ```ts
 function setupZoom(options: SetupZoomOptions): void;
 ```
+
+Attaches a zoom behavior to the SVG element and applies the current zoom view.
 
 #### Parameters
 
@@ -181,6 +218,8 @@ const ZOOM_DEFAULTS: {
   zoom: number;
 };
 ```
+
+Default zoom prop values used by the core helpers.
 
 #### Type Declaration
 
@@ -205,6 +244,8 @@ zoom: number = 1;
 ## Interfaces
 
 ### ApplyZoomOptions
+
+Options for applying a zoom transform to an existing zoom behavior.
 
 #### Extended by
 
@@ -1280,6 +1321,8 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 
 ### ObjectZoomView
 
+Computed zoom target for an object fit operation.
+
 #### Properties
 
 | Property | Type |
@@ -1290,6 +1333,8 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 ***
 
 ### ObjectZoomViewOptions
+
+Options for fitting an object into the viewport.
 
 #### Properties
 
@@ -1302,6 +1347,8 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 ***
 
 ### SetupZoomOptions
+
+Options for attaching a zoom behavior and applying the initial zoom state.
 
 #### Extends
 
@@ -2241,6 +2288,8 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 
 ### ZoomBehaviorOptions
 
+Full zoom behavior configuration, including view props and event callbacks.
+
 #### Extends
 
 * [`ZoomProps`](#zoomprops).[`ZoomEvents`](#zoomevents)
@@ -2263,10 +2312,7 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 
 ### ZoomEvent
 
-A D3 Zoom Event
-
-The first generic refers to the type of reference element to which the zoom behavior is attached.
-The second generic refers to the type of the datum of the reference element.
+D3 zoom event used by adapter components and hooks.
 
 #### Extends
 
@@ -2284,6 +2330,8 @@ The second generic refers to the type of the datum of the reference element.
 ***
 
 ### ZoomEvents
+
+Zoom lifecycle callbacks forwarded from the underlying D3 zoom behavior.
 
 #### Extended by
 
@@ -2607,6 +2655,8 @@ where tx0 and ty0 is this transform’s translation and tk is this transform’s
 
 ### ZoomTransition
 
+Transition settings for programmatic zoom updates.
+
 #### Properties
 
 | Property | Type |
@@ -2616,6 +2666,14 @@ where tx0 and ty0 is this transform’s translation and tk is this transform’s
 | <a id="property-ease"></a> `ease?` | (`normalizedTime`: `number`) => `number` |
 
 ## Type Aliases
+
+### ZoomObject
+
+```ts
+type ZoomObject = GeoPermissibleObjects;
+```
+
+***
 
 ### ZoomScaleSource
 
@@ -2628,6 +2686,8 @@ type ZoomScaleSource =
 };
 ```
 
+Value accepted by zoom-scale helpers.
+
 ***
 
 ### ZoomTargetElement
@@ -2635,3 +2695,5 @@ type ZoomScaleSource =
 ```ts
 type ZoomTargetElement = SVGSVGElement | SVGGElement;
 ```
+
+Root SVG element or zoomed group element associated with a zoom behavior.

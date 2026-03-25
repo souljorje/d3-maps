@@ -88,3 +88,7 @@ If neither `config.data` nor `context` is available yet, the helper returns `und
 - Use `useCreateMapContext` in the parent when controls, toolbars, or other sibling UI need the same map context as `MapBase`
 - Use [useMapContext](/helpers/use-map-context) inside custom layers rendered under `MapBase`
 - Use `MapBase` slot or render-prop context when that already gives you what you need
+
+## Examples
+
+- [Programmatic Zoom](/examples/programmatic-zoom)

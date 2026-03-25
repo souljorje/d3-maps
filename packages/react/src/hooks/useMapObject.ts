@@ -23,8 +23,8 @@ import {
   useState,
 } from 'react'
 
-import { useInsideZoom } from './useInsideZoom'
 import { useLatest } from './useLatest'
+import { useMapZoom } from './useMapZoom'
 
 export type MapObjectStyle = CSSProperties
 
@@ -53,7 +53,7 @@ export function useMapObject<TElement extends Element>(
 ): UseMapObjectResult<TElement> {
   const [state, setState] = useState<MapObjectState>('default')
   const stateRef = useRef(state)
-  const insideZoom = useInsideZoom()
+  const insideZoom = Boolean(useMapZoom())
 
   const onMouseEnterRef = useLatest(options.onMouseEnter)
   const onMouseLeaveRef = useLatest(options.onMouseLeave)

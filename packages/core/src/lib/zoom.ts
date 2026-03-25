@@ -33,6 +33,7 @@ export type {
 } from 'd3-zoom'
 
 export interface DefaultZoomBehavior extends ZoomBehavior<SVGSVGElement, unknown> {}
+export type ZoomObject = GeoPermissibleObjects
 
 /**
  * Extra zoom method calls to apply before rendering.
@@ -58,25 +59,47 @@ export interface ZoomProps {
   config?: ZoomModifiers
 }
 
+/**
+ * D3 zoom event used by adapter components and hooks.
+ */
 export interface ZoomEvent extends D3ZoomEvent<SVGSVGElement, unknown> {};
 
+/**
+ * Zoom lifecycle callbacks forwarded from the underlying D3 zoom behavior.
+ */
 export interface ZoomEvents {
   onZoomStart?: (event: ZoomEvent) => void
   onZoom?: (event: ZoomEvent) => void
   onZoomEnd?: (event: ZoomEvent) => void
 }
 
+/**
+ * Full zoom behavior configuration, including view props and event callbacks.
+ */
 export interface ZoomBehaviorOptions extends ZoomProps, ZoomEvents {}
 
+/**
+ * Value accepted by zoom-scale helpers.
+ */
 export type ZoomScaleSource = number | ZoomTransform | { transform: ZoomTransform }
+
+/**
+ * Root SVG element or zoomed group element associated with a zoom behavior.
+ */
 export type ZoomTargetElement = SVGSVGElement | SVGGElement
 
+/**
+ * Default zoom prop values used by the core helpers.
+ */
 export const ZOOM_DEFAULTS = {
   zoom: 1,
   minZoom: 1,
   maxZoom: 8,
 }
 
+/**
+ * Options for applying a zoom transform to an existing zoom behavior.
+ */
 export interface ApplyZoomOptions {
   element: ZoomTargetElement | null | undefined
   behavior: DefaultZoomBehavior
@@ -85,27 +108,42 @@ export interface ApplyZoomOptions {
   transition?: false | ZoomTransition
 }
 
+/**
+ * Options for attaching a zoom behavior and applying the initial zoom state.
+ */
 export interface SetupZoomOptions extends ApplyZoomOptions {
   center?: [number, number]
 }
 
+/**
+ * Transition settings for programmatic zoom updates.
+ */
 export interface ZoomTransition {
   duration?: number
   delay?: number
   ease?: (normalizedTime: number) => number
 }
 
+/**
+ * Computed zoom target for an object fit operation.
+ */
 export interface ObjectZoomView {
   center: [number, number]
   zoom: number
 }
 
+/**
+ * Options for fitting an object into the viewport.
+ */
 export interface ObjectZoomViewOptions {
   minZoom?: number
   maxZoom?: number
   padding?: number
 }
 
+/**
+ * Creates a D3 zoom behavior configured for the current map viewport.
+ */
 export function createZoomBehavior(
   context?: MapContext,
   options: ZoomBehaviorOptions = {},
@@ -133,6 +171,9 @@ export function createZoomBehavior(
   return behavior
 }
 
+/**
+ * Applies the current controlled zoom state to the target zoom behavior.
+ */
 export function applyZoom(options: ApplyZoomOptions): void {
   const target = getZoomTarget(options.element, options.transition)
 
@@ -160,6 +201,9 @@ export function applyZoom(options: ApplyZoomOptions): void {
   callWithTarget(target, options.behavior.transform, transform)
 }
 
+/**
+ * Mirrors a D3 zoom transform onto the rendered zoom group element.
+ */
 export function applyZoomGroupTransform(
   element: Element | null | undefined,
   transform: Pick<ZoomTransform, 'toString'> | null | undefined,
@@ -168,11 +212,17 @@ export function applyZoomGroupTransform(
   element.setAttribute('transform', transform.toString())
 }
 
+/**
+ * Attaches a zoom behavior to the SVG element and applies the current zoom view.
+ */
 export function setupZoom(options: SetupZoomOptions): void {
   callWithSvg(options.element, options.behavior)
   applyZoom(options)
 }
 
+/**
+ * Computes a centered zoom target that fits the given object inside the viewport.
+ */
 export function getObjectZoomView(
   context: Pick<MapContext, 'path' | 'width' | 'height'>,
   object: GeoPermissibleObjects,
@@ -205,12 +255,31 @@ export function getObjectZoomView(
   }
 }
 
+/**
+ * Returns the projected map-space point currently centered in the viewport.
+ */
+export function getZoomViewportCenter(
+  context: Pick<MapContext, 'width' | 'height'>,
+  transform: Pick<ZoomTransform, 'invert'>,
+): [number, number] {
+  return transform.invert([
+    context.width / 2,
+    context.height / 2,
+  ])
+}
+
+/**
+ * Reads a zoom scale from a number, transform, or zoom event-like object.
+ */
 export function getZoomScale(source: ZoomScaleSource): number {
   if (isNumber(source)) return source
   if (isZoomTransform(source)) return source.k
   return source?.transform?.k ?? 1
 }
 
+/**
+ * Returns the inverse zoom scale, with a safe fallback for invalid or zero values.
+ */
 export function getInverseZoomScale(
   source: ZoomScaleSource,
   fallback: number = 1,

@@ -1,4 +1,4 @@
-# getZoomView
+# getObjectZoomView
 
 `getObjectZoomView` computes a centered zoom target for a map object
 
@@ -42,3 +42,7 @@ if (view) {
 ```
 
 See [zoom API](/api/core/zoom#getobjectzoomview)
+
+## Examples
+
+- [Programmatic Zoom](/examples/programmatic-zoom)

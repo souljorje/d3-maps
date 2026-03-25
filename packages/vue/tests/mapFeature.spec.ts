@@ -10,7 +10,7 @@ import {
   MapBase,
   MapFeature,
 } from '../src'
-import { insideZoomKey } from '../src/hooks/useInsideZoom'
+import { mapZoomKey } from '../src/hooks/useMapZoom'
 import { sampleGeoJson } from './fixtures'
 
 describe('mapFeature', () => {
@@ -72,7 +72,17 @@ describe('mapFeature', () => {
     const wrapper = mount(MapBase, {
       global: {
         provide: {
-          [insideZoomKey as symbol]: true,
+          [mapZoomKey as symbol]: {
+            center: { value: undefined },
+            zoom: { value: 1 },
+            minZoom: { value: 1 },
+            maxZoom: { value: 8 },
+            setCenter: vi.fn(),
+            setZoom: vi.fn(),
+            zoomTo: vi.fn(),
+            zoomToObject: vi.fn(),
+            reset: vi.fn(),
+          },
         },
       },
       props: {

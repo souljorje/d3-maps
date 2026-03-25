@@ -13,22 +13,11 @@ import type {
   ZoomProps,
 } from '@d3-maps/core'
 
-import {
-  applyZoom,
-  applyZoomGroupTransform,
-  createZoomBehavior,
-  setupZoom,
-} from '@d3-maps/core'
-import {
-  computed,
-  onMounted,
-  provide,
-  ref,
-  watch,
-} from 'vue'
+import { getZoomViewportCenter } from '@d3-maps/core'
+import { ref } from 'vue'
 
-import { insideZoomKey } from '../hooks/useInsideZoom'
 import { useMapContext } from '../hooks/useMapContext'
+import { useCreateMapZoom } from '../hooks/useMapZoom'
 
 const props = withDefaults(defineProps<ZoomProps>(), {
   zoom: 1,
@@ -40,66 +29,25 @@ const emit = defineEmits<{
   (event: 'zoomStart', payload: ZoomEvent): void
   (event: 'zoom', payload: ZoomEvent): void
   (event: 'zoomEnd', payload: ZoomEvent): void
+  (event: 'update:center', payload: [number, number]): void
+  (event: 'update:zoom', payload: number): void
 }>()
 
 const container = ref<SVGGElement | null>(null)
 const context = useMapContext()
-
-provide(insideZoomKey, true)
-
-const zoomBehavior = computed(() => {
-  return createZoomBehavior(context.value, {
-    minZoom: props.minZoom,
-    maxZoom: props.maxZoom,
-    config: props.config,
+const { zoomBehavior } = useCreateMapZoom(
+  container,
+  props,
+  {
     onZoomStart: (event) => emit('zoomStart', event),
     onZoom: (event) => {
-      applyZoomGroupTransform(container.value, event.transform)
+      emit('update:center', getZoomViewportCenter(context.value, event.transform))
+      emit('update:zoom', event.transform.k)
       emit('zoom', event)
     },
     onZoomEnd: (event) => emit('zoomEnd', event),
-  })
-})
-
-onMounted(() => {
-  watch(
-    zoomBehavior,
-    (behavior) => {
-      if (!container.value) return
-      setupZoom({
-        element: container.value,
-        behavior,
-        center: props.center,
-        zoom: props.zoom,
-        transition: props.transition,
-      })
-    },
-    {
-      immediate: true,
-    },
-  )
-  watch(
-    () => [
-      zoomBehavior.value,
-      props.center?.[0],
-      props.center?.[1],
-      props.zoom,
-      props.transition?.duration,
-      props.transition?.delay,
-      props.transition?.ease,
-    ],
-    () => {
-      if (!container.value) return
-      applyZoom({
-        element: container.value,
-        behavior: zoomBehavior.value,
-        center: props.center,
-        zoom: props.zoom,
-        transition: props.transition,
-      })
-    },
-  )
-})
+  },
+)
 
 defineExpose({
   container,

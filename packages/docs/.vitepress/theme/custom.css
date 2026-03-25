@@ -11,6 +11,12 @@
 }
 
 .d3-map {
+  [name='zoom'] {
+    cursor: grab;
+    &:active {
+      cursor: grabbing;
+    }
+  }
   [name='border']:not([stroke]) {
     stroke: var(--vp-c-border);
   }

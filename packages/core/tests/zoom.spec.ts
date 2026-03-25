@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import type { Extent, ZoomBehaviorOptions, ZoomTransform } from '../src'
+import type { ZoomBehaviorOptions, ZoomTransform } from '../src'
 
 import { zoomIdentity } from 'd3-zoom'
 
@@ -10,6 +10,7 @@ import {
   getInverseZoomScale,
   getObjectZoomView,
   getZoomScale,
+  getZoomViewportCenter,
   ZOOM_DEFAULTS,
 } from '../src'
 import { makeTestMapContext } from './fixtures'
@@ -17,6 +18,7 @@ import { makeTestMapContext } from './fixtures'
 const createBehavior = (options?: ZoomBehaviorOptions) => createZoomBehavior(undefined, options)
 
 type ZoomView = [number, number, number]
+type Extent = [[number, number], [number, number]]
 
 describe('zoom helpers', () => {
   it('creates zoom transform from center and scale', () => {
@@ -87,6 +89,17 @@ describe('zoom helpers', () => {
     expect(getZoomScale(transform)).toBe(3)
     expect(getZoomScale({ transform })).toBe(3)
     expect(getZoomScale(2)).toBe(2)
+  })
+
+  it('gets the viewport center point from a zoom transform', () => {
+    const center = getZoomViewportCenter({
+      width: 400,
+      height: 300,
+    }, {
+      invert: ([x, y]) => [x - 10, y + 5],
+    } as ZoomTransform)
+
+    expect(center).toEqual([190, 155])
   })
 
   it('applies full zoom config', () => {

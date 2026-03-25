@@ -10,7 +10,7 @@ import {
   MapBase,
   MapFeature,
 } from '../src'
-import { InsideZoomContext } from '../src/hooks/useInsideZoom'
+import { MapZoomContextValue } from '../src/hooks/useMapZoom'
 import { sampleGeoJson } from './fixtures'
 
 describe('mapFeature', () => {
@@ -67,7 +67,14 @@ describe('mapFeature', () => {
 
   it('resets active state on global mouseup when element mouseup is missed', () => {
     render(
-      <InsideZoomContext.Provider value={true}>
+      <MapZoomContextValue.Provider value={{
+        center: undefined,
+        zoom: 1,
+        minZoom: 1,
+        maxZoom: 8,
+        zoomToObject: vi.fn(),
+      }}
+      >
         <MapBase data={sampleGeoJson}>
           <MapFeature
             data-testid="map-feature"
@@ -78,7 +85,7 @@ describe('mapFeature', () => {
             }}
           />
         </MapBase>
-      </InsideZoomContext.Provider>,
+      </MapZoomContextValue.Provider>,
     )
 
     const path = screen.getByTestId('map-feature')
