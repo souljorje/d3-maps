@@ -97,7 +97,6 @@ Callbacks:
 
 - [useMapZoom](/helpers/use-map-zoom)
 - [getZoomView](/helpers/get-object-zoom-view)
-- [getZoomViewportCenter](/helpers/get-zoom-viewport-center)
 
 ## Examples
 

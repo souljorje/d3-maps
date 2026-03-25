@@ -64,3 +64,7 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
 ```
 
 :::
+
+## Examples
+
+- [Graticule](/examples/graticule)
