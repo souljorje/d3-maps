@@ -129,8 +129,8 @@ describe('mapZoom', () => {
     expect(onZoomStart).toHaveBeenCalled()
     expect(onZoom).toHaveBeenCalled()
     expect(onZoomEnd).toHaveBeenCalled()
-    expect(onUpdateCenter).toHaveBeenCalledWith([11, 12])
-    expect(onUpdateZoom).toHaveBeenCalledWith(2)
+    expect(onUpdateCenter).not.toHaveBeenCalled()
+    expect(onUpdateZoom).not.toHaveBeenCalled()
     expect(zoomBehaviorOptions?.config).toEqual({ scaleExtent: [[1, 6]] })
     expect(wrapper.get('[data-testid="map-zoom-group"]').attributes('transform')).toContain('translate')
 
@@ -146,6 +146,40 @@ describe('mapZoom', () => {
         zoom: 3,
       }),
     )
+    expect(onUpdateCenter).not.toHaveBeenCalled()
+    expect(onUpdateZoom).not.toHaveBeenCalled()
+  })
+
+  it('emits update:center and update:zoom for user-driven zoom changes', async () => {
+    const onUpdateCenter = vi.fn()
+    const onUpdateZoom = vi.fn()
+
+    mount(defineComponent({
+      data() {
+        return {
+          center: [11, 12] as [number, number],
+          zoom: 2,
+        }
+      },
+      render() {
+        return h(MapBase, {
+          data: sampleGeoJson,
+        }, {
+          default: () => h(MapZoom, {
+            center: this.center,
+            zoom: this.zoom,
+            'onUpdate:center': onUpdateCenter,
+            'onUpdate:zoom': onUpdateZoom,
+          }),
+        })
+      },
+    }))
+
+    zoomBehaviorOptions?.onZoom?.(createZoomEvent([30, 40], 4))
+    await Promise.resolve()
+
+    expect(onUpdateCenter).toHaveBeenCalledWith([30, 40])
+    expect(onUpdateZoom).toHaveBeenCalledWith(4)
   })
 
   it('exposes live zoom state', async () => {

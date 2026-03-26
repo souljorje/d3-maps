@@ -35,14 +35,34 @@ const emit = defineEmits<{
 
 const container = ref<SVGGElement | null>(null)
 const context = useMapContext()
+
+function isSameCenter(
+  nextCenter: [number, number],
+  currentCenter: [number, number] | undefined,
+): boolean {
+  return Boolean(
+    currentCenter
+    && nextCenter[0] === currentCenter[0]
+    && nextCenter[1] === currentCenter[1],
+  )
+}
+
 const { zoomBehavior } = useCreateMapZoom(
   container,
   props,
   {
     onZoomStart: (event) => emit('zoomStart', event),
     onZoom: (event) => {
-      emit('update:center', getZoomViewportCenter(context.value, event.transform))
-      emit('update:zoom', event.transform.k)
+      const nextCenter = getZoomViewportCenter(context.value, event.transform)
+      const nextZoom = event.transform.k
+
+      if (!isSameCenter(nextCenter, props.center)) {
+        emit('update:center', nextCenter)
+      }
+      if (nextZoom !== props.zoom) {
+        emit('update:zoom', nextZoom)
+      }
+
       emit('zoom', event)
     },
     onZoomEnd: (event) => emit('zoomEnd', event),
