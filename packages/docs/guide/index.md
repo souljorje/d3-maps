@@ -1,3 +1,7 @@
+---
+description: Learn how to build reactive SVG maps with D3 in Vue and React, from installation and map data to your first interactive map
+---
+
 # Introduction
 
 **d3-maps** is a set of components and helpers simplifying creating SVG maps with [D3](https://d3js.org/).  

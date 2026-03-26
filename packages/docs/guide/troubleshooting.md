@@ -1,3 +1,7 @@
+---
+description: Fix common D3 map issues in d3-maps, including blank maps, misplaced markers, and overlapping SVG layers
+---
+
 # Troubleshooting
 
 ## Blank map

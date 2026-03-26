@@ -1,3 +1,7 @@
+---
+description: Reference for Vue and React map components including MapBase, MapFeatures, MapMarker, MapZoom, MapGraticule, and more
+---
+
 # Components
 
 Components are adapter-level building blocks for rendering map layers
