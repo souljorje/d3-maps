@@ -9,6 +9,8 @@ import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 
 const REPO_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
 const PACKAGES_DIR = path.join(REPO_ROOT, 'packages')
+const SITE_BASE = process.env.VITEPRESS_BASE || '/'
+const SITE_URL = process.env.VITEPRESS_SITE_URL?.replace(/\/$/, '')
 
 function toPascalCase(value) {
   return value
@@ -21,6 +23,20 @@ function safeReadDir(dirPath) {
   } catch {
     return []
   }
+}
+
+function withBase(assetPath) {
+  return `${SITE_BASE.replace(/\/?$/, '/')}${assetPath.replace(/^\/+/, '')}`
+}
+
+function toCanonicalUrl(relativePath) {
+  if (!SITE_URL) return null
+
+  const canonicalPath = relativePath
+    .replace(/(^|\/)index\.md$/, '$1')
+    .replace(/\.md$/, '.html')
+
+  return canonicalPath ? `${SITE_URL}/${canonicalPath}` : `${SITE_URL}/`
 }
 
 function getExamples() {
@@ -114,19 +130,41 @@ const docsSidebar = [
 ]
 
 export default defineConfig({
-  base: process.env.VITEPRESS_BASE || '/',
+  base: SITE_BASE,
   srcExclude: ['AGENTS.md', '**/AGENTS.md', '**/_*.md'],
   title: 'd3-maps',
-  description: 'Reactive SVG maps powered by D3',
+  description: 'Reactive SVG maps for Vue and React, powered by D3',
+  ...(SITE_URL
+    ? {
+        sitemap: {
+          hostname: SITE_URL,
+        },
+      }
+    : {}),
   head: [
     ['meta', { name: 'theme-color', content: '#ff6f26' }],
     ['meta', { name: 'mobile-web-app-capable', content: 'yes' }],
     ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
-    ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicons/apple-touch-icon.png' }],
-    ['link', { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicons/favicon-96x96.png' }],
-    ['link', { rel: 'manifest', href: '/favicons/site.webmanifest' }],
-    ['link', { rel: 'shortcut icon', href: '/favicons/favicon.ico' }],
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:site_name', content: 'd3-maps' }],
+    ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: withBase('/favicons/apple-touch-icon.png') }],
+    ['link', { rel: 'icon', type: 'image/png', sizes: '96x96', href: withBase('/favicons/favicon-96x96.png') }],
+    ['link', { rel: 'manifest', href: withBase('/favicons/site.webmanifest') }],
+    ['link', { rel: 'shortcut icon', href: withBase('/favicons/favicon.ico') }],
   ],
+  transformPageData(pageData) {
+    const canonicalUrl = toCanonicalUrl(pageData.relativePath)
+    if (!canonicalUrl) return
+
+    pageData.frontmatter.head ??= []
+    pageData.frontmatter.head.push(['link', { rel: 'canonical', href: canonicalUrl }])
+  },
+  buildEnd(siteConfig) {
+    if (!SITE_URL) return
+
+    const robots = `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`
+    fs.writeFileSync(path.join(siteConfig.outDir, 'robots.txt'), robots)
+  },
   themeConfig: {
     logo: '/d3-maps-logo.svg',
     nav: [
