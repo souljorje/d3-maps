@@ -18,11 +18,8 @@ export interface MapMeshProps
 
 export function MapMesh({
   styles,
-  onMouseEnter,
-  onMouseLeave,
-  onMouseDown,
-  onMouseUp,
-  ...pathProps
+  fill = 'none',
+  ...props
 }: MapMeshProps): ReactElement | null {
   const context = useMapContext()
 
@@ -32,17 +29,12 @@ export function MapMesh({
 
   const { style, ...events } = useMapObject<SVGPathElement>({
     styles,
-    onMouseEnter,
-    onMouseLeave,
-    onMouseDown,
-    onMouseUp,
+    ...props,
   })
-
-  const fill = pathProps.fill ?? 'none'
 
   return (
     <path
-      {...pathProps}
+      {...props}
       d={path}
       style={style}
       fill={fill}

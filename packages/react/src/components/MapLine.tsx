@@ -25,13 +25,8 @@ export function MapLine({
   midpoint,
   styles,
   name = 'line',
-  onMouseEnter,
-  onMouseLeave,
-  onMouseDown,
-  onMouseUp,
-  onFocus,
-  onBlur,
-  ...pathProps
+  fill = 'none',
+  ...props
 }: MapLineProps): ReactElement {
   const context = useMapContext()
 
@@ -54,19 +49,12 @@ export function MapLine({
 
   const { style, ...events } = useMapObject<SVGPathElement>({
     styles,
-    onMouseEnter,
-    onMouseLeave,
-    onMouseDown,
-    onMouseUp,
-    onFocus,
-    onBlur,
+    ...props,
   })
-
-  const fill = pathProps.fill ?? 'none'
 
   return (
     <path
-      {...pathProps}
+      {...props}
       d={path}
       style={style}
       fill={fill}
