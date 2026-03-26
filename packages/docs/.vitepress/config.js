@@ -39,6 +39,83 @@ function toCanonicalUrl(relativePath) {
   return canonicalPath ? `${SITE_URL}/${canonicalPath}` : `${SITE_URL}/`
 }
 
+function toTitleCase(value) {
+  return value
+    .split(/[-_]/g)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ')
+}
+
+function toAbsoluteSiteUrl(assetPath) {
+  if (!SITE_URL) return null
+  return `${SITE_URL}/${assetPath.replace(/^\/+/, '')}`
+}
+
+function createBreadcrumbStructuredData(page) {
+  if (!SITE_URL || page === 'index.md') return null
+
+  const relativeUrl = page
+    .replace(/(^|\/)index\.md$/, '$1')
+    .replace(/\.md$/, '.html')
+  const pathSegments = relativeUrl.split('/').filter(Boolean)
+
+  if (pathSegments.length === 0) return null
+
+  const items = [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: `${SITE_URL}/`,
+    },
+  ]
+
+  let currentPath = ''
+  for (const [index, segment] of pathSegments.entries()) {
+    currentPath += `/${segment}`
+    const isLast = index === pathSegments.length - 1
+    const name = isLast && segment.endsWith('.html')
+      ? toTitleCase(segment.replace(/\.html$/, ''))
+      : toTitleCase(segment)
+
+    items.push({
+      '@type': 'ListItem',
+      position: items.length + 1,
+      name,
+      item: `${SITE_URL}${currentPath}${isLast && segment.endsWith('.html') ? '' : '/'}`,
+    })
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items,
+  }
+}
+
+function createHomeStructuredData() {
+  if (!SITE_URL) return []
+
+  return [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'd3-maps',
+      url: `${SITE_URL}/`,
+      logo: toAbsoluteSiteUrl('/d3-maps-logo.svg'),
+      sameAs: ['https://github.com/souljorje/d3-maps'],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'd3-maps',
+      url: `${SITE_URL}/`,
+      description: 'D3 maps for Vue and React with reactive SVG map components and examples',
+    },
+  ]
+}
+
 function getExamples() {
   const examplesDir = path.join(PACKAGES_DIR, 'docs', '.vitepress', 'examples')
   const docsExamplesDir = path.join(PACKAGES_DIR, 'docs', 'examples')
@@ -158,6 +235,24 @@ export default defineConfig({
 
     pageData.frontmatter.head ??= []
     pageData.frontmatter.head.push(['link', { rel: 'canonical', href: canonicalUrl }])
+  },
+  transformHead({ page }) {
+    if (!SITE_URL) return []
+
+    const structuredData = []
+
+    if (page === 'index.md') {
+      structuredData.push(...createHomeStructuredData())
+    } else {
+      const breadcrumbStructuredData = createBreadcrumbStructuredData(page)
+      if (breadcrumbStructuredData) structuredData.push(breadcrumbStructuredData)
+    }
+
+    if (structuredData.length === 0) return []
+
+    return [
+      ['script', { type: 'application/ld+json' }, JSON.stringify(structuredData.length === 1 ? structuredData[0] : structuredData)],
+    ]
   },
   buildEnd(siteConfig) {
     if (!SITE_URL) return
