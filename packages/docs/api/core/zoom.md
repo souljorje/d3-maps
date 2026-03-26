@@ -84,7 +84,7 @@ Mirrors a D3 zoom transform onto the rendered zoom group element.
 ### createZoomBehavior()
 
 ```ts
-function createZoomBehavior(context?: MapContext, options?: ZoomBehaviorOptions): DefaultZoomBehavior;
+function createZoomBehavior(context?: Pick<MapContext, "width" | "height">, options?: ZoomBehaviorOptions): DefaultZoomBehavior;
 ```
 
 Creates a D3 zoom behavior configured for the current map viewport.
@@ -93,7 +93,7 @@ Creates a D3 zoom behavior configured for the current map viewport.
 
 | Parameter | Type |
 | ------ | ------ |
-| `context?` | [`MapContext`](map.md#mapcontext) |
+| `context?` | `Pick`<[`MapContext`](map.md#mapcontext), `"width"` | `"height"`> |
 | `options?` | [`ZoomBehaviorOptions`](#zoombehavioroptions) |
 
 #### Returns

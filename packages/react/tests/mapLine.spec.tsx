@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import {
+  fireEvent,
   render,
   screen,
 } from '@testing-library/react'
@@ -242,5 +243,29 @@ describe('mapLine', () => {
     )
 
     expect(screen.getByTestId('map-line-midpoint').getAttribute('d')).not.toBe(basePath)
+  })
+
+  it('forwards focus and blur callbacks', () => {
+    const onFocus = vi.fn()
+    const onBlur = vi.fn()
+
+    render(
+      <MapBase data={sampleGeoJson}>
+        <MapLine
+          data-testid="map-line-focus"
+          coordinates={LINE_COORDINATES}
+          tabIndex={0}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
+      </MapBase>,
+    )
+
+    const line = screen.getByTestId('map-line-focus')
+    fireEvent.focus(line)
+    fireEvent.blur(line)
+
+    expect(onFocus).toHaveBeenCalledTimes(1)
+    expect(onBlur).toHaveBeenCalledTimes(1)
   })
 })

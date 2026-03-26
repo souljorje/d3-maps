@@ -29,6 +29,8 @@ export function MapLine({
   onMouseLeave,
   onMouseDown,
   onMouseUp,
+  onFocus,
+  onBlur,
   ...pathProps
 }: MapLineProps): ReactElement {
   const context = useMapContext()
@@ -56,6 +58,8 @@ export function MapLine({
     onMouseLeave,
     onMouseDown,
     onMouseUp,
+    onFocus,
+    onBlur,
   })
 
   const fill = pathProps.fill ?? 'none'

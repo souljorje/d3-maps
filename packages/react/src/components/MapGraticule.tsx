@@ -29,6 +29,8 @@ export function MapGraticule({
   onMouseLeave,
   onMouseDown,
   onMouseUp,
+  onFocus,
+  onBlur,
   ...pathProps
 }: MapGraticuleProps): ReactElement | null {
   const context = useMapContext()
@@ -54,6 +56,8 @@ export function MapGraticule({
     onMouseLeave,
     onMouseDown,
     onMouseUp,
+    onFocus,
+    onBlur,
   })
 
   return (

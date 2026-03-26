@@ -28,6 +28,8 @@ export function MapMarker({
   onMouseLeave,
   onMouseDown,
   onMouseUp,
+  onFocus,
+  onBlur,
   ...groupProps
 }: MapMarkerProps): ReactElement | null {
   const context = useMapContext()
@@ -47,6 +49,8 @@ export function MapMarker({
     onMouseLeave,
     onMouseDown,
     onMouseUp,
+    onFocus,
+    onBlur,
   })
 
   if (!transform) return null
