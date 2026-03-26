@@ -100,4 +100,4 @@ Shared props contract for graticule layers.
 | <a id="property-background"></a> `background?` | `string` | `boolean` | - |
 | <a id="property-border"></a> `border?` | `string` | `boolean` | - |
 | <a id="property-config"></a> `config?` | [`GraticuleConfig`](#graticuleconfig) | - |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"` | `"focus"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |

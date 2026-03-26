@@ -1,12 +1,13 @@
 import { plugin as D3Maps } from '@d3-maps/vue'
 import { enhanceAppWithTabs } from 'vitepress-plugin-tabs/client'
-import DefaultTheme from 'vitepress/theme'
 
 import CoreConceptsCombined from './components/CoreConceptsCombined.vue'
 import Demo from './components/Demo.vue'
 import ExamplesList from './components/ExamplesList.vue'
 
 import './custom.css'
+// eslint-disable-next-line perfectionist/sort-imports
+import DefaultTheme from 'vitepress/theme'
 
 const demoModules = import.meta.glob('../examples/*.vue', {
   eager: true,

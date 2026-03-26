@@ -1,8 +1,7 @@
 # MapGraticule
 
-Renders graticule lines and optional outline as SVG `<path>` layers
-
-Outline is rendered only when `background` or `border` is provided
+Renders graticule lines and optional outline as SVG `<path>` layers.  
+Outline is rendered only when `background` or `border` is provided.  
 The outline is drawn as two paths: fill under lines and border over lines
 
 ## Props
@@ -65,3 +64,7 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
 ```
 
 :::
+
+## Examples
+
+- [Graticule](/examples/graticule)

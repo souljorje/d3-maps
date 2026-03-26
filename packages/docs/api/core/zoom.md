@@ -5,13 +5,13 @@
 ## Table of contents
 
 * [Functions](#functions)
-  * [applyZoomBehaviorTransform()](#applyzoombehaviortransform)
+  * [applyZoom()](#applyzoom)
   * [applyZoomGroupTransform()](#applyzoomgrouptransform)
-  * [applyZoomTransform()](#applyzoomtransform)
-  * [attachZoomBehavior()](#attachzoombehavior)
   * [createZoomBehavior()](#createzoombehavior)
   * [getInverseZoomScale()](#getinversezoomscale)
+  * [getObjectZoomView()](#getobjectzoomview)
   * [getZoomScale()](#getzoomscale)
+  * [getZoomViewportCenter()](#getzoomviewportcenter)
   * [setupZoom()](#setupzoom)
 * [Variables](#variables)
   * [ZOOM\_DEFAULTS](#zoom_defaults)
@@ -19,6 +19,8 @@
   * [ApplyZoomOptions](#applyzoomoptions)
   * [D3ZoomEvent](#d3zoomevent)
   * [DefaultZoomBehavior()](#defaultzoombehavior)
+  * [ObjectZoomView](#objectzoomview)
+  * [ObjectZoomViewOptions](#objectzoomviewoptions)
   * [SetupZoomOptions](#setupzoomoptions)
   * [ZoomBehavior()](#zoombehavior)
   * [ZoomBehaviorOptions](#zoombehavioroptions)
@@ -27,29 +29,27 @@
   * [ZoomModifiers](#zoommodifiers)
   * [ZoomProps](#zoomprops)
   * [ZoomTransform](#zoomtransform)
+  * [ZoomTransition](#zoomtransition)
 * [Type Aliases](#type-aliases)
-  * [Extent](#extent-2)
+  * [ZoomObject](#zoomobject)
   * [ZoomScaleSource](#zoomscalesource)
   * [ZoomTargetElement](#zoomtargetelement)
 
 ## Functions
 
-### applyZoomBehaviorTransform()
+### applyZoom()
 
 ```ts
-function applyZoomBehaviorTransform(
-   element: ZoomTargetElement | null | undefined, 
-   behavior: DefaultZoomBehavior, 
-   transform: ZoomTransform): void;
+function applyZoom(options: ApplyZoomOptions): void;
 ```
+
+Applies the current controlled zoom state to the target zoom behavior.
 
 #### Parameters
 
 | Parameter | Type |
 | ------ | ------ |
-| `element` | [`ZoomTargetElement`](#zoomtargetelement) | `null` | `undefined` |
-| `behavior` | [`DefaultZoomBehavior`](#defaultzoombehavior) |
-| `transform` | [`ZoomTransform`](#zoomtransform) |
+| `options` | [`ApplyZoomOptions`](#applyzoomoptions) |
 
 #### Returns
 
@@ -66,6 +66,8 @@ function applyZoomGroupTransform(element: Element | null | undefined, transform:
   | undefined): void;
 ```
 
+Mirrors a D3 zoom transform onto the rendered zoom group element.
+
 #### Parameters
 
 | Parameter | Type |
@@ -79,54 +81,19 @@ function applyZoomGroupTransform(element: Element | null | undefined, transform:
 
 ***
 
-### applyZoomTransform()
-
-```ts
-function applyZoomTransform(options: ApplyZoomOptions): void;
-```
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `options` | [`ApplyZoomOptions`](#applyzoomoptions) |
-
-#### Returns
-
-`void`
-
-***
-
-### attachZoomBehavior()
-
-```ts
-function attachZoomBehavior(element: ZoomTargetElement | null | undefined, behavior: DefaultZoomBehavior): void;
-```
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `element` | [`ZoomTargetElement`](#zoomtargetelement) | `null` | `undefined` |
-| `behavior` | [`DefaultZoomBehavior`](#defaultzoombehavior) |
-
-#### Returns
-
-`void`
-
-***
-
 ### createZoomBehavior()
 
 ```ts
-function createZoomBehavior(context?: MapContext, options?: ZoomBehaviorOptions): DefaultZoomBehavior;
+function createZoomBehavior(context?: Pick<MapContext, "width" | "height">, options?: ZoomBehaviorOptions): DefaultZoomBehavior;
 ```
+
+Creates a D3 zoom behavior configured for the current map viewport.
 
 #### Parameters
 
 | Parameter | Type |
 | ------ | ------ |
-| `context?` | [`MapContext`](map.md#mapcontext) |
+| `context?` | `Pick`<[`MapContext`](map.md#mapcontext), `"width"` | `"height"`> |
 | `options?` | [`ZoomBehaviorOptions`](#zoombehavioroptions) |
 
 #### Returns
@@ -141,6 +108,8 @@ function createZoomBehavior(context?: MapContext, options?: ZoomBehaviorOptions)
 function getInverseZoomScale(source: ZoomScaleSource, fallback?: number): number;
 ```
 
+Returns the inverse zoom scale, with a safe fallback for invalid or zero values.
+
 #### Parameters
 
 | Parameter | Type | Default value |
@@ -154,11 +123,38 @@ function getInverseZoomScale(source: ZoomScaleSource, fallback?: number): number
 
 ***
 
+### getObjectZoomView()
+
+```ts
+function getObjectZoomView(
+   context: Pick<MapContext, "path" | "width" | "height">, 
+   object: GeoPermissibleObjects, 
+   options?: ObjectZoomViewOptions): ObjectZoomView | undefined;
+```
+
+Computes a centered zoom target that fits the given object inside the viewport.
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `context` | `Pick`<[`MapContext`](map.md#mapcontext), `"path"` | `"width"` | `"height"`> |
+| `object` | `GeoPermissibleObjects` |
+| `options` | [`ObjectZoomViewOptions`](#objectzoomviewoptions) |
+
+#### Returns
+
+[`ObjectZoomView`](#objectzoomview) | `undefined`
+
+***
+
 ### getZoomScale()
 
 ```ts
 function getZoomScale(source: ZoomScaleSource): number;
 ```
+
+Reads a zoom scale from a number, transform, or zoom event-like object.
 
 #### Parameters
 
@@ -172,11 +168,34 @@ function getZoomScale(source: ZoomScaleSource): number;
 
 ***
 
+### getZoomViewportCenter()
+
+```ts
+function getZoomViewportCenter(context: Pick<MapContext, "width" | "height">, transform: Pick<ZoomTransform, "invert">): [number, number];
+```
+
+Returns the projected map-space point currently centered in the viewport.
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `context` | `Pick`<[`MapContext`](map.md#mapcontext), `"width"` | `"height"`> |
+| `transform` | `Pick`<[`ZoomTransform`](#zoomtransform), `"invert"`> |
+
+#### Returns
+
+\[`number`, `number`]
+
+***
+
 ### setupZoom()
 
 ```ts
 function setupZoom(options: SetupZoomOptions): void;
 ```
+
+Attaches a zoom behavior to the SVG element and applies the current zoom view.
 
 #### Parameters
 
@@ -194,20 +213,15 @@ function setupZoom(options: SetupZoomOptions): void;
 
 ```ts
 const ZOOM_DEFAULTS: {
-  center: [number, number];
   maxZoom: number;
   minZoom: number;
   zoom: number;
 };
 ```
 
+Default zoom prop values used by the core helpers.
+
 #### Type Declaration
-
-##### center
-
-```ts
-center: [number, number];
-```
 
 ##### maxZoom
 
@@ -231,6 +245,8 @@ zoom: number = 1;
 
 ### ApplyZoomOptions
 
+Options for applying a zoom transform to an existing zoom behavior.
+
 #### Extended by
 
 * [`SetupZoomOptions`](#setupzoomoptions)
@@ -242,6 +258,7 @@ zoom: number = 1;
 | <a id="property-behavior"></a> `behavior` | [`DefaultZoomBehavior`](#defaultzoombehavior) |
 | <a id="property-center"></a> `center?` | \[`number`, `number`] |
 | <a id="property-element"></a> `element` | [`ZoomTargetElement`](#zoomtargetelement) | `null` | `undefined` |
+| <a id="property-transition"></a> `transition?` | `false` | [`ZoomTransition`](#zoomtransition) |
 | <a id="property-zoom"></a> `zoom?` | `number` |
 
 ***
@@ -1302,7 +1319,36 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 
 ***
 
+### ObjectZoomView
+
+Computed zoom target for an object fit operation.
+
+#### Properties
+
+| Property | Type |
+| ------ | ------ |
+| <a id="property-center-1"></a> `center` | \[`number`, `number`] |
+| <a id="property-zoom-1"></a> `zoom` | `number` |
+
+***
+
+### ObjectZoomViewOptions
+
+Options for fitting an object into the viewport.
+
+#### Properties
+
+| Property | Type |
+| ------ | ------ |
+| <a id="property-maxzoom"></a> `maxZoom?` | `number` |
+| <a id="property-minzoom"></a> `minZoom?` | `number` |
+| <a id="property-padding"></a> `padding?` | `number` |
+
+***
+
 ### SetupZoomOptions
+
+Options for attaching a zoom behavior and applying the initial zoom state.
 
 #### Extends
 
@@ -1310,12 +1356,13 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 
 #### Properties
 
-| Property | Type | Inherited from |
-| ------ | ------ | ------ |
-| <a id="property-behavior-1"></a> `behavior` | [`DefaultZoomBehavior`](#defaultzoombehavior) | [`ApplyZoomOptions`](#applyzoomoptions).[`behavior`](#property-behavior) |
-| <a id="property-center-1"></a> `center?` | \[`number`, `number`] | [`ApplyZoomOptions`](#applyzoomoptions).[`center`](#property-center) |
-| <a id="property-element-1"></a> `element` | [`ZoomTargetElement`](#zoomtargetelement) | `null` | `undefined` | [`ApplyZoomOptions`](#applyzoomoptions).[`element`](#property-element) |
-| <a id="property-zoom-1"></a> `zoom?` | `number` | [`ApplyZoomOptions`](#applyzoomoptions).[`zoom`](#property-zoom) |
+| Property | Type | Overrides | Inherited from |
+| ------ | ------ | ------ | ------ |
+| <a id="property-behavior-1"></a> `behavior` | [`DefaultZoomBehavior`](#defaultzoombehavior) | - | [`ApplyZoomOptions`](#applyzoomoptions).[`behavior`](#property-behavior) |
+| <a id="property-center-2"></a> `center?` | \[`number`, `number`] | [`ApplyZoomOptions`](#applyzoomoptions).[`center`](#property-center) | - |
+| <a id="property-element-1"></a> `element` | [`ZoomTargetElement`](#zoomtargetelement) | `null` | `undefined` | - | [`ApplyZoomOptions`](#applyzoomoptions).[`element`](#property-element) |
+| <a id="property-transition-1"></a> `transition?` | `false` | [`ZoomTransition`](#zoomtransition) | - | [`ApplyZoomOptions`](#applyzoomoptions).[`transition`](#property-transition) |
+| <a id="property-zoom-2"></a> `zoom?` | `number` | - | [`ApplyZoomOptions`](#applyzoomoptions).[`zoom`](#property-zoom) |
 
 ***
 
@@ -2241,31 +2288,31 @@ The scale factor transform.k is multiplied by 2Δ; for example, a Δ of +1 doubl
 
 ### ZoomBehaviorOptions
 
+Full zoom behavior configuration, including view props and event callbacks.
+
 #### Extends
 
 * [`ZoomProps`](#zoomprops).[`ZoomEvents`](#zoomevents)
 
 #### Properties
 
-| Property | Type | Inherited from |
-| ------ | ------ | ------ |
-| <a id="property-center-2"></a> `center?` | \[`number`, `number`] | [`ZoomProps`](#zoomprops).[`center`](#property-center-3) |
-| <a id="property-config"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) | [`ZoomProps`](#zoomprops).[`config`](#property-config-1) |
-| <a id="property-maxzoom"></a> `maxZoom?` | `number` | [`ZoomProps`](#zoomprops).[`maxZoom`](#property-maxzoom-1) |
-| <a id="property-minzoom"></a> `minZoom?` | `number` | [`ZoomProps`](#zoomprops).[`minZoom`](#property-minzoom-1) |
-| <a id="property-onzoom"></a> `onZoom?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | [`ZoomEvents`](#zoomevents).[`onZoom`](#property-onzoom-1) |
-| <a id="property-onzoomend"></a> `onZoomEnd?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | [`ZoomEvents`](#zoomevents).[`onZoomEnd`](#property-onzoomend-1) |
-| <a id="property-onzoomstart"></a> `onZoomStart?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | [`ZoomEvents`](#zoomevents).[`onZoomStart`](#property-onzoomstart-1) |
-| <a id="property-zoom-2"></a> `zoom?` | `number` | [`ZoomProps`](#zoomprops).[`zoom`](#property-zoom-3) |
+| Property | Type | Description | Inherited from |
+| ------ | ------ | ------ | ------ |
+| <a id="property-center-3"></a> `center?` | \[`number`, `number`] | Projected map-space point to keep centered in the viewport. If omitted, changing `zoom` alone preserves the current viewport center. | [`ZoomProps`](#zoomprops).[`center`](#property-center-4) |
+| <a id="property-config"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) | - | [`ZoomProps`](#zoomprops).[`config`](#property-config-1) |
+| <a id="property-maxzoom-1"></a> `maxZoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`maxZoom`](#property-maxzoom-2) |
+| <a id="property-minzoom-1"></a> `minZoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`minZoom`](#property-minzoom-2) |
+| <a id="property-onzoom"></a> `onZoom?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | - | [`ZoomEvents`](#zoomevents).[`onZoom`](#property-onzoom-1) |
+| <a id="property-onzoomend"></a> `onZoomEnd?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | - | [`ZoomEvents`](#zoomevents).[`onZoomEnd`](#property-onzoomend-1) |
+| <a id="property-onzoomstart"></a> `onZoomStart?` | (`event`: [`ZoomEvent`](#zoomevent)) => `void` | - | [`ZoomEvents`](#zoomevents).[`onZoomStart`](#property-onzoomstart-1) |
+| <a id="property-transition-2"></a> `transition?` | [`ZoomTransition`](#zoomtransition) | - | [`ZoomProps`](#zoomprops).[`transition`](#property-transition-3) |
+| <a id="property-zoom-3"></a> `zoom?` | `number` | - | [`ZoomProps`](#zoomprops).[`zoom`](#property-zoom-4) |
 
 ***
 
 ### ZoomEvent
 
-A D3 Zoom Event
-
-The first generic refers to the type of reference element to which the zoom behavior is attached.
-The second generic refers to the type of the datum of the reference element.
+D3 zoom event used by adapter components and hooks.
 
 #### Extends
 
@@ -2283,6 +2330,8 @@ The second generic refers to the type of the datum of the reference element.
 ***
 
 ### ZoomEvents
+
+Zoom lifecycle callbacks forwarded from the underlying D3 zoom behavior.
 
 #### Extended by
 
@@ -2345,13 +2394,14 @@ https://d3js.org/d3-zoom
 
 #### Properties
 
-| Property | Type |
-| ------ | ------ |
-| <a id="property-center-3"></a> `center?` | \[`number`, `number`] |
-| <a id="property-config-1"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) |
-| <a id="property-maxzoom-1"></a> `maxZoom?` | `number` |
-| <a id="property-minzoom-1"></a> `minZoom?` | `number` |
-| <a id="property-zoom-3"></a> `zoom?` | `number` |
+| Property | Type | Description |
+| ------ | ------ | ------ |
+| <a id="property-center-4"></a> `center?` | \[`number`, `number`] | Projected map-space point to keep centered in the viewport. If omitted, changing `zoom` alone preserves the current viewport center. |
+| <a id="property-config-1"></a> `config?` | [`ZoomModifiers`](#zoommodifiers) | - |
+| <a id="property-maxzoom-2"></a> `maxZoom?` | `number` | - |
+| <a id="property-minzoom-2"></a> `minZoom?` | `number` | - |
+| <a id="property-transition-3"></a> `transition?` | [`ZoomTransition`](#zoomtransition) | - |
+| <a id="property-zoom-4"></a> `zoom?` | `number` | - |
 
 ***
 
@@ -2601,12 +2651,26 @@ where tx0 and ty0 is this transform’s translation and tk is this transform’s
 | <a id="property-x"></a> `x` | `readonly` | `number` | The translation amount tx along the x-axis. This property should be considered read-only; instead of mutating a transform, use transform.scale and transform.translate to derive a new transform. Also see zoom.scaleBy, zoom.scaleTo and zoom.translateBy for convenience methods on the zoom behavior. |
 | <a id="property-y"></a> `y` | `readonly` | `number` | The translation amount ty along the y-axis This property should be considered read-only; instead of mutating a transform, use transform.scale and transform.translate to derive a new transform. Also see zoom.scaleBy, zoom.scaleTo and zoom.translateBy for convenience methods on the zoom behavior. |
 
+***
+
+### ZoomTransition
+
+Transition settings for programmatic zoom updates.
+
+#### Properties
+
+| Property | Type |
+| ------ | ------ |
+| <a id="property-delay"></a> `delay?` | `number` |
+| <a id="property-duration-1"></a> `duration?` | `number` |
+| <a id="property-ease"></a> `ease?` | (`normalizedTime`: `number`) => `number` |
+
 ## Type Aliases
 
-### Extent
+### ZoomObject
 
 ```ts
-type Extent = [[number, number], [number, number]];
+type ZoomObject = GeoPermissibleObjects;
 ```
 
 ***
@@ -2622,6 +2686,8 @@ type ZoomScaleSource =
 };
 ```
 
+Value accepted by zoom-scale helpers.
+
 ***
 
 ### ZoomTargetElement
@@ -2629,3 +2695,5 @@ type ZoomScaleSource =
 ```ts
 type ZoomTargetElement = SVGSVGElement | SVGGElement;
 ```
+
+Root SVG element or zoomed group element associated with a zoom behavior.

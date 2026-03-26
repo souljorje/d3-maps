@@ -41,7 +41,7 @@ const styles = {
 
 == React
 
-```tsx{8,12,14} [react]
+```tsx{8} [react]
 <MapBase
   data={data}
   projection={geoEquirectangular}

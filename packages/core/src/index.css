@@ -8,6 +8,7 @@
   [name="graticule"],
   [name="feature"],
   [name="mesh"] {
+    outline-style: none;
     &:not([stroke-width]) {
       stroke-width: var(--d3m-stroke-w)
     }

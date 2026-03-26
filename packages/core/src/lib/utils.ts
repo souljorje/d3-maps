@@ -32,6 +32,11 @@ export function makeTransform(x: number, y: number, k?: number): string {
   return `translate(${x}, ${y}) scale(${k ?? 1})`
 }
 
+export function getSvgElement(element: SVGSVGElement | SVGGElement | null | undefined): SVGSVGElement | null {
+  if (!element) return null
+  if (element instanceof SVGSVGElement) return element
+  return element.closest('svg')
+}
 export function noop(): void {}
 export type Noop = typeof noop
 

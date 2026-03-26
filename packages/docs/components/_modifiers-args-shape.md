@@ -1,8 +1,9 @@
 ```ts
 {
-  [methodName]: args[] | arg
+  [methodName: string]: Arg | Arg[]
 }
 ```
 
-- single non-array arg: can be passed as it is or wrapped with an array
-- multiple args / single array arg: wrapped with an array
+1. Single non-array value: `Arg | [Arg]` - pass directly or wrap with an array
+2. Single array value: `[Arg]` - **must be wrapped** with an array
+3. Multiple values: `[Arg1, Arg2, ...]`

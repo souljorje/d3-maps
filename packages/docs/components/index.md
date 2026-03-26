@@ -1,6 +1,6 @@
 # Components
 
-Components are adapter-level building blocks for rendering maps and map objects.
+Components are adapter-level building blocks for rendering map layers
 
 - [MapBase](/components/map-base)
 - [MapFeatures](/components/map-features)
@@ -12,6 +12,6 @@ Components are adapter-level building blocks for rendering maps and map objects.
 - [MapGraticule](/components/map-graticule)
 - [MapZoom](/components/map-zoom)
 
-Need hooks for custom layers and interactions?
+Need helpers for custom layers and interactions?
 
-- [Hooks](/hooks/)
+- [Helpers](/helpers/)

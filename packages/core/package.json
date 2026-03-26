@@ -45,6 +45,7 @@
     "d3-geo": "catalog:",
     "d3-selection": "catalog:",
     "d3-shape": "catalog:",
+    "d3-transition": "catalog:",
     "d3-zoom": "catalog:",
     "topojson-client": "catalog:"
   },
@@ -52,6 +53,7 @@
     "@types/d3-geo": "catalog:",
     "@types/d3-selection": "catalog:",
     "@types/d3-shape": "catalog:",
+    "@types/d3-transition": "catalog:",
     "@types/d3-zoom": "catalog:",
     "@types/geojson": "catalog:",
     "@types/topojson-client": "catalog:",

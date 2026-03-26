@@ -23,6 +23,8 @@
 function getAnnotationGeometry(__namedParameters?: MapAnnotationGeometryOptions): MapAnnotationGeometry;
 ```
 
+Returns local connector geometry for an annotation before it is anchored to the map
+
 #### Parameters
 
 | Parameter | Type |
@@ -44,6 +46,8 @@ const MAP_ANNOTATION_DEFAULTS: {
   margin: 0;
 };
 ```
+
+Default local layout values for annotation connectors
 
 #### Type Declaration
 
@@ -69,6 +73,8 @@ readonly margin: 0 = 0;
 
 ### MapAnnotationGeometry
 
+Local SVG geometry derived from an annotation anchor and layout options
+
 #### Properties
 
 | Property | Type |
@@ -81,6 +87,8 @@ readonly margin: 0 = 0;
 
 ### MapAnnotationGeometryOptions
 
+Layout options used to derive local annotation connector geometry
+
 #### Properties
 
 | Property | Type |
@@ -92,6 +100,8 @@ readonly margin: 0 = 0;
 ***
 
 ### MapAnnotationProps
+
+Public annotation props shared across adapters
 
 #### Extends
 
@@ -113,7 +123,7 @@ readonly margin: 0 = 0;
 | <a id="property-length-1"></a> `length?` | `number` | - |
 | <a id="property-margin-1"></a> `margin?` | `number` | - |
 | <a id="property-midpoint"></a> `midpoint?` | [`MapLineMidpoint`](line.md#maplinemidpoint) | - |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"` | `"focus"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases
 
@@ -122,3 +132,5 @@ readonly margin: 0 = 0;
 ```ts
 type MapAnnotationCoordinates = [number, number];
 ```
+
+Geographic anchor coordinate for an annotation

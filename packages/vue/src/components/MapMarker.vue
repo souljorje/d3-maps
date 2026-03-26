@@ -31,7 +31,9 @@ const props = withDefaults(defineProps<Props>(), { name: 'marker' })
 
 const context = useMapContext()
 
-const transform = computed(() => getMarkerTransform(context?.value, props.coordinates))
+const transform = computed(() => {
+  return getMarkerTransform(context.value, props.coordinates)
+})
 
 const { style, ...events } = useMapObject(toRef(props, 'styles'))
 </script>

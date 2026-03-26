@@ -28,8 +28,8 @@ export type DataTransformer = (features: MapFeature[]) => MapFeature[]
 
 /**
  * Extra projection method calls to apply before rendering.
- *
  * Use projection method names as keys and method arguments as values.
+ *
  * Example: `{ center: [[0, 20]], rotate: [[0, 0, 0]], scale: 160 }`
  *
  * @see https://d3js.org/d3-geo/projection
@@ -74,12 +74,30 @@ export interface MapProps {
  * Adapters provide this context to child layers (features, markers, custom SVG).
  */
 export interface MapContext {
+  /**
+   * Resolved SVG width used by the map.
+   */
   width: number
+  /**
+   * Resolved SVG height used by the map.
+   */
   height: number
+  /**
+   * Configured projection instance shared by map layers.
+   */
   projection: GeoProjection
+  /**
+   * Normalized feature list after optional transformation.
+   */
   features: MapFeature[]
+  /**
+   * Shared path generator bound to the map projection.
+   */
   path: GeoPath
-  renderMesh: () => ReturnType<GeoPath>
+  /**
+   * Renders a TopoJSON mesh path when one is available.
+   */
+  renderMesh: () => string | null
 }
 
 /**
@@ -97,17 +115,16 @@ export function makeProjection({
   projection: () => GeoProjection
 }): GeoProjection {
   const mapProjection = projection()
-  const { fitExtent, fitSize, fitWidth, fitHeight, precision } = config
+  const { fitExtent, fitSize, fitWidth, fitHeight } = config
 
   if (!(fitExtent || fitSize || fitWidth || fitHeight)) {
     mapProjection.fitExtent([[1, 1], [width - 1, height - 1]], { type: 'Sphere' })
   }
 
-  if (!precision) {
-    mapProjection.precision(0.2)
-  }
-
-  applyModifiers(mapProjection, config)
+  applyModifiers(mapProjection, {
+    precision: 0.2,
+    ...config,
+  })
 
   return mapProjection
 }

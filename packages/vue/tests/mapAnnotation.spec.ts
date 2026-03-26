@@ -62,8 +62,8 @@ describe('mapAnnotation', () => {
     expect(wrapper.find('[name="annotation-content"]').attributes('transform')).not.toContain('rotate')
   })
 
-  it('does not render outside map context', () => {
-    const wrapper = mount(MapAnnotation, {
+  it('throws outside map context', () => {
+    expect(() => mount(MapAnnotation, {
       props: {
         coordinates: [2.3522, 48.8566],
       },
@@ -73,10 +73,7 @@ describe('mapAnnotation', () => {
       slots: {
         default: () => h('text', 'Paris'),
       },
-    })
-
-    expect(wrapper.find('[data-testid="annotation-line"]').exists()).toBe(false)
-    expect(wrapper.text()).not.toContain('Paris')
+    })).toThrowError('useMapContext must be used inside Map')
   })
 
   it('uses the provided D3 curve for the connector path', () => {

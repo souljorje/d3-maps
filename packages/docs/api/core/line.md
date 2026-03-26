@@ -25,6 +25,10 @@
 function createMidPoint(pointsPair: [[number, number], [number, number]], midpoint?: MapLineMidpoint): [number, number];
 ```
 
+Creates a generated midpoint for a segment and offsets it relative to the segment itself
+
+`midpoint` values are percentages of the full segment length
+
 #### Parameters
 
 | Parameter | Type |
@@ -44,6 +48,8 @@ function createMidPoint(pointsPair: [[number, number], [number, number]], midpoi
 function getDefaultLine(points: MapLineCoordinates, curve?: MapLineCurve): string | undefined;
 ```
 
+Builds a line path directly from local points using the provided D3 curve
+
 #### Parameters
 
 | Parameter | Type |
@@ -62,6 +68,12 @@ function getDefaultLine(points: MapLineCoordinates, curve?: MapLineCurve): strin
 ```ts
 function getLinePath(context: MapContext | undefined, __namedParameters: MapLineOptions): string | undefined;
 ```
+
+Returns an SVG path string for a line in one of three modes:
+
+* geographic `LineString` rendering via `context.path(...)`
+* projected custom rendering via `d3.line()`
+* cartesian rendering for already-local coordinates
 
 #### Parameters
 
@@ -85,6 +97,8 @@ function getLineWithMidpoints(
    midpoint?: MapLineMidpoint): string | undefined;
 ```
 
+Inserts generated midpoints between consecutive points and renders the resulting path
+
 #### Parameters
 
 | Parameter | Type |
@@ -100,6 +114,8 @@ function getLineWithMidpoints(
 ## Interfaces
 
 ### MapLineOptions
+
+Core line rendering options shared by framework adapters
 
 #### Extended by
 
@@ -118,6 +134,8 @@ function getLineWithMidpoints(
 ***
 
 ### MapLineProps
+
+Public map line props including map object styling and interaction support
 
 #### Extends
 
@@ -138,7 +156,7 @@ function getLineWithMidpoints(
 | <a id="property-curve-1"></a> `curve?` | [`MapLineCurve`](#maplinecurve) | [`MapLineOptions`](#maplineoptions).[`curve`](#property-curve) |
 | <a id="property-custom-1"></a> `custom?` | `boolean` | [`MapLineOptions`](#maplineoptions).[`custom`](#property-custom) |
 | <a id="property-midpoint-1"></a> `midpoint?` | [`MapLineMidpoint`](#maplinemidpoint) | [`MapLineOptions`](#maplineoptions).[`midpoint`](#property-midpoint) |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"` | `"focus"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases
 
@@ -148,6 +166,8 @@ function getLineWithMidpoints(
 type MapLineCoordinates = [number, number][];
 ```
 
+Geographic or cartesian line coordinates expressed as ordered `[x, y]` pairs
+
 ***
 
 ### MapLineCurve
@@ -156,6 +176,8 @@ type MapLineCoordinates = [number, number][];
 type MapLineCurve = CurveFactory | CurveFactoryLineOnly;
 ```
 
+D3 curve factory used by custom and cartesian line rendering
+
 ***
 
 ### MapLineMidpoint
@@ -163,3 +185,8 @@ type MapLineCurve = CurveFactory | CurveFactoryLineOnly;
 ```ts
 type MapLineMidpoint = [number, number];
 ```
+
+Midpoint adjustment expressed as percentages of the segment length
+
+* first value: moves the generated midpoint along the segment direction
+* second value: moves the generated midpoint perpendicular to the segment direction

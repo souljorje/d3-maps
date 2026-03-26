@@ -4,14 +4,19 @@ Enables zoom and drag behavior using `d3-zoom`.
 
 Wrap layers that should be zoomed inside [MapZoom](/components/map-zoom).
 
+Use [useMapZoom](/helpers/use-map-zoom) inside `MapZoom` when controls or overlays need live zoom state
+
+Keep `center` and `zoom` controlled in the parent and update them from the zoom callbacks
+
 ## Props
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `center?` | `[number, number]` | `[0, 0]` | Initial center for zoom behavior |
-| `zoom?` | `number` | `1` | Initial zoom level |
+| `center?` | `[number, number]` | viewport center | Point to be centered in the viewport |
+| `zoom?` | `number` | `1` | Controlled zoom level |
 | `minZoom?` | `number` | `1` | Minimum zoom scale |
 | `maxZoom?` | `number` | `8` | Maximum zoom scale |
+| `transition?` | [ZoomTransition](/api/core/zoom#zoomtransition) | — | Animate zoom with [d3-transition](https://d3js.org/d3-transition) and [d3-ease](https://d3js.org/d3-ease) |
 | `config?` | [ZoomModifiers](/api/core/zoom#zoommodifiers) | — | See the [guide](#config) below |
 
 ### Config
@@ -20,8 +25,7 @@ Use `config` to call zoom methods before rendering
 
 <!--@include: ./_modifiers-args-shape.md-->
 
-- See available methods in [d3-zoom docs](https://d3js.org/d3-zoom)
-- See usage example below
+See available methods in [d3-zoom docs](https://d3js.org/d3-zoom) and usage example below
 
 ## Events
 
@@ -31,9 +35,11 @@ Use `config` to call zoom methods before rendering
 
 Emits:
 
-- `zoomstart`
+- `zoomStart`
 - `zoom`
-- `zoomend`
+- `zoomEnd`
+- `update:center`
+- `update:zoom`
 
 == React
 
@@ -54,6 +60,8 @@ Callbacks:
 ```vue
 <template>
   <MapZoom
+    v-model:center="center"
+    v-model:zoom="zoom"
     :min-zoom="1"
     :max-zoom="6"
     :config="{
@@ -84,3 +92,13 @@ Callbacks:
 ```
 
 :::
+
+## Helpers
+
+- [useMapZoom](/helpers/use-map-zoom)
+- [getZoomView](/helpers/get-object-zoom-view)
+
+## Examples
+
+- [Zoom](/examples/zoom)
+- [Programmatic Zoom](/examples/programmatic-zoom)

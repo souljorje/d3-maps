@@ -11,6 +11,12 @@
 }
 
 .d3-map {
+  &:has([name='zoom']) {
+    cursor: grab;
+    &:active {
+      cursor: grabbing;
+    }
+  }
   text {
     font-weight: bold;
   }
@@ -76,6 +82,9 @@
   }
 }
 
+body {
+  line-height: 1.5;
+}
 .vp-doc {
   table {
     th, td {
@@ -118,6 +127,23 @@
   .VPButton.brand:hover {
     animation-play-state: paused;
     filter: brightness(1.05);
+  }
+}
+
+.vp-doc {
+  h2 {
+    margin: 32px 0 16px;
+  }
+  li p {
+    margin: 0
+  }
+  table {
+    th, td {
+      padding: 8px 12px;
+    }
+    code {
+      white-space: pre;
+    }
   }
 }
 

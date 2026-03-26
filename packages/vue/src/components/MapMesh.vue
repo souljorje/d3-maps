@@ -23,7 +23,7 @@ import { useMapObject } from '../hooks/useMapObject'
 const props = defineProps<MapObjectProps<StyleValue>>()
 const context = useMapContext()
 
-const path = computed<string | undefined>(() => context?.value.renderMesh() ?? undefined)
+const path = computed<string | undefined>(() => context.value.renderMesh() ?? undefined)
 
 const { style, ...events } = useMapObject(toRef(props, 'styles'))
 </script>

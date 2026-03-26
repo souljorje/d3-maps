@@ -28,6 +28,14 @@ describe('mapMarker', () => {
     expect(wrapper.get('[data-testid="map-marker"]').attributes('transform')).toMatch(/^translate\(/)
   })
 
+  it('throws without map context', () => {
+    expect(() => mount(MapMarker, {
+      props: {
+        coordinates: [10, 10],
+      },
+    })).toThrowError('useMapContext must be used inside Map')
+  })
+
   it('recomputes marker transform when map context changes', async () => {
     const wrapper = mount(MapBase, {
       props: {
@@ -47,19 +55,6 @@ describe('mapMarker', () => {
 
     const nextTransform = wrapper.find('g[transform]').attributes('transform')
     expect(nextTransform).not.toBe(initialTransform)
-  })
-
-  it('does not render without map context', () => {
-    const wrapper = mount(MapMarker, {
-      props: {
-        coordinates: [10, 10],
-      },
-      attrs: {
-        'data-testid': 'map-marker',
-      },
-    })
-
-    expect(wrapper.find('[data-testid="map-marker"]').exists()).toBe(false)
   })
 
   it('allows overriding the outer group name', () => {
