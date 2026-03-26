@@ -1,4 +1,10 @@
-import { describe, expect, it, vi } from 'vitest'
+import {
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest'
 
 import type { ZoomTransform } from '@d3-maps/core'
 
@@ -42,6 +48,12 @@ vi.mock('@d3-maps/core', async () => {
 })
 
 describe('mapZoom', () => {
+  beforeEach(() => {
+    setupZoomSpy.mockClear()
+    applyZoomSpy.mockClear()
+    zoomBehaviorOptions = undefined
+  })
+
   it('returns undefined outside MapZoom', () => {
     function Probe() {
       return <text data-testid="zoom-value">{String(useMapZoom())}</text>
@@ -90,13 +102,7 @@ describe('mapZoom', () => {
         zoom: 2,
       }),
     )
-    expect(applyZoomSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        center: [11, 12],
-        transition,
-        zoom: 2,
-      }),
-    )
+    expect(applyZoomSpy).not.toHaveBeenCalled()
     expect(onZoomStart).toHaveBeenCalled()
     expect(onZoom).toHaveBeenCalled()
     expect(onZoomEnd).toHaveBeenCalled()
@@ -131,6 +137,133 @@ describe('mapZoom', () => {
         zoom: 3,
       }),
     )
+  })
+
+  it('recreates zoom behavior without a redundant apply', () => {
+    const transition = { duration: 250 }
+    const { rerender } = render(
+      <MapBase data={sampleGeoJson}>
+        <MapZoom
+          center={[11, 12]}
+          zoom={2}
+          minZoom={1}
+          maxZoom={6}
+          transition={transition}
+          config={{ scaleExtent: [[1, 6]] }}
+        />
+      </MapBase>,
+    )
+
+    expect(setupZoomSpy).toHaveBeenCalledTimes(1)
+    expect(applyZoomSpy).not.toHaveBeenCalled()
+
+    rerender(
+      <MapBase data={sampleGeoJson}>
+        <MapZoom
+          center={[11, 12]}
+          zoom={2}
+          minZoom={1}
+          maxZoom={6}
+          transition={transition}
+          config={{ scaleExtent: [[1, 8]] }}
+        />
+      </MapBase>,
+    )
+
+    expect(setupZoomSpy).toHaveBeenCalledTimes(2)
+    expect(setupZoomSpy).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        center: [11, 12],
+        transition,
+        zoom: 2,
+      }),
+    )
+    expect(applyZoomSpy).not.toHaveBeenCalled()
+  })
+
+  it('does not reapply zoom when center values are unchanged', () => {
+    const transition = { duration: 250 }
+    const { rerender } = render(
+      <MapBase data={sampleGeoJson}>
+        <MapZoom
+          center={[11, 12]}
+          zoom={2}
+          transition={transition}
+        />
+      </MapBase>,
+    )
+
+    expect(setupZoomSpy).toHaveBeenCalledTimes(1)
+    expect(applyZoomSpy).not.toHaveBeenCalled()
+
+    rerender(
+      <MapBase data={sampleGeoJson}>
+        <MapZoom
+          center={[11, 12]}
+          zoom={2}
+          transition={transition}
+        />
+      </MapBase>,
+    )
+
+    expect(setupZoomSpy).toHaveBeenCalledTimes(1)
+    expect(applyZoomSpy).not.toHaveBeenCalled()
+  })
+
+  it('keeps the same zoom behavior when only callbacks change and uses the latest handlers', () => {
+    const center: [number, number] = [11, 12]
+    const firstOnZoomStart = vi.fn()
+    const firstOnZoom = vi.fn()
+    const firstOnZoomEnd = vi.fn()
+    const nextOnZoomStart = vi.fn()
+    const nextOnZoom = vi.fn()
+    const nextOnZoomEnd = vi.fn()
+
+    const { rerender } = render(
+      <MapBase data={sampleGeoJson}>
+        <MapZoom
+          center={center}
+          zoom={2}
+          onZoomStart={firstOnZoomStart}
+          onZoom={firstOnZoom}
+          onZoomEnd={firstOnZoomEnd}
+        />
+      </MapBase>,
+    )
+
+    expect(setupZoomSpy).toHaveBeenCalledTimes(1)
+    expect(applyZoomSpy).not.toHaveBeenCalled()
+
+    firstOnZoomStart.mockClear()
+    firstOnZoom.mockClear()
+    firstOnZoomEnd.mockClear()
+
+    rerender(
+      <MapBase data={sampleGeoJson}>
+        <MapZoom
+          center={center}
+          zoom={2}
+          onZoomStart={nextOnZoomStart}
+          onZoom={nextOnZoom}
+          onZoomEnd={nextOnZoomEnd}
+        />
+      </MapBase>,
+    )
+
+    expect(setupZoomSpy).toHaveBeenCalledTimes(1)
+    expect(applyZoomSpy).not.toHaveBeenCalled()
+
+    const transform = createTransform([11, 12], 2)
+    zoomBehaviorOptions?.onZoomStart?.({ transform })
+    zoomBehaviorOptions?.onZoom?.({ transform })
+    zoomBehaviorOptions?.onZoomEnd?.({ transform })
+
+    expect(firstOnZoomStart).not.toHaveBeenCalled()
+    expect(firstOnZoom).not.toHaveBeenCalled()
+    expect(firstOnZoomEnd).not.toHaveBeenCalled()
+    expect(nextOnZoomStart).toHaveBeenCalledTimes(1)
+    expect(nextOnZoom).toHaveBeenCalledTimes(1)
+    expect(nextOnZoomEnd).toHaveBeenCalledTimes(1)
   })
 
   it('exposes live zoom state', () => {

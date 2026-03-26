@@ -145,7 +145,7 @@ export interface ObjectZoomViewOptions {
  * Creates a D3 zoom behavior configured for the current map viewport.
  */
 export function createZoomBehavior(
-  context?: MapContext,
+  context?: Pick<MapContext, 'width' | 'height'>,
   options: ZoomBehaviorOptions = {},
 ): DefaultZoomBehavior {
   const behavior = zoom<SVGSVGElement, unknown>()

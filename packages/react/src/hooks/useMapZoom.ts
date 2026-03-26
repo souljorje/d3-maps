@@ -1,6 +1,7 @@
 'use client'
 
 import type {
+  DefaultZoomBehavior,
   ObjectZoomView,
   ZoomEvent,
   ZoomObject,
@@ -19,10 +20,11 @@ import {
   createContext,
   useContext,
   useEffect,
+  useEffectEvent,
   useMemo,
+  useRef,
 } from 'react'
 
-import { useLatest } from './useLatest'
 import {
   MapContextValue,
   useMapContext,
@@ -83,61 +85,75 @@ export function useCreateMapZoom(
     onZoom,
     onZoomEnd,
   } = eventCallbacks
+  const centerX = center?.[0]
+  const centerY = center?.[1]
+  const resolvedCenter = useMemo<[number, number] | undefined>(() => {
+    if (centerX === undefined || centerY === undefined) return undefined
 
-  const onZoomStartRef = useLatest(onZoomStart)
-  const onZoomRef = useLatest(onZoom)
-  const onZoomEndRef = useLatest(onZoomEnd)
+    return [centerX, centerY]
+  }, [centerX, centerY])
+
+  const onZoomStartEvent = useEffectEvent((event: ZoomEvent) => {
+    onZoomStart?.(event)
+  })
+  const onZoomEvent = useEffectEvent((event: ZoomEvent) => {
+    applyZoomGroupTransform(containerRef.current, event.transform)
+    onZoom?.(event)
+  })
+  const onZoomEndEvent = useEffectEvent((event: ZoomEvent) => {
+    onZoomEnd?.(event)
+  })
+  const lastZoomBehaviorRef = useRef<DefaultZoomBehavior | undefined>(undefined)
 
   const zoomBehavior = useMemo(() => {
-    return createZoomBehavior(context, {
+    return createZoomBehavior({
+      width: context.width,
+      height: context.height,
+    }, {
       minZoom,
       maxZoom,
       config,
-      onZoomStart: (event) => {
-        onZoomStartRef.current?.(event)
-      },
-      onZoom: (event) => {
-        applyZoomGroupTransform(containerRef.current, event.transform)
-        onZoomRef.current?.(event)
-      },
-      onZoomEnd: (event) => {
-        onZoomEndRef.current?.(event)
-      },
+      onZoomStart: onZoomStartEvent,
+      onZoom: onZoomEvent,
+      onZoomEnd: onZoomEndEvent,
     })
   }, [
     config,
-    context,
+    context.height,
+    context.width,
     maxZoom,
     minZoom,
   ])
 
   useEffect(() => {
-    setupZoom({
-      element: containerRef.current,
-      behavior: zoomBehavior,
-      center,
-      zoom,
-      transition,
-    })
-  }, [zoomBehavior])
+    if (lastZoomBehaviorRef.current !== zoomBehavior) {
+      lastZoomBehaviorRef.current = zoomBehavior
+      setupZoom({
+        element: containerRef.current,
+        behavior: zoomBehavior,
+        center: resolvedCenter,
+        zoom,
+        transition,
+      })
+      return
+    }
 
-  useEffect(() => {
     applyZoom({
       element: containerRef.current,
       behavior: zoomBehavior,
-      center,
+      center: resolvedCenter,
       zoom,
       transition,
     })
-  }, [center, transition, zoom, zoomBehavior])
+  }, [centerX, centerY, transition, zoom, zoomBehavior])
 
   const zoomContext = useMemo<MapZoomState>(() => ({
-    center,
+    center: resolvedCenter,
     zoom,
     minZoom,
     maxZoom,
   }), [
-    center,
+    resolvedCenter,
     maxZoom,
     minZoom,
     zoom,
