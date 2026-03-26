@@ -35,7 +35,7 @@ Simply make it with an aspect-ratio wrapper and the `aspect-ratio` prop
 
 == React
 
-```tsx{1,6,9,11,14,16} [react]
+```tsx{1,6} [react]
 <div style={{ aspectRatio: "2 / 1" }}>
   <MapBase
     data={data}

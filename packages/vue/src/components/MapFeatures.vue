@@ -26,5 +26,5 @@ withDefaults(defineProps<MapFeaturesProps<StyleValue>>(), {
 })
 
 const context = useMapContext()
-const features = computed(() => (context?.value.features ?? []))
+const features = computed(() => context.value.features)
 </script>

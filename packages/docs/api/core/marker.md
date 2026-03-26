@@ -55,7 +55,7 @@ Shared props contract for marker layers.
 | Property | Type | Inherited from |
 | ------ | ------ | ------ |
 | <a id="property-coordinates"></a> `coordinates` | [`MapMarkerCoordinates`](#mapmarkercoordinates) | - |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"` | `"focus"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases
 

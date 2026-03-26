@@ -124,7 +124,6 @@ describe('mapGraticule', () => {
     await lines.trigger('mousedown')
     expect((lines.element as SVGPathElement).style.opacity).toBe('0.5')
 
-    await lines.trigger('mouseleave')
     await lines.trigger('mouseup')
     expect((lines.element as SVGPathElement).style.opacity).toBe('0.7')
     expect(onMouseup).toHaveBeenCalledTimes(1)
@@ -168,5 +167,9 @@ describe('mapGraticule', () => {
     await updatedLines.trigger('mouseup')
     expect(firstOnMouseup).toHaveBeenCalledTimes(1)
     expect(secondOnMouseup).toHaveBeenCalledTimes(1)
+  })
+
+  it('throws without map context', () => {
+    expect(() => mount(MapGraticule)).toThrowError('useMapContext must be used inside Map')
   })
 })

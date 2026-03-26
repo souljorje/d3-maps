@@ -9,25 +9,28 @@ import {
 import type {
   ZoomBehaviorOptions,
   ZoomEvent,
+  ZoomTransform,
 } from '@d3-maps/core'
 
 import { mount } from '@vue/test-utils'
-import { h } from 'vue'
+import {
+  defineComponent,
+  h,
+} from 'vue'
 
 import {
   MapBase,
   MapZoom,
+  useMapZoom,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
 const setupZoomSpy = vi.fn()
-const applyZoomTransformSpy = vi.fn()
+const applyZoomSpy = vi.fn()
 let zoomBehaviorOptions: ZoomBehaviorOptions | undefined
-function createZoomEvent(transform: string) {
+function createZoomEvent(center: [number, number] | undefined, zoom: number | undefined) {
   return ({
-    transform: {
-      toString: () => transform,
-    },
+    transform: createTransform(center, zoom),
   }) as unknown as ZoomEvent
 }
 
@@ -38,12 +41,12 @@ vi.mock('@d3-maps/core', async () => {
     ...actual,
     setupZoom: (...args: Parameters<typeof actual.setupZoom>) => {
       setupZoomSpy(...args)
-      zoomBehaviorOptions?.onZoomStart?.(createZoomEvent('translate(1,2) scale(3)'))
-      zoomBehaviorOptions?.onZoom?.(createZoomEvent('translate(3,4) scale(5)'))
-      zoomBehaviorOptions?.onZoomEnd?.(createZoomEvent('translate(3,4) scale(5)'))
     },
-    applyZoomTransform: (...args: Parameters<typeof actual.applyZoomTransform>) => {
-      applyZoomTransformSpy(...args)
+    applyZoom: (...args: Parameters<typeof actual.applyZoom>) => {
+      applyZoomSpy(...args)
+      zoomBehaviorOptions?.onZoomStart?.(createZoomEvent(args[0].center, args[0].zoom))
+      zoomBehaviorOptions?.onZoom?.(createZoomEvent(args[0].center, args[0].zoom))
+      zoomBehaviorOptions?.onZoomEnd?.(createZoomEvent(args[0].center, args[0].zoom))
     },
     createZoomBehavior: (
       _context: Parameters<typeof actual.createZoomBehavior>[0],
@@ -58,44 +61,194 @@ vi.mock('@d3-maps/core', async () => {
 describe('mapZoom', () => {
   beforeEach(() => {
     setupZoomSpy.mockClear()
-    applyZoomTransformSpy.mockClear()
+    applyZoomSpy.mockClear()
     zoomBehaviorOptions = undefined
   })
 
-  it('wires zoom setup and transform updates', async () => {
-    const onZoomstart = vi.fn()
-    const onZoom = vi.fn()
-    const onZoomend = vi.fn()
+  it('returns undefined outside MapZoom', () => {
+    const wrapper = mount(defineComponent({
+      setup() {
+        const zoom = useMapZoom()
+        return () => h('text', { 'data-testid': 'zoom-value' }, String(zoom))
+      },
+    }))
 
-    const wrapper = mount(MapBase, {
-      props: {
-        data: sampleGeoJson,
-      },
-      slots: {
-        default: () => h(MapZoom, {
-          'data-testid': 'map-zoom-group',
-          center: [11, 12],
+    expect(wrapper.get('[data-testid="zoom-value"]').text()).toBe('undefined')
+  })
+
+  it('wires zoom setup and transform updates', async () => {
+    const onZoomStart = vi.fn()
+    const onZoom = vi.fn()
+    const onZoomEnd = vi.fn()
+    const onUpdateCenter = vi.fn()
+    const onUpdateZoom = vi.fn()
+    const transition = { duration: 250 }
+
+    const wrapper = mount(defineComponent({
+      data() {
+        return {
+          center: [11, 12] as [number, number],
           zoom: 2,
-          minZoom: 1,
-          maxZoom: 6,
-          config: { scaleExtent: [[1, 6]] },
-          onZoomstart,
-          onZoom,
-          onZoomend,
-        }, {
-          default: () => h('g', { 'data-testid': 'zoom-content' }),
-        }),
+        }
       },
-    })
+      render() {
+        return h(MapBase, {
+          data: sampleGeoJson,
+        }, {
+          default: () => h(MapZoom, {
+            'data-testid': 'map-zoom-group',
+            center: this.center,
+            zoom: this.zoom,
+            minZoom: 1,
+            maxZoom: 6,
+            transition,
+            config: { scaleExtent: [[1, 6]] },
+            onZoomStart,
+            onZoom,
+            onZoomEnd,
+            'onUpdate:center': onUpdateCenter,
+            'onUpdate:zoom': onUpdateZoom,
+          }, {
+            default: () => h('g', { 'data-testid': 'zoom-content' }),
+          }),
+        })
+      },
+    }))
 
     await Promise.resolve()
 
     expect(setupZoomSpy).toHaveBeenCalled()
-    expect(applyZoomTransformSpy).not.toHaveBeenCalled()
-    expect(onZoomstart).toHaveBeenCalled()
+    expect(setupZoomSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        behavior: expect.any(Object),
+        element: expect.any(SVGElement),
+      }),
+    )
+    expect(applyZoomSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        center: [11, 12],
+        transition,
+        zoom: 2,
+      }),
+    )
+    expect(onZoomStart).toHaveBeenCalled()
     expect(onZoom).toHaveBeenCalled()
-    expect(onZoomend).toHaveBeenCalled()
+    expect(onZoomEnd).toHaveBeenCalled()
+    expect(onUpdateCenter).not.toHaveBeenCalled()
+    expect(onUpdateZoom).not.toHaveBeenCalled()
     expect(zoomBehaviorOptions?.config).toEqual({ scaleExtent: [[1, 6]] })
     expect(wrapper.get('[data-testid="map-zoom-group"]').attributes('transform')).toContain('translate')
+
+    await wrapper.setData({
+      center: [99, 100],
+      zoom: 3,
+    })
+
+    expect(applyZoomSpy).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        center: [99, 100],
+        transition,
+        zoom: 3,
+      }),
+    )
+    expect(onUpdateCenter).not.toHaveBeenCalled()
+    expect(onUpdateZoom).not.toHaveBeenCalled()
+  })
+
+  it('emits update:center and update:zoom for user-driven zoom changes', async () => {
+    const onUpdateCenter = vi.fn()
+    const onUpdateZoom = vi.fn()
+
+    mount(defineComponent({
+      data() {
+        return {
+          center: [11, 12] as [number, number],
+          zoom: 2,
+        }
+      },
+      render() {
+        return h(MapBase, {
+          data: sampleGeoJson,
+        }, {
+          default: () => h(MapZoom, {
+            center: this.center,
+            zoom: this.zoom,
+            'onUpdate:center': onUpdateCenter,
+            'onUpdate:zoom': onUpdateZoom,
+          }),
+        })
+      },
+    }))
+
+    zoomBehaviorOptions?.onZoom?.(createZoomEvent([30, 40], 4))
+    await Promise.resolve()
+
+    expect(onUpdateCenter).toHaveBeenCalledWith([30, 40])
+    expect(onUpdateZoom).toHaveBeenCalledWith(4)
+  })
+
+  it('exposes live zoom state', async () => {
+    let zoomApi: ReturnType<typeof useMapZoom> | undefined
+    const onZoomToObject = vi.fn()
+
+    const wrapper = mount(defineComponent({
+      data() {
+        return {
+          center: [20, 30] as [number, number],
+          zoom: 2,
+        }
+      },
+      render() {
+        return h(MapBase, {
+          data: sampleGeoJson,
+        }, {
+          default: () => h(MapZoom, {
+            center: this.center,
+            zoom: this.zoom,
+          }, {
+            default: () => h(defineComponent({
+              setup() {
+                zoomApi = useMapZoom()
+                return () => h('text', { 'data-testid': 'zoom-value' }, `${zoomApi?.zoom.value}:${zoomApi?.center.value?.[0] ?? 'none'}`)
+              },
+            })),
+          }),
+        })
+      },
+    }))
+
+    expect(zoomApi?.zoom.value).toBe(2)
+    expect(zoomApi?.center.value).toEqual([20, 30])
+
+    zoomApi?.zoomToObject(sampleGeoJson.features[0], onZoomToObject)
+
+    expect(onZoomToObject).toHaveBeenCalledWith(expect.objectContaining({
+      center: expect.any(Array),
+      zoom: expect.any(Number),
+    }))
+
+    await wrapper.setData({
+      center: [40, 50],
+      zoom: 3,
+    })
+
+    expect(zoomApi?.zoom.value).toBe(3)
+    expect(zoomApi?.center.value).toEqual([40, 50])
   })
 })
+
+function createTransform(
+  center: [number, number] | undefined,
+  zoom: number | undefined,
+): ZoomTransform {
+  const resolvedCenter = center ?? [300, 150]
+  const resolvedZoom = zoom ?? 1
+
+  return {
+    k: resolvedZoom,
+    x: 0,
+    y: 0,
+    invert: () => resolvedCenter,
+    toString: () => `translate(0,0) scale(${resolvedZoom})`,
+  } as unknown as ZoomTransform
+}

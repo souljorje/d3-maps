@@ -61,8 +61,8 @@ describe('mapAnnotation', () => {
     expect(container.querySelector('[name="annotation-content"]')?.getAttribute('transform')).not.toContain('rotate')
   })
 
-  it('does not render outside map context', () => {
-    render(
+  it('throws outside map context', () => {
+    expect(() => render(
       <svg>
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
@@ -71,10 +71,7 @@ describe('mapAnnotation', () => {
           <text>Paris</text>
         </MapAnnotation>
       </svg>,
-    )
-
-    expect(screen.queryByTestId('annotation-line')).toBeNull()
-    expect(screen.queryByText('Paris')).toBeNull()
+    )).toThrowError('useMapContext must be used inside Map')
   })
 
   it('uses the provided D3 curve for the connector path', () => {

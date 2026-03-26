@@ -1,10 +1,9 @@
 # MapMesh
 
-Renders a TopoJSON mesh as an SVG `<path>`.
+Renders a TopoJSON mesh as an SVG `<path>`.  
+Use it to draw shared borders/edges (for example country boundaries) on top of feature fills.
 
-Use this to draw shared borders/edges (for example country boundaries) on top of feature fills.
-
-> ℹ️  Works only with **TopoJSON** data
+_ℹ️ Works only with **TopoJSON** data_
 
 ## Props
 
@@ -22,7 +21,7 @@ Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
 
 ```vue
 <template>
-  <MapBase :data="topologyData">
+  <MapBase :data="mapData">
     <MapFeatures fill="#fff" />
     <MapMesh stroke="#000"/>
   </MapBase>
@@ -32,7 +31,7 @@ Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
 == React
 
 ```tsx
-<MapBase data={topologyData}>
+<MapBase data={mapData}>
   <MapFeatures fill="#fff" />
   <MapMesh stroke="#000" />
 </MapBase>

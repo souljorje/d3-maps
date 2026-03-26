@@ -6,6 +6,7 @@
 
 * [Functions](#functions)
   * [applyModifiers()](#applymodifiers)
+  * [getSvgElement()](#getsvgelement)
   * [isDefined()](#isdefined)
   * [isElement()](#iselement)
   * [isFunction()](#isfunction)
@@ -77,6 +78,24 @@ applyModifiers(new X(), {
  e: 'foo' // error (e is not a function, excluded)
 })
 ```
+
+***
+
+### getSvgElement()
+
+```ts
+function getSvgElement(element: SVGSVGElement | SVGGElement | null | undefined): SVGSVGElement | null;
+```
+
+#### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `element` | `SVGSVGElement` | `SVGGElement` | `null` | `undefined` |
+
+#### Returns
+
+`SVGSVGElement` | `null`
 
 ***
 

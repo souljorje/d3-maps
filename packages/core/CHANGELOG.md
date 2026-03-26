@@ -1,5 +1,14 @@
 # @d3-maps/core
 
+## 0.9.0
+
+### Minor Changes
+
+- [#27](https://github.com/souljorje/d3-maps/pull/27) [`d10d18a`](https://github.com/souljorje/d3-maps/commit/d10d18accbfda2776da1b5e10d91f6caa8fad959) Thanks [@souljorje](https://github.com/souljorje)! - - Added `useMapContext` for composing map-aware UI
+  - Add focus state support for styling
+  - Added `useMapZoom` hook
+  - Added `getObjectZoomView` for zooming to object
+
 ## 0.8.0
 
 ### Minor Changes

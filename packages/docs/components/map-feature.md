@@ -11,6 +11,8 @@ Renders a single GeoJSON feature as an SVG `<path>`.
 
 Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeature`.
 
+To use `focus` styles, make the path focusable with `tabindex="0"` / `tabIndex={0}` and add accessibility attrs like `role` and `aria-label`
+
 ## Usage
 
 :::tabs key:framework
@@ -30,6 +32,9 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
           default: {
             opacity: 0.9,
           },
+          focus: {
+            stroke: 'darkgreen',
+          },
           hover: {
             opacity: 0.8,
           },
@@ -37,6 +42,9 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
             stroke: 'green'
           },
         }"
+        role="button"
+        :aria-label="feature.properties?.name"
+        tabindex="0"
       />
     </MapFeatures>
   </MapBase>
@@ -59,6 +67,9 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
               default: {
                 opacity: 0.9,
               },
+              focus: {
+                stroke: 'darkgreen',
+              },
               hover: {
                 opacity: 0.8,
               },
@@ -66,6 +77,9 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
                 stroke: 'green',
               },
             }}
+            role="button"
+            aria-label={String(feature.properties?.name ?? 'Country')}
+            tabIndex={0}
           />
         ))}
       </>
@@ -76,6 +90,6 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
 
 :::
 
-## Hooks
+## Helpers
 
-- See [useMapObject](/hooks/use-map-object)
+- See [useMapObject](/helpers/use-map-object)

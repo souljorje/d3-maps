@@ -7,12 +7,13 @@ Renders the root `<svg>` and provides a reactive map context to children.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `data` | [MapData](/api/core/map#mapdata) | — | TopoJSON or GeoJSON |
-| `width?` | `number` | `600` | Internal width used by projection fitting and path rendering. |
-| `height?` | `number` | `width / aspectRatio` | Internal height used by projection fitting and path rendering. |
+| `width?` | `number` | `600` |  |
+| `height?` | `number` | `width/aspectRatio` |  |
 | `aspectRatio?` | `number` | `2 / 1` | Used to derive `height` when `height` is not provided. |
 | `projection?` | `() => GeoProjection` | `geoNaturalEarth1` | d3-geo projection factory |
 | `projectionConfig?` | [ProjectionConfig](/api/core/map#projectionconfig) | — | See the [guide](#projectionconfig) below |
 | `dataTransformer?` | [DataTransformer](/api/core/map#datatransformer) | — | Optional transform applied to GeoJSON features before rendering |
+| `context?` | [MapContext](/api/core/map#mapcontext) | — | Optional externally created context. When provided, `MapBase` uses it instead of creating one from props, and `data` is not required |
 
 ### projectionConfig
 
@@ -98,6 +99,70 @@ export function Example({ data }: { data: MapData }) {
 
 :::
 
-## Hooks
+## Helpers
 
-- See [useMapContext](/hooks/use-map-context)
+- See [useCreateMapContext](/helpers/use-create-map-context)
+- See [useMapContext](/helpers/use-map-context)
+
+For adapter code and docs examples, prefer [useMapContext](/helpers/use-map-context) or `MapBase` slot/render-prop context over rebuilding a separate map context manually
+
+## Advanced Composition
+
+If controls or other consumers need the same map context outside the rendered `<svg>`, create the context once in the parent, pass it to sibling UI by prop, and pass the same object into `MapBase`.
+
+:::tabs key:framework
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import type { MapData } from '@d3-maps/core'
+
+import { computed } from 'vue'
+import { useCreateMapContext } from '@d3-maps/vue'
+
+const props = defineProps<{
+  data: MapData
+}>()
+
+const context = useCreateMapContext(computed(() => ({
+  data: props.data,
+  aspectRatio: 2 / 1,
+})))
+</script>
+
+<template>
+  <Toolbar :context="context" />
+  <MapBase :context="context">
+    <MapFeatures />
+  </MapBase>
+</template>
+```
+
+== React
+
+```tsx
+import type { MapData } from '@d3-maps/core'
+
+import { MapBase, MapFeatures, useCreateMapContext } from '@d3-maps/react'
+
+export function Example({ data }: { data: MapData }) {
+  const context = useCreateMapContext({
+    data,
+    aspectRatio: 2 / 1,
+  })
+
+  if (!context) return null
+
+  return (
+    <>
+      <Toolbar context={context} />
+      <MapBase context={context}>
+        <MapFeatures />
+      </MapBase>
+    </>
+  )
+}
+```
+
+:::

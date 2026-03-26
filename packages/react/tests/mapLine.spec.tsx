@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import {
+  fireEvent,
   render,
   screen,
 } from '@testing-library/react'
@@ -72,22 +73,20 @@ describe('mapLine', () => {
     expect(screen.getByTestId('map-line-fill').getAttribute('fill')).toBe('none')
   })
 
-  it('has no path without map context', () => {
-    render(
+  it('throws without map context', () => {
+    expect(() => render(
       <svg>
         <MapLine
           data-testid="map-line-fallback"
           coordinates={LINE_COORDINATES}
         />
       </svg>,
-    )
-
-    expect(screen.getByTestId('map-line-fallback').getAttribute('d')).toBeNull()
+    )).toThrowError('useMapContext must be used inside Map')
   })
 
-  it('renders cartesian paths without map context', () => {
+  it('renders cartesian paths inside map context', () => {
     render(
-      <svg>
+      <MapBase data={sampleGeoJson}>
         <MapLine
           data-testid="map-line-cartesian"
           coordinates={[
@@ -96,7 +95,7 @@ describe('mapLine', () => {
           ]}
           cartesian
         />
-      </svg>,
+      </MapBase>,
     )
 
     expect(screen.getByTestId('map-line-cartesian').getAttribute('d')).toBe('M0,0L40,0')
@@ -215,7 +214,7 @@ describe('mapLine', () => {
 
   it('applies midpoint shaping for curved connector paths', () => {
     const { rerender } = render(
-      <svg>
+      <MapBase data={sampleGeoJson}>
         <MapLine
           data-testid="map-line-midpoint"
           coordinates={[
@@ -224,13 +223,13 @@ describe('mapLine', () => {
           ]}
           cartesian
         />
-      </svg>,
+      </MapBase>,
     )
 
     const basePath = screen.getByTestId('map-line-midpoint').getAttribute('d')
 
     rerender(
-      <svg>
+      <MapBase data={sampleGeoJson}>
         <MapLine
           data-testid="map-line-midpoint"
           coordinates={[
@@ -240,9 +239,33 @@ describe('mapLine', () => {
           cartesian
           midpoint={[0, -40]}
         />
-      </svg>,
+      </MapBase>,
     )
 
     expect(screen.getByTestId('map-line-midpoint').getAttribute('d')).not.toBe(basePath)
+  })
+
+  it('forwards focus and blur callbacks', () => {
+    const onFocus = vi.fn()
+    const onBlur = vi.fn()
+
+    render(
+      <MapBase data={sampleGeoJson}>
+        <MapLine
+          data-testid="map-line-focus"
+          coordinates={LINE_COORDINATES}
+          tabIndex={0}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
+      </MapBase>,
+    )
+
+    const line = screen.getByTestId('map-line-focus')
+    fireEvent.focus(line)
+    fireEvent.blur(line)
+
+    expect(onFocus).toHaveBeenCalledTimes(1)
+    expect(onBlur).toHaveBeenCalledTimes(1)
   })
 })

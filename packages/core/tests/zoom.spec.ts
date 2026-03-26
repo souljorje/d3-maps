@@ -1,15 +1,16 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import type { Extent, ZoomBehaviorOptions, ZoomTransform } from '../src'
+import type { ZoomBehaviorOptions, ZoomTransform } from '../src'
 
 import { zoomIdentity } from 'd3-zoom'
 
 import {
   applyZoomGroupTransform,
   createZoomBehavior,
-
   getInverseZoomScale,
+  getObjectZoomView,
   getZoomScale,
+  getZoomViewportCenter,
   ZOOM_DEFAULTS,
 } from '../src'
 import { makeTestMapContext } from './fixtures'
@@ -17,12 +18,13 @@ import { makeTestMapContext } from './fixtures'
 const createBehavior = (options?: ZoomBehaviorOptions) => createZoomBehavior(undefined, options)
 
 type ZoomView = [number, number, number]
+type Extent = [[number, number], [number, number]]
 
 describe('zoom helpers', () => {
   it('creates zoom transform from center and scale', () => {
-    const transform = zoomIdentity.translate(12, 34).scale(2)
-    expect(transform.x).toBe(12)
-    expect(transform.y).toBe(34)
+    const transform = zoomIdentity.translate(100, 50).scale(2)
+    expect(transform.x).toBe(100)
+    expect(transform.y).toBe(50)
     expect(transform.k).toBe(2)
   })
 
@@ -54,11 +56,50 @@ describe('zoom helpers', () => {
     expect(behavior.translateExtent()).toEqual([[0, 0], [400, 300]])
   })
 
+  it('gets zoom view for an object from its projected bounds', () => {
+    const context = makeTestMapContext()
+    const feature = context.features[0]
+    const [[x0, y0], [x1, y1]] = context.path.bounds(feature)
+    const boundsWidth = x1 - x0
+    const boundsHeight = y1 - y0
+
+    const view = getObjectZoomView(context, feature, {
+      minZoom: 1,
+      maxZoom: 8,
+      padding: 0.1,
+    })
+
+    expect(view).toEqual({
+      center: [
+        (x0 + x1) / 2,
+        (y0 + y1) / 2,
+      ],
+      zoom: Math.min(
+        8,
+        Math.max(
+          1,
+          0.9 / Math.max(boundsWidth / context.width, boundsHeight / context.height),
+        ),
+      ),
+    })
+  })
+
   it('reads zoom scale from different inputs', () => {
     const transform = zoomIdentity.scale(3)
     expect(getZoomScale(transform)).toBe(3)
     expect(getZoomScale({ transform })).toBe(3)
     expect(getZoomScale(2)).toBe(2)
+  })
+
+  it('gets the viewport center point from a zoom transform', () => {
+    const center = getZoomViewportCenter({
+      width: 400,
+      height: 300,
+    }, {
+      invert: ([x, y]) => [x - 10, y + 5],
+    } as ZoomTransform)
+
+    expect(center).toEqual([190, 155])
   })
 
   it('applies full zoom config', () => {

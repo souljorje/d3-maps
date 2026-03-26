@@ -123,7 +123,7 @@ Public annotation props shared across adapters
 | <a id="property-length-1"></a> `length?` | `number` | - |
 | <a id="property-margin-1"></a> `margin?` | `number` | - |
 | <a id="property-midpoint"></a> `midpoint?` | [`MapLineMidpoint`](line.md#maplinemidpoint) | - |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"` | `"focus"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases
 

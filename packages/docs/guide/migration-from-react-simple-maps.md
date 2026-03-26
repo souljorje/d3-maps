@@ -84,7 +84,6 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 ```tsx
 <MapBase data={data}>
   <MapZoom
-    center={[0, 0]}
     zoom={1}
     minZoom={1}
     maxZoom={8}

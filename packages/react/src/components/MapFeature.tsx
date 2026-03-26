@@ -19,29 +19,22 @@ export interface MapFeatureProps
 export function MapFeature({
   data,
   styles,
-  onMouseEnter,
-  onMouseLeave,
-  onMouseDown,
-  onMouseUp,
-  ...pathProps
+  ...props
 }: MapFeatureProps): ReactElement | null {
   const context = useMapContext()
 
   const path = useMemo(() => {
-    return context?.path(data) ?? undefined
+    return context.path(data) ?? undefined
   }, [context, data])
 
   const { style, ...events } = useMapObject<SVGPathElement>({
     styles,
-    onMouseEnter,
-    onMouseLeave,
-    onMouseDown,
-    onMouseUp,
+    ...props,
   })
 
   return (
     <path
-      {...pathProps}
+      {...props}
       d={path}
       style={style}
       name="feature"

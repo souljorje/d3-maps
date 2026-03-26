@@ -161,14 +161,14 @@ Adapters provide this context to child layers (features, markers, custom SVG).
 
 #### Properties
 
-| Property | Type |
-| ------ | ------ |
-| <a id="property-features"></a> `features` | [`MapFeature`](feature.md#mapfeature)\[] |
-| <a id="property-height"></a> `height` | `number` |
-| <a id="property-path"></a> `path` | `GeoPath` |
-| <a id="property-projection"></a> `projection` | `GeoProjection` |
-| <a id="property-rendermesh"></a> `renderMesh` | () => `void` |
-| <a id="property-width"></a> `width` | `number` |
+| Property | Type | Description |
+| ------ | ------ | ------ |
+| <a id="property-features"></a> `features` | [`MapFeature`](feature.md#mapfeature)\[] | Normalized feature list after optional transformation. |
+| <a id="property-height"></a> `height` | `number` | Resolved SVG height used by the map. |
+| <a id="property-path"></a> `path` | `GeoPath` | Shared path generator bound to the map projection. |
+| <a id="property-projection"></a> `projection` | `GeoProjection` | Configured projection instance shared by map layers. |
+| <a id="property-rendermesh"></a> `renderMesh` | () => `string` | `null` | Renders a TopoJSON mesh path when one is available. |
+| <a id="property-width"></a> `width` | `number` | Resolved SVG width used by the map. |
 
 ***
 
@@ -195,8 +195,8 @@ In adapters, this is usually passed as component props.
 ### ProjectionConfig
 
 Extra projection method calls to apply before rendering.
-
 Use projection method names as keys and method arguments as values.
+
 Example: `{ center: [[0, 20]], rotate: [[0, 0, 0]], scale: 160 }`
 
 #### See

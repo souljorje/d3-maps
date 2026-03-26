@@ -25,16 +25,11 @@ export function MapGraticule({
   background,
   border,
   styles,
-  onMouseEnter,
-  onMouseLeave,
-  onMouseDown,
-  onMouseUp,
-  ...pathProps
+  ...props
 }: MapGraticuleProps): ReactElement | null {
   const context = useMapContext()
 
   const graticulePath = useMemo(() => {
-    if (!context) return undefined
     return renderGraticule(context, config) ?? undefined
   }, [context, config])
 
@@ -45,16 +40,13 @@ export function MapGraticule({
   const shouldRenderOutline = showBackground || showBorder
 
   const outlinePath = useMemo(() => {
-    if (!context || !shouldRenderOutline) return undefined
+    if (!shouldRenderOutline) return undefined
     return renderOutline(context) ?? undefined
   }, [context, shouldRenderOutline])
 
   const { style, ...events } = useMapObject<SVGPathElement>({
     styles,
-    onMouseEnter,
-    onMouseLeave,
-    onMouseDown,
-    onMouseUp,
+    ...props,
   })
 
   return (
@@ -70,7 +62,7 @@ export function MapGraticule({
           )
         : null}
       <path
-        {...pathProps}
+        {...props}
         d={graticulePath ?? undefined}
         style={style}
         fill="none"
