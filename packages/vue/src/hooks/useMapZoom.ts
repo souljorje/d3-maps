@@ -69,6 +69,8 @@ export function useCreateMapZoom(
   eventCallbacks: MapZoomEventCallbacks,
 ): CreateMapZoomResult {
   const context = useMapContext()
+  const centerX = computed(() => props.center?.[0])
+  const centerY = computed(() => props.center?.[1])
 
   const zoomBehavior = computed(() => {
     return createZoomBehavior(context.value, {
@@ -111,16 +113,15 @@ export function useCreateMapZoom(
       setupZoom({
         element: container.value,
         behavior,
-        center: props.center,
-        zoom: props.zoom,
-        transition: props.transition,
       })
     }, { immediate: true })
 
     stopViewWatch = watch([
-      () => props.center,
+      centerX,
+      centerY,
       () => props.zoom,
       () => props.transition,
+      zoomBehavior,
     ], () => {
       if (!container.value) return
       applyZoom({
@@ -130,7 +131,7 @@ export function useCreateMapZoom(
         zoom: props.zoom,
         transition: props.transition,
       })
-    })
+    }, { immediate: true })
   })
 
   onUnmounted(() => {

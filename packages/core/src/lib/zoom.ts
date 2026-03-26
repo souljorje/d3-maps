@@ -107,11 +107,10 @@ export interface ApplyZoomOptions {
 }
 
 /**
- * Options for attaching a zoom behavior and applying the initial zoom state.
+ * Options for attaching a zoom behavior to an SVG element.
  */
-export interface SetupZoomOptions extends ApplyZoomOptions {
-  center?: [number, number]
-}
+export interface SetupZoomOptions
+  extends Pick<ApplyZoomOptions, 'behavior' | 'element'> {}
 
 /**
  * Transition settings for programmatic zoom updates.
@@ -190,12 +189,11 @@ export function applyZoomGroupTransform(
 }
 
 /**
- * Attaches a zoom behavior to the SVG element and applies the current zoom view.
+ * Attaches a zoom behavior to the SVG element.
  */
 export function setupZoom(options: SetupZoomOptions): void {
   withZoomSelection(options.element, (selection) => {
     selection.call(options.behavior)
-    applyZoomWithTarget(selection, options)
   })
 }
 

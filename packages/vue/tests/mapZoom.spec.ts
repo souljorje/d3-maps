@@ -41,12 +41,12 @@ vi.mock('@d3-maps/core', async () => {
     ...actual,
     setupZoom: (...args: Parameters<typeof actual.setupZoom>) => {
       setupZoomSpy(...args)
-      zoomBehaviorOptions?.onZoomStart?.(createZoomEvent(args[0].center, args[0].zoom))
-      zoomBehaviorOptions?.onZoom?.(createZoomEvent(args[0].center, args[0].zoom))
-      zoomBehaviorOptions?.onZoomEnd?.(createZoomEvent(args[0].center, args[0].zoom))
     },
     applyZoom: (...args: Parameters<typeof actual.applyZoom>) => {
       applyZoomSpy(...args)
+      zoomBehaviorOptions?.onZoomStart?.(createZoomEvent(args[0].center, args[0].zoom))
+      zoomBehaviorOptions?.onZoom?.(createZoomEvent(args[0].center, args[0].zoom))
+      zoomBehaviorOptions?.onZoomEnd?.(createZoomEvent(args[0].center, args[0].zoom))
     },
     createZoomBehavior: (
       _context: Parameters<typeof actual.createZoomBehavior>[0],
@@ -120,12 +120,17 @@ describe('mapZoom', () => {
     expect(setupZoomSpy).toHaveBeenCalled()
     expect(setupZoomSpy).toHaveBeenCalledWith(
       expect.objectContaining({
+        behavior: expect.any(Object),
+        element: expect.any(SVGElement),
+      }),
+    )
+    expect(applyZoomSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
         center: [11, 12],
         transition,
         zoom: 2,
       }),
     )
-    expect(applyZoomSpy).not.toHaveBeenCalled()
     expect(onZoomStart).toHaveBeenCalled()
     expect(onZoom).toHaveBeenCalled()
     expect(onZoomEnd).toHaveBeenCalled()
@@ -139,7 +144,7 @@ describe('mapZoom', () => {
       zoom: 3,
     })
 
-    expect(setupZoomSpy).toHaveBeenLastCalledWith(
+    expect(applyZoomSpy).toHaveBeenLastCalledWith(
       expect.objectContaining({
         center: [99, 100],
         transition,

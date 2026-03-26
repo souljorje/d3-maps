@@ -1,8 +1,8 @@
 'use client'
 
 import type {
-  MapObjectProps as CoreMapObjectProps,
   MapObjectInteractionController,
+  MapObjectProps,
   MapObjectState,
 } from '@d3-maps/core'
 import type {
@@ -26,26 +26,22 @@ import {
 import { useLatest } from './useLatest'
 import { useMapZoom } from './useMapZoom'
 
-export type MapObjectStyle = CSSProperties
-
-export interface UseMapObjectOptions<TElement extends Element>
-  extends CoreMapObjectProps<MapObjectStyle> {
-  onMouseEnter?: MouseEventHandler<TElement>
-  onMouseLeave?: MouseEventHandler<TElement>
-  onMouseDown?: MouseEventHandler<TElement>
-  onMouseUp?: MouseEventHandler<TElement>
-  onFocus?: FocusEventHandler<TElement>
-  onBlur?: FocusEventHandler<TElement>
+interface MapObjectEventHandlers<T extends Element> {
+  onMouseEnter: MouseEventHandler<T>
+  onMouseLeave: MouseEventHandler<T>
+  onMouseDown: MouseEventHandler<T>
+  onMouseUp: MouseEventHandler<T>
+  onFocus: FocusEventHandler<T>
+  onBlur: FocusEventHandler<T>
 }
 
-export interface UseMapObjectResult<TElement extends Element> {
-  style: MapObjectStyle | undefined
-  onMouseEnter: MouseEventHandler<TElement>
-  onMouseLeave: MouseEventHandler<TElement>
-  onMouseDown: MouseEventHandler<TElement>
-  onMouseUp: MouseEventHandler<TElement>
-  onFocus: FocusEventHandler<TElement>
-  onBlur: FocusEventHandler<TElement>
+export interface UseMapObjectOptions<TElement extends Element>
+  extends MapObjectProps<CSSProperties>,
+  Partial<MapObjectEventHandlers<TElement>> {}
+
+export interface UseMapObjectResult<TElement extends Element>
+  extends MapObjectEventHandlers<TElement> {
+  style?: CSSProperties
 }
 
 export function useMapObject<TElement extends Element>(
@@ -55,6 +51,7 @@ export function useMapObject<TElement extends Element>(
   const stateRef = useRef(state)
   const insideZoom = Boolean(useMapZoom())
 
+  // Keep stable DOM handlers while still calling the latest user callbacks
   const onMouseEnterRef = useLatest(options.onMouseEnter)
   const onMouseLeaveRef = useLatest(options.onMouseLeave)
   const onMouseDownRef = useLatest(options.onMouseDown)

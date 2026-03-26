@@ -11,7 +11,7 @@
 }
 
 .d3-map {
-  [name='zoom'] {
+  &:has([name='zoom']) {
     cursor: grab;
     &:active {
       cursor: grabbing;

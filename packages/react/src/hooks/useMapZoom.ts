@@ -1,7 +1,6 @@
 'use client'
 
 import type {
-  DefaultZoomBehavior,
   ObjectZoomView,
   ZoomEvent,
   ZoomObject,
@@ -22,7 +21,6 @@ import {
   useEffect,
   useEffectEvent,
   useMemo,
-  useRef,
 } from 'react'
 
 import {
@@ -103,7 +101,6 @@ export function useCreateMapZoom(
   const onZoomEndEvent = useEffectEvent((event: ZoomEvent) => {
     onZoomEnd?.(event)
   })
-  const lastZoomBehaviorRef = useRef<DefaultZoomBehavior | undefined>(undefined)
 
   const zoomBehavior = useMemo(() => {
     return createZoomBehavior({
@@ -126,18 +123,13 @@ export function useCreateMapZoom(
   ])
 
   useEffect(() => {
-    if (lastZoomBehaviorRef.current !== zoomBehavior) {
-      lastZoomBehaviorRef.current = zoomBehavior
-      setupZoom({
-        element: containerRef.current,
-        behavior: zoomBehavior,
-        center: resolvedCenter,
-        zoom,
-        transition,
-      })
-      return
-    }
+    setupZoom({
+      element: containerRef.current,
+      behavior: zoomBehavior,
+    })
+  }, [zoomBehavior])
 
+  useEffect(() => {
     applyZoom({
       element: containerRef.current,
       behavior: zoomBehavior,
