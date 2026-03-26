@@ -18,7 +18,7 @@
 * [Type Aliases](#type-aliases)
   * [DataTransformer()](#datatransformer)
   * [MapData](#mapdata)
-  * [MapMesh](#mapmesh)
+  * [MapMeshData](#mapmeshdata)
 
 ## Functions
 
@@ -63,7 +63,7 @@ Type guard for TopoJSON topology inputs.
 ### makeFeatures()
 
 ```ts
-function makeFeatures(geoData: MapData, dataTransformer?: DataTransformer): MapFeature[];
+function makeFeatures(geoData: MapData, dataTransformer?: DataTransformer): MapFeatureData[];
 ```
 
 Normalizes input map data to GeoJSON features.
@@ -80,7 +80,7 @@ Normalizes input map data to GeoJSON features.
 
 #### Returns
 
-[`MapFeature`](feature.md#mapfeature)\[]
+[`MapFeatureData`](feature.md#mapfeaturedata)\[]
 
 ***
 
@@ -163,7 +163,7 @@ Adapters provide this context to child layers (features, markers, custom SVG).
 
 | Property | Type |
 | ------ | ------ |
-| <a id="property-features"></a> `features` | [`MapFeature`](feature.md#mapfeature)\[] |
+| <a id="property-features"></a> `features` | [`MapFeatureData`](feature.md#mapfeaturedata)\[] |
 | <a id="property-height"></a> `height` | `number` |
 | <a id="property-path"></a> `path` | `GeoPath` |
 | <a id="property-projection"></a> `projection` | `GeoProjection` |
@@ -233,18 +233,18 @@ https://d3js.org/d3-geo/projection
 ### DataTransformer()
 
 ```ts
-type DataTransformer = (features: MapFeature[]) => MapFeature[];
+type DataTransformer = (features: MapFeatureData[]) => MapFeatureData[];
 ```
 
 #### Parameters
 
 | Parameter | Type |
 | ------ | ------ |
-| `features` | [`MapFeature`](feature.md#mapfeature)\[] |
+| `features` | [`MapFeatureData`](feature.md#mapfeaturedata)\[] |
 
 #### Returns
 
-[`MapFeature`](feature.md#mapfeature)\[]
+[`MapFeatureData`](feature.md#mapfeaturedata)\[]
 
 ***
 
@@ -256,8 +256,8 @@ type MapData = ExtendedFeatureCollection | Topology;
 
 ***
 
-### MapMesh
+### MapMeshData
 
 ```ts
-type MapMesh = ReturnType<typeof mesh>;
+type MapMeshData = ReturnType<typeof mesh>;
 ```

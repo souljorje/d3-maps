@@ -12,10 +12,9 @@ Used internally by [MapFeature](/components/map-feature), [MapLine](/components/
 
 ```vue
 <script setup lang="ts">
-import type { MapObject } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
-import { useMapObject } from '@d3-maps/vue'
+import { useMapObject, type MapObjectProps } from '@d3-maps/vue'
 
 interface Props {
   d: string
@@ -23,7 +22,7 @@ interface Props {
 
 defineProps<Props>()
 
-const styles: MapObject<StyleValue>['styles'] = {
+const styles: MapObjectProps<StyleValue>['styles'] = {
   default: {
     opacity: 0.9,
   },
@@ -50,13 +49,12 @@ const { style, ...events } = useMapObject(styles)
 == React
 
 ```tsx
-import type { MapObject } from '@d3-maps/core'
 import type { CSSProperties } from 'react'
 
-import { useMapObject } from '@d3-maps/react'
+import { useMapObject, type MapObjectProps } from '@d3-maps/react'
 
 export function CustomFeaturePath({ d }: { d: string }) {
-  const styles: MapObject<CSSProperties>['styles'] = {
+  const styles: MapObjectProps<CSSProperties>['styles'] = {
     default: {
       opacity: 0.9,
     },

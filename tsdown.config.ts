@@ -18,21 +18,27 @@ const IIFE_CONFIG: Partial<UserConfig> = {
 
 export function createTsDownConfig({
   dts,
+  entry,
   globals,
+  iifeEntry,
   plugins,
 }: {
   dts?: UserConfig['dts']
+  entry?: UserConfig['entry']
   globals?: Record<string, string>
+  iifeEntry?: UserConfig['entry']
   plugins?: UserConfig['plugins']
 } = {}) {
   return defineConfig([
     {
       ...BASE_CONFIG,
+      entry: entry ?? BASE_CONFIG.entry,
       dts: dts ?? true,
       plugins,
     },
     {
       ...IIFE_CONFIG,
+      entry: iifeEntry ?? entry ?? IIFE_CONFIG.entry,
       plugins,
       outputOptions: {
         extend: true,

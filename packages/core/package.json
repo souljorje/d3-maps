@@ -20,6 +20,10 @@
       "import": "./dist/index.js",
       "browser": "./dist/index.iife.js"
     },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.js"
+    },
     "./*.css": {
       "import": "./dist/*.css",
       "browser": "./dist/*.css"

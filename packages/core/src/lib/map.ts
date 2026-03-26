@@ -5,7 +5,7 @@ import type {
 } from 'd3-geo'
 import type { GeometryObject, Topology } from 'topojson-specification'
 
-import type { MapFeature } from './feature'
+import type { MapFeatureData } from './feature'
 import type {
   MethodsToModifiers,
 } from './utils'
@@ -21,10 +21,10 @@ import {
 
 import { applyModifiers } from './utils'
 
-export type MapMesh = ReturnType<typeof mesh>
+export type MapMeshData = ReturnType<typeof mesh>
 
 export type MapData = ExtendedFeatureCollection | Topology
-export type DataTransformer = (features: MapFeature[]) => MapFeature[]
+export type DataTransformer = (features: MapFeatureData[]) => MapFeatureData[]
 
 /**
  * Extra projection method calls to apply before rendering.
@@ -77,7 +77,7 @@ export interface MapContext {
   width: number
   height: number
   projection: GeoProjection
-  features: MapFeature[]
+  features: MapFeatureData[]
   path: GeoPath
   renderMesh: () => ReturnType<GeoPath>
 }
@@ -121,7 +121,7 @@ export function makeProjection({
 export function makeFeatures(
   geoData: MapData,
   dataTransformer?: DataTransformer,
-): MapFeature[] {
+): MapFeatureData[] {
   let geoJson: ExtendedFeatureCollection
   if (isTopology(geoData)) {
     const topoObject = getTopoObject(geoData)
@@ -139,11 +139,11 @@ export function makeFeatures(
 /**
  * Returns a TopoJSON mesh when topology data is provided.
  */
-export function makeMesh(geoData: MapData): MapMesh | undefined {
+export function makeMesh(geoData: MapData): MapMeshData | undefined {
   if (!isTopology(geoData)) return undefined
 
   const topoObject = getTopoObject(geoData)
-  return mesh(geoData, topoObject) as MapMesh
+  return mesh(geoData, topoObject) as MapMeshData
 }
 
 /**

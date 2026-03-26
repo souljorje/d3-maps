@@ -10,7 +10,7 @@
   * [MapFeatureProps](#mapfeatureprops)
   * [MapFeaturesProps](#mapfeaturesprops)
 * [Type Aliases](#type-aliases)
-  * [MapFeature](#mapfeature)
+  * [MapFeatureData](#mapfeaturedata)
 
 ## Functions
 
@@ -18,7 +18,7 @@
 
 ```ts
 function getFeatureKey(
-   feature: MapFeature, 
+   feature: MapFeatureData, 
    idKey?: string, 
    index: number): string | number;
 ```
@@ -35,7 +35,7 @@ Checks:
 
 | Parameter | Type | Default value |
 | ------ | ------ | ------ |
-| `feature` | [`MapFeature`](#mapfeature) | `undefined` |
+| `feature` | [`MapFeatureData`](#mapfeaturedata) | `undefined` |
 | `idKey` | `string` | `'id'` |
 | `index` | `number` | `undefined` |
 
@@ -63,7 +63,7 @@ Shared props contract for a single rendered feature.
 
 | Property | Type | Inherited from |
 | ------ | ------ | ------ |
-| <a id="property-data"></a> `data` | [`MapFeature`](#mapfeature) | - |
+| <a id="property-data"></a> `data` | [`MapFeatureData`](#mapfeaturedata) | - |
 | <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
 
 ***
@@ -91,10 +91,10 @@ Shared props contract for feature collections rendered from the current map cont
 
 ## Type Aliases
 
-### MapFeature
+### MapFeatureData
 
 ```ts
-type MapFeature = ExtendedFeature & Record<string, unknown> | ExtendedFeature;
+type MapFeatureData = ExtendedFeature & Record<string, unknown> | ExtendedFeature;
 ```
 
 A GeoJSON Feature used by d3-maps.

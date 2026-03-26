@@ -13,7 +13,7 @@
 | Public API | packages/core/src/index.ts | Export all supported public symbols. |
 | Map context/projection model | packages/core/src/lib/map.ts | Map data/context contracts and projection setup. |
 | Map object interaction model | packages/core/src/lib/mapObject.ts | Shared map object types, state, events, style resolution. |
-| Feature model | packages/core/src/lib/feature.ts | `MapFeature` and `MapFeatureProps` contracts plus feature key resolver. |
+| Feature model | packages/core/src/lib/feature.ts | `MapFeatureData` and `MapFeatureProps` contracts plus feature key resolver. |
 | Marker model | packages/core/src/lib/marker.ts | Marker coordinate/props contracts plus marker transform resolver. |
 | Zoom model and behavior | packages/core/src/lib/zoom.ts | Zoom types/events/contracts and behavior setup helpers. |
 | Shared utilities | packages/core/src/lib/utils.ts | Reusable assertions/null checks/helpers. |

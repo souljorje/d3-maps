@@ -9,6 +9,11 @@ const globals = {
 }
 
 export default createTsDownConfig({
+  entry: {
+    index: 'src/index.ts',
+    types: 'src/types.ts',
+  },
+  iifeEntry: 'src/index.ts',
   globals,
   dts: {
     resolve: true,

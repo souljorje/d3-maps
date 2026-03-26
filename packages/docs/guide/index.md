@@ -90,7 +90,7 @@ https://unpkg.com/@d3-maps/react/index.iife.js
 1. Get data
 
 ```ts
-import type { MapData } from '@d3-maps/core'
+import type { MapData } from '@d3-maps/vue'
 const data: MapData = await fetch('/some-topojson.json').then((res) => res.json())
 ```
 
@@ -102,9 +102,7 @@ const data: MapData = await fetch('/some-topojson.json').then((res) => res.json(
 
 ```vue [vue]
 <script setup lang="ts">
-import type { MapData } from '@d3-maps/core'
-
-import { MapBase, MapFeatures } from '@d3-maps/vue'
+import { MapBase, MapFeatures, type MapData } from '@d3-maps/vue'
 defineProps<{
   data: MapData
 }>()
@@ -120,9 +118,7 @@ defineProps<{
 == React
 
 ```tsx [react]
-import type { MapData } from '@d3-maps/core'
-
-import { MapBase, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
 
 export function MapView({ data }: { data: MapData }) {
   return (
