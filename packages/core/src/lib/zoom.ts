@@ -24,8 +24,6 @@ import {
   isNumber,
 } from './utils'
 
-import 'd3-transition'
-
 export type {
   D3ZoomEvent,
   ZoomBehavior,
@@ -175,30 +173,9 @@ export function createZoomBehavior(
  * Applies the current controlled zoom state to the target zoom behavior.
  */
 export function applyZoom(options: ApplyZoomOptions): void {
-  const target = getZoomTarget(options.element, options.transition)
-
-  if (!target) return
-
-  if (!options.center) {
-    callWithTarget(target, options.behavior.scaleTo, options.zoom ?? ZOOM_DEFAULTS.zoom)
-    return
-  }
-
-  const zoom = options.zoom ?? ZOOM_DEFAULTS.zoom
-  const extent = getBehaviorExtent(options.element, options.behavior)
-  const transform = getConstrainedZoomTransform(
-    options.behavior,
-    zoomIdentity
-      .translate(
-        (extent[0][0] + extent[1][0]) / 2,
-        (extent[0][1] + extent[1][1]) / 2,
-      )
-      .scale(zoom)
-      .translate(-options.center[0], -options.center[1]),
-    extent,
-  )
-
-  callWithTarget(target, options.behavior.transform, transform)
+  withZoomSelection(options.element, (selection) => {
+    applyZoomWithTarget(selection, options)
+  })
 }
 
 /**
@@ -216,8 +193,10 @@ export function applyZoomGroupTransform(
  * Attaches a zoom behavior to the SVG element and applies the current zoom view.
  */
 export function setupZoom(options: SetupZoomOptions): void {
-  callWithSvg(options.element, options.behavior)
-  applyZoom(options)
+  withZoomSelection(options.element, (selection) => {
+    selection.call(options.behavior)
+    applyZoomWithTarget(selection, options)
+  })
 }
 
 /**
@@ -298,65 +277,67 @@ function isZoomTransform(value: unknown): value is ZoomTransform {
   )
 }
 
-function callWithSvg<Args extends unknown[]>(
-  element: ZoomTargetElement | null | undefined,
-  fn: (selection: Selection<SVGSVGElement, unknown, null, undefined>, ...args: Args) => void,
-  ...args: Args
+function applyZoomWithTarget(
+  selection: Selection<SVGSVGElement, unknown, null, undefined>,
+  options: ApplyZoomOptions,
 ): void {
-  const svgElement = getSvgElement(element)
-  if (!svgElement) return
-  d3Select(svgElement).call(fn, ...args)
+  const target = getTransitionTarget(selection, options.transition)
+
+  if (!options.center) {
+    target.call(options.behavior.scaleTo, options.zoom ?? ZOOM_DEFAULTS.zoom)
+    return
+  }
+
+  const zoom = options.zoom ?? ZOOM_DEFAULTS.zoom
+  const extent = getBehaviorExtent(selection, options.behavior)
+  const transform = getConstrainedZoomTransform(
+    options.behavior,
+    zoomIdentity
+      .translate(
+        (extent[0][0] + extent[1][0]) / 2,
+        (extent[0][1] + extent[1][1]) / 2,
+      )
+      .scale(zoom)
+      .translate(-options.center[0], -options.center[1]),
+    extent,
+  )
+
+  target.call(options.behavior.transform, transform)
 }
 
-function callWithTarget<Args extends unknown[]>(
-  target: Selection<SVGSVGElement, unknown, null, undefined> | Transition<SVGSVGElement, unknown, null, undefined>,
-  fn: (
-    selection: Selection<SVGSVGElement, unknown, null, undefined> | Transition<SVGSVGElement, unknown, null, undefined>,
-    ...args: Args
-  ) => void,
-  ...args: Args
-): void {
-  target.call(fn, ...args)
-}
-
-function getZoomTarget(
-  element: ZoomTargetElement | null | undefined,
+function getTransitionTarget(
+  selection: Selection<SVGSVGElement, unknown, null, undefined>,
   transition?: false | ZoomTransition,
-): Selection<SVGSVGElement, unknown, null, undefined> | Transition<SVGSVGElement, unknown, null, undefined> | undefined {
-  const svgElement = getSvgElement(element)
-  if (!svgElement) return undefined
-
-  const selection = d3Select(svgElement)
-
+): Selection<SVGSVGElement, unknown, null, undefined> | Transition<SVGSVGElement, unknown, null, undefined> {
   if (!transition) return selection
 
-  let target = selection.transition()
-
-  if (isNumber(transition.duration)) {
-    target = target.duration(transition.duration)
-  }
-  if (isNumber(transition.delay)) {
-    target = target.delay(transition.delay)
-  }
-  if (transition.ease) {
-    target = target.ease(transition.ease)
-  }
-
+  const target = selection.transition()
+  if (isNumber(transition.duration)) target.duration(transition.duration)
+  if (isNumber(transition.delay)) target.delay(transition.delay)
+  if (transition.ease) target.ease(transition.ease)
   return target
 }
 
-function getBehaviorExtent(
+function withZoomSelection<T>(
   element: ZoomTargetElement | null | undefined,
+  run: (selection: Selection<SVGSVGElement, unknown, null, undefined>) => T,
+): T | undefined {
+  const svgElement = getSvgElement(element)
+  if (!svgElement) return undefined
+
+  return run(d3Select(svgElement))
+}
+
+function getBehaviorExtent(
+  selection: Selection<SVGSVGElement, unknown, null, undefined>,
   behavior: DefaultZoomBehavior,
 ): [[number, number], [number, number]] {
-  const svgElement = getSvgElement(element)
-  const fallback: [[number, number], [number, number]] = [[0, 0], [0, 0]]
-
-  if (!svgElement) return fallback
+  const svgElement = selection.node()
+  if (!svgElement) return [[0, 0], [0, 0]]
 
   const extent = behavior.extent()
 
-  return extent.call(svgElement, (svgElement as SVGSVGElement & { __data__?: unknown }).__data__)
+  return extent.call(svgElement, selection.datum())
 }
 
 function getConstrainedZoomTransform(

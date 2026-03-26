@@ -58,6 +58,22 @@ describe('mapLine', () => {
     expect(wrapper.find('[data-testid="map-line"]').attributes('d')).toMatch(/^M/)
   })
 
+  it('uses default fill value', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapLine, {
+          coordinates: LINE_COORDINATES,
+          'data-testid': 'map-line-fill',
+        }),
+      },
+    })
+
+    expect(wrapper.find('[data-testid="map-line-fill"]').attributes('fill')).toBe('none')
+  })
+
   it('recomputes path when map context changes', async () => {
     const wrapper = mount(MapBase, {
       props: {

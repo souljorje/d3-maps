@@ -2,17 +2,13 @@
   <path
     v-bind="pathAttrs"
     :d="path"
-    fill="none"
+    :fill="fill"
     :style="style"
   />
 </template>
 
 <script setup lang="ts">
-import type {
-  MapLineCoordinates,
-  MapLineCurve,
-  MapObjectProps,
-} from '@d3-maps/core'
+import type { MapLineProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
 import { getLinePath } from '@d3-maps/core'
@@ -25,19 +21,11 @@ import {
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
-interface Props extends MapObjectProps<StyleValue> {
-  coordinates: MapLineCoordinates
-  cartesian?: boolean
-  custom?: boolean
-  curve?: MapLineCurve
-  midpoint?: [number, number]
-}
-
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MapLineProps<StyleValue>>(), {
   cartesian: false,
   custom: false,
 })
@@ -48,7 +36,7 @@ const context = useMapContext()
 
 const path = computed<string | undefined>(() => {
   return getLinePath(
-    context?.value,
+    context.value,
     {
       coordinates: props.coordinates,
       custom: props.custom,
@@ -60,6 +48,7 @@ const path = computed<string | undefined>(() => {
 })
 
 const pathName = computed(() => (attrs.name as string | undefined) ?? 'line')
+const fill = computed(() => (attrs.fill as string | undefined) ?? 'none')
 const { style, ...events } = useMapObject(toRef(props, 'styles'))
 const pathAttrs = computed(() => ({
   ...attrs,
