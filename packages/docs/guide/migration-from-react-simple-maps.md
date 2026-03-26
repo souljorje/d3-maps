@@ -1,8 +1,7 @@
 # Migrate from react-simple-maps
 
-[@d3-maps/react](/components/) is fully compatible* with [react-simple-maps](https://www.react-simple-maps.io/)  
-But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/issues) or [pull request](https://github.com/souljorje/d3-maps/pulls)  
-<sub>\* Line and Annotation in development</sub>
+[@d3-maps/react](/components/) is fully compatible with [react-simple-maps](https://www.react-simple-maps.io/)  
+But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/issues) or pull request
 
 ## Migration checklist
 
@@ -11,18 +10,19 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 | Data | `Geographies.geography` -> `MapBase.data` |
 | Data transform | `Geographies.parseGeographies` -> `MapBase.dataTransformer` |
 | Style prop | `Geography.style` -> `MapFeature.styles` |
-| Style state | `style.pressed` -> `styles.active` |
+| Style states | `style.pressed` -> `styles.active` |
 | Zoom wrapper | `ZoomableGroup` -> `MapZoom` |
 | Marker | `Marker` -> `MapMarker` |
+| Line | `Line` -> `MapLine` |
+| Annotation | `Annotation` -> `MapAnnotation` |
 | Graticule | `Graticule` -> `MapGraticule` |
 | Sphere | `Sphere` -> `MapGraticule` (`background`/`border`) |
 
 ## 1. Migrate data
 
-`Geographies.geography` -> `MapBase.data`  
-`Geographies.parseGeographies` -> `MapBase.dataTransformer`  
-`MapBase.data` supports data objects, not URLs  
-Data fetching remains non-opinionated
+- `Geographies.geography` -> `MapBase.data`  
+  `MapBase.data` supports only data objects, not URLs, data fetching is non-opinionated
+- `Geographies.parseGeographies` -> `MapBase.dataTransformer`  
 
 ```tsx
 import type { MapData } from '@d3-maps/core'
@@ -53,8 +53,8 @@ export function WorldMap() {
 
 ## 2. Rename style prop
 
-`Geography.style` -> `MapFeature.styles`  
-`style.pressed` -> `styles.active`
+- `Geography.style` -> `MapFeature.styles`  
+- `style.pressed` -> `styles.active`
 
 This style model is supported by `MapFeature`, `MapFeatures`, `MapMarker`, `MapMesh`, and `MapGraticule`
 
@@ -97,13 +97,10 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 `Marker` -> [MapMarker](/components/map-marker).
 
 ```tsx
-<MapBase data={data}>
-  <MapFeatures />
-  <MapMarker coordinates={[-74.006, 40.7128]}>
-    <circle r={4} fill="#ff6f26" />
-    <text y={-8} textAnchor="middle" fontSize={12}>NYC</text>
-  </MapMarker>
-</MapBase>
+<MapMarker coordinates={[-74.006, 40.7128]}>
+  <circle r={4} fill="#ff6f26" />
+  <text y={-8} textAnchor="middle" fontSize={12}>NYC</text>
+</MapMarker>
 ```
 
 ## 5. Rename graticule component
@@ -111,10 +108,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 `Graticule` -> [MapGraticule](/components/map-graticule).
 
 ```tsx
-<MapBase data={data}>
-  <MapGraticule stroke="#94a3b8" />
-  <MapFeatures />
-</MapBase>
+<MapGraticule />
 ```
 
 ## 6. Migrate sphere component
@@ -122,9 +116,47 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 `Sphere` -> [MapGraticule](/components/map-graticule) with `background` and/or `border`.
 
 ```tsx
+<MapGraticule background="#eee" border="#333" />
+```
+
+## 7. Rename line component
+
+`Line` -> [MapLine](/components/map-line)
+
+`react-simple-maps` line props map directly to `MapLine.coordinates`
+
+```tsx
+<MapLine
+  coordinates={[
+    [-74.006, 40.7128],
+    [-118.2437, 34.0522],
+  ]}
+/>
+```
+
+## 8. Migrate annotation component
+
+`Annotation` -> [MapAnnotation](/components/map-annotation)
+
+```tsx
 <MapBase data={data}>
-  <MapGraticule background="#ffffff" border="#cbd5e1" />
   <MapFeatures />
+  <MapAnnotation
+    coordinates={[2.3522, 48.8566]}
+    length={36}
+    angle={-35}
+    margin={10}
+    stroke="#ff6f26"
+    strokeWidth={2}
+  >
+    <text
+      y={-6}
+      textAnchor="middle"
+      fontSize={12}
+    >
+      Paris
+    </text>
+  </MapAnnotation>
 </MapBase>
 ```
 
@@ -132,12 +164,12 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 
 | react-simple-maps | d3-maps |
 | --- | --- |
-| [`ComposableMap`](https://www.react-simple-maps.io/docs/composable-map/) | [MapBase](/components/map-base) |
-| [`Geographies`](https://www.react-simple-maps.io/docs/geographies/) | [MapFeatures](/components/map-features) |
-| [`Geography`](https://www.react-simple-maps.io/docs/geography/) | [MapFeature](/components/map-feature) |
-| [`Marker`](https://www.react-simple-maps.io/docs/marker/) | [MapMarker](/components/map-marker) |
-| [`ZoomableGroup`](https://www.react-simple-maps.io/docs/zoomable-group/) | [MapZoom](/components/map-zoom) |
-| [`Graticule`](https://www.react-simple-maps.io/docs/graticule/) | [MapGraticule](/components/map-graticule) |
-| [`Sphere`](https://www.react-simple-maps.io/docs/sphere/) | [MapGraticule](/components/map-graticule) (`background`/`border`) or a custom SVG layer |
-| [`Annotation`](https://www.react-simple-maps.io/docs/annotation/) | Custom layer using [useMapObject](/helpers/use-map-object) + [useMapContext](/helpers/use-map-context) |
-| [`Line`](https://www.react-simple-maps.io/docs/line/) | Custom layer using [useMapObject](/helpers/use-map-object) + [useMapContext](/helpers/use-map-context) |
+| [ComposableMap](https://www.react-simple-maps.io/docs/composable-map/) | [MapBase](/components/map-base) |
+| [Geographies](https://www.react-simple-maps.io/docs/geographies/) | [MapFeatures](/components/map-features) |
+| [Geography](https://www.react-simple-maps.io/docs/geography/) | [MapFeature](/components/map-feature) |
+| [Marker](https://www.react-simple-maps.io/docs/marker/) | [MapMarker](/components/map-marker) |
+| [Line](https://www.react-simple-maps.io/docs/line/) | [MapLine](/components/map-line) |
+| [ZoomableGroup](https://www.react-simple-maps.io/docs/zoomable-group/) | [MapZoom](/components/map-zoom) |
+| [Graticule](https://www.react-simple-maps.io/docs/graticule/) | [MapGraticule](/components/map-graticule) |
+| [Sphere](https://www.react-simple-maps.io/docs/sphere/) | [MapGraticule](/components/map-graticule) (`background`/`border`) or a custom SVG layer |
+| [Annotation](https://www.react-simple-maps.io/docs/annotation/) | [MapAnnotation](/components/map-annotation) |

@@ -37,6 +37,8 @@ export function getSvgElement(element: SVGSVGElement | SVGGElement | null | unde
   if (element instanceof SVGSVGElement) return element
   return element.closest('svg')
 }
+export function noop(): void {}
+export type Noop = typeof noop
 
 export type AnyFn = (...args: any) => any
 

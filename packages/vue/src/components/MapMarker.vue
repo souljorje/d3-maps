@@ -1,9 +1,10 @@
 <template>
   <g
+    v-if="transform"
     :transform="transform"
     :style="style"
+    :name="name"
     v-bind="events"
-    name="marker"
   >
     <slot />
   </g>
@@ -22,9 +23,11 @@ import {
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
 
-const props = withDefaults(defineProps<MapMarkerProps<StyleValue>>(), {
-  coordinates: () => [0, 0],
-})
+interface Props extends MapMarkerProps<StyleValue> {
+  name?: string
+}
+
+const props = withDefaults(defineProps<Props>(), { name: 'marker' })
 
 const context = useMapContext()
 

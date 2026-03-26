@@ -1,5 +1,12 @@
 # @d3-maps/core
 
+## 0.8.0
+
+### Minor Changes
+
+- [#25](https://github.com/souljorje/d3-maps/pull/25) [`9e94ed0`](https://github.com/souljorje/d3-maps/commit/9e94ed0ce8ce18fc11cc7bd45066c7516b5e0577) Thanks [@souljorje](https://github.com/souljorje)! - - Added `MapLine` for rendering geographic and cartesian line paths
+  - Added `MapAnnotation` for anchoring callout content to map coordinates with connector lines
+
 ## 0.7.0
 
 ### Minor Changes

@@ -31,7 +31,6 @@ describe('mapMarker', () => {
   it('throws without map context', () => {
     expect(() => mount(MapMarker, {
       props: {
-        'data-testid': 'fallback-map-marker',
         coordinates: [10, 10],
       },
     })).toThrowError('useMapContext must be used inside Map')
@@ -56,5 +55,22 @@ describe('mapMarker', () => {
 
     const nextTransform = wrapper.find('g[transform]').attributes('transform')
     expect(nextTransform).not.toBe(initialTransform)
+  })
+
+  it('allows overriding the outer group name', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapMarker, {
+          coordinates: [10, 10],
+          name: 'annotation',
+          'data-testid': 'map-marker',
+        }),
+      },
+    })
+
+    expect(wrapper.get('[data-testid="map-marker"]').attributes('name')).toBe('annotation')
   })
 })

@@ -6,8 +6,8 @@ Positions anything on the map based on coordinates
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `coordinates?` | `[number, number]` | — | `[longitude, latitude]` |
-| `styles?` | [MapObjectStyles](/api/core/mapObject#mapobjectstyles) | — | See [styling guide](/guide/core-concepts/#styling) |
+| `coordinates?` | `[number, number]` | — | Marker coordinates in `[longitude, latitude]` format. |
+| `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 ## Usage
 
@@ -72,4 +72,4 @@ Positions anything on the map based on coordinates
 ## Examples
 
 - [Markers](/examples/markers)
-- [Bubble Map](/examples/bubble)
+- [Bubble Map](/examples/bubble-map)

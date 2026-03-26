@@ -79,6 +79,8 @@ const docsSidebar = [
       { text: 'MapBase', link: '/components/map-base' },
       { text: 'MapFeatures', link: '/components/map-features' },
       { text: 'MapFeature', link: '/components/map-feature' },
+      { text: 'MapAnnotation', link: '/components/map-annotation' },
+      { text: 'MapLine', link: '/components/map-line' },
       { text: 'MapMarker', link: '/components/map-marker' },
       { text: 'MapMesh', link: '/components/map-mesh' },
       { text: 'MapGraticule', link: '/components/map-graticule' },
@@ -122,7 +124,7 @@ export default defineConfig({
   description: 'Reactive SVG maps powered by D3',
   head: [
     ['meta', { name: 'theme-color', content: '#ff6f26' }],
-    ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
+    ['meta', { name: 'mobile-web-app-capable', content: 'yes' }],
     ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
     ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicons/apple-touch-icon.png' }],
     ['link', { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicons/favicon-96x96.png' }],

@@ -16,10 +16,7 @@
 ### getMarkerTransform()
 
 ```ts
-function getMarkerTransform(
-   context: MapContext | undefined, 
-   coordinates: MapMarkerCoordinates, 
-   fallback?: string): string;
+function getMarkerTransform(context: MapContext | undefined, coordinates: MapMarkerCoordinates): string | undefined;
 ```
 
 Computes an SVG transform (`translate(x, y)`) for the given coordinates using the active projection.
@@ -28,15 +25,14 @@ Coordinates must be `[longitude, latitude]`.
 
 #### Parameters
 
-| Parameter | Type | Default value |
-| ------ | ------ | ------ |
-| `context` | [`MapContext`](map.md#mapcontext) | `undefined` | `undefined` |
-| `coordinates` | [`MapMarkerCoordinates`](#mapmarkercoordinates) | `undefined` |
-| `fallback` | `string` | `'translate(0, 0)'` |
+| Parameter | Type |
+| ------ | ------ |
+| `context` | [`MapContext`](map.md#mapcontext) | `undefined` |
+| `coordinates` | [`MapMarkerCoordinates`](#mapmarkercoordinates) |
 
 #### Returns
 
-`string`
+`string` | `undefined`
 
 ## Interfaces
 
@@ -58,7 +54,7 @@ Shared props contract for marker layers.
 
 | Property | Type | Inherited from |
 | ------ | ------ | ------ |
-| <a id="property-coordinates"></a> `coordinates?` | [`MapMarkerCoordinates`](#mapmarkercoordinates) | - |
+| <a id="property-coordinates"></a> `coordinates` | [`MapMarkerCoordinates`](#mapmarkercoordinates) | - |
 | <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"` | `"focus"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
 
 ## Type Aliases

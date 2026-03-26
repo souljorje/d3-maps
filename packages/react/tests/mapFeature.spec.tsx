@@ -72,7 +72,6 @@ describe('mapFeature', () => {
         zoom: 1,
         minZoom: 1,
         maxZoom: 8,
-        zoomToObject: vi.fn(),
       }}
       >
         <MapBase data={sampleGeoJson}>

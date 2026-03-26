@@ -70,4 +70,18 @@ describe('mapMarker', () => {
     const nextTransform = screen.getByTestId('map-marker-recomputed').getAttribute('transform')
     expect(nextTransform).not.toBe(initialTransform)
   })
+
+  it('allows overriding the outer group name', () => {
+    render(
+      <MapBase data={sampleGeoJson}>
+        <MapMarker
+          data-testid="map-marker"
+          coordinates={[10, 10]}
+          name="annotation"
+        />
+      </MapBase>,
+    )
+
+    expect(screen.getByTestId('map-marker').getAttribute('name')).toBe('annotation')
+  })
 })

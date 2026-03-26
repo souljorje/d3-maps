@@ -7,7 +7,6 @@
 * [Functions](#functions)
   * [getObjectStateUpdate()](#getobjectstateupdate)
   * [resolveObjectStyle()](#resolveobjectstyle)
-  * [subscribeWindow()](#subscribewindow)
   * [useMapObjectEvents()](#usemapobjectevents)
 * [Variables](#variables)
   * [mapObjectState](#mapobjectstate)
@@ -72,31 +71,6 @@ Resolves a style value for the current state (falls back to `default`).
 
 ***
 
-### subscribeWindow()
-
-```ts
-function subscribeWindow(ev: string, listener: MapObjectGlobalMouseupListener): () => void;
-```
-
-#### Parameters
-
-| Parameter | Type |
-| ------ | ------ |
-| `ev` | `string` |
-| `listener` | [`MapObjectGlobalMouseupListener`](#mapobjectglobalmouseuplistener) |
-
-#### Returns
-
-```ts
-(): void;
-```
-
-##### Returns
-
-`void`
-
-***
-
 ### useMapObjectEvents()
 
 ```ts
@@ -158,8 +132,10 @@ Supported interaction states for map objects.
 
 #### Extended by
 
+* [`MapAnnotationProps`](annotation.md#mapannotationprops)
 * [`MapFeatureProps`](feature.md#mapfeatureprops)
 * [`MapGraticuleProps`](graticule.md#mapgraticuleprops)
+* [`MapLineProps`](line.md#maplineprops)
 * [`MapMarkerProps`](marker.md#mapmarkerprops)
 
 #### Type Parameters
