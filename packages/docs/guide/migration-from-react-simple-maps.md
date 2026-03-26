@@ -1,3 +1,7 @@
+---
+description: Migrate from react-simple-maps to @d3-maps/react with component, prop, styling, and zoom API equivalents
+---
+
 # Migrate from react-simple-maps
 
 [@d3-maps/react](/components/) is fully compatible with [react-simple-maps](https://www.react-simple-maps.io/)  
