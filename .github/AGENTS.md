@@ -1,1 +1,1 @@
-See [GitHub Actions Workflow](../.agents/references/github-actions-workflow.md)
+See [CI/CD](../.agents/references/ci-cd.md)

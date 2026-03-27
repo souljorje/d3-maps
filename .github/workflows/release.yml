@@ -29,7 +29,7 @@ jobs:
         id: build
         continue-on-error: false
         run: |
-          pnpm build:packages || {
+          pnpm build || {
             echo "Turbo build failed with exit code $?"
             exit 1
           }
