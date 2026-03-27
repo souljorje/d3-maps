@@ -11,6 +11,7 @@
 | --- | --- |
 | `pnpm typedoc` | Generate API markdown from package exports. |
 | `pnpm docs:gen` | Regenerate examples wrappers and API docs. |
+| `pnpm docs:build` | Generate API docs as part of the docs build. |
 
 ## Inputs/Outputs
 | Type | Path |
@@ -24,6 +25,7 @@
 | Rule | Requirement |
 | --- | --- |
 | Generated docs ownership | Treat API markdown in packages/docs/api/core as generated output managed by docs generation commands. |
+| Git tracking | Do not commit generated API markdown under packages/docs/api/core. |
 
 ## References
 - [Docs Guide](../AGENTS.md)

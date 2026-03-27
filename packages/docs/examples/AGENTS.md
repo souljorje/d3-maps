@@ -11,6 +11,7 @@
 | --- | --- |
 | `pnpm docs:gen:examples` | Regenerate example wrapper pages. |
 | `pnpm docs:gen` | Regenerate wrappers and API docs. |
+| `pnpm docs:build` | Build docs locally after regenerating example wrappers. |
 
 ## Inputs/Outputs
 | Type | Path |

@@ -1,0 +1,6 @@
+[build]
+command = "pnpm docs:build"
+publish = "packages/docs/.vitepress/dist"
+
+[build.environment]
+NODE_VERSION = "24"

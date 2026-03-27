@@ -2,7 +2,7 @@
 
 Reactive SVG maps, powered by D3  
 
-[**Docs**](https://souljorje.github.io/d3-maps/guide) · [**Examples**](https://souljorje.github.io/d3-maps/examples) · [**Migrate from react-simple-maps**](https://souljorje.github.io/d3-maps/guide/migration-from-react-simple-maps.html)
+[**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples) · [**Migrate from react-simple-maps**](https://d3-maps.netlify.app/guide/migration-from-react-simple-maps.html)
 
 
 
