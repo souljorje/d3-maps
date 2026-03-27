@@ -8,8 +8,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: docs
@@ -31,38 +29,22 @@ jobs:
         with:
           filters: .github/path-filters.yml
 
-  build:
+  deploy:
     needs: detect_docs_changes
     if: always() && (github.event_name == 'workflow_dispatch' || needs.detect_docs_changes.outputs.docs == 'true')
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup repo
-        uses: ./.github/actions/setup
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Build docs
-        run: pnpm docs:build
+      - name: Trigger Netlify production deploy
         env:
-          VITEPRESS_BASE: ${{ vars.VITEPRESS_BASE }}
-          VITEPRESS_SITE_URL: ${{ vars.VITEPRESS_SITE_URL }}
+          NETLIFY_BUILD_HOOK_URL: ${{ secrets.NETLIFY_BUILD_HOOK_URL }}
+        run: |
+          if [ -z "$NETLIFY_BUILD_HOOK_URL" ]; then
+            echo "Missing required secret NETLIFY_BUILD_HOOK_URL" >&2
+            exit 1
+          fi
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: packages/docs/.vitepress/dist
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          curl --fail-with-body --silent --show-error \
+            -X POST \
+            -H "Content-Type: application/json" \
+            --data '{}' \
+            "$NETLIFY_BUILD_HOOK_URL"

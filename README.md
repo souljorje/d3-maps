@@ -7,7 +7,7 @@ Works with Vue and React. Solid and Svelte support coming soon.
 
 [![CI](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml/badge.svg)](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml) [![Deploy Docs](https://github.com/souljorje/d3-maps/actions/workflows/docs-deploy.yml/badge.svg)](https://github.com/souljorje/d3-maps/actions/workflows/docs-deploy.yml) [![vue size](https://deno.bundlejs.com/badge?q=@d3-maps/vue&badge=detailed)](https://bundlejs.com/?q=@d3-maps/vue) [![react size](https://deno.bundlejs.com/badge?q=@d3-maps/react&badge=detailed)](https://bundlejs.com/?q=@d3-maps/react)
 
-[**Docs**](https://souljorje.github.io/d3-maps/guide) · [**Examples**](https://souljorje.github.io/d3-maps/examples)
+[**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples)
 
 <!-- ![@d3-maps/vue](https://img.shields.io/bundlephobia/minzip/%40d3-maps/vue) -->
 

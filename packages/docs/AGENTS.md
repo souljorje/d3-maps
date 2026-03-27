@@ -13,9 +13,10 @@
 | Command | Purpose |
 | --- | --- |
 | `pnpm --filter docs dev` | Run VitePress locally. |
-| `pnpm docs:build` | Build docs site (includes docs generation). |
+| `pnpm docs:build` | Build docs site with example wrappers and API docs generation. |
 | `pnpm --filter docs preview` | Preview built docs site. |
 | `pnpm docs:gen` | Regenerate examples wrappers and API docs. |
+| `pnpm typedoc` | Generate API markdown on demand. |
 
 ## Routing
 - [API Guide](api/AGENTS.md)
@@ -26,7 +27,8 @@
 | --- | --- |
 | Navigation | Keep nav/sidebar changes in packages/docs/.vitepress/config.js. |
 | Theme registration | Register global demo components in packages/docs/.vitepress/theme/index.js. |
-| Generated content | Do not hand-edit generated files in packages/docs/examples and generated API markdown in packages/docs/api/core. |
+| Generated content | Do not hand-edit generated files in packages/docs/examples or generated API markdown in packages/docs/api/core. |
+| Local API docs | Run `pnpm docs:build` or `pnpm typedoc` before expecting API reference pages locally. |
 | Parts usage | Extract duplicated content to parts with `_` prefix and reuse across files, `_*.md` are ignored by vitepress |
 | Core concepts | /guide/core-concepts must be composed with parts. |
 | Core concepts combined demo sync | When changing `guide/core-concepts` snippets or rendered order/colors, update `packages/docs/.vitepress/theme/components/CoreConceptsCombined.vue` in the same change to keep it aligned. |
