@@ -7,14 +7,14 @@ Repository automation for validation, docs deployment, and package releases.
 | Workflow | Trigger | Responsibility |
 | --- | --- | --- |
 | [CI workflow](../../.github/workflows/ci.yml) | Pull requests to `main` | Run lint + tests and build the workspace. Docs build is conditional on docs-related file changes. |
-| [Docs deploy workflow](../../.github/workflows/docs-deploy.yml) | Push to `main` + manual dispatch | Build and deploy VitePress docs to GitHub Pages when docs-related files change. |
+| [Docs deploy workflow](../../.github/workflows/docs-deploy.yml) | Push to `main` + manual dispatch | Trigger a Netlify production deploy when docs-related files change. |
 | [Release workflow](../../.github/workflows/release.yml) | Push to `main` + manual dispatch | Build publishable packages and run Changesets to create release PRs or publish packages. |
 
 ## Shared Components
 | Component | Location | Used by | Purpose |
 | --- | --- | --- | --- |
-| Setup composite action | [Setup action](../../.github/actions/setup/action.yml) | CI, docs deploy, release | Standardize pnpm + Node setup, dependency install, and Turbo cache restore. |
-| Docs path filters | [Path filters](../../.github/path-filters.yml) | CI, docs deploy | Keep docs-change detection in one source of truth. |
+| Setup composite action | [Setup action](../../.github/actions/setup/action.yml) | CI, release | Standardize pnpm + Node setup, dependency install, and Turbo cache restore. |
+| Docs path filters | [Path filters](../../.github/path-filters.yml) | CI, docs deploy | Keep docs-change detection in one source of truth for workspace, docs, and deploy-config changes. |
 
 ## Release Model
 - Stable releases are produced from `main`.

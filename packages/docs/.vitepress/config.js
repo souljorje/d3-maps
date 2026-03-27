@@ -9,9 +9,11 @@ import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 
 const REPO_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
 const PACKAGES_DIR = path.join(REPO_ROOT, 'packages')
+const GENERATED_API_INDEX = path.join(PACKAGES_DIR, 'docs', 'api', 'core', 'index.md')
 const SITE_BASE = process.env.VITEPRESS_BASE || '/'
-const SITE_URL = process.env.VITEPRESS_SITE_URL?.replace(/\/$/, '')
+const SITE_URL = (process.env.VITEPRESS_SITE_URL || process.env.URL || process.env.DEPLOY_PRIME_URL)?.replace(/\/$/, '')
 const SITEMAP_HOSTNAME = SITE_URL ? `${SITE_URL}/` : null
+const hasGeneratedApiDocs = fs.existsSync(GENERATED_API_INDEX)
 
 function toPascalCase(value) {
   return value
@@ -203,12 +205,16 @@ const docsSidebar = [
       })),
     ],
   },
-  {
-    text: 'API',
-    items: [
-      { text: 'Core', link: '/api/core/' },
-    ],
-  },
+  ...(hasGeneratedApiDocs
+    ? [
+        {
+          text: 'API',
+          items: [
+            { text: 'Core', link: '/api/core/' },
+          ],
+        },
+      ]
+    : []),
 ]
 
 export default defineConfig({
@@ -270,7 +276,7 @@ export default defineConfig({
     nav: [
       { text: 'Guide', link: '/guide/' },
       { text: 'Examples', link: '/examples/' },
-      { text: 'API', link: '/api/core' },
+      ...(hasGeneratedApiDocs ? [{ text: 'API', link: '/api/core/' }] : []),
     ],
     sidebar: {
       '/': docsSidebar,

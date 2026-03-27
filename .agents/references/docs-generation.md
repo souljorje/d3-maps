@@ -9,7 +9,7 @@ Generated docs content for `packages/docs`.
 | 1 | `pnpm docs:gen:examples` | packages/docs/.vitepress/examples/*.vue | generated wrappers in packages/docs/examples/*.md |
 | 2 | `pnpm typedoc` | typedoc.json + package API exports | API markdown in packages/docs/api/core |
 | 3 | `pnpm docs:gen` | Step 1 + Step 2 | all generated docs artifacts |
-| 4 | `pnpm docs:build` | generated docs + VitePress content | production docs build |
+| 4 | `pnpm docs:build` | Step 3 + VitePress content | docs build for local validation and deploys |
 
 ## Example Wrapper Generation
 | Item | Location |
@@ -32,8 +32,9 @@ Generated docs content for `packages/docs`.
 | --- | --- |
 | Wrapper pages | Do not manually edit generated wrappers in packages/docs/examples/*.md. |
 | Example source | Edit Vue demo source files in packages/docs/.vitepress/examples/*.vue. |
-| API docs | Regenerate with `pnpm typedoc` after public API changes. |
-| Validation | Run `pnpm docs:build` before push; root pre-push runs this. |
+| API docs | `pnpm docs:build` regenerates API docs through the docs package `prebuild`; `pnpm typedoc` stays available for manual regeneration. |
+| API output | Treat packages/docs/api/core as generated output and do not commit it. |
+| Validation | Run `pnpm docs:build` for both local docs validation and deploy-path validation. |
 
 ## Related Docs
 - [Architecture](architecture.md)

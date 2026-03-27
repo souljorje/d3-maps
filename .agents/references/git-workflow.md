@@ -49,7 +49,6 @@ feat(core): add auto-fit helper for responsive maps
 | Hook | Behavior |
 | --- | --- |
 | pre-commit | Runs `lint-staged`, then `pnpm test` from package.json (`simple-git-hooks`). |
-| pre-push | Runs `pnpm docs:build` from package.json (`simple-git-hooks`). |
 
 ## Related Docs
 - [Architecture](architecture.md)

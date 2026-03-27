@@ -7,10 +7,18 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vitepress'
 
 const router = useRouter()
+const hasCoreApiDocs = Object.keys(import.meta.glob('./core/*.md')).length > 0
 
 onMounted(() => {
-  router.go('/api/core/')
+  if (hasCoreApiDocs) router.go('/api/core/')
 })
 </script>
 
-Redirecting to [Core API](/api/core/)...
+<p v-if="hasCoreApiDocs">
+  Redirecting to <a href="/api/core/">Core API</a>...
+</p>
+
+<template v-else>
+  <p>API reference is generated on deploy</p>
+  <p>Run <code>pnpm typedoc</code> to inspect it locally</p>
+</template>

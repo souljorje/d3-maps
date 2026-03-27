@@ -2,7 +2,7 @@
 
 Simple SVG maps with Vue & D3.  
 
-[**Docs**](https://souljorje.github.io/d3-maps/guide) · [**Examples**](https://souljorje.github.io/d3-maps/examples)
+[**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples)
 
 ## Features
 
