@@ -5,15 +5,14 @@ import { fileURLToPath } from 'node:url'
 
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitepress'
+import llmstxt from 'vitepress-plugin-llms'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 
 const REPO_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
 const PACKAGES_DIR = path.join(REPO_ROOT, 'packages')
-const GENERATED_API_INDEX = path.join(PACKAGES_DIR, 'docs', 'api', 'core', 'index.md')
 const SITE_BASE = process.env.VITEPRESS_BASE || '/'
 const SITE_URL = (process.env.VITEPRESS_SITE_URL || process.env.URL || process.env.DEPLOY_PRIME_URL)?.replace(/\/$/, '')
 const SITEMAP_HOSTNAME = SITE_URL ? `${SITE_URL}/` : null
-const hasGeneratedApiDocs = fs.existsSync(GENERATED_API_INDEX)
 
 function toPascalCase(value) {
   return value
@@ -144,6 +143,26 @@ function getExamples() {
 }
 const examples = getExamples()
 
+function sanitizeSidebarItems(items) {
+  return items
+    .map((item) => {
+      if (!item.link && !item.items) return null
+      if (item.link?.includes('#')) return null
+      if (item.link?.startsWith('/examples/') && item.link !== '/examples') return null
+
+      if (!item.items) return item
+
+      const nestedItems = sanitizeSidebarItems(item.items)
+      if (nestedItems.length === 0 && !item.link) return null
+
+      return {
+        ...item,
+        items: nestedItems,
+      }
+    })
+    .filter(Boolean)
+}
+
 const docsSidebar = [
   {
     text: 'Guide',
@@ -205,16 +224,24 @@ const docsSidebar = [
       })),
     ],
   },
-  ...(hasGeneratedApiDocs
-    ? [
-        {
-          text: 'API',
-          items: [
-            { text: 'Core', link: '/api/core/' },
-          ],
-        },
-      ]
-    : []),
+  {
+    text: 'API',
+    items: [
+      { text: 'Core', link: '/api/core/' },
+    ],
+  },
+  {
+    text: 'LLMs',
+    items: [
+      { text: 'llms.txt', link: '/llms.txt' },
+      { text: 'llms-full.tx', link: '/llms-full.txt' },
+    ],
+  },
+]
+
+const llmsSidebar = [
+  { text: 'Home', link: '/' },
+  ...sanitizeSidebarItems(docsSidebar),
 ]
 
 export default defineConfig({
@@ -276,7 +303,7 @@ export default defineConfig({
     nav: [
       { text: 'Guide', link: '/guide/' },
       { text: 'Examples', link: '/examples/' },
-      ...(hasGeneratedApiDocs ? [{ text: 'API', link: '/api/core/' }] : []),
+      { text: 'API', link: '/api/core/' },
     ],
     sidebar: {
       '/': docsSidebar,
@@ -304,7 +331,22 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [
+      tailwindcss(),
+      llmstxt({
+        domain: SITE_URL,
+        injectLLMHint: false,
+        excludeIndexPage: false,
+        ignoreFiles: ['AGENTS.md', '**/AGENTS.md', '**/_*.md'],
+        ignoreFilesPerOutput: {
+          llmsTxt: ['examples/*.md', 'api/core/**'],
+          llmsFullTxt: ['examples/*.md', 'api/core/**'],
+          pages: ['examples/*.md', 'api/core/**'],
+        },
+        customLLMsTxtTemplate: '# {title}\n\n{description}\n\n## Table of Contents\n\n{toc}\n',
+        sidebar: llmsSidebar,
+      }),
+    ],
     server: {
       fs: {
         allow: [REPO_ROOT],

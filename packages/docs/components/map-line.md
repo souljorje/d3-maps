@@ -1,3 +1,7 @@
+---
+description: Component for D3 SVG map lines, arcs, and curved paths in React and Vue
+---
+
 # MapLine
 
 Renders a path between map locations

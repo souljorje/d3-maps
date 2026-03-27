@@ -1,6 +1,7 @@
 ---
 layout: home
-description: D3 maps for Vue and React with reactive SVG map components, choropleth maps, markers, zoom, and responsive rendering
+title: d3-maps
+description: D3 SVG map library for React and Vue with components for choropleth maps, markers, pan and zoom, and responsive rendering
 hero:
   name: d3-maps
   text: Simple SVG maps powered by D3

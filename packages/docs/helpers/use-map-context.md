@@ -1,3 +1,7 @@
+---
+description: Helper for reading map size, features, and path state inside custom D3 SVG map layers with React and Vue
+---
+
 # useMapContext
 
 Reads the current map context from [MapBase](/components/map-base)  

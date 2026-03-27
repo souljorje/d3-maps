@@ -187,7 +187,7 @@ describe('mapZoom', () => {
     expect(onUpdateZoom).toHaveBeenCalledWith(4)
   })
 
-  it('exposes live zoom state', async () => {
+  it('exposes zoom state', async () => {
     let zoomApi: ReturnType<typeof useMapZoom> | undefined
     const onZoomToObject = vi.fn()
 

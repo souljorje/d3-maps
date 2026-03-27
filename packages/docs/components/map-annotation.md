@@ -1,3 +1,7 @@
+---
+description: Component for D3 SVG map coordinate-based annotations in React and Vue
+---
+
 # MapAnnotation
 
 Anchors arbitrary SVG content to a map point with a connector line path.  

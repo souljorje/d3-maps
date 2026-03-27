@@ -1,5 +1,5 @@
 ---
-description: Fix common D3 map issues in d3-maps, including blank maps, misplaced markers, and overlapping SVG layers
+description: Troubleshooting guide for D3 SVG maps in React and Vue, including blank maps, misplaced markers, broken projections, and layer issues
 ---
 
 # Troubleshooting

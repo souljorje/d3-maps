@@ -1,3 +1,7 @@
+---
+description: Helpers for creating and reusing shared D3 SVG map context outside the root map component with React and Vue
+---
+
 # useCreateMapContext
 
 Creates a reusable map context in the parent

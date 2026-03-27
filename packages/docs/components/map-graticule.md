@@ -1,3 +1,7 @@
+---
+description: Component for D3 SVG map graticules and outlines in React and Vue
+---
+
 # MapGraticule
 
 Renders graticule lines and optional outline as SVG `<path>` layers.  

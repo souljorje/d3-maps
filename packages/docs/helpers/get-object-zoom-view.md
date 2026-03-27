@@ -1,3 +1,7 @@
+---
+description: Helper for fitting D3 SVG map features and objects to a centered zoom view with React and Vue
+---
+
 # getObjectZoomView
 
 `getObjectZoomView` computes a centered zoom target for a map object
