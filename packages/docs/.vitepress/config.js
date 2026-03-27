@@ -11,6 +11,7 @@ const REPO_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
 const PACKAGES_DIR = path.join(REPO_ROOT, 'packages')
 const SITE_BASE = process.env.VITEPRESS_BASE || '/'
 const SITE_URL = process.env.VITEPRESS_SITE_URL?.replace(/\/$/, '')
+const SITEMAP_HOSTNAME = SITE_URL ? `${SITE_URL}/` : null
 
 function toPascalCase(value) {
   return value
@@ -215,10 +216,10 @@ export default defineConfig({
   srcExclude: ['AGENTS.md', '**/AGENTS.md', '**/_*.md'],
   title: 'd3-maps',
   description: 'Reactive SVG maps for Vue and React, powered by D3',
-  ...(SITE_URL
+  ...(SITEMAP_HOSTNAME
     ? {
         sitemap: {
-          hostname: SITE_URL,
+          hostname: SITEMAP_HOSTNAME,
         },
       }
     : {}),
