@@ -63,6 +63,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 - [Architecture](.agents/references/architecture.md)
 - [Adapter Development Flow](.agents/references/adapter-development-flow.md)
 - [Code Style](.agents/references/code-style.md)
+- [Tsdown Build Strategy](.agents/references/tsdown-build-strategy.md)
 - [Git Workflow](.agents/references/git-workflow.md)
 - [Docs Generation Workflow](.agents/references/docs-generation.md)
 - [AGENTS Style Guide](.agents/references/agents-style.md)

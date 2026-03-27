@@ -33,6 +33,7 @@
 | Emits | Keep Vue emits camelCase (`zoomStart`, `zoom`, `zoomEnd`) and align listener names with the public component API. |
 | Vue patterns | Follow the [vue-best-practices](../../.agents/skills/vue-best-practices/SKILL.md) skill for Composition API, typing, and reactivity decisions. |
 | Public exports | Keep public surface routed through packages/vue/src/index.ts (which exports components, composables, and plugin). |
+| Build boundary | Keep tsdown builds on packages/vue/tsconfig.build.json so published JS and DTS import `@d3-maps/core` as a package boundary. |
 
 ## Skills
 | Skill | When to use |
@@ -45,4 +46,5 @@
 - [Agent Meta-Flow](../../.agents/references/agent-meta-flow.md)
 - [Adapter Development Flow](../../.agents/references/adapter-development-flow.md)
 - [Architecture](../../.agents/references/architecture.md)
+- [Tsdown Build Strategy](../../.agents/references/tsdown-build-strategy.md)
 - [Code Style](../../.agents/references/code-style.md)

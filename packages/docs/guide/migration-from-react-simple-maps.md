@@ -29,8 +29,7 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 - `Geographies.parseGeographies` -> `MapBase.dataTransformer`  
 
 ```tsx
-import type { MapData } from '@d3-maps/core'
-import { MapBase, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
 import { useEffect, useState } from 'react'
 
 export function WorldMap() {

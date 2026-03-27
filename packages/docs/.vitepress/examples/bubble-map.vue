@@ -29,9 +29,11 @@
 </template>
 
 <script setup lang="ts">
-import type { ZoomEvent } from '@d3-maps/core'
+import type { ZoomEvent } from '@d3-maps/vue'
 
-import { getInverseZoomScale } from '@d3-maps/core'
+import {
+  getInverseZoomScale,
+} from '@d3-maps/vue'
 import { extent } from 'd3-array'
 import { geoAlbersUsa } from 'd3-geo'
 import { scaleLinear } from 'd3-scale'

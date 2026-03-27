@@ -1,6 +1,6 @@
 # @d3-maps/react
 
-Reactive SVG maps, powered by D3  
+Simple SVG maps with React & D3.  
 
 [**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples) · [**Migrate from react-simple-maps**](https://d3-maps.netlify.app/guide/migration-from-react-simple-maps.html)
 
@@ -41,6 +41,7 @@ bun add @d3-maps/react
 ## Usage
 
 ```tsx
+import '@d3-maps/react/index.css'
 import { MapBase, MapFeatures } from '@d3-maps/react'
 
 export function App({ mapData }: { mapData: unknown }) {

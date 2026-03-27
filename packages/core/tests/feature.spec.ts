@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 
-import type { MapFeature } from '../src'
+import type { MapFeatureData } from '../src'
 
 import { getFeatureKey } from '../src'
 
-function makeFeature(): MapFeature {
+function makeFeature(): MapFeatureData {
   return {
     type: 'Feature',
     id: 'feature-id',

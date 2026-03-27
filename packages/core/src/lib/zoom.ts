@@ -24,6 +24,8 @@ import {
   isNumber,
 } from './utils'
 
+import 'd3-transition'
+
 export type {
   D3ZoomEvent,
   ZoomBehavior,

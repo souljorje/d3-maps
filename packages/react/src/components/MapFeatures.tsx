@@ -2,7 +2,7 @@
 
 import type {
   MapFeaturesProps as CoreMapFeaturesProps,
-  MapFeature as D3MapFeature,
+  MapFeatureData,
 } from '@d3-maps/core'
 import type {
   CSSProperties,
@@ -17,7 +17,7 @@ import { useMapContext } from '../hooks/useMapContext'
 import { MapFeature } from './MapFeature'
 
 interface MapFeaturesRenderProps {
-  features: D3MapFeature[]
+  features: MapFeatureData[]
 }
 
 type MapFeaturesChildren = ReactNode | ((props: MapFeaturesRenderProps) => ReactNode)

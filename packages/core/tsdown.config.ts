@@ -1,16 +1,16 @@
 import { createTsDownConfig } from '../../tsdown.config.ts'
 
-const globals = {
-  'd3-geo': 'd3',
-  'd3-shape': 'd3',
-  'd3-selection': 'd3',
-  'd3-zoom': 'd3',
-  'topojson-client': 'topojson',
-}
-
 export default createTsDownConfig({
-  globals,
-  dts: {
-    resolve: true,
-  },
+  copy: [{
+    from: 'src/index.css',
+    rename: 'index.css',
+  }],
+  iifeNoExternal: [
+    'd3-geo',
+    'd3-selection',
+    'd3-shape',
+    'd3-transition',
+    'd3-zoom',
+    'topojson-client',
+  ],
 })

@@ -1,7 +1,4 @@
-import type {
-  MapFeature as D3MapFeature,
-  MapData,
-} from '@d3-maps/core'
+import type { MapData, MapFeatureData } from '@d3-maps/react'
 import type {
   JSX,
   KeyboardEvent as ReactKeyboardEvent,
@@ -10,8 +7,6 @@ import type {
 import {
   getFeatureKey,
   getObjectZoomView,
-} from '@d3-maps/core'
-import {
   MapBase,
   MapFeature,
   MapFeatures,
@@ -87,7 +82,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
     setActiveCountryLabel('World')
   }
 
-  function zoomToFeature(feature: D3MapFeature): void {
+  function zoomToFeature(feature: MapFeatureData): void {
     const view = getObjectZoomView(mapContext, feature, {
       minZoom,
       maxZoom,
@@ -101,13 +96,13 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   }
 
   function onFeatureClick(
-    feature: D3MapFeature,
+    feature: MapFeatureData,
   ): void {
     zoomToFeature(feature)
   }
 
   function onFeatureKeyDown(
-    feature: D3MapFeature,
+    feature: MapFeatureData,
     event: ReactKeyboardEvent<SVGPathElement>,
   ): void {
     if (event.key !== 'Enter' && event.key !== ' ') return
@@ -244,7 +239,7 @@ function isDragOnlyFilter(event: Event): boolean {
   return event.type !== 'wheel' && event.type !== 'dblclick'
 }
 
-function getFeatureLabel(feature: D3MapFeature): string {
+function getFeatureLabel(feature: MapFeatureData): string {
   return String(
     feature.properties?.name
     ?? 'Country',
