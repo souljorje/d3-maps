@@ -18,21 +18,24 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "browser": "./dist/index.iife.js"
+      "browser": "./dist/index.iife.js",
+      "default": "./dist/index.js"
     },
     "./types": {
-      "types": "./dist/types.d.ts",
-      "import": "./dist/types.js"
+      "types": "./dist/index.d.ts"
     },
-    "./*.css": {
-      "import": "./dist/*.css",
-      "browser": "./dist/*.css"
+    "./index.css": {
+      "import": "./dist/index.css",
+      "browser": "./dist/index.css",
+      "default": "./dist/index.css"
     }
   },
   "style": "dist/index.css",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "browser": "dist/index.iife.js",
+  "unpkg": "dist/index.iife.js",
+  "jsdelivr": "dist/index.iife.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/*"

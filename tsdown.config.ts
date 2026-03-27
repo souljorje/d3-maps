@@ -17,36 +17,41 @@ const IIFE_CONFIG: Partial<UserConfig> = {
 }
 
 export function createTsDownConfig({
+  copy,
   dts,
   entry,
   globals,
-  iifeEntry,
+  iifeNoExternal,
   plugins,
 }: {
+  copy?: UserConfig['copy']
   dts?: UserConfig['dts']
   entry?: UserConfig['entry']
   globals?: Record<string, string>
-  iifeEntry?: UserConfig['entry']
+  iifeNoExternal?: UserConfig['noExternal']
   plugins?: UserConfig['plugins']
 } = {}) {
   return defineConfig([
     {
       ...BASE_CONFIG,
+      copy,
       entry: entry ?? BASE_CONFIG.entry,
       dts: dts ?? true,
       plugins,
     },
     {
       ...IIFE_CONFIG,
-      entry: iifeEntry ?? entry ?? IIFE_CONFIG.entry,
+      entry: entry ?? IIFE_CONFIG.entry,
+      noExternal: iifeNoExternal,
       plugins,
-      outputOptions: {
-        extend: true,
-        globals: {
-          ...globals,
-          '@d3-maps/core': 'D3Maps',
-        },
-      },
+      outputOptions: globals
+        ? {
+            extend: true,
+            globals,
+          }
+        : {
+            extend: true,
+          },
     },
   ])
 }

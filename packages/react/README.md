@@ -33,6 +33,7 @@ bun add @d3-maps/react
 ## Usage
 
 ```tsx
+import '@d3-maps/react/index.css'
 import { MapBase, MapFeatures } from '@d3-maps/react'
 
 export function App({ mapData }: { mapData: unknown }) {
@@ -46,9 +47,9 @@ export function App({ mapData }: { mapData: unknown }) {
 
 ## Styling
 
-Importing `@d3-maps/react` automatically includes `@d3-maps/core/index.css`
+Import the stylesheet explicitly from `@d3-maps/react/index.css`
 
-If you need strict stylesheet ordering, load your global reset/theme styles before importing the adapter entry
+This keeps the package entry side-effect-free and lets you control stylesheet order directly
 
 ## License
 

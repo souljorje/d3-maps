@@ -1,12 +1,12 @@
 import type {
   MapData,
-  MapFeature,
+  MapFeatureData,
 } from '@d3-maps/core'
 
 type GeoJsonMapData = Exclude<MapData, { type: 'Topology' }>
 type TopologyMapData = Extract<MapData, { type: 'Topology' }>
 
-const sampleFeature: MapFeature = {
+const sampleFeature: MapFeatureData = {
   type: 'Feature',
   id: 'demo',
   properties: { id: 'demo' },
@@ -49,7 +49,7 @@ export const sampleGeoJsonTwoFeatures: GeoJsonMapData = {
           ],
         ],
       },
-    } satisfies MapFeature,
+    } satisfies MapFeatureData,
   ],
 }
 

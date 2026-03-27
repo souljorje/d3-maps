@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import type { Extent, ZoomBehaviorOptions, ZoomTransform } from '../src'
+import type { ZoomTransform } from 'd3-zoom'
+
+import type { Extent, ZoomBehaviorOptions } from '../src'
 
 import { zoomIdentity } from 'd3-zoom'
 

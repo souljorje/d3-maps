@@ -17,12 +17,6 @@ import {
   isNumber,
 } from './utils'
 
-export type {
-  D3ZoomEvent,
-  ZoomBehavior,
-  ZoomTransform,
-} from 'd3-zoom'
-
 export type Extent = [[number, number], [number, number]]
 export interface DefaultZoomBehavior extends ZoomBehavior<SVGSVGElement, unknown> {}
 
