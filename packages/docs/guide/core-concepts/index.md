@@ -1,5 +1,6 @@
 ---
 next: false
+description: Learn the core concepts behind D3 SVG maps in Vue and React, including data, projection, features, mesh, markers, zoom, and responsiveness
 ---
 
 # Core concepts

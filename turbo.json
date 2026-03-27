@@ -4,7 +4,7 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".vitepress/dist/**"],
-      "env": ["VITEPRESS_BASE"]
+      "env": ["VITEPRESS_BASE", "VITEPRESS_SITE_URL"]
     },
     "test": {
       "outputs": []

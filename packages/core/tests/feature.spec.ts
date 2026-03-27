@@ -30,16 +30,17 @@ function makeFeature(): MapFeatureData {
 describe('getFeatureKey', () => {
   const feature = makeFeature()
   it('prefers direct property from feature object', () => {
-    expect(getFeatureKey(feature, 'slug', 0)).toBe('direct-key')
+    expect(getFeatureKey(feature, 'slug')).toBe('direct-key')
   })
 
   it('falls back to feature.properties', () => {
-    expect(getFeatureKey(feature, 'code', 0)).toBe('feature-code')
+    expect(getFeatureKey(feature, 'code')).toBe('feature-code')
   })
 
-  it('uses id key by default and falls back to index', () => {
-    expect(getFeatureKey(feature, 'id', 4)).toBe('feature-id')
+  it('uses id key by default and falls back to index only when provided', () => {
+    expect(getFeatureKey(feature)).toBe('feature-id')
     feature.id = undefined
+    expect(getFeatureKey(feature, 'unknown')).toBeUndefined()
     expect(getFeatureKey(feature, 'unknown', 4)).toBe(4)
   })
 })

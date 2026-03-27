@@ -160,15 +160,34 @@ describe('mapGraticule', () => {
     expect(onMouseUp).toHaveBeenCalledTimes(1)
   })
 
-  it('renders graticule path outside map context without geometry', () => {
-    const { container } = render(
+  it('forwards focus and blur callbacks on the lines path', () => {
+    const onFocus = vi.fn()
+    const onBlur = vi.fn()
+
+    render(
+      <MapBase data={sampleGeoJson}>
+        <MapGraticule
+          data-testid="map-graticule-focus"
+          tabIndex={0}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
+      </MapBase>,
+    )
+
+    const lines = screen.getByTestId('map-graticule-focus')
+    fireEvent.focus(lines)
+    fireEvent.blur(lines)
+
+    expect(onFocus).toHaveBeenCalledTimes(1)
+    expect(onBlur).toHaveBeenCalledTimes(1)
+  })
+
+  it('throws without map context', () => {
+    expect(() => render(
       <svg>
         <MapGraticule />
       </svg>,
-    )
-
-    const paths = container.querySelectorAll('path')
-    expect(paths).toHaveLength(1)
-    expect(paths[0]?.getAttribute('d')).toBeNull()
+    )).toThrowError('useMapContext must be used inside Map')
   })
 })

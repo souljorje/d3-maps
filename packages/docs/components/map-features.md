@@ -6,10 +6,10 @@ Renders all GeoJSON features from the current map context
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `idKey?` | `string` | `id` | Resolves feature key via `feature[idKey]`, then `feature.properties[idKey]` |
+| `idKey?` | `string` | `id` | See [`getFeatureKey`](/api/core/feature#getfeaturekey) |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | Forwarded to [MapFeature](/components/map-feature#props) in default rendering mode, see [styling guide](/guide/core-concepts/#styling) |
 
-Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatures`.
+Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatures`
 
 ## Usage
 

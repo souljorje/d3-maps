@@ -14,29 +14,37 @@ import type {
   MapProps,
 } from '@d3-maps/core'
 
-import { makeMapContext } from '@d3-maps/core'
 import {
   computed,
   provide,
+  toRef,
 } from 'vue'
 
+import { useCreateMapContext } from '../hooks/useCreateMapContext'
 import { mapContextKey } from '../hooks/useMapContext'
 
-const props = defineProps<MapProps>()
+type MapConfigProps = MapProps & {
+  context?: undefined
+}
+type MapContextProps = Partial<MapProps> & {
+  context: MapContext
+}
+type Props = MapConfigProps | MapContextProps
+
+const props = defineProps<Props>()
 
 defineSlots<{
   default?: (props: MapContext) => unknown
 }>()
 
-const context = computed<MapContext>(() => makeMapContext({
-  width: props.width,
-  height: props.height,
-  aspectRatio: props.aspectRatio,
-  projection: props.projection,
-  projectionConfig: props.projectionConfig,
-  data: props.data,
-  dataTransformer: props.dataTransformer,
-}))
+const unresolvedContext = useCreateMapContext(props, toRef(props, 'context'))
+const context = computed(() => {
+  if (!unresolvedContext.value) {
+    throw new Error('Map requires data or context')
+  }
+
+  return unresolvedContext.value
+})
 
 provide(mapContextKey, context)
 </script>

@@ -33,18 +33,18 @@ export interface MapFeaturesProps<TStyle = unknown> extends Omit<MapFeatureProps
  * Checks:
  * 1) `feature[idKey]`
  * 2) `feature.properties[idKey]`
- * 3) fallback to the list index
+ * 3) optional fallback value
  */
 export function getFeatureKey(
-  feature: MapFeatureData,
-  idKey = 'id',
-  index: number,
-): string | number {
-  const directValue = feature[idKey as keyof MapFeatureData]
+  feature: MapFeature,
+  idKey: string = 'id',
+  fallback?: number | string,
+): string | number | undefined {
+  const directValue = feature[idKey as keyof MapFeature]
   if (isStringOrNumber(directValue)) return directValue
 
   const propertyValue = feature.properties?.[idKey]
   if (isStringOrNumber(propertyValue)) return propertyValue
 
-  return index
+  return fallback
 }

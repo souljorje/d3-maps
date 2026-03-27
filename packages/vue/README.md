@@ -2,7 +2,17 @@
 
 Simple SVG maps with Vue & D3.  
 
-[docs](https://souljorje.github.io/d3-maps)
+[**Docs**](https://souljorje.github.io/d3-maps/guide) · [**Examples**](https://souljorje.github.io/d3-maps/examples)
+
+## Features
+
+- Drop-in components, powerful defaults
+- Zoom, drag, lines, markers, and more
+- Reactive rerender
+- Responsive by default
+- Lightweight and tree-shakable
+- SSR friendly
+- Supports TopoJSON and GeoJSON
 
 ## Installation
 
@@ -25,6 +35,27 @@ bun add @d3-maps/vue
 ```
 
 ## Usage
+
+```html
+<script setup lang="ts">
+import type { MapData } from '@d3-maps/core'
+
+import { MapBase, MapFeatures } from '@d3-maps/vue'
+defineProps<{
+  data: MapData
+}>()
+</script>
+
+<template>
+  <MapBase :data="data">
+    <MapFeatures />
+  </MapBase>
+</template>
+```
+
+### Plugin
+
+Registers all components in the app
 
 ```js
 import { createApp } from 'vue'

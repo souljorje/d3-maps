@@ -1,6 +1,4 @@
-import type {
-  GeoGraticuleGenerator,
-} from 'd3-geo'
+import type { GeoGraticuleGenerator } from 'd3-geo'
 
 import type { MapContext } from './map'
 import type { MapObjectProps } from './mapObject'

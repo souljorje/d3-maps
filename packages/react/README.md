@@ -2,15 +2,23 @@
 
 Simple SVG maps with React & D3.  
 
-[docs](https://souljorje.github.io/d3-maps)  
-[Migrate from react-simple-maps](https://souljorje.github.io/d3-maps/guide/migration-from-react-simple-maps.html)
+[**Docs**](https://souljorje.github.io/d3-maps/guide) · [**Examples**](https://souljorje.github.io/d3-maps/examples) · [**Migrate from react-simple-maps**](https://souljorje.github.io/d3-maps/guide/migration-from-react-simple-maps.html)
+
+
+
+## Features
+
+- Drop-in components, powerful defaults
+- Zoom, drag, lines, markers, and more
+- Reactive rerender
+- Responsive by default
+- Lightweight and tree-shakable
+- SSR friendly
+- Supports TopoJSON and GeoJSON
 
 ## Installation
 
 Requires React 19+
-
-Next.js App Router: `@d3-maps/react` entrypoints are client-only (`'use client'`), so import them from Client Components  
-React Server Components entrypoints are planned
 
 npm
 
@@ -44,12 +52,6 @@ export function App({ mapData }: { mapData: unknown }) {
   )
 }
 ```
-
-## Styling
-
-Import the stylesheet explicitly from `@d3-maps/react/index.css`
-
-This keeps the package entry side-effect-free and lets you control stylesheet order directly
 
 ## License
 

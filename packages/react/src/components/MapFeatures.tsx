@@ -41,7 +41,7 @@ export function MapFeatures({
   ...groupProps
 }: MapFeaturesProps): ReactElement {
   const context = useMapContext()
-  const features = context?.features ?? []
+  const features = context.features
 
   const resolvedChildren = isRenderProp(children)
     ? children({ features })

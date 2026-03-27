@@ -1,3 +1,7 @@
+---
+description: Migrate from react-simple-maps to @d3-maps/react with component, prop, styling, and zoom API equivalents
+---
+
 # Migrate from react-simple-maps
 
 [@d3-maps/react](/components/) is fully compatible with [react-simple-maps](https://www.react-simple-maps.io/)  
@@ -79,7 +83,6 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 ```tsx
 <MapBase data={data}>
   <MapZoom
-    center={[0, 0]}
     zoom={1}
     minZoom={1}
     maxZoom={8}

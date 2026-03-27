@@ -13,86 +13,61 @@ import type {
   ZoomProps,
 } from '@d3-maps/core'
 
-import {
-  applyZoomGroupTransform,
-  applyZoomTransform,
-  createZoomBehavior,
-  setupZoom,
-} from '@d3-maps/core'
-import {
-  computed,
-  onMounted,
-  provide,
-  ref,
-  watch,
-} from 'vue'
+import { getZoomViewportCenter } from '@d3-maps/core'
+import { ref } from 'vue'
 
-import { insideZoomKey } from '../hooks/useInsideZoom'
 import { useMapContext } from '../hooks/useMapContext'
+import { useCreateMapZoom } from '../hooks/useMapZoom'
 
-type MapZoomProps = ZoomProps
-
-const props = withDefaults(defineProps<MapZoomProps>(), {
-  center: () => [0, 0] as [number, number],
+const props = withDefaults(defineProps<ZoomProps>(), {
   zoom: 1,
   minZoom: 1,
   maxZoom: 8,
 })
 
 const emit = defineEmits<{
-  (event: 'zoomstart', payload: ZoomEvent): void
+  (event: 'zoomStart', payload: ZoomEvent): void
   (event: 'zoom', payload: ZoomEvent): void
-  (event: 'zoomend', payload: ZoomEvent): void
+  (event: 'zoomEnd', payload: ZoomEvent): void
+  (event: 'update:center', payload: [number, number]): void
+  (event: 'update:zoom', payload: number): void
 }>()
 
 const container = ref<SVGGElement | null>(null)
 const context = useMapContext()
 
-provide(insideZoomKey, true)
+function isSameCenter(
+  nextCenter: [number, number],
+  currentCenter: [number, number] | undefined,
+): boolean {
+  return Boolean(
+    currentCenter
+    && nextCenter[0] === currentCenter[0]
+    && nextCenter[1] === currentCenter[1],
+  )
+}
 
-const zoomBehavior = computed(() => {
-  return createZoomBehavior(context?.value, {
-    minZoom: props.minZoom,
-    maxZoom: props.maxZoom,
-    config: props.config,
-    onZoomStart: (event) => emit('zoomstart', event),
+const { zoomBehavior } = useCreateMapZoom(
+  container,
+  props,
+  {
+    onZoomStart: (event) => emit('zoomStart', event),
     onZoom: (event) => {
-      applyZoomGroupTransform(container.value, event.transform)
+      const nextCenter = getZoomViewportCenter(context.value, event.transform)
+      const nextZoom = event.transform.k
+
+      if (!isSameCenter(nextCenter, props.center)) {
+        emit('update:center', nextCenter)
+      }
+      if (nextZoom !== props.zoom) {
+        emit('update:zoom', nextZoom)
+      }
+
       emit('zoom', event)
     },
-    onZoomEnd: (event) => emit('zoomend', event),
-  })
-})
-
-onMounted(() => {
-  watch(
-    zoomBehavior,
-    (behavior) => {
-      if (!container.value) return
-      setupZoom({
-        element: container.value,
-        behavior,
-        center: props.center,
-        zoom: props.zoom,
-      })
-    },
-    {
-      immediate: true,
-    },
-  )
-  watch(
-    () => [zoomBehavior.value, props.center[0], props.center[1], props.zoom],
-    () => {
-      if (!container.value) return
-      applyZoomTransform({
-        element: container.value,
-        behavior: zoomBehavior.value,
-        center: props.center,
-        zoom: props.zoom,
-      })
-    },
-  )
-})
+    onZoomEnd: (event) => emit('zoomEnd', event),
+  },
+)
 
 defineExpose({
   container,

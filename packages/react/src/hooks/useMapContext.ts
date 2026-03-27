@@ -9,6 +9,12 @@ import {
 
 export const MapContextValue = createContext<MapContext | undefined>(undefined)
 
-export function useMapContext(): MapContext | undefined {
-  return useContext(MapContextValue)
+export function useMapContext(): MapContext {
+  const context = useContext(MapContextValue)
+
+  if (!context) {
+    throw new Error('useMapContext must be used inside Map')
+  }
+
+  return context
 }

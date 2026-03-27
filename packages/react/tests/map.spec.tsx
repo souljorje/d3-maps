@@ -8,6 +8,7 @@ import {
 import {
   MapBase,
   MapFeatures,
+  useCreateMapContext,
 } from '../src'
 import {
   sampleGeoJson,
@@ -61,5 +62,38 @@ describe('map', () => {
     )
 
     expect(container.querySelectorAll('path')).toHaveLength(2)
+  })
+
+  it('renders with an external context object shared with sibling UI', () => {
+    function Toolbar({ context }: { context: NonNullable<ReturnType<typeof useCreateMapContext>> }) {
+      return <div data-testid="toolbar-count">{context.features.length}</div>
+    }
+
+    function Harness() {
+      const context = useCreateMapContext({
+        data: sampleGeoJson,
+        width: 420,
+      })
+
+      if (!context) return null
+
+      return (
+        <>
+          <Toolbar context={context} />
+          <MapBase
+            context={context}
+            data-testid="map-svg"
+          >
+            <MapFeatures />
+          </MapBase>
+        </>
+      )
+    }
+
+    const { container } = render(<Harness />)
+
+    expect(screen.getByTestId('toolbar-count').textContent).toBe('1')
+    expect(screen.getByTestId('map-svg').getAttribute('viewBox')).toBe('0 0 420 210')
+    expect(container.querySelectorAll('path')).toHaveLength(1)
   })
 })

@@ -58,6 +58,22 @@ describe('mapLine', () => {
     expect(wrapper.find('[data-testid="map-line"]').attributes('d')).toMatch(/^M/)
   })
 
+  it('uses default fill value', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapLine, {
+          coordinates: LINE_COORDINATES,
+          'data-testid': 'map-line-fill',
+        }),
+      },
+    })
+
+    expect(wrapper.find('[data-testid="map-line-fill"]').attributes('fill')).toBe('none')
+  })
+
   it('recomputes path when map context changes', async () => {
     const wrapper = mount(MapBase, {
       props: {
@@ -82,17 +98,20 @@ describe('mapLine', () => {
     expect(nextPath).not.toBe(initialPath)
   })
 
-  it('renders cartesian paths without map context', () => {
-    const wrapper = mount(MapLine, {
+  it('renders cartesian paths inside map context', () => {
+    const wrapper = mount(MapBase, {
       props: {
-        coordinates: [
-          [0, 0],
-          [40, 0],
-        ],
-        cartesian: true,
+        data: sampleGeoJson,
       },
-      attrs: {
-        'data-testid': 'map-line-cartesian',
+      slots: {
+        default: () => h(MapLine, {
+          coordinates: [
+            [0, 0],
+            [40, 0],
+          ],
+          cartesian: true,
+          'data-testid': 'map-line-cartesian',
+        }),
       },
     })
 
@@ -201,33 +220,39 @@ describe('mapLine', () => {
   })
 
   it('applies midpoint shaping for curved connector paths', () => {
-    const baseWrapper = mount(MapLine, {
+    const baseWrapper = mount(MapBase, {
       props: {
-        coordinates: [
-          [0, 0],
-          [40, 0],
-        ],
-        cartesian: true,
+        data: sampleGeoJson,
       },
-      attrs: {
-        'data-testid': 'map-line-midpoint',
+      slots: {
+        default: () => h(MapLine, {
+          coordinates: [
+            [0, 0],
+            [40, 0],
+          ],
+          cartesian: true,
+          'data-testid': 'map-line-midpoint',
+        }),
       },
     })
 
     const basePath = baseWrapper.find('[data-testid="map-line-midpoint"]').attributes('d')
     baseWrapper.unmount()
 
-    const midpointWrapper = mount(MapLine, {
+    const midpointWrapper = mount(MapBase, {
       props: {
-        coordinates: [
-          [0, 0],
-          [40, 0],
-        ],
-        cartesian: true,
-        midpoint: [0, -40],
+        data: sampleGeoJson,
       },
-      attrs: {
-        'data-testid': 'map-line-midpoint',
+      slots: {
+        default: () => h(MapLine, {
+          coordinates: [
+            [0, 0],
+            [40, 0],
+          ],
+          cartesian: true,
+          midpoint: [0, -40],
+          'data-testid': 'map-line-midpoint',
+        }),
       },
     })
 

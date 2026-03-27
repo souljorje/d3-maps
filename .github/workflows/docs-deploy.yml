@@ -48,7 +48,8 @@ jobs:
       - name: Build docs
         run: pnpm docs:build
         env:
-          VITEPRESS_BASE: /d3-maps/
+          VITEPRESS_BASE: ${{ vars.VITEPRESS_BASE }}
+          VITEPRESS_SITE_URL: ${{ vars.VITEPRESS_SITE_URL }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

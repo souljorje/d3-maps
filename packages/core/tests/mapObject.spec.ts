@@ -12,8 +12,13 @@ describe('getObjectStateUpdate', () => {
     expect(getObjectStateUpdate('mouseup')).toBe('hover')
   })
 
-  it('returns default for mouseleave', () => {
+  it('returns focus for focus event', () => {
+    expect(getObjectStateUpdate('focus')).toBe('focus')
+  })
+
+  it('returns default for mouseleave and blur', () => {
     expect(getObjectStateUpdate('mouseleave')).toBe('default')
+    expect(getObjectStateUpdate('blur')).toBe('default')
   })
 
   it('returns active on mousedown', () => {
@@ -27,10 +32,12 @@ describe('resolveObjectStyle', () => {
       default: { opacity: 0.6 },
       hover: { opacity: 0.8 },
       active: { opacity: 1 },
+      focus: { opacity: 0.7 },
     }
 
     expect(resolveObjectStyle('active', styles)).toEqual(styles.active)
     expect(resolveObjectStyle('hover', styles)).toEqual(styles.hover)
+    expect(resolveObjectStyle('focus', styles)).toEqual(styles.focus)
     expect(resolveObjectStyle('default', styles)).toEqual(styles.default)
   })
 
@@ -60,6 +67,36 @@ describe('useMapObjectEvents', () => {
     expect(currentState).toBe('hover')
     expect(controller.onMouseleave()).toBe('default')
     expect(currentState).toBe('default')
+  })
+
+  it('keeps focus style after hover ends until blur', () => {
+    let currentState = 'default'
+    const controller = useMapObjectEvents((state) => {
+      currentState = state
+    })
+
+    expect(controller.onFocus()).toBe('focus')
+    expect(currentState).toBe('focus')
+    expect(controller.onMouseenter()).toBe('focus')
+    expect(currentState).toBe('focus')
+    expect(controller.onMouseleave()).toBe('focus')
+    expect(currentState).toBe('focus')
+    expect(controller.onBlur()).toBe('default')
+    expect(currentState).toBe('default')
+  })
+
+  it('returns to focus after mouseup when the element is focused', () => {
+    let currentState = 'default'
+    const controller = useMapObjectEvents((state) => {
+      currentState = state
+    })
+
+    controller.onFocus()
+    expect(currentState).toBe('focus')
+    expect(controller.onMousedown()).toBe('active')
+    expect(currentState).toBe('active')
+    expect(controller.onMouseup()).toBe('focus')
+    expect(currentState).toBe('focus')
   })
 
   it('resets to default on global mouseup when element mouseup is missed', () => {

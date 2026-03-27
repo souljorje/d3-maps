@@ -24,11 +24,7 @@ export function MapMarker({
   styles,
   children,
   name = 'marker',
-  onMouseEnter,
-  onMouseLeave,
-  onMouseDown,
-  onMouseUp,
-  ...groupProps
+  ...props
 }: MapMarkerProps): ReactElement | null {
   const context = useMapContext()
 
@@ -43,17 +39,14 @@ export function MapMarker({
 
   const { style, ...events } = useMapObject<SVGGElement>({
     styles,
-    onMouseEnter,
-    onMouseLeave,
-    onMouseDown,
-    onMouseUp,
+    ...props,
   })
 
   if (!transform) return null
 
   return (
     <g
-      {...groupProps}
+      {...props}
       transform={transform}
       style={style}
       name={name}

@@ -20,7 +20,7 @@
 function getFeatureKey(
    feature: MapFeatureData, 
    idKey?: string, 
-   index: number): string | number;
+   fallback?: string | number): string | number | undefined;
 ```
 
 Resolves a stable key for a feature.
@@ -29,7 +29,7 @@ Checks:
 
 1. `feature[idKey]`
 2. `feature.properties[idKey]`
-3. fallback to the list index
+3. optional fallback value
 
 #### Parameters
 
@@ -37,11 +37,11 @@ Checks:
 | ------ | ------ | ------ |
 | `feature` | [`MapFeatureData`](#mapfeaturedata) | `undefined` |
 | `idKey` | `string` | `'id'` |
-| `index` | `number` | `undefined` |
+| `fallback?` | `string` | `number` | `undefined` |
 
 #### Returns
 
-`string` | `number`
+`string` | `number` | `undefined`
 
 ## Interfaces
 
@@ -63,8 +63,8 @@ Shared props contract for a single rendered feature.
 
 | Property | Type | Inherited from |
 | ------ | ------ | ------ |
-| <a id="property-data"></a> `data` | [`MapFeatureData`](#mapfeaturedata) | - |
-| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
+| <a id="property-data"></a> `data` | [`MapFeature`](#mapfeature) | - |
+| <a id="property-styles"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"` | `"focus"`, `TStyle`>> | [`MapObjectProps`](mapObject.md#mapobjectprops).[`styles`](mapObject.md#property-styles) |
 
 ***
 
@@ -87,7 +87,7 @@ Shared props contract for feature collections rendered from the current map cont
 | Property | Type | Inherited from |
 | ------ | ------ | ------ |
 | <a id="property-idkey"></a> `idKey?` | `string` | - |
-| <a id="property-styles-1"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"`, `TStyle`>> | `Omit.styles` |
+| <a id="property-styles-1"></a> `styles?` | `Partial`<`Record`<`"default"` | `"hover"` | `"active"` | `"focus"`, `TStyle`>> | `Omit.styles` |
 
 ## Type Aliases
 

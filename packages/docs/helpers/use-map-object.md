@@ -26,6 +26,9 @@ const styles: MapObjectProps<StyleValue>['styles'] = {
   default: {
     opacity: 0.9,
   },
+  focus: {
+    stroke: 'darkgreen',
+  },
   hover: {
     opacity: 0.8,
   },
@@ -41,6 +44,7 @@ const { style, ...events } = useMapObject(styles)
   <path
     :d="d"
     :style="style"
+    tabindex="0"
     v-bind="events"
   />
 </template>
@@ -58,6 +62,9 @@ export function CustomFeaturePath({ d }: { d: string }) {
     default: {
       opacity: 0.9,
     },
+    focus: {
+      stroke: 'darkgreen',
+    },
     hover: {
       opacity: 0.8,
     },
@@ -73,6 +80,7 @@ export function CustomFeaturePath({ d }: { d: string }) {
   return (
     <path
       d={d}
+      tabIndex={0}
       style={style}
       {...events}
     />

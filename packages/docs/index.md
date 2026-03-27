@@ -1,5 +1,6 @@
 ---
 layout: home
+description: D3 maps for Vue and React with reactive SVG map components, choropleth maps, markers, zoom, and responsive rendering
 hero:
   name: d3-maps
   text: Simple SVG maps powered by D3
@@ -19,7 +20,7 @@ features:
     details: Drop-in components, powerful defaults
     icon: ✨
   - title: Feature rich
-    details: Zoom, drag, mesh, markers, and more
+    details: Zoom, drag, lines, markers, and more
     icon: 💪
   - title: Reactive
     details: Props change triggers rerender

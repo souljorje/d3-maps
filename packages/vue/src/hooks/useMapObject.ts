@@ -19,27 +19,31 @@ import {
   unref,
 } from 'vue'
 
-import { useInsideZoom } from './useInsideZoom'
+import { useMapZoom } from './useMapZoom'
 
 export interface UseMapObjectResult {
   style: ComputedRef<StyleValue | undefined>
-  onMouseenter: (event: MouseEvent) => void
-  onMouseleave: (event: MouseEvent) => void
+  onMouseenter: () => void
+  onMouseleave: () => void
   onMousedown: (event: MouseEvent) => void
-  onMouseup: (event: MouseEvent) => void
+  onMouseup: () => void
+  onFocus: () => void
+  onBlur: () => void
 }
 
 export function useMapObject(
   styles: MaybeRef<Partial<Record<MapObjectState, StyleValue>> | undefined>,
 ): UseMapObjectResult {
   const state = ref<MapObjectState>('default')
-  const insideZoom = useInsideZoom()
+  const insideZoom = Boolean(useMapZoom())
 
   const {
     onMouseenter,
     onMouseleave,
     onMouseup,
     onMousedown,
+    onFocus,
+    onBlur,
     dispose,
   }: MapObjectInteractionController<MouseEvent> = useMapObjectEvents((nextState) => {
     state.value = nextState
@@ -57,5 +61,7 @@ export function useMapObject(
     onMouseleave,
     onMousedown,
     onMouseup,
+    onFocus,
+    onBlur,
   }
 }

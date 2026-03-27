@@ -11,7 +11,7 @@ import {
 
 export type MapObjectData = GeoGeometryObjects | ExtendedFeature
 
-export type MapObjectEventType = 'mouseenter' | 'mouseleave' | 'mousedown' | 'mouseup'
+export type MapObjectEventType = 'mouseenter' | 'mouseleave' | 'mousedown' | 'mouseup' | 'focus' | 'blur'
 export type MapObjectGlobalMouseupListener = () => void
 export type MapObjectGlobalMouseupSubscription = (
   listener: MapObjectGlobalMouseupListener,
@@ -20,7 +20,7 @@ export type MapObjectGlobalMouseupSubscription = (
 /**
  * Supported interaction states for map objects.
  */
-export const mapObjectState = ['default', 'hover', 'active'] as const
+export const mapObjectState = ['default', 'hover', 'active', 'focus'] as const
 export type MapObjectState = typeof mapObjectState[number]
 export interface MapObjectProps<TStyle = unknown> {
   styles?: Partial<Record<MapObjectState, TStyle>>
@@ -40,6 +40,8 @@ export interface MapObjectInteractionController<TTarget = unknown> {
   onMouseleave: () => MapObjectState
   onMousedown: (source?: MapObjectMouseDownSource<TTarget>) => MapObjectState
   onMouseup: () => MapObjectState
+  onFocus: () => MapObjectState
+  onBlur: () => MapObjectState
   dispose: () => void
 }
 
@@ -52,9 +54,12 @@ export function getObjectStateUpdate(event: MapObjectEventType): MapObjectState 
     case 'mouseup':
       return 'hover'
     case 'mouseleave':
+    case 'blur':
       return 'default'
     case 'mousedown':
       return 'active'
+    case 'focus':
+      return 'focus'
     default:
       return 'default'
   }
@@ -75,8 +80,18 @@ export function useMapObjectEvents<TTarget = unknown>(
   recoverOnGlobalMouseup = false,
 ): MapObjectInteractionController<TTarget> {
   let state: MapObjectState = 'default'
+  let isHovered = false
+  let isFocused = false
+  let isActive = false
   let pressedTarget: MapObjectMouseDownSource<TTarget> = null
   let removeGlobalMouseup: () => void = noop
+
+  const getResolvedState = (): MapObjectState => {
+    if (isActive) return 'active'
+    if (isFocused) return 'focus'
+    if (isHovered) return 'hover'
+    return 'default'
+  }
 
   const setState = (nextState: MapObjectState): MapObjectState => {
     if (state === nextState) return state
@@ -85,11 +100,12 @@ export function useMapObjectEvents<TTarget = unknown>(
     return state
   }
 
-  const setStateForEvent = (event: MapObjectEventType): MapObjectState => {
-    return setState(getObjectStateUpdate(event))
+  const syncState = (): MapObjectState => {
+    return setState(getResolvedState())
   }
 
   const clearInteraction = (): void => {
+    isActive = false
     pressedTarget = null
     removeGlobalMouseup()
     removeGlobalMouseup = noop
@@ -99,28 +115,42 @@ export function useMapObjectEvents<TTarget = unknown>(
     if (!recoverOnGlobalMouseup) return
 
     const onGlobalMouseup = (): MapObjectState => {
-      const nextState = isHoveredSource(pressedTarget) ? 'hover' : 'default'
+      isHovered = isHoveredSource(pressedTarget)
       clearInteraction()
-      return setState(nextState)
+      return syncState()
     }
     removeGlobalMouseup()
     removeGlobalMouseup = subscribeWindow('mouseup', onGlobalMouseup)
   }
 
   return {
-    onMouseenter: () => setStateForEvent('mouseenter'),
+    onMouseenter: () => {
+      isHovered = true
+      return syncState()
+    },
     onMouseleave: () => {
+      isHovered = false
       clearInteraction()
-      return setStateForEvent('mouseleave')
+      return syncState()
     },
     onMousedown: (source) => {
+      isActive = true
       pressedTarget = normalizeMouseDownSource(source)
       registerGlobalMouseup()
-      return setStateForEvent('mousedown')
+      return syncState()
     },
     onMouseup: () => {
       clearInteraction()
-      return setStateForEvent('mouseup')
+      return syncState()
+    },
+    onFocus: () => {
+      isFocused = true
+      return syncState()
+    },
+    onBlur: () => {
+      isFocused = false
+      clearInteraction()
+      return syncState()
     },
     dispose: () => clearInteraction(),
   }
