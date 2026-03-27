@@ -9,6 +9,7 @@ export default createTsDownConfig({
     'd3-geo',
     'd3-selection',
     'd3-shape',
+    'd3-transition',
     'd3-zoom',
     'topojson-client',
   ],
