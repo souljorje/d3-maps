@@ -333,12 +333,8 @@ export default defineConfig({
     plugins: [
       tailwindcss(),
       llmstxt({
-        domain: SITE_URL ?? 'https://d3-maps.netlify.app',
-        generateLLMsTxt: true,
-        generateLLMsFullTxt: true,
-        generateLLMFriendlyDocsForEachPage: true,
-        stripHTML: true,
-        injectLLMHint: true,
+        domain: SITE_URL,
+        injectLLMHint: false,
         excludeIndexPage: false,
         ignoreFiles: ['AGENTS.md', '**/AGENTS.md', '**/_*.md'],
         ignoreFilesPerOutput: {
