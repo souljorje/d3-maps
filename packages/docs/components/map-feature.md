@@ -1,3 +1,7 @@
+---
+description: Component for a single interactive GeoJSON feature path on D3 SVG maps in React and Vue
+---
+
 # MapFeature
 
 Renders a single GeoJSON feature as an SVG `<path>`.

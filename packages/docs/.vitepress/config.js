@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitepress'
+import llmstxt from 'vitepress-plugin-llms'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 
 const REPO_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
@@ -144,6 +145,26 @@ function getExamples() {
 }
 const examples = getExamples()
 
+function sanitizeSidebarItems(items) {
+  return items
+    .map((item) => {
+      if (!item.link && !item.items) return null
+      if (item.link?.includes('#')) return null
+      if (item.link?.startsWith('/examples/') && item.link !== '/examples') return null
+
+      if (!item.items) return item
+
+      const nestedItems = sanitizeSidebarItems(item.items)
+      if (nestedItems.length === 0 && !item.link) return null
+
+      return {
+        ...item,
+        items: nestedItems,
+      }
+    })
+    .filter(Boolean)
+}
+
 const docsSidebar = [
   {
     text: 'Guide',
@@ -215,6 +236,11 @@ const docsSidebar = [
         },
       ]
     : []),
+]
+
+const llmsSidebar = [
+  { text: 'Home', link: '/' },
+  ...sanitizeSidebarItems(docsSidebar),
 ]
 
 export default defineConfig({
@@ -304,7 +330,26 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [
+      tailwindcss(),
+      llmstxt({
+        domain: SITE_URL ?? 'https://d3-maps.netlify.app',
+        generateLLMsTxt: true,
+        generateLLMsFullTxt: true,
+        generateLLMFriendlyDocsForEachPage: true,
+        stripHTML: true,
+        injectLLMHint: true,
+        excludeIndexPage: false,
+        ignoreFiles: ['AGENTS.md', '**/AGENTS.md', '**/_*.md'],
+        ignoreFilesPerOutput: {
+          llmsTxt: ['examples/*.md', 'api/core/**'],
+          llmsFullTxt: ['examples/*.md', 'api/core/**'],
+          pages: ['examples/*.md', 'api/core/**'],
+        },
+        customLLMsTxtTemplate: '# {title}\n\n{description}\n\n## Table of Contents\n\n{toc}\n',
+        sidebar: llmsSidebar,
+      }),
+    ],
     server: {
       fs: {
         allow: [REPO_ROOT],

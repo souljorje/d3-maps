@@ -1,5 +1,6 @@
 ---
 title: API
+description: API docs entry point for generated d3-maps core docs and local TypeDoc pages
 ---
 
 <script setup>

@@ -1,10 +1,14 @@
+---
+description: Component for D3 SVG map pan and zoom in React and Vue
+---
+
 # MapZoom
 
 Enables zoom and drag behavior using `d3-zoom`.
 
 Wrap layers that should be zoomed inside [MapZoom](/components/map-zoom).
 
-Use [useMapZoom](/helpers/use-map-zoom) inside `MapZoom` when controls or overlays need live zoom state
+Use [useMapZoom](/helpers/use-map-zoom) inside `MapZoom` when controls or overlays need zoom state
 
 Keep `center` and `zoom` controlled in the parent and update them from the zoom callbacks
 

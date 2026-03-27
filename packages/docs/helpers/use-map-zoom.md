@@ -1,7 +1,11 @@
+---
+description: Helper for reading zoom state and zooming to map objects on D3 SVG maps with React and Vue
+---
+
 # useMapZoom
 
 Reads the current zoom state from [MapZoom](/components/map-zoom)  
-Use it inside `MapZoom` when you need live zoom values  
+Use it inside `MapZoom` when you need zoom values  
 Returns `undefined` if used outside `MapZoom`
 
 ## Return value

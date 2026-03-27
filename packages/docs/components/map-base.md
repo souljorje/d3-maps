@@ -1,3 +1,7 @@
+---
+description: Component for the root D3 SVG map container and shared map context in React and Vue
+---
+
 # MapBase
 
 Renders the root `<svg>` and provides a reactive map context to children.

@@ -1,3 +1,7 @@
+---
+description: Helper for stable GeoJSON feature IDs in D3 SVG maps
+---
+
 # getFeatureKey
 
 Resolves a feature key from a GeoJSON feature
