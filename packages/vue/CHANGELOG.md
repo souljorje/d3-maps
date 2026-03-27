@@ -1,5 +1,19 @@
 # @d3-maps/vue
 
+## 0.10.0
+
+### Minor Changes
+
+- [#31](https://github.com/souljorje/d3-maps/pull/31) [`bae85e7`](https://github.com/souljorje/d3-maps/commit/bae85e74ed653f64c0818b6a2cca07b328f61746) Thanks [@souljorje](https://github.com/souljorje)! - - Renamed the core types: `MapFeature` -> `MapFeatureData`, `MapMesh` -> `MapMeshData`
+  - Switched to explicit stylesheet imports via `@d3-maps/react/index.css` and `@d3-maps/vue/index.css`
+  - Re-exported core types and common helper functions from the adapter roots
+  - Improved the published browser bundles so CDN builds no longer rely on unexpected external globals
+
+### Patch Changes
+
+- Updated dependencies [[`bae85e7`](https://github.com/souljorje/d3-maps/commit/bae85e74ed653f64c0818b6a2cca07b328f61746)]:
+  - @d3-maps/core@0.10.0
+
 ## 0.9.0
 
 ### Minor Changes
