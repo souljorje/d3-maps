@@ -8,7 +8,7 @@ Use it when you need a stable identifier for rendering or DOM targeting
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `feature` | [MapFeature](/api/core/feature#mapfeature) | `—` | Feature to inspect |
+| `feature` | [MapFeatureData](/api/core/feature#mapfeaturedata) | `—` | Feature to inspect |
 | `idKey?` | `string` | `'id'` | Key checked on the feature and then on `feature.properties` |
 | `fallback?` | `string \| number` | `—` | Optional fallback value returned when no key is found |
 
@@ -25,8 +25,6 @@ If no value is found and no fallback is provided, it returns `undefined`
 ## Usage
 
 ```ts
-import { getFeatureKey } from '@d3-maps/core'
-
 const key = getFeatureKey(feature)
 const keyedBySlug = getFeatureKey(feature, 'slug')
 const keyedWithFallback = getFeatureKey(feature, 'id', index)

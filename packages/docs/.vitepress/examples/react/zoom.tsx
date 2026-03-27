@@ -1,7 +1,4 @@
-import type {
-  MapData,
-  ZoomEvent,
-} from '@d3-maps/core'
+import type { MapData, ZoomEvent } from '@d3-maps/react'
 
 import {
   MapBase,

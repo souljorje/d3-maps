@@ -14,8 +14,6 @@ Use it when you want to zoom to a feature, marker geometry, or any other permiss
 
 ## Return value
 
-Returns:
-
 ```ts
 {
   center: [number, number]
@@ -28,8 +26,6 @@ Returns `undefined` when the object has invalid or empty bounds
 ## Usage
 
 ```ts
-import { getObjectZoomView } from '@d3-maps/core'
-
 const view = getObjectZoomView(context, feature, {
   minZoom: 1,
   maxZoom: 16,

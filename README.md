@@ -5,7 +5,7 @@
 Simple SVG maps powered by D3.  
 Works with Vue and React. Solid and Svelte support coming soon.
 
-[![CI](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml/badge.svg)](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml) [![Deploy Docs](https://github.com/souljorje/d3-maps/actions/workflows/docs-deploy.yml/badge.svg)](https://github.com/souljorje/d3-maps/actions/workflows/docs-deploy.yml) [![vue size](https://deno.bundlejs.com/badge?q=@d3-maps/vue&badge=detailed)](https://bundlejs.com/?q=@d3-maps/vue) [![react size](https://deno.bundlejs.com/badge?q=@d3-maps/react&badge=detailed)](https://bundlejs.com/?q=@d3-maps/react)
+[![CI](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml/badge.svg)](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml) [![Netlify Status](https://api.netlify.com/api/v1/badges/619b15fb-c666-48ed-9715-894474c88e35/deploy-status)](https://d3-maps.netlify.app) [![vue size](https://deno.bundlejs.com/badge?q=@d3-maps/vue&badge=detailed)](https://bundlejs.com/?q=@d3-maps/vue) [![react size](https://deno.bundlejs.com/badge?q=@d3-maps/react&badge=detailed)](https://bundlejs.com/?q=@d3-maps/react)
 
 [**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples)
 

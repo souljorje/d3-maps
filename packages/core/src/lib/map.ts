@@ -89,7 +89,7 @@ export interface MapContext {
   /**
    * Normalized feature list after optional transformation.
    */
-  features: MapFeature[]
+  features: MapFeatureData[]
   /**
    * Shared path generator bound to the map projection.
    */

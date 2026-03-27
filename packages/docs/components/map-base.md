@@ -113,10 +113,11 @@ If controls or other consumers need the same map context outside the rendered `<
 
 ```vue
 <script setup lang="ts">
-import type { MapData } from '@d3-maps/core'
-
 import { computed } from 'vue'
-import { useCreateMapContext } from '@d3-maps/vue'
+import {
+  type MapData,
+  useCreateMapContext,
+} from '@d3-maps/vue'
 
 const props = defineProps<{
   data: MapData
@@ -139,9 +140,12 @@ const context = useCreateMapContext(computed(() => ({
 == React
 
 ```tsx
-import type { MapData } from '@d3-maps/core'
-
-import { MapBase, MapFeatures, useCreateMapContext } from '@d3-maps/react'
+import {
+  MapBase,
+  MapFeatures,
+  type MapData,
+  useCreateMapContext,
+} from '@d3-maps/react'
 
 export function Example({ data }: { data: MapData }) {
   const context = useCreateMapContext({
