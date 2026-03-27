@@ -1,5 +1,5 @@
 ---
-description: Advanced Vue and React map hooks for custom layers, renderers, and access to d3-maps internals
+description: Helpers for custom SVG map layers, renderers, zoom logic, and shared map state in React and Vue
 ---
 
 # Helpers

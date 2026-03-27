@@ -35,6 +35,7 @@
     "@types/d3-shape": "catalog:",
     "tailwindcss": "catalog:",
     "vitepress": "catalog:",
+    "vitepress-plugin-llms": "catalog:",
     "vitepress-plugin-tabs": "catalog:",
     "vue-tsc": "catalog:"
   }

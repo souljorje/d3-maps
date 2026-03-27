@@ -1,5 +1,5 @@
 ---
-description: Learn how to build reactive SVG maps with D3 in Vue and React, from installation and map data to your first interactive map
+description: Guide to building D3 SVG maps in React and Vue with GeoJSON or TopoJSON data, projections, and interactive layers
 ---
 
 # Introduction

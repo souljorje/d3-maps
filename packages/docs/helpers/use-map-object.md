@@ -1,3 +1,7 @@
+---
+description: Helper for interaction state and resolved styles on custom D3 SVG map objects with React and Vue
+---
+
 # useMapObject
 
 Provides interaction-state transitions and resolved styles for custom map SVG elements.

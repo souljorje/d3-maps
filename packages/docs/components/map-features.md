@@ -1,3 +1,7 @@
+---
+description: Component for GeoJSON feature rendering on D3 SVG maps in React and Vue
+---
+
 # MapFeatures
 
 Renders all GeoJSON features from the current map context

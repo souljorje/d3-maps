@@ -1,3 +1,7 @@
+---
+description: Component for D3 SVG map TopoJSON borders and boundary lines in React and Vue
+---
+
 # MapMesh
 
 Renders a TopoJSON mesh as an SVG `<path>`.  

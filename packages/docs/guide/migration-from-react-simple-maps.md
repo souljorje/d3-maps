@@ -1,5 +1,5 @@
 ---
-description: Migrate from react-simple-maps to @d3-maps/react with component, prop, styling, and zoom API equivalents
+description: Migration guide from react-simple-maps to @d3-maps/react, covering component, prop, styling, and zoom API equivalents
 ---
 
 # Migrate from react-simple-maps

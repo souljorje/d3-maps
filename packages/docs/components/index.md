@@ -1,5 +1,5 @@
 ---
-description: Reference for Vue and React map components including MapBase, MapFeatures, MapMarker, MapZoom, MapGraticule, and more
+description: "D3 SVG map components in React and Vue: MapBase, MapFeatures, MapMarker, MapZoom, and MapGraticule"
 ---
 
 # Components

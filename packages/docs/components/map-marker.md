@@ -1,3 +1,7 @@
+---
+description: Component for D3 SVG map markers in React and Vue
+---
+
 # MapMarker
 
 Positions anything on the map based on coordinates
