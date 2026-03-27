@@ -35,8 +35,10 @@
 | Shared abstractions | Keep reusable logic in core; adapters should be framework-specific wrappers only. |
 | Domain contracts | Treat `feature.ts`, `marker.ts`, `zoom.ts`, and `mapObject.ts` as shared model/type contracts, not view-only helpers. |
 | Map context inputs | If helper depends on map context values, accept the context object. |
+| Build ownership | Keep D3 and TopoJSON runtime plus published type dependencies owned here, not mirrored into adapters. |
 
 ## References
 - [Root Guide](../../AGENTS.md)
 - [Architecture](../../.agents/references/architecture.md)
+- [Tsdown Build Strategy](../../.agents/references/tsdown-build-strategy.md)
 - [Code Style](../../.agents/references/code-style.md)

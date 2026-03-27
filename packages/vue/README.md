@@ -49,12 +49,6 @@ export default defineNuxtPlugin((nuxtApp) => {
 })
 ```
 
-## Styling
-
-Importing `@d3-maps/vue` automatically includes `@d3-maps/core/index.css`
-
-If you need strict stylesheet ordering, load your global reset/theme styles before importing the adapter entry
-
 ## License
 
 MIT licensed. Copyright © 2020 Georgii Bukharov. See [LICENSE](./LICENSE) for more details.
