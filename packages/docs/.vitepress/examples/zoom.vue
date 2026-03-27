@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ZoomEvent } from '@d3-maps/core'
+import type { ZoomEvent } from '@d3-maps/vue'
 
 import { geoNaturalEarth1 } from 'd3-geo'
 import { withBase } from 'vitepress'

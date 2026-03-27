@@ -1,6 +1,6 @@
 # @d3-maps/vue
 
-Reactive SVG maps, powered by D3  
+Simple SVG maps with Vue & D3.  
 
 [**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples)
 
@@ -59,6 +59,7 @@ Registers all components in the app
 
 ```js
 import { createApp } from 'vue'
+import '@d3-maps/vue/index.css'
 import { plugin as D3MapsVue } from '@d3-maps/vue'
 import App from './App.vue'
 
@@ -71,6 +72,7 @@ _Nuxt 3_ \
 Create `~/plugins/d3-maps-vue.client.ts`:
 
 ```ts
+import '@d3-maps/vue/index.css'
 import { plugin as D3MapsVue } from '@d3-maps/vue'
 
 export default defineNuxtPlugin((nuxtApp) => {

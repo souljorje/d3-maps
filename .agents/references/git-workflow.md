@@ -53,5 +53,5 @@ feat(core): add auto-fit helper for responsive maps
 ## Related Docs
 - [Architecture](architecture.md)
 - [Code Style](code-style.md)
-- [GitHub Actions Workflow](github-actions-workflow.md)
+- [CI/CD](ci-cd.md)
 - [changesets skill](../skills/changesets/SKILL.md)

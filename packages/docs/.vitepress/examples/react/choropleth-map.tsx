@@ -1,11 +1,8 @@
-import type {
-  MapData,
-  MapFeature,
-} from '@d3-maps/core'
+import type { MapData, MapFeatureData } from '@d3-maps/react'
 
 import {
-  MapFeature as D3MapFeature,
   MapBase,
+  MapFeature,
   MapFeatures,
 } from '@d3-maps/react'
 import { extent } from 'd3-array'
@@ -98,7 +95,7 @@ export default function ChoroplethMapExample(): JSX.Element {
     minAndMaxValues[1],
   ])
 
-  const dataTransformer = useCallback((features: MapFeature[]): MapFeature[] => {
+  const dataTransformer = useCallback((features: MapFeatureData[]): MapFeatureData[] => {
     return features.map((feature) => {
       const country = data.find((item) => item.id === String(feature.id))
       const colorValue = country ? colorScale(country.value) : ''
@@ -128,7 +125,7 @@ export default function ChoroplethMapExample(): JSX.Element {
           <>
             {
               features.map((feature) => (
-                <D3MapFeature
+                <MapFeature
                   key={String(feature.id)}
                   data={feature}
                   styles={{

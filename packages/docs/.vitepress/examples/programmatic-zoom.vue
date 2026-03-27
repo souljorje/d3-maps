@@ -91,15 +91,15 @@
 
 <script setup lang="ts">
 import type {
-  MapFeature as D3MapFeature,
   MapData,
-} from '@d3-maps/core'
+  MapFeatureData,
+} from '@d3-maps/vue'
 
 import {
   getFeatureKey,
   getObjectZoomView,
-} from '@d3-maps/core'
-import { useCreateMapContext } from '@d3-maps/vue'
+  useCreateMapContext,
+} from '@d3-maps/vue'
 import { withBase } from 'vitepress'
 import {
   computed,
@@ -170,7 +170,7 @@ async function zoomToRandomCountry() {
   }
 }
 
-function zoomToFeature(feature: D3MapFeature) {
+function zoomToFeature(feature: MapFeatureData) {
   if (!mapContext.value) return
 
   const view = getObjectZoomView(mapContext.value, feature, {
@@ -193,7 +193,7 @@ function clampZoom(value: number) {
   return Math.min(maxZoom, Math.max(minZoom, value))
 }
 
-function getFeatureLabel(feature: D3MapFeature) {
+function getFeatureLabel(feature: MapFeatureData) {
   return feature.properties?.name ?? 'Country'
 }
 </script>

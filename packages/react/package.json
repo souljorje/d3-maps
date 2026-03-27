@@ -28,7 +28,11 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "browser": "./dist/index.iife.js"
+      "browser": "./dist/index.iife.js",
+      "default": "./dist/index.js"
+    },
+    "./index.css": {
+      "default": "./dist/index.css"
     }
   },
   "main": "dist/index.js",
@@ -36,6 +40,7 @@
   "browser": "dist/index.iife.js",
   "unpkg": "dist/index.iife.js",
   "jsdelivr": "dist/index.iife.js",
+  "style": "dist/index.css",
   "types": "dist/index.d.ts",
   "files": [
     "dist/*"
@@ -56,11 +61,8 @@
   },
   "devDependencies": {
     "@testing-library/react": "catalog:",
-    "@types/geojson": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@types/topojson-client": "catalog:",
-    "@types/topojson-specification": "catalog:",
     "@vitejs/plugin-react": "catalog:",
     "jsdom": "catalog:",
     "react": "catalog:",

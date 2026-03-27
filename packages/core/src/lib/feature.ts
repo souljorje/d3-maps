@@ -11,13 +11,13 @@ import { isStringOrNumber } from './utils'
  *
  * This type allows extra top-level fields to be attached in `dataTransformer` (e.g. choropleth colors).
  */
-export type MapFeature = (ExtendedFeature & Record<string, unknown>) | ExtendedFeature
+export type MapFeatureData = (ExtendedFeature & Record<string, unknown>) | ExtendedFeature
 
 /**
  * Shared props contract for a single rendered feature.
  */
 export interface MapFeatureProps<TStyle = unknown> extends MapObjectProps<TStyle> {
-  data: MapFeature
+  data: MapFeatureData
 }
 
 /**
@@ -36,11 +36,11 @@ export interface MapFeaturesProps<TStyle = unknown> extends Omit<MapFeatureProps
  * 3) optional fallback value
  */
 export function getFeatureKey(
-  feature: MapFeature,
+  feature: MapFeatureData,
   idKey: string = 'id',
   fallback?: number | string,
 ): string | number | undefined {
-  const directValue = feature[idKey as keyof MapFeature]
+  const directValue = feature[idKey as keyof MapFeatureData]
   if (isStringOrNumber(directValue)) return directValue
 
   const propertyValue = feature.properties?.[idKey]

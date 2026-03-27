@@ -24,7 +24,6 @@ import {
 } from 'react'
 
 import {
-  MapContextValue,
   useMapContext,
 } from './useMapContext'
 
@@ -159,7 +158,7 @@ export function useCreateMapZoom(
 
 export function useMapZoom(): UseMapZoomResult | undefined {
   const zoomContext = useContext(MapZoomContextValue)
-  const mapContext = useContext(MapContextValue)
+  const mapContext = useMapContext()
 
   return useMemo(() => {
     if (!zoomContext) return undefined

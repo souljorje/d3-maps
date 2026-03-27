@@ -29,7 +29,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | --- | --- |
 | `pnpm install` | Install workspace dependencies. |
 | `pnpm dev` | Run docs dev server (`docs` workspace). |
-| `pnpm build` | Build the full project (packages + docs site). |
+| `pnpm build` | Build publishable packages only via Turbo (`packages/docs` excluded). |
 | `pnpm test` | Run core, react, and vue test suites. |
 | `pnpm docs:gen:examples` | Generate docs example wrapper pages from `.vitepress/examples`. |
 | `pnpm typedoc` | Generate API reference docs via TypeDoc. |
@@ -63,6 +63,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 - [Architecture](.agents/references/architecture.md)
 - [Adapter Development Flow](.agents/references/adapter-development-flow.md)
 - [Code Style](.agents/references/code-style.md)
+- [Tsdown Build Strategy](.agents/references/tsdown-build-strategy.md)
 - [Git Workflow](.agents/references/git-workflow.md)
 - [Docs Generation Workflow](.agents/references/docs-generation.md)
 - [AGENTS Style Guide](.agents/references/agents-style.md)

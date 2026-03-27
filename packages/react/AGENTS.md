@@ -33,6 +33,7 @@
 | Next.js boundary | Any hook-using entrypoint must be client-only (`'use client'`); in Next.js App Router, import it from Client Components. |
 | Effects and callbacks | Keep effect deps primitive-focused and use stable callback refs for event props (follow the [vercel-react-best-practices](../../.agents/skills/react-best-practices/SKILL.md) skill). |
 | Public exports | Keep public surface as named exports routed through packages/react/src/index.ts (and packages/react/src/hooks/index.ts for hooks/types). |
+| Build boundary | Keep tsdown builds on packages/react/tsconfig.build.json so published JS and DTS import `@d3-maps/core` as a package boundary. |
 
 ## Skills
 | Skill | When to use |
@@ -45,4 +46,5 @@
 - [Agent Meta-Flow](../../.agents/references/agent-meta-flow.md)
 - [Adapter Development Flow](../../.agents/references/adapter-development-flow.md)
 - [Architecture](../../.agents/references/architecture.md)
+- [Tsdown Build Strategy](../../.agents/references/tsdown-build-strategy.md)
 - [Code Style](../../.agents/references/code-style.md)

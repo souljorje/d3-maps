@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import type { MapFeature as D3MapFeature } from '@d3-maps/core'
+import type { MapFeatureData as D3MapFeatureData } from '@d3-maps/core'
 
 import { mount } from '@vue/test-utils'
 import { h } from 'vue'
@@ -36,7 +36,7 @@ describe('mapFeatures', () => {
           MapFeatures,
           {},
           {
-            default: ({ features }: { features: D3MapFeature[] }) =>
+            default: ({ features }: { features: D3MapFeatureData[] }) =>
               h('g', {
                 'data-testid': 'map-features-group',
                 'data-count': String(features.length),

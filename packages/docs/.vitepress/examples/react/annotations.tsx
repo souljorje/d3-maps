@@ -1,4 +1,4 @@
-import type { MapData } from '@d3-maps/core'
+import type { MapData } from '@d3-maps/react'
 
 import {
   MapAnnotation,

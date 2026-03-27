@@ -1,0 +1,17 @@
+# Skip docs rebuild if all changed files are only in these areas
+.agents/
+.changeset/
+.github/
+**/tests/
+
+vitest.shared.ts
+**/vitest.config.*
+**/tsconfig.test.json
+eslint.config.js
+
+LICENCE
+CONTRIBUTING.md
+README.md
+**/AGENTS.md
+packages/*/README.md
+packages/*/CHANGELOG.md

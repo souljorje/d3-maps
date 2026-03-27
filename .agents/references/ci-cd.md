@@ -1,20 +1,22 @@
-# GitHub Actions Workflow
+# CI/CD
 
 ## Scope
-Repository automation for validation, docs deployment, and package releases.
+Repository automation for validation, package releases and docs deploy.
 
 ## Active Workflows
 | Workflow | Trigger | Responsibility |
 | --- | --- | --- |
-| [CI workflow](../../.github/workflows/ci.yml) | Pull requests to `main` | Run lint + tests and build the workspace. Docs build is conditional on docs-related file changes. |
-| [Docs deploy workflow](../../.github/workflows/docs-deploy.yml) | Push to `main` + manual dispatch | Trigger a Netlify production deploy when docs-related files change. |
+| [CI workflow](../../.github/workflows/ci.yml) | Pull requests to `main` | Run lint + tests and build publishable packages only via `pnpm build`. Docs are excluded from CI builds. |
 | [Release workflow](../../.github/workflows/release.yml) | Push to `main` + manual dispatch | Build publishable packages and run Changesets to create release PRs or publish packages. |
 
 ## Shared Components
 | Component | Location | Used by | Purpose |
 | --- | --- | --- | --- |
 | Setup composite action | [Setup action](../../.github/actions/setup/action.yml) | CI, release | Standardize pnpm + Node setup, dependency install, and Turbo cache restore. |
-| Docs path filters | [Path filters](../../.github/path-filters.yml) | CI, docs deploy | Keep docs-change detection in one source of truth for workspace, docs, and deploy-config changes. |
+
+## Docs Deployment
+- Docs deploys are handled by Netlify continuous deployment
+- Netlify uses [`ignore`](../../netlify.toml) with [`scripts/netlify-ignore-build.mjs`](../../scripts/netlify-ignore-build.mjs) and [`.netlifyignore`](../../.netlifyignore) to skip deploys when changes are limited to ignored-only areas.
 
 ## Release Model
 - Stable releases are produced from `main`.

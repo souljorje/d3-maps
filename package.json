@@ -8,8 +8,7 @@
   },
   "scripts": {
     "dev": "pnpm --filter docs dev",
-    "build": "turbo run build",
-    "build:packages": "turbo run build --filter=!@d3-maps/docs",
+    "build": "turbo run build --filter=!@d3-maps/docs",
     "test": "turbo run test",
     "typecheck": "pnpm -r typecheck",
     "typecheck:test": "pnpm -r --if-present typecheck:test",

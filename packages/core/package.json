@@ -18,17 +18,24 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "browser": "./dist/index.iife.js"
+      "browser": "./dist/index.iife.js",
+      "default": "./dist/index.js"
     },
-    "./*.css": {
-      "import": "./dist/*.css",
-      "browser": "./dist/*.css"
+    "./types": {
+      "types": "./dist/index.d.ts"
+    },
+    "./index.css": {
+      "import": "./dist/index.css",
+      "browser": "./dist/index.css",
+      "default": "./dist/index.css"
     }
   },
   "style": "dist/index.css",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "browser": "dist/index.iife.js",
+  "unpkg": "dist/index.iife.js",
+  "jsdelivr": "dist/index.iife.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/*"
@@ -42,6 +49,13 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@types/d3-geo": "catalog:",
+    "@types/d3-selection": "catalog:",
+    "@types/d3-shape": "catalog:",
+    "@types/d3-transition": "catalog:",
+    "@types/d3-zoom": "catalog:",
+    "@types/topojson-client": "catalog:",
+    "@types/topojson-specification": "catalog:",
     "d3-geo": "catalog:",
     "d3-selection": "catalog:",
     "d3-shape": "catalog:",
@@ -50,14 +64,7 @@
     "topojson-client": "catalog:"
   },
   "devDependencies": {
-    "@types/d3-geo": "catalog:",
-    "@types/d3-selection": "catalog:",
-    "@types/d3-shape": "catalog:",
-    "@types/d3-transition": "catalog:",
-    "@types/d3-zoom": "catalog:",
     "@types/geojson": "catalog:",
-    "@types/topojson-client": "catalog:",
-    "@types/topojson-specification": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "vite-tsconfig-paths": "catalog:",

@@ -48,9 +48,8 @@ Source: [packes/core/src/lib/map.ts](https://github.com/souljorje/d3-maps/blob/m
 
 ```vue
 <script setup lang="ts">
-import type { MapData } from '@d3-maps/core'
-
 import { geoEquirectangular } from 'd3-geo'
+import { type MapData } from '@d3-maps/vue'
 
 defineProps<{
   data: MapData
@@ -77,10 +76,8 @@ defineProps<{
 == React
 
 ```tsx
-import type { MapData } from '@d3-maps/core'
-
 import { geoEquirectangular } from 'd3-geo'
-import { MapBase, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
 
 export function Example({ data }: { data: MapData }) {
   return (
@@ -120,10 +117,11 @@ If controls or other consumers need the same map context outside the rendered `<
 
 ```vue
 <script setup lang="ts">
-import type { MapData } from '@d3-maps/core'
-
 import { computed } from 'vue'
-import { useCreateMapContext } from '@d3-maps/vue'
+import {
+  type MapData,
+  useCreateMapContext,
+} from '@d3-maps/vue'
 
 const props = defineProps<{
   data: MapData
@@ -146,9 +144,12 @@ const context = useCreateMapContext(computed(() => ({
 == React
 
 ```tsx
-import type { MapData } from '@d3-maps/core'
-
-import { MapBase, MapFeatures, useCreateMapContext } from '@d3-maps/react'
+import {
+  MapBase,
+  MapFeatures,
+  type MapData,
+  useCreateMapContext,
+} from '@d3-maps/react'
 
 export function Example({ data }: { data: MapData }) {
   const context = useCreateMapContext({

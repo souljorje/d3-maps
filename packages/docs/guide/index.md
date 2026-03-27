@@ -50,8 +50,9 @@ bun add @d3-maps/vue
 == CDN
 
 ```bash
-https://unpkg.com/@d3-maps/core/index.iife.js
-https://unpkg.com/@d3-maps/vue/index.iife.js
+https://cdn.jsdelivr.net/npm/@d3-maps/vue@0.8.0/index.css
+https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js
+https://cdn.jsdelivr.net/npm/@d3-maps/vue@0.8.0
 ```
 
 :::
@@ -81,20 +82,30 @@ bun add @d3-maps/react
 == CDN
 
 ```bash
-https://unpkg.com/@d3-maps/core/index.iife.js
-https://unpkg.com/@d3-maps/react/index.iife.js
+https://cdn.jsdelivr.net/npm/@d3-maps/react@0.5.0/index.css
+https://cdn.jsdelivr.net/npm/react@19/umd/react.production.min.js
+https://cdn.jsdelivr.net/npm/@d3-maps/react@0.5.0
 ```
 
 :::
 
 ::::
 
+## CDN support
+
+- `jsDelivr` and `UNPKG` support package-root script URLs for `@d3-maps/core`, `@d3-maps/react`, and `@d3-maps/vue`
+- `@d3-maps/react` and `@d3-maps/vue` browser bundles already include `@d3-maps/core`, so you only need the framework runtime plus the adapter script
+- browser styles are available from the adapter packages at `@d3-maps/react/index.css` and `@d3-maps/vue/index.css`
+- `esm.sh` and `Skypack` use the package ESM entrypoints, so prefer package-root imports there
+- `cdnjs` is not an npm mirror, so publishing to npm does not make `@d3-maps/*` available there automatically
+
 ## Basic usage
 
 1. Get data
 
 ```ts
-import type { MapData } from '@d3-maps/core'
+import '@d3-maps/vue/index.css'
+import type { MapData } from '@d3-maps/vue'
 const data: MapData = await fetch('/some-topojson.json').then((res) => res.json())
 ```
 
@@ -106,9 +117,8 @@ const data: MapData = await fetch('/some-topojson.json').then((res) => res.json(
 
 ```vue [vue]
 <script setup lang="ts">
-import type { MapData } from '@d3-maps/core'
-
-import { MapBase, MapFeatures } from '@d3-maps/vue'
+import '@d3-maps/vue/index.css'
+import { MapBase, MapFeatures, type MapData } from '@d3-maps/vue'
 defineProps<{
   data: MapData
 }>()
@@ -124,9 +134,8 @@ defineProps<{
 == React
 
 ```tsx [react]
-import type { MapData } from '@d3-maps/core'
-
-import { MapBase, MapFeatures } from '@d3-maps/react'
+import '@d3-maps/react/index.css'
+import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
 
 export function MapView({ data }: { data: MapData }) {
   return (

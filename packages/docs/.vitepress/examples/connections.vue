@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MapData } from '@d3-maps/core'
+import type { MapData } from '@d3-maps/vue'
 
 import { curveBasis } from 'd3-shape'
 import { withBase } from 'vitepress'
