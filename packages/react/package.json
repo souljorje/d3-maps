@@ -61,11 +61,8 @@
   },
   "devDependencies": {
     "@testing-library/react": "catalog:",
-    "@types/geojson": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@types/topojson-client": "catalog:",
-    "@types/topojson-specification": "catalog:",
     "@vitejs/plugin-react": "catalog:",
     "jsdom": "catalog:",
     "react": "catalog:",

@@ -59,9 +59,6 @@
     "@d3-maps/core": "workspace:*"
   },
   "devDependencies": {
-    "@types/geojson": "catalog:",
-    "@types/topojson-client": "catalog:",
-    "@types/topojson-specification": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "@vue/test-utils": "catalog:",
     "jsdom": "catalog:",

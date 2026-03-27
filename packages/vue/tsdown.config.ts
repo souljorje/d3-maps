@@ -7,10 +7,13 @@ export default createTsDownConfig({
     from: '../core/src/index.css',
     rename: 'index.css',
   }],
+  dts: {
+    tsconfig: './tsconfig.dts.json',
+    vue: true,
+  },
   iifeNoExternal: ['@d3-maps/core'],
   globals: {
     vue: 'Vue',
   },
   plugins: [vue({ isProduction: true })],
-  dts: { vue: true },
 })

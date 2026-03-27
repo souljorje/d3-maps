@@ -49,6 +49,11 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@types/d3-geo": "catalog:",
+    "@types/d3-shape": "catalog:",
+    "@types/d3-zoom": "catalog:",
+    "@types/topojson-client": "catalog:",
+    "@types/topojson-specification": "catalog:",
     "d3-geo": "catalog:",
     "d3-selection": "catalog:",
     "d3-shape": "catalog:",
@@ -56,13 +61,8 @@
     "topojson-client": "catalog:"
   },
   "devDependencies": {
-    "@types/d3-geo": "catalog:",
     "@types/d3-selection": "catalog:",
-    "@types/d3-shape": "catalog:",
-    "@types/d3-zoom": "catalog:",
     "@types/geojson": "catalog:",
-    "@types/topojson-client": "catalog:",
-    "@types/topojson-specification": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "vite-tsconfig-paths": "catalog:",
