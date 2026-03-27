@@ -90,6 +90,7 @@ https://cdn.jsdelivr.net/npm/@d3-maps/react@0.5.0
 ## CDN support
 
 - `jsDelivr` and `UNPKG` support package-root script URLs for `@d3-maps/core`, `@d3-maps/react`, and `@d3-maps/vue`
+- `@d3-maps/react` and `@d3-maps/vue` browser bundles already include `@d3-maps/core`, so you only need the framework runtime plus the adapter script
 - browser styles are available from the adapter packages at `@d3-maps/react/index.css` and `@d3-maps/vue/index.css`
 - `esm.sh` and `Skypack` use the package ESM entrypoints, so prefer package-root imports there
 - `cdnjs` is not an npm mirror, so publishing to npm does not make `@d3-maps/*` available there automatically

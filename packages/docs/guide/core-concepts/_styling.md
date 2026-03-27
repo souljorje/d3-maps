@@ -69,7 +69,25 @@ const styles = {
 
 ### CSS
 
-You can define styles for map components via plain CSS
+1. Import [default stylesheet](https://github.com/souljorje/d3-maps/blob/main/packages/core/src/index.css) to simplify global map styles
+
+:::tabs key:framework-css
+
+== Vue
+
+```ts
+import '@d3-maps/vue/index.css'
+```
+
+== React
+
+```ts
+import '@d3-maps/react/index.css'
+```
+
+:::
+
+2. Define styles for map components with plain CSS
 
 | Component | CSS selector |
 | --- | --- |
@@ -84,7 +102,4 @@ You can define styles for map components via plain CSS
 | [MapAnnotation](/components/map-annotation) connector | `[name="annotation-line"]` |
 | [MapZoom](/components/map-zoom) | `[name="zoom"]` |
 
-`--d3m-stroke-w: 0.5` is the default line width for `background`, `graticule`, `feature`, and `mesh`, while `border`, `line`, and `annotation-line` use `calc(var(--d3m-stroke-w) * 2)`
-
-Source: [packages/core/src/index.css](https://github.com/souljorje/d3-maps/blob/main/packages/core/src/index.css)  
-Example (this site): [packages/docs/.vitepress/theme/custom.css](https://github.com/souljorje/d3-maps/blob/main/packages/docs/.vitepress/theme/custom.css)
+See example (this site) [packages/docs/.vitepress/theme/custom.css](https://github.com/souljorje/d3-maps/blob/main/packages/docs/.vitepress/theme/custom.css)
