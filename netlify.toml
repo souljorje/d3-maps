@@ -1,6 +1,7 @@
 [build]
 command = "pnpm docs:build"
 publish = "packages/docs/.vitepress/dist"
+ignore = "node ./scripts/netlify-ignore-build.mjs"
 
 [build.environment]
 NODE_VERSION = "24"
