@@ -117,7 +117,7 @@ export default defineConfig({
   base: process.env.VITEPRESS_BASE || '/',
   srcExclude: ['AGENTS.md', '**/AGENTS.md', '**/_*.md'],
   title: 'd3-maps',
-  description: 'Reactive SVG maps powered by D3',
+  description: 'Simple SVG maps powered by D3',
   head: [
     ['meta', { name: 'theme-color', content: '#ff6f26' }],
     ['meta', { name: 'mobile-web-app-capable', content: 'yes' }],

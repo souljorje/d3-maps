@@ -1,6 +1,6 @@
 # @d3-maps/vue
 
-Reactive SVG maps, powered by D3.  
+Simple SVG maps with Vue & D3.  
 
 [docs](https://souljorje.github.io/d3-maps)
 

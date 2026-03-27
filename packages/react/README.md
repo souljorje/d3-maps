@@ -1,6 +1,6 @@
 # @d3-maps/react
 
-Reactive SVG maps, powered by D3.  
+Simple SVG maps with React & D3.  
 
 [docs](https://souljorje.github.io/d3-maps)  
 [Migrate from react-simple-maps](https://souljorje.github.io/d3-maps/guide/migration-from-react-simple-maps.html)
