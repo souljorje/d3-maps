@@ -1,13 +1,11 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "jsx": "react-jsx",
     "baseUrl": "../..",
     "paths": {
       "~/*": ["*"],
       "@d3-maps/react": ["packages/react/src/index.ts"],
       "@d3-maps/react/*": ["packages/react/src/*"]
     }
-  },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "env.d.ts"]
+  }
 }

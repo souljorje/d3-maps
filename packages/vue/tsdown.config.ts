@@ -7,8 +7,8 @@ export default createTsDownConfig({
     from: '../core/src/index.css',
     rename: 'index.css',
   }],
+  tsconfig: './tsconfig.build.json',
   dts: {
-    tsconfig: './tsconfig.dts.json',
     vue: true,
   },
   iifeNoExternal: ['@d3-maps/core'],

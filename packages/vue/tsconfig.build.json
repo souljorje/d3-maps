@@ -1,14 +1,11 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
     "baseUrl": "../..",
     "paths": {
       "~/*": ["*"],
       "@d3-maps/vue": ["packages/vue/src/index.ts"],
       "@d3-maps/vue/*": ["packages/vue/src/*"]
     }
-  },
-  "include": ["src/**/*.ts", "src/**/*.vue", "env.d.ts"]
+  }
 }

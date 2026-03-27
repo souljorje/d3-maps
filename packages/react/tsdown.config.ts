@@ -5,9 +5,7 @@ export default createTsDownConfig({
     from: '../core/src/index.css',
     rename: 'index.css',
   }],
-  dts: {
-    tsconfig: './tsconfig.dts.json',
-  },
+  tsconfig: './tsconfig.build.json',
   iifeNoExternal: [
     '@d3-maps/core',
     'react/jsx-runtime',
