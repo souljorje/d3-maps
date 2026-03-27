@@ -5,9 +5,6 @@ export default createTsDownConfig({
     from: 'src/index.css',
     rename: 'index.css',
   }],
-  entry: {
-    index: 'src/index.ts',
-  },
   iifeNoExternal: [
     'd3-geo',
     'd3-selection',

@@ -16,25 +16,9 @@ const IIFE_CONFIG: Partial<UserConfig> = {
   platform: 'browser',
 }
 
-function resolveDtsConfig(
-  dts: UserConfig['dts'],
-  tsconfig: UserConfig['tsconfig'],
-): UserConfig['dts'] {
-  if (dts === false) return false
-  if (!tsconfig) return dts ?? true
-  if (!dts || dts === true) {
-    return { tsconfig }
-  }
-  return {
-    tsconfig,
-    ...dts,
-  }
-}
-
 export function createTsDownConfig({
   copy,
   dts,
-  entry,
   globals,
   iifeNoExternal,
   plugins,
@@ -42,7 +26,6 @@ export function createTsDownConfig({
 }: {
   copy?: UserConfig['copy']
   dts?: UserConfig['dts']
-  entry?: UserConfig['entry']
   globals?: Record<string, string>
   iifeNoExternal?: UserConfig['noExternal']
   plugins?: UserConfig['plugins']
@@ -52,14 +35,15 @@ export function createTsDownConfig({
     {
       ...BASE_CONFIG,
       copy,
-      entry: entry ?? BASE_CONFIG.entry,
-      dts: resolveDtsConfig(dts, tsconfig),
+      dts: {
+        tsconfig,
+        ...(typeof dts === 'object' ? dts : { enabled: dts ?? true }),
+      },
       plugins,
       tsconfig,
     },
     {
       ...IIFE_CONFIG,
-      entry: entry ?? IIFE_CONFIG.entry,
       noExternal: iifeNoExternal,
       plugins,
       tsconfig,
