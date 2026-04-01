@@ -24,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import { withBase } from 'vitepress'
 import { onMounted, ref } from 'vue'
 
 interface City {
@@ -46,7 +45,7 @@ const cities: City[] = [
 const data = ref<unknown>()
 
 onMounted(async () => {
-  const response = await fetch(withBase('/example-data/countries-110m.json'))
-  data.value = await response.json()
+  const { default: mapData } = await import('world-atlas/countries-110m.json')
+  data.value = mapData
 })
 </script>

@@ -62,8 +62,8 @@ onMounted(async () => {
 })
 
 async function fetchMap() {
-  const response = await fetch(withBase('/example-data/countries-110m.json'))
-  mapData.value = await response.json()
+  const { default: data } = await import('world-atlas/countries-110m.json')
+  mapData.value = data
 }
 
 async function fetchData() {

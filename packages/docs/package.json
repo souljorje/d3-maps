@@ -25,7 +25,8 @@
     "d3-geo": "catalog:",
     "d3-scale": "catalog:",
     "d3-shape": "catalog:",
-    "vue": "catalog:"
+    "vue": "catalog:",
+    "world-atlas": "catalog:"
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:",

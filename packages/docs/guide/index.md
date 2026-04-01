@@ -106,7 +106,8 @@ https://cdn.jsdelivr.net/npm/@d3-maps/react@0.5.0
 ```ts
 import '@d3-maps/vue/index.css'
 import type { MapData } from '@d3-maps/vue'
-const data: MapData = await fetch('/some-topojson.json').then((res) => res.json())
+const { default: world } = await import('world-atlas/countries-110m.json')
+const data: MapData = world
 ```
 
 2. Pass the data to `MapBase`
