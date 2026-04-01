@@ -149,6 +149,8 @@ function sanitizeSidebarItems(items) {
       if (!item.link && !item.items) return null
       if (item.link?.includes('#')) return null
       if (item.link?.startsWith('/examples/') && item.link !== '/examples') return null
+      // The LLM plugin resolves sidebar links against markdown source pages only
+      if (item.link?.endsWith('.txt')) return null
 
       if (!item.items) return item
 
@@ -234,7 +236,7 @@ const docsSidebar = [
     text: 'LLMs',
     items: [
       { text: 'llms.txt', link: '/llms.txt' },
-      { text: 'llms-full.tx', link: '/llms-full.txt' },
+      { text: 'llms-full.txt', link: '/llms-full.txt' },
     ],
   },
 ]
