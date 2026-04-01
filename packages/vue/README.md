@@ -17,22 +17,21 @@ Interactive SVG maps with Vue and D3.
 
 ## Installation
 
-npm
-
 ```bash
 npm install @d3-maps/vue
 ```
-
-pnpm
 
 ```bash
 pnpm add @d3-maps/vue
 ```
 
-bun
-
 ```bash
 bun add @d3-maps/vue
+```
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@d3-maps/vue"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/vue/index.css" />
 ```
 
 ## Usage

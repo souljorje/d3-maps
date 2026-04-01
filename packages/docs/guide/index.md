@@ -1,5 +1,5 @@
 ---
-description: Guide to building D3 SVG maps in React and Vue with GeoJSON or TopoJSON data, projections, and interactive layers
+description: Guide to building interactive SVG maps with React, Vue and D3
 ---
 
 # Introduction
@@ -49,10 +49,9 @@ bun add @d3-maps/vue
 
 == CDN
 
-```bash
-https://cdn.jsdelivr.net/npm/@d3-maps/vue@0.8.0/index.css
-https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js
-https://cdn.jsdelivr.net/npm/@d3-maps/vue@0.8.0
+```html
+<script src="https://cdn.jsdelivr.net/npm/@d3-maps/vue"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/vue/index.css" />
 ```
 
 :::
@@ -81,30 +80,20 @@ bun add @d3-maps/react
 
 == CDN
 
-```bash
-https://cdn.jsdelivr.net/npm/@d3-maps/react@0.5.0/index.css
-https://cdn.jsdelivr.net/npm/react@19/umd/react.production.min.js
-https://cdn.jsdelivr.net/npm/@d3-maps/react@0.5.0
+```html
+<script src="https://cdn.jsdelivr.net/npm/@d3-maps/react"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/react/index.css" />
 ```
 
 :::
 
 ::::
 
-## CDN support
-
-- `jsDelivr` and `UNPKG` support package-root script URLs for `@d3-maps/core`, `@d3-maps/react`, and `@d3-maps/vue`
-- `@d3-maps/react` and `@d3-maps/vue` browser bundles already include `@d3-maps/core`, so you only need the framework runtime plus the adapter script
-- browser styles are available from the adapter packages at `@d3-maps/react/index.css` and `@d3-maps/vue/index.css`
-- `esm.sh` and `Skypack` use the package ESM entrypoints, so prefer package-root imports there
-- `cdnjs` is not an npm mirror, so publishing to npm does not make `@d3-maps/*` available there automatically
-
 ## Basic usage
 
 1. Get data
 
 ```ts
-import '@d3-maps/vue/index.css'
 import type { MapData } from '@d3-maps/vue'
 const { default: world } = await import('world-atlas/countries-110m.json')
 const data: MapData = world
@@ -118,7 +107,6 @@ const data: MapData = world
 
 ```vue [vue]
 <script setup lang="ts">
-import '@d3-maps/vue/index.css'
 import { MapBase, MapFeatures, type MapData } from '@d3-maps/vue'
 defineProps<{
   data: MapData

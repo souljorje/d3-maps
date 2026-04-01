@@ -17,24 +17,21 @@ Interactive SVG maps with React and D3.
 
 ## Installation
 
-Requires React 19+
-
-npm
-
 ```bash
 npm install @d3-maps/react
 ```
-
-pnpm
 
 ```bash
 pnpm add @d3-maps/react
 ```
 
-bun
-
 ```bash
 bun add @d3-maps/react
+```
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@d3-maps/react"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/react/index.css" />
 ```
 
 ## Usage

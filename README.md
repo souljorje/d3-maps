@@ -37,34 +37,42 @@ Adapters depend on the core.
 
 ## Installation
 
-### pnpm
+### Vue
 
 ```bash
 pnpm add @d3-maps/vue
 ```
 
 ```bash
-pnpm add @d3-maps/react
+npm install @d3-maps/vue
 ```
 
-### npm
+```bash
+bun add @d3-maps/vue
+```
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@d3-maps/vue"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/vue/index.css" />
+```
+
+### React
 
 ```bash
-npm install @d3-maps/vue
+pnpm add @d3-maps/react
 ```
 
 ```bash
 npm install @d3-maps/react
 ```
 
-### bun
-
-```bash
-bun add @d3-maps/vue
-```
-
 ```bash
 bun add @d3-maps/react
+```
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@d3-maps/react"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/react/index.css" />
 ```
 
 ## Development
