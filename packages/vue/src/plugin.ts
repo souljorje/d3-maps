@@ -12,8 +12,3 @@ export const plugin = {
     })
   },
 }
-
-// TODO: make CDN version
-// if (typeof window !== 'undefined' && window.Vue) {
-//   window.Vue.use(plugin)
-// }
