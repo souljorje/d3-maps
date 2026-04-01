@@ -1,15 +1,22 @@
-<img src="https://raw.githubusercontent.com/souljorje/d3-maps/refs/heads/main/packages/docs/public/d3-maps-logo.svg" alt ="d3-maps logo" width="100" height="100">
+# d3-maps <img src="https://raw.githubusercontent.com/souljorje/d3-maps/refs/heads/main/packages/docs/public/d3-maps-logo.svg" alt ="d3-maps logo" width="20" height="20"> [![CI](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml/badge.svg)](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml) [![Netlify Status](https://api.netlify.com/api/v1/badges/619b15fb-c666-48ed-9715-894474c88e35/deploy-status)](https://d3-maps.netlify.app)
 
-# d3-maps
+Interactive SVG maps for React and Vue powered by D3.  
+Solid and Svelte support coming soon.
 
-Simple SVG maps powered by D3.  
-Works with Vue and React. Solid and Svelte support coming soon.
-
-[![CI](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml/badge.svg)](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml) [![Netlify Status](https://api.netlify.com/api/v1/badges/619b15fb-c666-48ed-9715-894474c88e35/deploy-status)](https://d3-maps.netlify.app) [![vue size](https://deno.bundlejs.com/badge?q=@d3-maps/vue&badge=detailed)](https://bundlejs.com/?q=@d3-maps/vue) [![react size](https://deno.bundlejs.com/badge?q=@d3-maps/react&badge=detailed)](https://bundlejs.com/?q=@d3-maps/react)
+<!-- ![@d3-maps/vue](https://img.shields.io/bundlephobia/minzip/%40d3-maps/vue) -->
 
 [**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples)
 
-<!-- ![@d3-maps/vue](https://img.shields.io/bundlephobia/minzip/%40d3-maps/vue) -->
+## Features
+
+✨ Drop-in components, powerful defaults  
+🧩 Zoom, drag, lines, markers, and more  
+⚛️ Reactive rendering  
+📱 Responsive by default  
+🪶 Lightweight and tree-shakable  
+🧑‍💻 Fully typed  
+🗄️ SSR friendly  
+🗺️ Supports TopoJSON and GeoJSON
 
 ## Architecture
 
@@ -27,16 +34,6 @@ Works with Vue and React. Solid and Svelte support coming soon.
 
 The core never depends on a framework.
 Adapters depend on the core.
-
-## Features
-
-- Drop-in components, powerful defaults
-- Zoom, drag, lines, markers, and more
-- Reactive rerender
-- Responsive by default
-- Lightweight and tree-shakable
-- SSR friendly
-- Supports TopoJSON and GeoJSON
 
 ## Installation
 

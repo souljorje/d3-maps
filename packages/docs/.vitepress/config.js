@@ -113,7 +113,7 @@ function createHomeStructuredData() {
       '@type': 'WebSite',
       name: 'd3-maps',
       url: `${SITE_URL}/`,
-      description: 'D3 maps for Vue and React with reactive SVG map components and examples',
+      description: 'Interactive SVG maps for Vue and React. Reactive components powered by D3.',
     },
   ]
 }

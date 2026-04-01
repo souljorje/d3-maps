@@ -1,20 +1,19 @@
-# @d3-maps/react
+# @d3-maps/react [![@d3-maps/react bundle size](https://deno.bundlejs.com/badge?q=@d3-maps/react@0.7.0&config={%22esbuild%22:{%22external%22:[%22react%22,%22react-dom%22]}})](https://deno.bundlejs.com/badge?q=@d3-maps/react@0.7.0&config={%22esbuild%22:{%22external%22:[%22react%22,%22react-dom%22]}})
 
-Simple SVG maps with React & D3.  
+Interactive SVG maps with React and D3.  
 
 [**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples) · [**Migrate from react-simple-maps**](https://d3-maps.netlify.app/guide/migration-from-react-simple-maps.html)
 
-
-
 ## Features
 
-- Drop-in components, powerful defaults
-- Zoom, drag, lines, markers, and more
-- Reactive rerender
-- Responsive by default
-- Lightweight and tree-shakable
-- SSR friendly
-- Supports TopoJSON and GeoJSON
+✨ Drop-in components, powerful defaults  
+🧩 Zoom, drag, lines, markers, and more  
+⚛️ Reactive rendering  
+📱 Responsive by default  
+🪶 Lightweight and tree-shakable  
+🧑‍💻 Fully typed  
+🗄️ SSR friendly  
+🗺️ Supports TopoJSON and GeoJSON
 
 ## Installation
 

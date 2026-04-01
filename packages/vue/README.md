@@ -1,18 +1,19 @@
-# @d3-maps/vue
+# @d3-maps/vue [![@d3-maps/vue bundle size](https://deno.bundlejs.com/badge?q=@d3-maps/vue&config={%22esbuild%22:{%22external%22:[%22vue%22]}})](https://bundlejs.com/?q=@d3-maps/vue&config={%22esbuild%22:{%22external%22:[%22vue%22]}})
 
-Simple SVG maps with Vue & D3.  
+Interactive SVG maps with Vue and D3.  
 
 [**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples)
 
 ## Features
 
-- Drop-in components, powerful defaults
-- Zoom, drag, lines, markers, and more
-- Reactive rerender
-- Responsive by default
-- Lightweight and tree-shakable
-- SSR friendly
-- Supports TopoJSON and GeoJSON
+✨ Drop-in components, powerful defaults  
+🧩 Zoom, drag, lines, markers, and more  
+⚛️ Reactive rendering  
+📱 Responsive by default  
+🪶 Lightweight and tree-shakable  
+🧑‍💻 Fully typed  
+🗄️ SSR friendly  
+🗺️ Supports TopoJSON and GeoJSON
 
 ## Installation
 

@@ -8,6 +8,7 @@
   --vp-c-brand-2: var(--vp-c-orange-2);
   --vp-c-brand-3: var(--vp-c-orange-3);
   --vp-home-hero-name-color: var(--vp-c-brand-3);
+  --vp-font-family-base: -apple-system, BlinkMacSystemFont, sans-serif, "Inter", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
 }
 
 .d3-map {
@@ -48,6 +49,11 @@
       fill: var(--vp-c-brand-3)
     }
   }
+}
+
+
+.text-brand {
+  color: var(--vp-c-brand-3);
 }
 
 .vue {
@@ -99,7 +105,16 @@ body {
 
 .VPHome {
   margin-bottom: 0;
+  .image-container {
+    transform: none;
+  }
+  @media (min-width: 960px) {
+    .image {
+      margin-bottom: 32px;
+    }
+  }
   .image-src {
+    width: 100%;
     animation: 1s float ease-in-out infinite alternate;
   }
   .image-src:hover {
@@ -108,7 +123,7 @@ body {
   .image-bg {
     background: url(/d3-maps-logo.svg);
     background-position: center;
-    filter: blur(60px);
+    filter: blur(50px);
   }
   .container {
     max-width: 1000px
