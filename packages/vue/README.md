@@ -31,7 +31,7 @@ bun add @d3-maps/vue
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@d3-maps/vue"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/vue/index.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/vue/style.css" />
 ```
 
 ## Usage
@@ -59,7 +59,7 @@ Registers all components in the app
 
 ```js
 import { createApp } from 'vue'
-import '@d3-maps/vue/index.css'
+import '@d3-maps/vue/style.css'
 import { plugin as D3MapsVue } from '@d3-maps/vue'
 import App from './App.vue'
 
@@ -72,7 +72,7 @@ _Nuxt 3_ \
 Create `~/plugins/d3-maps-vue.client.ts`:
 
 ```ts
-import '@d3-maps/vue/index.css'
+import '@d3-maps/vue/style.css'
 import { plugin as D3MapsVue } from '@d3-maps/vue'
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -82,4 +82,4 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 ## License
 
-MIT licensed. Copyright © 2020 Georgii Bukharov. See [LICENSE](./LICENSE) for more details.
+MIT licensed. Copyright © 2026 Georgii Bukharov. See [LICENCE](../../LICENCE) for more details.

@@ -1,18 +1,22 @@
 :root {
   --d3m-stroke-w: 0.5;
 }
+
 .d3-map {
   width: 100%;
   height: auto;
+
   [name="background"],
   [name="graticule"],
   [name="feature"],
   [name="mesh"] {
     outline-style: none;
+
     &:not([stroke-width]) {
-      stroke-width: var(--d3m-stroke-w)
+      stroke-width: var(--d3m-stroke-w);
     }
   }
+
   [name="border"],
   [name="line"],
   [name="annotation-line"] {

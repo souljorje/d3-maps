@@ -25,23 +25,17 @@
     "map"
   ],
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "browser": "./dist/index.iife.js",
-      "default": "./dist/index.js"
-    },
-    "./index.css": {
-      "default": "./dist/index.css"
-    }
+    ".": "./dist/index.js",
+    "./package.json": "./package.json",
+    "./style.css": "./dist/style.css"
   },
-  "main": "dist/index.js",
-  "module": "dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "browser": "dist/index.iife.js",
   "unpkg": "dist/index.iife.js",
   "jsdelivr": "dist/index.iife.js",
-  "style": "dist/index.css",
-  "types": "dist/index.d.ts",
+  "style": "dist/style.css",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist/*"
   ],
@@ -69,5 +63,21 @@
     "vitest": "catalog:",
     "vue": "catalog:",
     "vue-tsc": "catalog:"
+  },
+  "inlinedDependencies": {
+    "d3-array": "3.2.4",
+    "d3-color": "3.1.0",
+    "d3-dispatch": "3.0.1",
+    "d3-drag": "3.0.0",
+    "d3-ease": "3.0.1",
+    "d3-geo": "3.1.1",
+    "d3-interpolate": "3.0.1",
+    "d3-path": "3.1.0",
+    "d3-selection": "3.0.0",
+    "d3-shape": "3.2.0",
+    "d3-timer": "3.0.1",
+    "d3-transition": "3.0.1",
+    "d3-zoom": "3.0.0",
+    "topojson-client": "3.1.0"
   }
 }

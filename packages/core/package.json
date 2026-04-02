@@ -15,27 +15,11 @@
     "directory": "packages/core"
   },
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "browser": "./dist/index.iife.js",
-      "default": "./dist/index.js"
-    },
-    "./types": {
-      "types": "./dist/index.d.ts"
-    },
-    "./index.css": {
-      "import": "./dist/index.css",
-      "browser": "./dist/index.css",
-      "default": "./dist/index.css"
-    }
+    ".": "./dist/index.js",
+    "./package.json": "./package.json",
+    "./style.css": "./dist/style.css"
   },
-  "style": "dist/index.css",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "browser": "dist/index.iife.js",
-  "unpkg": "dist/index.iife.js",
-  "jsdelivr": "dist/index.iife.js",
+  "style": "dist/style.css",
   "types": "dist/index.d.ts",
   "files": [
     "dist/*"

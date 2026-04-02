@@ -32,6 +32,7 @@
     "@antfu/eslint-config": "catalog:",
     "@changesets/changelog-github": "catalog:",
     "@changesets/cli": "catalog:",
+    "@tsdown/css": "catalog:",
     "@vue/tsconfig": "catalog:",
     "eslint": "catalog:",
     "lint-staged": "catalog:",

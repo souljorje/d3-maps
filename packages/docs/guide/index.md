@@ -51,7 +51,7 @@ bun add @d3-maps/vue
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@d3-maps/vue"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/vue/index.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/vue/style.css" />
 ```
 
 :::
@@ -76,13 +76,6 @@ pnpm add @d3-maps/react
 
 ```bash
 bun add @d3-maps/react
-```
-
-== CDN
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/@d3-maps/react"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/react/index.css" />
 ```
 
 :::
@@ -123,7 +116,7 @@ defineProps<{
 == React
 
 ```tsx [react]
-import '@d3-maps/react/index.css'
+import '@d3-maps/react/style.css'
 import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
 
 export function MapView({ data }: { data: MapData }) {

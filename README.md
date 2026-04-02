@@ -53,7 +53,7 @@ bun add @d3-maps/vue
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@d3-maps/vue"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/vue/index.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/vue/style.css" />
 ```
 
 ### React
@@ -68,11 +68,6 @@ npm install @d3-maps/react
 
 ```bash
 bun add @d3-maps/react
-```
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/@d3-maps/react"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/react/index.css" />
 ```
 
 ## Development

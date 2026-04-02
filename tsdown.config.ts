@@ -3,6 +3,7 @@ import type { UserConfig } from 'tsdown'
 import { defineConfig } from 'tsdown'
 
 const BASE_CONFIG: Partial<UserConfig> = {
+  exports: true,
   entry: 'src/index.ts',
   platform: 'neutral',
 }
@@ -17,44 +18,34 @@ const IIFE_CONFIG: Partial<UserConfig> = {
 }
 
 export function createTsDownConfig({
-  copy,
   dts,
-  globals,
-  iifeNoExternal,
+  iife,
   plugins,
   tsconfig,
 }: {
-  copy?: UserConfig['copy']
   dts?: UserConfig['dts']
-  globals?: Record<string, string>
-  iifeNoExternal?: UserConfig['noExternal']
+  iife?: Partial<UserConfig>
   plugins?: UserConfig['plugins']
   tsconfig?: UserConfig['tsconfig']
 } = {}) {
-  return defineConfig([
-    {
-      ...BASE_CONFIG,
-      copy,
-      dts: {
-        tsconfig,
-        ...(typeof dts === 'object' ? dts : { enabled: dts ?? true }),
-      },
-      plugins,
+  const configs: UserConfig[] = [{
+    ...BASE_CONFIG,
+    dts: {
       tsconfig,
+      ...(typeof dts === 'object' ? dts : { enabled: dts ?? true }),
     },
-    {
+    plugins,
+    tsconfig,
+  }]
+
+  if (iife) {
+    configs.push({
       ...IIFE_CONFIG,
-      noExternal: iifeNoExternal,
       plugins,
       tsconfig,
-      outputOptions: globals
-        ? {
-            extend: true,
-            globals,
-          }
-        : {
-            extend: true,
-          },
-    },
-  ])
+      ...iife,
+    })
+  }
+
+  return defineConfig(configs)
 }

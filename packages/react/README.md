@@ -29,15 +29,10 @@ pnpm add @d3-maps/react
 bun add @d3-maps/react
 ```
 
-```html
-<script src="https://cdn.jsdelivr.net/npm/@d3-maps/react"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/react/index.css" />
-```
-
 ## Usage
 
 ```tsx
-import '@d3-maps/react/index.css'
+import '@d3-maps/react/style.css'
 import { MapBase, MapFeatures } from '@d3-maps/react'
 
 export function App({ mapData }: { mapData: unknown }) {
@@ -51,4 +46,4 @@ export function App({ mapData }: { mapData: unknown }) {
 
 ## License
 
-MIT licensed. Copyright © 2020 Georgii Bukharov. See [LICENSE](./LICENSE) for more details.
+MIT licensed. Copyright © 2026 Georgii Bukharov. See [LICENCE](../../LICENCE) for more details.

@@ -65,24 +65,30 @@ const styles = {
 
 :::
 
-> \* [MapFeatures](/components/map-features) forwards `styles` to internally rendered `MapFeature`'s
+> \* [MapFeatures](/components/map-features) forwards `styles` to internally rendered `MapFeature`s
 
 ### CSS
 
-1. Import [default stylesheet](https://github.com/souljorje/d3-maps/blob/main/packages/core/src/index.css) to simplify global map styles
+1. Import [default stylesheet](https://github.com/souljorje/d3-maps/blob/main/packages/core/src/style.css) to simplify global map styles
 
 :::tabs key:framework-css
+
+== Core
+
+```ts
+import '@d3-maps/core/style.css'
+```
 
 == Vue
 
 ```ts
-import '@d3-maps/vue/index.css'
+import '@d3-maps/vue/style.css'
 ```
 
 == React
 
 ```ts
-import '@d3-maps/react/index.css'
+import '@d3-maps/react/style.css'
 ```
 
 :::

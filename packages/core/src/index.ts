@@ -1,3 +1,5 @@
+import './style.css'
+
 export * from './lib/annotation'
 export * from './lib/feature'
 export * from './lib/graticule'
