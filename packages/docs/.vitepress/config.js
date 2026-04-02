@@ -356,12 +356,20 @@ export default defineConfig({
     },
     resolve: {
       dedupe: ['vue'],
-      alias: {
-        '@': REPO_ROOT,
-        '@d3-maps/core/index.css': path.join(PACKAGES_DIR, 'core', 'src', 'index.css'),
-        '@d3-maps/core': path.join(PACKAGES_DIR, 'core', 'src', 'index.ts'),
-        '@d3-maps/vue': path.join(PACKAGES_DIR, 'vue', 'src', 'index.ts'),
-      },
+      alias: [
+        {
+          find: '@',
+          replacement: REPO_ROOT,
+        },
+        {
+          find: /^@d3-maps\/(\w+)\/(.+)$/,
+          replacement: `${PACKAGES_DIR.replace(/\\/g, '/')}/$1/src/$2`,
+        },
+        {
+          find: /^@d3-maps\/(\w+)$/,
+          replacement: `${PACKAGES_DIR.replace(/\\/g, '/')}/$1/src/index.ts`,
+        },
+      ],
     },
   },
 })
