@@ -58,6 +58,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | [vitest](.agents/skills/vitest/SKILL.md) | Writing or updating test suites, mocking setup, or coverage/test config. |
 | [changesets](.agents/skills/changesets/SKILL.md) | Creating or updating `.changeset/*.md` entries for package changes (everything under `packages/*` except `packages/docs`). |
 | [tsdown](/Users/georgii/.agents/skills/tsdown/SKILL.md) | Working on `tsdown` config, build outputs, package exports, CSS emission, or migration questions related to the repo build setup. |
+| [turborepo](.agents/skills/turborepo/SKILL.md) | Working on Turbo task graphs, caching, filtering, CI setup, or workspace-level build orchestration. |
 
 ## Detailed Instructions
 
