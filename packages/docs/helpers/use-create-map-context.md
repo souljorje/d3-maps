@@ -21,7 +21,7 @@ See [MapContext API](/api/core/map#mapcontext)
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `config?` | `MapProps` | `—` | Used to create a new context when `context` is not provided |
+| `config?` | `MapProps` | `—` | When `context` is not provided, has same props as [MapBase](/components/map-base) |
 | `context?` | `MapContext` | `—` | Optional existing context to reuse instead of creating a new one |
 
 ## Usage

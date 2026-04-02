@@ -25,6 +25,7 @@ export function useCreateMapContext(
     config?.projection,
     config?.projectionConfig,
     config?.data,
+    config?.topologyObjectKey,
     config?.dataTransformer,
   ])
 }

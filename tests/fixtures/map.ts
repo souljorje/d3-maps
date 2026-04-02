@@ -73,3 +73,46 @@ export const sampleTopology: TopologyMapData = {
     ],
   ],
 }
+
+export const sampleTopologyTwoObjects: TopologyMapData = {
+  type: 'Topology',
+  transform: { scale: [1, 1], translate: [0, 0] },
+  objects: {
+    single: {
+      type: 'Polygon',
+      arcs: [[0]],
+      properties: { id: 'single' },
+    },
+    pair: {
+      type: 'GeometryCollection',
+      geometries: [
+        {
+          type: 'Polygon',
+          arcs: [[0]],
+          properties: { id: 'pair-1' },
+        },
+        {
+          type: 'Polygon',
+          arcs: [[1]],
+          properties: { id: 'pair-2' },
+        },
+      ],
+    },
+  },
+  arcs: [
+    [
+      [0, 0],
+      [10, 0],
+      [0, 10],
+      [-10, 0],
+      [0, -10],
+    ],
+    [
+      [20, 20],
+      [10, 0],
+      [0, 10],
+      [-10, 0],
+      [0, -10],
+    ],
+  ],
+}
