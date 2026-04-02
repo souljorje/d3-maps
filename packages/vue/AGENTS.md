@@ -39,6 +39,7 @@
 | Skill | When to use |
 |-------|-------------|
 | [vue-best-practices](../../.agents/skills/vue-best-practices/SKILL.md) | Any Vue component/composable work in this package, including TypeScript and Composition API decisions. |
+| [vue-testing-best-practices](../../.agents/skills/vue-testing-best-practices/SKILL.md) | Writing or updating Vue adapter tests, mounting components, testing composables, or making Vue-specific test environment decisions. |
 
 ## References
 - [Root Guide](../../AGENTS.md)

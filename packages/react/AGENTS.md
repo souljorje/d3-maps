@@ -31,14 +31,14 @@
 | Required workflow | Must follow [Adapter Development Flow](../../.agents/references/adapter-development-flow.md) for any change in this package. Do not bypass steps. |
 | React support | React 19 only; keep `peerDependencies` for `react` and `react-dom` as `>=19 <20`. |
 | Next.js boundary | Any hook-using entrypoint must be client-only (`'use client'`); in Next.js App Router, import it from Client Components. |
-| Effects and callbacks | Keep effect deps primitive-focused and use stable callback refs for event props (follow the [vercel-react-best-practices](../../.agents/skills/react-best-practices/SKILL.md) skill). |
+| Effects and callbacks | Keep effect deps primitive-focused and use stable callback refs for event props (follow the [vercel-react-best-practices](../../.agents/skills/vercel-react-best-practices/SKILL.md) skill). |
 | Public exports | Keep public surface as named exports routed through packages/react/src/index.ts (and packages/react/src/hooks/index.ts for hooks/types). |
 | Build boundary | Keep tsdown builds on packages/react/tsconfig.build.json so published JS and DTS import `@d3-maps/core` as a package boundary. |
 
 ## Skills
 | Skill | When to use |
 |-------|-------------|
-| [vercel-react-best-practices](../../.agents/skills/react-best-practices/SKILL.md) | Any React component/hook implementation, optimization, or refactor in this package. |
+| [vercel-react-best-practices](../../.agents/skills/vercel-react-best-practices/SKILL.md) | Any React component/hook implementation, optimization, or refactor in this package. |
 
 ## References
 - [Root Guide](../../AGENTS.md)
