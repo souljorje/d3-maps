@@ -18,6 +18,7 @@ Renders the root `<svg>` and provides a reactive map context to children.
 | `projectionConfig?` | [ProjectionConfig](/api/core/map#projectionconfig) | — | See the [guide](#projectionconfig) below |
 | `dataTransformer?` | [DataTransformer](/api/core/map#datatransformer) | — | Optional transform applied to GeoJSON features before rendering |
 | `context?` | [MapContext](/api/core/map#mapcontext) | — | Optional externally created context. When provided, `MapBase` uses it instead of creating one from props, and `data` is not required |
+| `topologyObjectKey?` | `string` | — | Selects a TopoJSON object when `data.objects` contains multiple entries. Defaults to the first object |
 
 ### projectionConfig
 
@@ -29,6 +30,7 @@ See available methods in [d3-geo projection docs](https://d3js.org/d3-geo/projec
 and usage example below
 
 ::: details Core defaults
+
 ```ts
 if (!(fitExtent || fitSize || fitWidth || fitHeight)) {
   mapProjection.fitExtent([[1, 1], [width - 1, height - 1]], { type: 'Sphere' })
@@ -37,7 +39,9 @@ if (!precision) {
   mapProjection.precision(0.2)
 }
 ```
-Source: [packes/core/src/lib/map.ts](https://github.com/souljorje/d3-maps/blob/main/packages/core/src/lib/map.ts#:~:text=makeProjection)
+
+Source: [packages/core/src/lib/map.ts](https://github.com/souljorje/d3-maps/blob/main/packages/core/src/lib/map.ts) (makeProjection)
+
 :::
 
 ## Usage

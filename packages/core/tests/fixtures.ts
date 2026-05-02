@@ -5,6 +5,7 @@ import { makeMapContext } from '../src'
 export {
   sampleGeoJson,
   sampleTopology,
+  sampleTopologyTwoObjects,
 } from '~/tests/fixtures/map'
 
 export function makeTestMapContext(): ReturnType<typeof makeMapContext> {

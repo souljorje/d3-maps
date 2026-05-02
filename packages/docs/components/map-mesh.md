@@ -25,7 +25,9 @@ Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
 
 ```vue
 <template>
-  <MapBase :data="mapData">
+  <MapBase
+    :data="mapData"
+  >
     <MapFeatures fill="#fff" />
     <MapMesh stroke="#000"/>
   </MapBase>
@@ -35,7 +37,9 @@ Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
 == React
 
 ```tsx
-<MapBase data={mapData}>
+<MapBase
+  data={mapData}
+>
   <MapFeatures fill="#fff" />
   <MapMesh stroke="#000" />
 </MapBase>

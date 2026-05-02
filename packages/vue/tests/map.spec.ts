@@ -17,6 +17,7 @@ import {
 import {
   sampleGeoJson,
   sampleGeoJsonTwoFeatures,
+  sampleTopologyTwoObjects,
 } from './fixtures'
 
 describe('map', () => {
@@ -62,6 +63,25 @@ describe('map', () => {
 
     await wrapper.setProps({
       data: sampleGeoJsonTwoFeatures,
+    })
+
+    expect(wrapper.findAll('path')).toHaveLength(2)
+  })
+
+  it('updates rendered features when topologyObjectKey changes', async () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        data: sampleTopologyTwoObjects,
+      },
+      slots: {
+        default: () => h(MapFeatures),
+      },
+    })
+
+    expect(wrapper.findAll('path')).toHaveLength(1)
+
+    await wrapper.setProps({
+      topologyObjectKey: 'pair',
     })
 
     expect(wrapper.findAll('path')).toHaveLength(2)

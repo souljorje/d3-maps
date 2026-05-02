@@ -13,6 +13,7 @@ import {
 import {
   sampleGeoJson,
   sampleGeoJsonTwoFeatures,
+  sampleTopologyTwoObjects,
 } from './fixtures'
 
 describe('map', () => {
@@ -57,6 +58,27 @@ describe('map', () => {
 
     rerender(
       <MapBase data={sampleGeoJsonTwoFeatures}>
+        <MapFeatures />
+      </MapBase>,
+    )
+
+    expect(container.querySelectorAll('path')).toHaveLength(2)
+  })
+
+  it('updates rendered features when topologyObjectKey changes', () => {
+    const { container, rerender } = render(
+      <MapBase data={sampleTopologyTwoObjects}>
+        <MapFeatures />
+      </MapBase>,
+    )
+
+    expect(container.querySelectorAll('path')).toHaveLength(1)
+
+    rerender(
+      <MapBase
+        data={sampleTopologyTwoObjects}
+        topologyObjectKey="pair"
+      >
         <MapFeatures />
       </MapBase>,
     )
