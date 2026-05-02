@@ -10,7 +10,7 @@
 | Command | Purpose |
 | --- | --- |
 | `pnpm --filter @d3-maps/docs gen:examples` | Regenerate example wrapper pages. |
-| `pnpm docs:build` | Build docs locally after regenerating example wrappers. |
+| `pnpm build:docs` | Build docs locally after regenerating example wrappers. |
 
 ## Inputs/Outputs
 | Type | Path |

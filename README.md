@@ -98,6 +98,7 @@ export function MapView() {
 ```bash
 pnpm install
 pnpm build
+pnpm build:docs
 pnpm dev
 ```
 

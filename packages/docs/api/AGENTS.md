@@ -10,7 +10,7 @@
 | Command | Purpose |
 | --- | --- |
 | `pnpm --filter @d3-maps/docs typedoc` | Generate API markdown from package exports. |
-| `pnpm docs:build` | Regenerate example wrappers and API docs as part of the docs build. |
+| `pnpm build:docs` | Regenerate example wrappers and API docs as part of the docs build. |
 
 ## Inputs/Outputs
 | Type | Path |

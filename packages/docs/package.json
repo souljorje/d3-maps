@@ -35,15 +35,15 @@
     "@types/d3-geo": "catalog:",
     "@types/d3-scale": "catalog:",
     "@types/d3-shape": "catalog:",
+    "remark-insert-headings": "catalog:",
+    "remark-toc": "catalog:",
     "tailwindcss": "catalog:",
+    "typedoc": "catalog:",
+    "typedoc-plugin-markdown": "catalog:",
+    "typedoc-plugin-remark": "catalog:",
     "vitepress": "catalog:",
     "vitepress-plugin-llms": "catalog:",
     "vitepress-plugin-tabs": "catalog:",
-    "vue-tsc": "catalog:",
-    "remark-insert-headings": "catalog:",
-    "remark-toc": "catalog:",
-    "typedoc": "catalog:",
-    "typedoc-plugin-markdown": "catalog:",
-    "typedoc-plugin-remark": "catalog:"
+    "vue-tsc": "catalog:"
   }
 }
