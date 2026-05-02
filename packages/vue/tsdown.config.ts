@@ -7,15 +7,5 @@ export default createTsDownConfig({
   dts: {
     vue: true,
   },
-  iife: {
-    deps: {
-      alwaysBundle: ['@d3-maps/core'],
-    },
-    outputOptions: {
-      globals: {
-        vue: 'Vue',
-      },
-    },
-  },
   plugins: [vue({ isProduction: true })],
 })

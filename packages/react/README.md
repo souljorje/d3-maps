@@ -29,6 +29,15 @@ pnpm add @d3-maps/react
 bun add @d3-maps/react
 ```
 
+```html
+<script type="module">
+  import React from 'https://esm.sh/react@19'
+  import { createRoot } from 'https://esm.sh/react-dom@19/client'
+  import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/react'
+  import 'https://esm.sh/@d3-maps/react/style.css'
+</script>
+```
+
 ## Usage
 
 ```tsx

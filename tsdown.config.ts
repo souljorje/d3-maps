@@ -8,27 +8,16 @@ const BASE_CONFIG: Partial<UserConfig> = {
   platform: 'neutral',
 }
 
-const IIFE_CONFIG: Partial<UserConfig> = {
-  ...BASE_CONFIG,
-  clean: false,
-  format: 'iife',
-  globalName: 'D3Maps',
-  minify: true,
-  platform: 'browser',
-}
-
 export function createTsDownConfig({
   dts,
-  iife,
   plugins,
   tsconfig,
 }: {
   dts?: UserConfig['dts']
-  iife?: Partial<UserConfig>
   plugins?: UserConfig['plugins']
   tsconfig?: UserConfig['tsconfig']
 } = {}) {
-  const configs: UserConfig[] = [{
+  return defineConfig({
     ...BASE_CONFIG,
     dts: {
       tsconfig,
@@ -36,16 +25,5 @@ export function createTsDownConfig({
     },
     plugins,
     tsconfig,
-  }]
-
-  if (iife) {
-    configs.push({
-      ...IIFE_CONFIG,
-      plugins,
-      tsconfig,
-      ...iife,
-    })
-  }
-
-  return defineConfig(configs)
+  })
 }

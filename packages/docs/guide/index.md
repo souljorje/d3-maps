@@ -50,8 +50,11 @@ bun add @d3-maps/vue
 == CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@d3-maps/vue"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@d3-maps/vue/style.css" />
+<script type="module">
+  import { createApp } from 'https://esm.sh/vue@3'
+  import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/vue'
+  import 'https://esm.sh/@d3-maps/vue/style.css'
+</script>
 ```
 
 :::
@@ -76,6 +79,17 @@ pnpm add @d3-maps/react
 
 ```bash
 bun add @d3-maps/react
+```
+
+== CDN
+
+```html
+<script type="module">
+  import React from 'https://esm.sh/react@19'
+  import { createRoot } from 'https://esm.sh/react-dom@19/client'
+  import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/react'
+  import 'https://esm.sh/@d3-maps/react/style.css'
+</script>
 ```
 
 :::
