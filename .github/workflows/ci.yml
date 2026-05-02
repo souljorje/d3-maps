@@ -28,9 +28,9 @@ jobs:
           - name: Typecheck tests
             command: pnpm typecheck:test
           - name: Test
-            command: pnpm test -- --affected
+            command: pnpm test --affected
           - name: Build
-            command: pnpm build -- --affected
+            command: pnpm build --affected
     steps:
       - name: Checkout
         uses: actions/checkout@v4
