@@ -22,10 +22,7 @@ Returns `undefined` if used outside `MapZoom`
 
 Computes a fitted zoom view for the given object and passes the full [`ObjectZoomView`](/api/core/zoom#objectzoomview) to the callback
 
-
-:::
-
-## Best Practice
+## Best Practices
 
 - Use [useMapContext](/helpers/use-map-context) alongside it when controls need map features or the shared path generator
 - Use `zoomToObject` to derive a fitted view, then hand the resulting `center` and `zoom` back to parent-controlled state

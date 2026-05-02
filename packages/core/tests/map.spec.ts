@@ -1,10 +1,12 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 
 import type { GeoPermissibleObjects } from 'd3-geo'
+import type { Topology } from 'topojson-specification'
 
 import { geoNaturalEarth1 } from 'd3-geo'
 
 import {
+  getTopoObject,
   isTopology,
   makeFeatures,
   makeMapContext,
@@ -14,6 +16,7 @@ import {
 import {
   sampleGeoJson,
   sampleTopology,
+  sampleTopologyTwoObjects,
 } from './fixtures'
 
 const sphereGeoJson = {
@@ -126,6 +129,18 @@ describe('makeFeatures', () => {
     expect(features).toHaveLength(1)
     expect(features[0].properties?.id).toBe('demo')
   })
+
+  it('uses the requested topology object', () => {
+    const features = makeFeatures(sampleTopologyTwoObjects, undefined, 'pair')
+
+    expect(features).toHaveLength(2)
+    expect(features.map((feature) => feature.properties?.id)).toEqual(['pair-1', 'pair-2'])
+  })
+
+  it('throws a helpful error for an unknown topology object key', () => {
+    expect(() => makeFeatures(sampleTopologyTwoObjects, undefined, 'missing'))
+      .toThrowError()
+  })
 })
 
 describe('makeMesh', () => {
@@ -138,6 +153,14 @@ describe('makeMesh', () => {
 
     expect(topologyMesh?.type).toBe('MultiLineString')
     expect(topologyMesh?.coordinates.length).toBeGreaterThan(0)
+  })
+
+  it('uses the requested topology object for topology meshes', () => {
+    const defaultMesh = makeMesh(sampleTopologyTwoObjects)
+    const selectedMesh = makeMesh(sampleTopologyTwoObjects, 'pair')
+
+    expect(defaultMesh?.coordinates).toHaveLength(1)
+    expect(selectedMesh?.coordinates).toHaveLength(2)
   })
 })
 
@@ -159,6 +182,37 @@ describe('makeMapContext', () => {
   it('includes mesh helpers for topology input', () => {
     const context = makeMapContext({ data: sampleTopology })
     expect(typeof context.renderMesh()).toBe('string')
+  })
+
+  it('uses the requested topology object throughout the map context', () => {
+    const context = makeMapContext({
+      data: sampleTopologyTwoObjects,
+      topologyObjectKey: 'pair',
+    })
+
+    expect(context.features).toHaveLength(2)
+    expect(typeof context.renderMesh()).toBe('string')
+  })
+})
+
+describe('getTopoObject', () => {
+  it('falls back to the first topology object', () => {
+    expect(getTopoObject(sampleTopologyTwoObjects).type).toBe('Polygon')
+  })
+
+  it('returns the requested topology object', () => {
+    expect(getTopoObject(sampleTopologyTwoObjects, 'pair').type).toBe('GeometryCollection')
+  })
+
+  it('throws when topology data does not contain any objects', () => {
+    const emptyTopology = {
+      type: 'Topology',
+      transform: { scale: [1, 1], translate: [0, 0] },
+      objects: {},
+      arcs: [],
+    } satisfies Topology
+
+    expect(() => getTopoObject(emptyTopology)).toThrowError()
   })
 })
 

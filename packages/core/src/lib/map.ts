@@ -63,6 +63,12 @@ export interface MapProps {
    */
   data: MapData
   /**
+   * Optional TopoJSON object key to use when `data` contains multiple objects.
+   *
+   * If omitted, the first object is used for backward compatibility.
+   */
+  topologyObjectKey?: string
+  /**
    * Optional feature transformer (filter/augment/normalize features).
    */
   dataTransformer?: DataTransformer
@@ -138,10 +144,11 @@ export function makeProjection({
 export function makeFeatures(
   geoData: MapData,
   dataTransformer?: DataTransformer,
+  topologyObjectKey?: string,
 ): MapFeatureData[] {
   let geoJson: ExtendedFeatureCollection
   if (isTopology(geoData)) {
-    const topoObject = getTopoObject(geoData)
+    const topoObject = getTopoObject(geoData, topologyObjectKey)
     const normalizedGeoJson = feature(geoData, topoObject)
     geoJson = (normalizedGeoJson.type === 'FeatureCollection'
       ? normalizedGeoJson
@@ -156,10 +163,10 @@ export function makeFeatures(
 /**
  * Returns a TopoJSON mesh when topology data is provided.
  */
-export function makeMesh(geoData: MapData): MapMeshData | undefined {
+export function makeMesh(geoData: MapData, topologyObjectKey?: string): MapMeshData | undefined {
   if (!isTopology(geoData)) return undefined
 
-  const topoObject = getTopoObject(geoData)
+  const topoObject = getTopoObject(geoData, topologyObjectKey)
   return mesh(geoData, topoObject) as MapMeshData
 }
 
@@ -171,11 +178,12 @@ export function makeMapContext({
   height: passedHeight,
   aspectRatio = 2 / 1,
   data,
+  topologyObjectKey,
   dataTransformer,
   projection: providedProjection = geoNaturalEarth1,
   projectionConfig,
 }: MapProps): MapContext {
-  const features = makeFeatures(data, dataTransformer)
+  const features = makeFeatures(data, dataTransformer, topologyObjectKey)
 
   const height = passedHeight || (width / aspectRatio)
   const projection = makeProjection({
@@ -186,7 +194,7 @@ export function makeMapContext({
   })
 
   const pathFn = geoPath().projection(projection)
-  const mapMesh = makeMesh(data)
+  const mapMesh = makeMesh(data, topologyObjectKey)
 
   return {
     width,
@@ -205,7 +213,13 @@ export function isTopology(data: MapData): data is Topology {
   return (data as Topology)?.type === 'Topology'
 }
 
-export function getTopoObject(geoData: Topology): GeometryObject {
-  const objectKey = Object.keys(geoData.objects)[0]
-  return geoData.objects[objectKey] as GeometryObject
+export function getTopoObject(geoData: Topology, topologyObjectKey?: string): GeometryObject {
+  const objectKey = topologyObjectKey || Object.keys(geoData.objects)[0]
+  const object = geoData.objects[objectKey]
+  if (!object) {
+    throw new Error(
+      `Topology object ${objectKey || ''} not found}`,
+    )
+  }
+  return object as GeometryObject
 }
