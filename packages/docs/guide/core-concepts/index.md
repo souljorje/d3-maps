@@ -1,11 +1,11 @@
 ---
 next: false
-description: Core concepts for D3 SVG maps in React and Vue, including projections, features, mesh, markers, zoom, and responsive rendering
+description: Core concepts for d3-maps in React and Vue. Projections, features, mesh, markers, zoom, and responsive rendering
 ---
 
 # Core concepts
 
-Let's build the map step by step to understand how the library works  
+Learn how `d3-maps` works under the hood
 
 <!--@include: ./_data.md-->
 
@@ -29,9 +29,8 @@ Let's build the map step by step to understand how the library works
 
 <!--@include: ./_combined-example.md-->
 
-## That's it
+## Next
 
-What's next?
-
-- Explore [examples](/examples/)
-- Check out [components](/components/)
+- [Architecture](/guide/architecture)
+- [Components](/components/)
+- [Examples](/examples/)

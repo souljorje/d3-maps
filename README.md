@@ -18,68 +18,79 @@ Solid and Svelte support coming soon.
 🗄️ SSR friendly  
 🗺️ Supports TopoJSON and GeoJSON
 
-## Architecture
-
-**Core** is framework-agnostic
-
-- Universal higher order logic
-- Map objects models: features, markers, etc
-- Utilities for custom layers: zoom, choropleth, bubble, etc
-
-**Adapters** are framework-specific
-
-- Vue and React bindings
-- Rendering and reactivity integration
-- Declarative components and composables
-
-The core never depends on a framework.
-Adapters depend on the core.
-
-## Installation
+## Get started
 
 ### Vue
 
-```bash
-pnpm add @d3-maps/vue
-```
+NPM
 
 ```bash
 npm install @d3-maps/vue
 ```
 
-```bash
-bun add @d3-maps/vue
-```
+CDN
 
 ```html
 <script type="module">
-  import { createApp } from 'https://esm.sh/vue@3'
   import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/vue'
   import 'https://esm.sh/@d3-maps/vue/style.css'
 </script>
 ```
 
+```vue
+<script setup lang="ts">
+import { MapBase, MapFeatures, type MapData } from '@d3-maps/vue'
+
+const { default: data } = await import('world-atlas/countries-110m.json')
+const mapData: MapData = data
+</script>
+
+<template>
+  <MapBase :data="mapData">
+    <MapFeatures />
+  </MapBase>
+</template>
+```
+
 ### React
 
-```bash
-pnpm add @d3-maps/react
-```
+NPM
 
 ```bash
 npm install @d3-maps/react
 ```
 
-```bash
-bun add @d3-maps/react
-```
+CDN
 
 ```html
 <script type="module">
-  import React from 'https://esm.sh/react@19'
-  import { createRoot } from 'https://esm.sh/react-dom@19/client'
   import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/react'
   import 'https://esm.sh/@d3-maps/react/style.css'
 </script>
+```
+
+```tsx
+import { useEffect, useState } from 'react'
+import '@d3-maps/react/style.css'
+import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
+
+export function MapView() {
+  const [data, setData] = useState<MapData | null>(null)
+
+  useEffect(() => {
+    import('world-atlas/countries-110m.json').then(({ default: world }) => {
+      setData(world as MapData)
+    })
+  }, [])
+
+  if (!data) return null
+
+  return (
+    <MapBase data={data}>
+      <MapFeatures />
+    </MapBase>
+  )
+}
 ```
 
 ## Development

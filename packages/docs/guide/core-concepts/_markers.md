@@ -1,9 +1,6 @@
 ## Markers
 
-Add any points to the map with [MapMarker](/components/map-marker)
-
-- pass `coordinates` as `[longitude, latitude]`
-- and any SVG elements as a children
+[MapMarker](/components/map-marker) projects a point onto the map and renders arbitrary SVG content there. Coordinates use `[longitude, latitude]`
 
 :::tabs key:framework
 

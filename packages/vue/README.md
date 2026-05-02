@@ -31,7 +31,6 @@ bun add @d3-maps/vue
 
 ```html
 <script type="module">
-  import { createApp } from 'https://esm.sh/vue@3'
   import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/vue'
   import 'https://esm.sh/@d3-maps/vue/style.css'
 </script>

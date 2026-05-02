@@ -1,9 +1,8 @@
 ## Projection
 
-A map projection transforms the Earth's 3D curved surface into SVG map.  
-It determines how exactly map will look.  
+A projection transforms the Earth's curved surface into flat 2D coordinates. It defines the overall shape of the rendered map.
 
-By default `geoNaturalEarth1` is used in core, but you can provide your own:
+Projections are available in [d3-geo](https://github.com/d3/d3-geo) and [d3-geo-projection](https://github.com/d3/d3-geo-projection). `geoNaturalEarth1` is used by default.
 
 :::tabs key:framework
 
@@ -43,7 +42,6 @@ import { geoEquirectangular } from 'd3-geo'
 
 ::: details
 
-- You can tweak a projection with [MapBase.projectionConfig](/components/map-base#props) (defaults are strong though)
-- Projections are available in [d3-geo](https://github.com/d3/d3-geo) and [d3-geo-projection](https://github.com/d3/d3-geo-projection)
-- Here you can see [visualized projections](https://observablehq.com/@fil/d3-projections)
+- [MapBase.projectionConfig](/components/map-base#props) customizes projection methods
+- [Observable projection gallery](https://observablehq.com/@fil/d3-projections) shows the visual differences
 :::

@@ -1,8 +1,8 @@
 ## Features
 
-Map feature is geographic entity, e.g. country or state.  
-[MapFeatures](/components/map-features) render all features internally, [MapFeature](/components/map-feature) renders a single one.  
-Switch to slot/render-function when each feature needs custom render logic.
+A feature is a geographic entity such as a country or state.  
+
+[MapFeatures](/components/map-features) renders the full collection, while [MapFeature](/components/map-feature) renders a single one. The slot or render-function form exposes per-feature rendering control.
 
 :::tabs key:framework
 

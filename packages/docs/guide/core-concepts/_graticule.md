@@ -1,6 +1,6 @@
 ## Graticule
 
-Use [MapGraticule](/components/map-graticule) to draw latitude and longitude grid lines
+[MapGraticule](/components/map-graticule) renders latitude and longitude grid lines and can also draw the map outline and background
 
 :::tabs key:framework
 

@@ -1,6 +1,6 @@
 ## Data transformation
 
-Add `dataTransformer` to preprocess GeoJSON features before render
+`dataTransformer` preprocesses GeoJSON features before render. It is useful for filtering, enrichment, or normalization.
 
 ```ts
 // e.g. don't render Antarctica 🇦🇶

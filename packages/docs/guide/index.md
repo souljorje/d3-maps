@@ -1,27 +1,15 @@
 ---
-description: Guide to building interactive SVG maps with React, Vue and D3
+description: Guide for building simple interactive SVG map with React, Vue, and D3
 ---
 
-# Introduction
+# Get started
 
-**d3-maps** is a set of components and helpers simplifying creating SVG maps with [D3](https://d3js.org/).  
+`d3-maps` is a set of components and helpers simplifying creating SVG maps with [D3](https://d3js.org/).  
 Works with your favorite framework, batteries included.
 
-## Architecture
+Let's build your first map with `d3-maps` 👇
 
-**Core** provides framework-agnostic complex logic *(you won't see it)*
-
-- Context creation, data transformation
-- Map layers types and models: features, markers, zoom, etc
-- Utilities for custom layers: choropleth, bubble, etc
-
-**Adapters** implement the core in a simple way *(you'll see it)*
-
-- Vue and React bindings (Solid and Svelte coming soon)
-- Rendering and reactivity integration
-- Declarative components and composables
-
-## Installation
+## Install
 
 ::::tabs key:framework
 
@@ -96,17 +84,17 @@ bun add @d3-maps/react
 
 ::::
 
-## Basic usage
+## Load data
 
-1. Get data
+Load a map data object first
 
 ```ts
-import type { MapData } from '@d3-maps/vue'
-const { default: world } = await import('world-atlas/countries-110m.json')
-const data: MapData = world
+const { default: data } = await import('world-atlas/countries-110m.json')
 ```
 
-2. Pass the data to `MapBase`
+## Render the map
+
+Pass the data to `MapBase`
 
 :::tabs key:framework
 
@@ -144,10 +132,6 @@ export function MapView({ data }: { data: MapData }) {
 
 :::
 
-3. Your first map is ready
+## Result
 
 <Demo component-name="basic"/>
-
-## Next
-
-Learn [core concepts](/guide/core-concepts/) to understand how **d3-maps** works step by step: data, projection, zoom, markers and more.
