@@ -1,5 +1,16 @@
 # @d3-maps/react
 
+## 0.8.0
+
+### Minor Changes
+
+- [#35](https://github.com/souljorje/d3-maps/pull/35) [`a95776e`](https://github.com/souljorje/d3-maps/commit/a95776edd67d00057fa258610a6c9cde6993b022) Thanks [@souljorje](https://github.com/souljorje)! - - Added `topologyObjectKey` support for selecting a specific TopoJSON object
+
+### Patch Changes
+
+- Updated dependencies [[`a95776e`](https://github.com/souljorje/d3-maps/commit/a95776edd67d00057fa258610a6c9cde6993b022)]:
+  - @d3-maps/core@0.11.0
+
 ## 0.7.0
 
 ### Minor Changes
