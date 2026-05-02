@@ -13,9 +13,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "vitepress dev",
+    "gen:examples": "node ../../scripts/docs-gen-examples.mjs",
+    "typedoc": "typedoc --options ../../typedoc.json",
     "typecheck": "vue-tsc -p tsconfig.json --noEmit",
-    "prebuild": "pnpm -w docs:gen",
-    "build": "pnpm typecheck && vitepress build",
+    "build": "vitepress build",
     "preview": "vitepress preview"
   },
   "dependencies": {
@@ -38,6 +39,11 @@
     "vitepress": "catalog:",
     "vitepress-plugin-llms": "catalog:",
     "vitepress-plugin-tabs": "catalog:",
-    "vue-tsc": "catalog:"
+    "vue-tsc": "catalog:",
+    "remark-insert-headings": "catalog:",
+    "remark-toc": "catalog:",
+    "typedoc": "catalog:",
+    "typedoc-plugin-markdown": "catalog:",
+    "typedoc-plugin-remark": "catalog:"
   }
 }

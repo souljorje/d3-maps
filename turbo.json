@@ -1,13 +1,32 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
+    "transit": {
+      "dependsOn": ["^transit"]
+    },
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".vitepress/dist/**"],
+      "dependsOn": ["^build", "typecheck"],
+      "outputs": ["dist/**"]
+    },
+    "@d3-maps/docs#gen:examples": {
+      "outputs": ["examples/**"]
+    },
+    "@d3-maps/docs#typedoc": {
+      "outputs": ["api/core/**"]
+    },
+    "@d3-maps/docs#build": {
+      "dependsOn": ["^build", "typecheck", "gen:examples", "typedoc"],
+      "outputs": [".vitepress/dist/**"],
       "env": ["VITEPRESS_BASE", "VITEPRESS_SITE_URL"]
     },
+    "typecheck": {
+      "dependsOn": ["transit"],
+    },
+    "typecheck:test": {
+      "dependsOn": ["transit"],
+    },
     "test": {
-      "outputs": []
+      "dependsOn": ["transit"],
     }
   }
 }

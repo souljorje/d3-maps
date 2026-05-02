@@ -3,5 +3,7 @@ command = "pnpm docs:build"
 publish = "packages/docs/.vitepress/dist"
 ignore = "node ./scripts/netlify-ignore-build.mjs"
 
+# Configure `TURBO_TEAM` and `TURBO_TOKEN` in Netlify site environment variables
+# to enable Turbo Remote Cache for docs generation and VitePress build tasks.
 [build.environment]
 NODE_VERSION = "24"

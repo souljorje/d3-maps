@@ -194,12 +194,6 @@ importers:
       lint-staged:
         specifier: 'catalog:'
         version: 16.4.0
-      remark-insert-headings:
-        specifier: 'catalog:'
-        version: 0.0.0
-      remark-toc:
-        specifier: 'catalog:'
-        version: 9.0.0
       simple-git-hooks:
         specifier: 'catalog:'
         version: 2.13.1
@@ -209,15 +203,6 @@ importers:
       turbo:
         specifier: 'catalog:'
         version: 2.8.17
-      typedoc:
-        specifier: 'catalog:'
-        version: 0.28.17(typescript@5.9.3)
-      typedoc-plugin-markdown:
-        specifier: 'catalog:'
-        version: 4.10.0(typedoc@0.28.17(typescript@5.9.3))
-      typedoc-plugin-remark:
-        specifier: 'catalog:'
-        version: 2.0.1(typedoc-plugin-markdown@4.10.0(typedoc@0.28.17(typescript@5.9.3)))
 
   packages/core:
     dependencies:
@@ -319,9 +304,24 @@ importers:
       '@types/d3-shape':
         specifier: 'catalog:'
         version: 3.1.8
+      remark-insert-headings:
+        specifier: 'catalog:'
+        version: 0.0.0
+      remark-toc:
+        specifier: 'catalog:'
+        version: 9.0.0
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
+      typedoc:
+        specifier: 'catalog:'
+        version: 0.28.17(typescript@5.9.3)
+      typedoc-plugin-markdown:
+        specifier: 'catalog:'
+        version: 4.10.0(typedoc@0.28.17(typescript@5.9.3))
+      typedoc-plugin-remark:
+        specifier: 'catalog:'
+        version: 2.0.1(typedoc-plugin-markdown@4.10.0(typedoc@0.28.17(typescript@5.9.3)))
       vitepress:
         specifier: 'catalog:'
         version: 1.6.4(@algolia/client-search@5.49.2)(@types/node@24.10.1)(change-case@5.4.4)(lightningcss@1.32.0)(postcss@8.5.8)(search-insights@2.17.3)(terser@5.44.1)(typescript@5.9.3)
@@ -7524,6 +7524,10 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.3
 
+  fdir@6.5.0(picomatch@4.0.4):
+    optionalDependencies:
+      picomatch: 4.0.4
+
   file-entry-cache@8.0.0:
     dependencies:
       flat-cache: 4.0.1
@@ -9282,8 +9286,8 @@ snapshots:
   vite@7.3.1(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.44.1)(yaml@2.8.2):
     dependencies:
       esbuild: 0.27.4
-      fdir: 6.5.0(picomatch@4.0.3)
-      picomatch: 4.0.3
+      fdir: 6.5.0(picomatch@4.0.4)
+      picomatch: 4.0.4
       postcss: 8.5.8
       rollup: 4.53.3
       tinyglobby: 0.2.15

@@ -21,5 +21,5 @@ onMounted(() => {
 
 <template v-else>
   <p>API reference is generated on deploy</p>
-  <p>Run <code>pnpm typedoc</code> to inspect it locally</p>
+  <p>Run <code>pnpm --filter @d3-maps/docs typedoc</code> to inspect it locally</p>
 </template>
