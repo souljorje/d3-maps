@@ -215,5 +215,11 @@ export function isTopology(data: MapData): data is Topology {
 
 export function getTopoObject(geoData: Topology, topologyObjectKey?: string): GeometryObject {
   const objectKey = topologyObjectKey || Object.keys(geoData.objects)[0]
-  return geoData.objects[objectKey] as GeometryObject
+  const object = geoData.objects[objectKey]
+  if (!object) {
+    throw new Error(
+      `Topology object ${objectKey || ''} not found}`,
+    )
+  }
+  return object as GeometryObject
 }

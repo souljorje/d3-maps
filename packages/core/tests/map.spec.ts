@@ -1,6 +1,7 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 
 import type { GeoPermissibleObjects } from 'd3-geo'
+import type { Topology } from 'topojson-specification'
 
 import { geoNaturalEarth1 } from 'd3-geo'
 
@@ -135,6 +136,11 @@ describe('makeFeatures', () => {
     expect(features).toHaveLength(2)
     expect(features.map((feature) => feature.properties?.id)).toEqual(['pair-1', 'pair-2'])
   })
+
+  it('throws a helpful error for an unknown topology object key', () => {
+    expect(() => makeFeatures(sampleTopologyTwoObjects, undefined, 'missing'))
+      .toThrowError()
+  })
 })
 
 describe('makeMesh', () => {
@@ -196,6 +202,17 @@ describe('getTopoObject', () => {
 
   it('returns the requested topology object', () => {
     expect(getTopoObject(sampleTopologyTwoObjects, 'pair').type).toBe('GeometryCollection')
+  })
+
+  it('throws when topology data does not contain any objects', () => {
+    const emptyTopology = {
+      type: 'Topology',
+      transform: { scale: [1, 1], translate: [0, 0] },
+      objects: {},
+      arcs: [],
+    } satisfies Topology
+
+    expect(() => getTopoObject(emptyTopology)).toThrowError()
   })
 })
 
