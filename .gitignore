@@ -6,6 +6,7 @@ pnpm-error.log
 .pnpm-store
 .turbo
 .eslintcache
+.temp
 
 .env
 packages/docs/api/core
