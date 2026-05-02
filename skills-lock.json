@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "diataxis": {
+      "source": "keithpatton/diataxis-agent-skill",
+      "sourceType": "github",
+      "skillPath": "diataxis/SKILL.md",
+      "computedHash": "aaebbc2b4b082b4bd652f0f8c3929038a6240a45f4092ff62c8fbfa0e36a9eaa"
+    },
     "tsdown": {
       "source": "rolldown/tsdown",
       "sourceType": "github",
