@@ -1,11 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "../..",
     "paths": {
-      "~/*": ["*"],
-      "@d3-maps/vue": ["packages/vue/src/index.ts"],
-      "@d3-maps/vue/*": ["packages/vue/src/*"]
+      "~/*": ["../../*"],
+      "@d3-maps/vue": ["../../packages/vue/src/index.ts"],
+      "@d3-maps/vue/*": ["../../packages/vue/src/*"]
     }
   }
 }
