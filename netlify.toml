@@ -1,5 +1,5 @@
 [build]
-command = "pnpm docs:build"
+command = "pnpm build:docs"
 publish = "packages/docs/.vitepress/dist"
 ignore = "node ./scripts/netlify-ignore-build.mjs"
 
