@@ -1,6 +1,6 @@
 ## Mesh
 
-To render borders use [MapMesh](/components/map-mesh) instead of applying `stroke`. It will render a single `<path>` (more efficient) and ensure borders don't overlap.
+[MapMesh](/components/map-mesh) renders shared borders as one `<path>`. This avoids double-stroked edges that appear when every feature draws its own border. Mesh default stroke width is `0.5`
 
 :::tabs key:framework
 
@@ -33,5 +33,3 @@ To render borders use [MapMesh](/components/map-mesh) instead of applying `strok
 ```
 
 :::
-
-> Default stroke width is 0.5

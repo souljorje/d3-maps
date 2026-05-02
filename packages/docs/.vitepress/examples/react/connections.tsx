@@ -11,7 +11,6 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { withBase } from 'vitepress'
 
 const cities = [
   { name: 'San Francisco', coordinates: [-122.4194, 37.7749] },
@@ -47,8 +46,7 @@ export default function ConnectionsExample(): JSX.Element | null {
     let isCancelled = false
 
     async function loadMap(): Promise<void> {
-      const response = await fetch(withBase('/example-data/countries-110m.json'))
-      const payload = await response.json()
+      const { default: payload } = await import('world-atlas/countries-110m.json')
 
       if (!isCancelled) {
         setMapData(payload)

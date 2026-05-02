@@ -1,27 +1,15 @@
 ---
-description: Guide to building D3 SVG maps in React and Vue with GeoJSON or TopoJSON data, projections, and interactive layers
+description: Guide for building simple interactive SVG map with React, Vue, and D3
 ---
 
-# Introduction
+# Get started
 
-**d3-maps** is a set of components and helpers simplifying creating SVG maps with [D3](https://d3js.org/).  
+`d3-maps` is a set of components and helpers simplifying creating SVG maps with [D3](https://d3js.org/).  
 Works with your favorite framework, batteries included.
 
-## Architecture
+Let's build your first map with `d3-maps` 👇
 
-**Core** provides framework-agnostic complex logic *(you won't see it)*
-
-- Context creation, data transformation
-- Map layers types and models: features, markers, zoom, etc
-- Utilities for custom layers: choropleth, bubble, etc
-
-**Adapters** implement the core in a simple way *(you'll see it)*
-
-- Vue and React bindings (Solid and Svelte coming soon)
-- Rendering and reactivity integration
-- Declarative components and composables
-
-## Installation
+## Install
 
 ::::tabs key:framework
 
@@ -49,10 +37,12 @@ bun add @d3-maps/vue
 
 == CDN
 
-```bash
-https://cdn.jsdelivr.net/npm/@d3-maps/vue@0.8.0/index.css
-https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js
-https://cdn.jsdelivr.net/npm/@d3-maps/vue@0.8.0
+```html
+<script type="module">
+  import { createApp } from 'https://esm.sh/vue@3'
+  import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/vue'
+  import 'https://esm.sh/@d3-maps/vue/style.css'
+</script>
 ```
 
 :::
@@ -81,35 +71,30 @@ bun add @d3-maps/react
 
 == CDN
 
-```bash
-https://cdn.jsdelivr.net/npm/@d3-maps/react@0.5.0/index.css
-https://cdn.jsdelivr.net/npm/react@19/umd/react.production.min.js
-https://cdn.jsdelivr.net/npm/@d3-maps/react@0.5.0
+```html
+<script type="module">
+  import React from 'https://esm.sh/react@19'
+  import { createRoot } from 'https://esm.sh/react-dom@19/client'
+  import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/react'
+  import 'https://esm.sh/@d3-maps/react/style.css'
+</script>
 ```
 
 :::
 
 ::::
 
-## CDN support
+## Load data
 
-- `jsDelivr` and `UNPKG` support package-root script URLs for `@d3-maps/core`, `@d3-maps/react`, and `@d3-maps/vue`
-- `@d3-maps/react` and `@d3-maps/vue` browser bundles already include `@d3-maps/core`, so you only need the framework runtime plus the adapter script
-- browser styles are available from the adapter packages at `@d3-maps/react/index.css` and `@d3-maps/vue/index.css`
-- `esm.sh` and `Skypack` use the package ESM entrypoints, so prefer package-root imports there
-- `cdnjs` is not an npm mirror, so publishing to npm does not make `@d3-maps/*` available there automatically
-
-## Basic usage
-
-1. Get data
+Load a map data object first
 
 ```ts
-import '@d3-maps/vue/index.css'
-import type { MapData } from '@d3-maps/vue'
-const data: MapData = await fetch('/some-topojson.json').then((res) => res.json())
+const { default: data } = await import('world-atlas/countries-110m.json')
 ```
 
-2. Pass the data to `MapBase`
+## Render the map
+
+Pass the data to `MapBase`
 
 :::tabs key:framework
 
@@ -117,7 +102,6 @@ const data: MapData = await fetch('/some-topojson.json').then((res) => res.json(
 
 ```vue [vue]
 <script setup lang="ts">
-import '@d3-maps/vue/index.css'
 import { MapBase, MapFeatures, type MapData } from '@d3-maps/vue'
 defineProps<{
   data: MapData
@@ -134,7 +118,7 @@ defineProps<{
 == React
 
 ```tsx [react]
-import '@d3-maps/react/index.css'
+import '@d3-maps/react/style.css'
 import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
 
 export function MapView({ data }: { data: MapData }) {
@@ -148,10 +132,6 @@ export function MapView({ data }: { data: MapData }) {
 
 :::
 
-3. Your first map is ready
+## Result
 
 <Demo component-name="basic"/>
-
-## Next
-
-Learn [core concepts](/guide/core-concepts/) to understand how **d3-maps** works step by step: data, projection, zoom, markers and more.

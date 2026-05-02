@@ -1,11 +1,12 @@
 ## Styling
 
-[MapFeature](/components/map-feature)*, [MapMarker](/components/map-marker), [MapMesh](/components/map-mesh), [MapGraticule](/components/map-graticule), [MapLine](/components/map-line), and [MapAnnotation](/components/map-annotation) accept a `styles` prop  
+[MapFeature](/components/map-feature)*, [MapMarker](/components/map-marker), [MapMesh](/components/map-mesh), [MapGraticule](/components/map-graticule), [MapLine](/components/map-line), and [MapAnnotation](/components/map-annotation) expose a `styles` prop for interaction-state styling  
 
 <!-- TODO: check if it works with Solid and svelte -->
 ```ts
 const styles = {
   default: { fill: 'lightblue' }, // default state
+  focus: { stroke: 'deepskyblue' }, // on keyboard focus
   hover: { fill: 'skyblue' }, // on hover
   active: { fill: 'lightskyblue' }, // on mousedown
 }
@@ -65,29 +66,29 @@ const styles = {
 
 :::
 
-> \* [MapFeatures](/components/map-features) forwards `styles` to internally rendered `MapFeature`'s
+> \* [MapFeatures](/components/map-features) forwards `styles` to internally rendered `MapFeature`s
 
 ### CSS
 
-1. Import [default stylesheet](https://github.com/souljorje/d3-maps/blob/main/packages/core/src/index.css) to simplify global map styles
+The default stylesheet provides a shared base for map presentation
 
 :::tabs key:framework-css
 
 == Vue
 
 ```ts
-import '@d3-maps/vue/index.css'
+import '@d3-maps/vue/style.css'
 ```
 
 == React
 
 ```ts
-import '@d3-maps/react/index.css'
+import '@d3-maps/react/style.css'
 ```
 
 :::
 
-2. Define styles for map components with plain CSS
+Plain CSS can also target the generated SVG elements directly
 
 | Component | CSS selector |
 | --- | --- |

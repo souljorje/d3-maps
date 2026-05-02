@@ -9,14 +9,13 @@
 ## Commands
 | Command | Purpose |
 | --- | --- |
-| `pnpm typedoc` | Generate API markdown from package exports. |
-| `pnpm docs:gen` | Regenerate examples wrappers and API docs. |
-| `pnpm docs:build` | Generate API docs as part of the docs build. |
+| `pnpm --filter @d3-maps/docs typedoc` | Generate API markdown from package exports. |
+| `pnpm build:docs` | Regenerate example wrappers and API docs as part of the docs build. |
 
 ## Inputs/Outputs
 | Type | Path |
 | --- | --- |
-| TypeDoc command definition | package.json |
+| TypeDoc command definition | packages/docs/package.json |
 | TypeDoc config | typedoc.json |
 | Primary API source package | packages/core/src/index.ts |
 | Generated output directory | packages/docs/api/core |

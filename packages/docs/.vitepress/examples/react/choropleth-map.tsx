@@ -30,8 +30,8 @@ export default function ChoroplethMapExample(): JSX.Element {
     let isCancelled = false
 
     async function fetchMap(): Promise<MapData> {
-      const response = await fetch(withBase('/example-data/countries-110m.json'))
-      return response.json()
+      const { default: mapData } = await import('world-atlas/countries-110m.json')
+      return mapData
     }
 
     async function fetchData(): Promise<CountryStat[]> {

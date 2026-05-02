@@ -36,9 +36,8 @@ export function WorldMap() {
   const [data, setData] = useState<MapData | null>(null)
 
   useEffect(() => {
-    fetch('/world-110m.json')
-      .then((res) => res.json())
-      .then((json) => setData(json as MapData))
+    import('world-atlas/countries-110m.json')
+      .then(({ default: json }) => setData(json))
   }, [])
 
   if (!data) return null

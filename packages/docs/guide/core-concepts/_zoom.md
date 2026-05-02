@@ -1,6 +1,6 @@
 ## Zoom
 
-Wrap layers with [MapZoom](/components/map-zoom) to enable pan and zoom
+[MapZoom](/components/map-zoom) adds pan and zoom behavior with `d3-zoom`  
 
 :::tabs key:framework
 
@@ -40,4 +40,4 @@ Wrap layers with [MapZoom](/components/map-zoom) to enable pan and zoom
 
 :::
 
-> Detailed zoom [usage example](/examples/zoom)
+See the [zoom example](/examples/zoom) for details

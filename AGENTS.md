@@ -30,11 +30,11 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | `pnpm install` | Install workspace dependencies. |
 | `pnpm dev` | Run docs dev server (`docs` workspace). |
 | `pnpm build` | Build publishable packages only via Turbo (`packages/docs` excluded). |
+| `pnpm build:full` | Build all workspaces with Turbo, including `packages/docs`. |
+| `pnpm build:docs` | Build VitePress docs with docs generation through Turbo task dependencies. |
 | `pnpm test` | Run core, react, and vue test suites. |
-| `pnpm docs:gen:examples` | Generate docs example wrapper pages from `.vitepress/examples`. |
-| `pnpm typedoc` | Generate API reference docs via TypeDoc. |
-| `pnpm docs:gen` | Run all docs generation steps. |
-| `pnpm docs:build` | Build VitePress docs (includes docs generation via the docs package prebuild). |
+| `pnpm --filter @d3-maps/docs gen:examples` | Generate docs example wrapper pages from `.vitepress/examples`. |
+| `pnpm --filter @d3-maps/docs typedoc` | Generate API reference docs via TypeDoc. |
 | `pnpm docs:preview` | Preview built docs site. |
 | `pnpm lint` | Run ESLint. |
 | `pnpm lintfix` | Run ESLint with auto-fix. |
@@ -57,6 +57,8 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 |-------|-------------|
 | [vitest](.agents/skills/vitest/SKILL.md) | Writing or updating test suites, mocking setup, or coverage/test config. |
 | [changesets](.agents/skills/changesets/SKILL.md) | Creating or updating `.changeset/*.md` entries for package changes (everything under `packages/*` except `packages/docs`). |
+| [tsdown](.agents/skills/tsdown/SKILL.md) | Working on `tsdown` config, build outputs, package exports, CSS emission, or migration questions related to the repo build setup. |
+| [turborepo](.agents/skills/turborepo/SKILL.md) | Working on Turbo task graphs, caching, filtering, CI setup, or workspace-level build orchestration. |
 
 ## Detailed Instructions
 

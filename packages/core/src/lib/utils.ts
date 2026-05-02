@@ -2,8 +2,8 @@ export function isString(value: unknown): value is string {
   return typeof value === 'string'
 }
 
-export function isDefined<T>(value: T | null | undefined): value is T {
-  return value !== 'undefined'
+export function isDefined<T>(value: T | undefined): value is T {
+  return typeof value !== 'undefined'
 }
 
 export const isNullish = (value: unknown): value is null | undefined => value == null

@@ -34,7 +34,6 @@
 import type { ZoomEvent } from '@d3-maps/vue'
 
 import { geoNaturalEarth1 } from 'd3-geo'
-import { withBase } from 'vitepress'
 import { onMounted, ref } from 'vue'
 
 interface City {
@@ -60,8 +59,8 @@ const markerScale = ref(1)
 const currentZoom = ref(1)
 
 onMounted(async () => {
-  const response = await fetch(withBase('/example-data/countries-110m.json'))
-  data.value = await response.json()
+  const { default: mapData } = await import('world-atlas/countries-110m.json')
+  data.value = mapData
 })
 
 function updateMarkerScale(e: ZoomEvent) {

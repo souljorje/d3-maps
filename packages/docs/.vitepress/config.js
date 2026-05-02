@@ -113,7 +113,7 @@ function createHomeStructuredData() {
       '@type': 'WebSite',
       name: 'd3-maps',
       url: `${SITE_URL}/`,
-      description: 'D3 maps for Vue and React with reactive SVG map components and examples',
+      description: 'Interactive SVG maps for Vue and React. Reactive components powered by D3.',
     },
   ]
 }
@@ -149,6 +149,8 @@ function sanitizeSidebarItems(items) {
       if (!item.link && !item.items) return null
       if (item.link?.includes('#')) return null
       if (item.link?.startsWith('/examples/') && item.link !== '/examples') return null
+      // The LLM plugin resolves sidebar links against markdown source pages only
+      if (item.link?.endsWith('.txt')) return null
 
       if (!item.items) return item
 
@@ -183,6 +185,7 @@ const docsSidebar = [
           { text: 'Styling', link: '/guide/core-concepts#styling' },
           { text: 'Responsiveness', link: '/guide/core-concepts#responsiveness' },
         ] },
+      { text: 'Architecture', link: '/guide/architecture' },
       { text: 'Troubleshooting', link: '/guide/troubleshooting' },
       { text: 'Migrate from react-simple-maps', link: '/guide/migration-from-react-simple-maps' },
     ],
@@ -234,7 +237,7 @@ const docsSidebar = [
     text: 'LLMs',
     items: [
       { text: 'llms.txt', link: '/llms.txt' },
-      { text: 'llms-full.tx', link: '/llms-full.txt' },
+      { text: 'llms-full.txt', link: '/llms-full.txt' },
     ],
   },
 ]
@@ -354,12 +357,20 @@ export default defineConfig({
     },
     resolve: {
       dedupe: ['vue'],
-      alias: {
-        '@': REPO_ROOT,
-        '@d3-maps/core/index.css': path.join(PACKAGES_DIR, 'core', 'src', 'index.css'),
-        '@d3-maps/core': path.join(PACKAGES_DIR, 'core', 'src', 'index.ts'),
-        '@d3-maps/vue': path.join(PACKAGES_DIR, 'vue', 'src', 'index.ts'),
-      },
+      alias: [
+        {
+          find: '@',
+          replacement: REPO_ROOT,
+        },
+        {
+          find: /^@d3-maps\/(\w+)\/(.+)$/,
+          replacement: `${PACKAGES_DIR.replace(/\\/g, '/')}/$1/src/$2`,
+        },
+        {
+          find: /^@d3-maps\/(\w+)$/,
+          replacement: `${PACKAGES_DIR.replace(/\\/g, '/')}/$1/src/index.ts`,
+        },
+      ],
     },
   },
 })

@@ -13,9 +13,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "vitepress dev",
+    "gen:examples": "node ../../scripts/docs-gen-examples.mjs",
+    "typedoc": "typedoc --options ../../typedoc.json",
     "typecheck": "vue-tsc -p tsconfig.json --noEmit",
-    "prebuild": "pnpm -w docs:gen",
-    "build": "pnpm typecheck && vitepress build",
+    "build": "vitepress build",
     "preview": "vitepress preview"
   },
   "dependencies": {
@@ -25,7 +26,8 @@
     "d3-geo": "catalog:",
     "d3-scale": "catalog:",
     "d3-shape": "catalog:",
-    "vue": "catalog:"
+    "vue": "catalog:",
+    "world-atlas": "catalog:"
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:",
@@ -33,7 +35,12 @@
     "@types/d3-geo": "catalog:",
     "@types/d3-scale": "catalog:",
     "@types/d3-shape": "catalog:",
+    "remark-insert-headings": "catalog:",
+    "remark-toc": "catalog:",
     "tailwindcss": "catalog:",
+    "typedoc": "catalog:",
+    "typedoc-plugin-markdown": "catalog:",
+    "typedoc-plugin-remark": "catalog:",
     "vitepress": "catalog:",
     "vitepress-plugin-llms": "catalog:",
     "vitepress-plugin-tabs": "catalog:",

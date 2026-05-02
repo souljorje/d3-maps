@@ -7,6 +7,8 @@ description: Create or update Changesets entries. Always preview all proposed `.
 
 Add changesets for user-facing changes to any publishable package (private: false) under `packages/*`
 
+Do not add changesets for docs-only, CI-only, repo-config-only, or other non-code/non-feature changes with no package release-note impact
+
 ## Bump Rules
 
 - `patch`: fixes, internal refactors, perf changes
@@ -24,16 +26,19 @@ Use **minimal split**:
 
 Scope is defined by release-note impact across packages, not by how many source files changed
 
+If a change does not materially affect a publishable package's shipped code, behavior, API, or package-facing documentation, do not create a changeset
+
 ## Process (Always)
 
 1. Review the branch diff against `main` to identify changes and which publishable package(s) they affect
-2. Check whether pending `.changeset/*.md` files already exist (ignore `.changeset/README.md`)
-3. Reuse an existing pending changeset when its package scope already matches the new note group
-4. Group release-note items by affected package set
-5. Draft one changeset file per scope group with short, user-facing bullet summaries written in past tense and without implementation details
-6. Preview **all proposed changeset files together** and ask for one explicit `confirm`
-7. Only after `confirm`, write or update all proposed `.changeset/*.md` files in one batch
-8. Optionally validate with `pnpm changeset status`
+2. Stop immediately if the diff is docs-only, CI-only, config-only, or otherwise has no publishable package release-note impact
+3. Check whether pending `.changeset/*.md` files already exist (ignore `.changeset/README.md`)
+4. Reuse an existing pending changeset when its package scope already matches the new note group
+5. Group release-note items by affected package set
+6. Draft one changeset file per scope group with short, user-facing bullet summaries written in past tense and without implementation details
+7. Preview **all proposed changeset files together** and ask for one explicit `confirm`
+8. Only after `confirm`, write or update all proposed `.changeset/*.md` files in one batch
+9. Optionally validate with `pnpm changeset status`
 
 ## Format
 

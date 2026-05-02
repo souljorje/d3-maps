@@ -38,7 +38,7 @@
 import type {
   DataTransformer,
   MapData,
-} from '@d3-maps/core'
+} from '@d3-maps/vue'
 
 import { geoEquirectangular } from 'd3-geo'
 import { withBase } from 'vitepress'

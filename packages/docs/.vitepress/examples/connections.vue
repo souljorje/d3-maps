@@ -73,7 +73,6 @@
 import type { MapData } from '@d3-maps/vue'
 
 import { curveBasis } from 'd3-shape'
-import { withBase } from 'vitepress'
 import { onMounted, ref } from 'vue'
 
 const cities = [
@@ -106,7 +105,7 @@ const returnFlight = [
 const data = ref<MapData>()
 
 onMounted(async () => {
-  const response = await fetch(withBase('/example-data/countries-110m.json'))
-  data.value = await response.json()
+  const { default: mapData } = await import('world-atlas/countries-110m.json')
+  data.value = mapData
 })
 </script>

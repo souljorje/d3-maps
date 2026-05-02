@@ -22,7 +22,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | Build | Tsdown |
 | Tests | Vitest |
 | Docs | VitePress |
-| Package manager | pnpm workspaces (Node >= 20) |
+| Package manager | pnpm workspaces (Node >= 22) |
 
 ## Layer Responsibilities
 | Layer | Package | Responsibility |
@@ -54,4 +54,4 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 - [Code Style](code-style.md)
 - [Git Workflow](git-workflow.md)
 - [Docs Generation Workflow](docs-generation.md)
-- [AGENTS Style Guide](.agents-style.md)
+- [AGENTS Style Guide](agents-style.md)

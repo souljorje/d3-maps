@@ -1,9 +1,6 @@
 ## Data
 
-[MapBase](/components/map-base) accepts either GeoJSON or TopoJSON and then transforms it into GeoJSON.  
-Both used for geo data encoding, but **TopoJSON is recommended**, it's smaller.
-
-Simply pass `data` prop to render the basic map
+[MapBase](/components/map-base) accepts GeoJSON or TopoJSON and normalizes to GeoJSON before render. Both formats used for geo data encoding. TopoJSON is compact, GeoJSON is rich.
 
 :::tabs key:framework
 

@@ -1,11 +1,11 @@
 ---
 layout: home
-title: d3-maps
-description: D3 SVG map library for React and Vue with components for choropleth maps, markers, pan and zoom, and responsive rendering
+title: d3-maps · Interactive SVG maps
+description: Interactive SVG maps for React and Vue. Reactive components for features, markers, pan and zoom. Powered by D3.
 hero:
   name: d3-maps
-  text: Simple SVG maps powered by D3
-  tagline: Works with <span class="vue">Vue</span> and <span class="react">React</span>.<br/><span class="svelte">Svelte</span> and <span class="solid">Solid</span> coming soon.
+  text: Interactive SVG maps <br>for <span class="vue">Vue</span> & <span class="react">React</span>
+  tagline: <span class="svelte">Svelte</span> and <span class="solid">Solid</span> coming soon
   image:
     src: /d3-maps-logo.svg
     alt: d3-maps logo
@@ -24,7 +24,7 @@ features:
     details: Zoom, drag, lines, markers, and more
     icon: 💪
   - title: Reactive
-    details: Props change triggers rerender
+    details: Props change triggers render
     icon: ⚛️
   - title: Responsive
     details: By default, without rerenders
@@ -32,7 +32,7 @@ features:
   - title: Lightweight
     details: And treeshakable ESM
     icon: 🪶
-  - title: SSR friendly
-    details: Server-rendered, interactive on client
-    icon: 🗄️
+  - title: Fully typed
+    details: First-class TypeScript support
+    icon: <b style="color:#3178c6">TS</b>
 ---
