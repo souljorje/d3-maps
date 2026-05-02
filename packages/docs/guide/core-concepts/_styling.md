@@ -73,12 +73,6 @@ const styles = {
 
 :::tabs key:framework-css
 
-== Core
-
-```ts
-import '@d3-maps/core/style.css'
-```
-
 == Vue
 
 ```ts
