@@ -1,0 +1,5 @@
+/
+  Link: </llms.txt>; rel="describedby"
+  Link: </llms-full.txt>; rel="describedby"
+  Link: </api/>; rel="service-doc"
+  Link: </.well-known/agent-skills/index.json>; rel="describedby"

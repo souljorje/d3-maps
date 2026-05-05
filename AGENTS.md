@@ -32,6 +32,8 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | `pnpm build` | Build publishable packages only via Turbo (`packages/docs` excluded). |
 | `pnpm build:full` | Build all workspaces with Turbo, including `packages/docs`. |
 | `pnpm build:docs` | Build VitePress docs with docs generation through Turbo task dependencies. |
+| `pnpm dev:netlify` | Serve the built docs through Netlify local runtime on `http://localhost:8888`. |
+| `pnpm agent:smoke [url]` | Check Netlify-only docs behavior like headers, markdown negotiation, and well-known files. |
 | `pnpm test` | Run core, react, and vue test suites. |
 | `pnpm --filter @d3-maps/docs gen:examples` | Generate docs example wrapper pages from `.vitepress/examples`. |
 | `pnpm --filter @d3-maps/docs typedoc` | Generate API reference docs via TypeDoc. |

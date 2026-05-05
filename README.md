@@ -102,6 +102,13 @@ pnpm build:docs
 pnpm dev
 ```
 
+Netlify-path validation
+
+```bash
+pnpm dev:netlify
+pnpm agent:smoke
+```
+
 ## Contributing
 
 See the [Contributing Guide](CONTRIBUTING.md)

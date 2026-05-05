@@ -8,10 +8,12 @@
   },
   "scripts": {
     "dev": "pnpm --filter docs dev",
+    "dev:netlify": "VITEPRESS_SITE_URL=http://localhost:8888 pnpm build:docs && netlify dev --dir=packages/docs/.vitepress/dist",
     "build": "turbo run build --filter=!@d3-maps/docs",
     "build:full": "turbo run build",
     "build:docs": "turbo run build --filter=@d3-maps/docs",
     "docs:preview": "pnpm --filter docs preview",
+    "agent:smoke": "node ./scripts/agent-ready-smoke.mjs",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "typecheck:test": "turbo run typecheck:test",
@@ -34,6 +36,7 @@
     "@vue/tsconfig": "catalog:",
     "eslint": "catalog:",
     "lint-staged": "catalog:",
+    "netlify-cli": "catalog:",
     "simple-git-hooks": "catalog:",
     "tsdown": "catalog:",
     "turbo": "catalog:"

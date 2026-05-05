@@ -4,6 +4,7 @@ import { enhanceAppWithTabs } from 'vitepress-plugin-tabs/client'
 import CoreConceptsCombined from './components/CoreConceptsCombined.vue'
 import Demo from './components/Demo.vue'
 import ExamplesList from './components/ExamplesList.vue'
+import { registerWebMcpTools } from './webmcp'
 
 import './custom.css'
 // eslint-disable-next-line perfectionist/sort-imports
@@ -31,7 +32,7 @@ function registerDemoComponents(app) {
 
 export default {
   ...DefaultTheme,
-  enhanceApp({ app }) {
+  enhanceApp({ app, router }) {
     DefaultTheme.enhanceApp({ app })
     enhanceAppWithTabs(app)
     app.use(D3Maps)
@@ -39,5 +40,6 @@ export default {
     app.component('CoreConceptsCombined', CoreConceptsCombined)
     app.component('Demo', Demo)
     app.component('ExamplesList', ExamplesList)
+    registerWebMcpTools(router)
   },
 }

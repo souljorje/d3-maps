@@ -14,6 +14,8 @@
 | --- | --- |
 | `pnpm --filter docs dev` | Run VitePress locally. |
 | `pnpm build:docs` | Build docs site with example wrappers and API docs generation. |
+| `pnpm dev:netlify` | Serve the built docs through Netlify local runtime on `http://localhost:8888`. |
+| `pnpm agent:smoke [url]` | Check Netlify-only docs behavior against a local or deployed URL. |
 | `pnpm --filter docs preview` | Preview built docs site. |
 | `pnpm --filter @d3-maps/docs gen:examples` | Regenerate examples wrapper pages. |
 | `pnpm --filter @d3-maps/docs typedoc` | Generate API markdown on demand. |
@@ -29,6 +31,7 @@
 | Theme registration | Register global demo components in packages/docs/.vitepress/theme/index.js. |
 | Generated content | Do not hand-edit generated files in packages/docs/examples or generated API markdown in packages/docs/api/core. |
 | Local API docs | Run `pnpm build:docs` or `pnpm --filter @d3-maps/docs typedoc` before expecting API reference pages locally. |
+| Netlify validation | Use `pnpm dev:netlify` plus `pnpm agent:smoke` when validating `_headers`, edge functions, or other Netlify-only docs behavior. |
 | Parts usage | Extract duplicated content to parts with `_` prefix and reuse across files, `_*.md` are ignored by vitepress |
 | Core concepts | /guide/core-concepts must be composed with parts. |
 | Core concepts combined demo sync | When changing `guide/core-concepts` snippets or rendered order/colors, update `packages/docs/.vitepress/theme/components/CoreConceptsCombined.vue` in the same change to keep it aligned. |

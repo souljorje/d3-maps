@@ -1,3 +1,4 @@
+import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
@@ -116,6 +117,28 @@ function createHomeStructuredData() {
       description: 'Interactive SVG maps for Vue and React. Reactive components powered by D3.',
     },
   ]
+}
+
+function createAgentSkillsIndex(outDir) {
+  const skills = [
+    {
+      name: 'd3-maps-docs',
+      type: 'skill-md',
+      description: 'Read d3-maps documentation, llms indexes, and page markdown for agent-friendly docs access.',
+      url: toAbsoluteSiteUrl('/.well-known/agent-skills/d3-maps-docs/SKILL.md'),
+      filePath: path.join(outDir, '.well-known', 'agent-skills', 'd3-maps-docs', 'SKILL.md'),
+    },
+  ]
+    .filter((skill) => skill.url && fs.existsSync(skill.filePath))
+    .map(({ filePath, ...skill }) => ({
+      ...skill,
+      digest: `sha256:${crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex')}`,
+    }))
+
+  return {
+    $schema: 'https://schemas.agentskills.io/discovery/0.2.0/schema.json',
+    skills,
+  }
 }
 
 function getExamples() {
@@ -298,8 +321,15 @@ export default defineConfig({
   buildEnd(siteConfig) {
     if (!SITE_URL) return
 
-    const robots = `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`
+    const robots = `User-agent: *\nAllow: /\nContent-Signal: ai-train=yes, search=yes, ai-input=yes\n\nSitemap: ${SITE_URL}/sitemap.xml\n`
     fs.writeFileSync(path.join(siteConfig.outDir, 'robots.txt'), robots)
+
+    const agentSkillsDir = path.join(siteConfig.outDir, '.well-known', 'agent-skills')
+    fs.mkdirSync(agentSkillsDir, { recursive: true })
+    fs.writeFileSync(
+      path.join(agentSkillsDir, 'index.json'),
+      `${JSON.stringify(createAgentSkillsIndex(siteConfig.outDir), null, 2)}\n`,
+    )
   },
   themeConfig: {
     logo: '/d3-maps-logo.svg',

@@ -34,6 +34,7 @@ catalog:
   eslint: ^9.39.4
   jsdom: ^27.3.0
   lint-staged: ^16.4.0
+  netlify-cli: ^26.0.1
   react: ^19.2.0
   react-dom: ^19.2.0
   remark-insert-headings: ^0.0.0

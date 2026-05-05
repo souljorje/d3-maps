@@ -7,3 +7,10 @@ ignore = "node ./scripts/netlify-ignore-build.mjs"
 # to enable Turbo Remote Cache for docs generation and VitePress build tasks.
 [build.environment]
 NODE_VERSION = "24"
+
+[[edge_functions]]
+path = "/*"
+function = "markdown-negotiation"
+
+  [edge_functions.header]
+  accept = "text/markdown"
