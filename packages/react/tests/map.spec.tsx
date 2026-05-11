@@ -1,4 +1,9 @@
-import { describe, expect, it } from 'vitest'
+import {
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest'
 
 import {
   render,
@@ -66,24 +71,31 @@ describe('map', () => {
   })
 
   it('updates rendered features when topologyObjectKey changes', () => {
-    const { container, rerender } = render(
-      <MapBase data={sampleTopologyTwoObjects}>
-        <MapFeatures />
-      </MapBase>,
-    )
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+    try {
+      const { container, rerender } = render(
+        <MapBase data={sampleTopologyTwoObjects}>
+          <MapFeatures />
+        </MapBase>,
+      )
 
-    expect(container.querySelectorAll('path')).toHaveLength(1)
+      expect(container.querySelectorAll('path')).toHaveLength(1)
 
-    rerender(
-      <MapBase
-        data={sampleTopologyTwoObjects}
-        topologyObjectKey="pair"
-      >
-        <MapFeatures />
-      </MapBase>,
-    )
+      rerender(
+        <MapBase
+          data={sampleTopologyTwoObjects}
+          topologyObjectKey="pair"
+        >
+          <MapFeatures />
+        </MapBase>,
+      )
 
-    expect(container.querySelectorAll('path')).toHaveLength(2)
+      expect(container.querySelectorAll('path')).toHaveLength(2)
+      expect(container.querySelector('svg')?.getAttribute('topologyObjectKey')).toBeNull()
+      expect(consoleError).not.toHaveBeenCalled()
+    } finally {
+      consoleError.mockRestore()
+    }
   })
 
   it('renders with an external context object shared with sibling UI', () => {

@@ -32,9 +32,17 @@ function isRenderProp(children: MapBaseProps['children']): children is MapBaseRe
 
 export function MapBase(props: MapBaseProps): ReactElement {
   const {
+    aspectRatio,
     children,
     className,
     context: providedContext,
+    data,
+    dataTransformer,
+    height,
+    projection,
+    projectionConfig,
+    topologyObjectKey,
+    width,
     ...svgProps
   } = props
 

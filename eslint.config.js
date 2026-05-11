@@ -4,7 +4,7 @@ export default antfu({
   type: 'lib',
   vue: true,
   typescript: true,
-  ignores: ['**/*.md', 'packages/docs/public/example-data/*'],
+  ignores: ['**/*.md', 'packages/docs/public/example-data/*', 'packages/atlas/*'],
 })
   .overrideRules({
     // eslint
