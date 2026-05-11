@@ -50,25 +50,6 @@ function normalizeCountry(properties) {
   }
 }
 
-async function exportTopology(input, output, extraArgs = []) {
-  await ensureDir(dirname(output))
-
-  await mapshaper([
-    input,
-    ...extraArgs,
-    '-clean',
-    '-filter-fields',
-    FIELD_NAMES.join(','),
-    '-rename-layers',
-    'features',
-    '-o',
-    'format=topojson',
-    'quantization=1e5',
-    'bbox',
-    output,
-  ])
-}
-
 async function exportGeojsonForMetadata(scale) {
   const input = sourceShp(scale)
   const output = filePath(`data/tmp/countries-${scale}.geojson`)
@@ -86,23 +67,56 @@ async function exportGeojsonForMetadata(scale) {
   return output
 }
 
-async function exportSplitTopologies(input, splitField, outputDir) {
-  await ensureDir(outputDir)
+async function exportScaleTopologies(scale) {
+  const input = sourceShp(scale)
+  const worldOutput = filePath(`src/world/countries/countries-${scale}.json`)
+  const countryOutputDir = filePath(`data/tmp/countries-${scale}`)
+  const continentOutputDir = filePath(`data/tmp/continents-${scale}`)
+
+  await ensureDir(dirname(worldOutput))
+  await ensureDir(countryOutputDir)
+  await ensureDir(continentOutputDir)
+
   await mapshaper([
     input,
     '-clean',
     '-filter-fields',
     FIELD_NAMES.join(','),
+    '-rename-layers',
+    'features',
+    '-o',
+    'format=topojson',
+    'quantization=1e5',
+    'bbox',
+    worldOutput,
     '-split',
-    splitField,
+    'ADM0_A3',
     'apart',
+    '+',
     '-o',
     'format=topojson',
     'quantization=1e5',
     'bbox',
     'singles',
-    `${outputDir}/`,
+    `${countryOutputDir}/`,
+    '-target',
+    'features',
+    '-split',
+    'CONTINENT',
+    'apart',
+    '+',
+    '-o',
+    'format=topojson',
+    'quantization=1e5',
+    'bbox',
+    'singles',
+    `${continentOutputDir}/`,
   ])
+
+  return {
+    continentOutputDir,
+    countryOutputDir,
+  }
 }
 
 async function moveSplitFiles(sourceDir, targetRoot, slugBySourceName, scale) {
@@ -112,6 +126,8 @@ async function moveSplitFiles(sourceDir, targetRoot, slugBySourceName, scale) {
     if (!entry.isFile() || !entry.name.endsWith('.json')) continue
 
     const sourceName = basename(entry.name, '.json')
+    if (sourceName === 'features') continue
+
     const slug = slugBySourceName.get(sourceName)
     if (!slug) continue
 
@@ -160,15 +176,9 @@ for (const scale of SCALES) {
   const shp = sourceShp(scale)
   await mustExist(shp)
 
-  await exportTopology(
-    shp,
-    filePath(`src/world/countries/countries-${scale}.json`),
-  )
-
-  const countrySplitDir = filePath(`data/tmp/countries-${scale}`)
-  await exportSplitTopologies(shp, 'ADM0_A3', countrySplitDir)
+  const { continentOutputDir, countryOutputDir } = await exportScaleTopologies(scale)
   const presentCountryCodes = await moveSplitFiles(
-    countrySplitDir,
+    countryOutputDir,
     filePath('src/countries'),
     countrySlugByCode,
     scale,
@@ -179,10 +189,8 @@ for (const scale of SCALES) {
     if (country) country.scales.push(scale)
   }
 
-  const continentSplitDir = filePath(`data/tmp/continents-${scale}`)
-  await exportSplitTopologies(shp, 'CONTINENT', continentSplitDir)
   await moveSplitFiles(
-    continentSplitDir,
+    continentOutputDir,
     filePath('src/continents'),
     continentSlugByName,
     scale,

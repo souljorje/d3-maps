@@ -1,5 +1,5 @@
-export { default as Brazil10m } from './brazil-10m.js'
-
-export { default as Brazil50m } from './brazil-50m.js'
 export { default } from './brazil-110m.js'
+
 export { default as Brazil110m } from './brazil-110m.js'
+export { default as Brazil50m } from './brazil-50m.js'
+export { default as Brazil10m } from './brazil-10m.js'
