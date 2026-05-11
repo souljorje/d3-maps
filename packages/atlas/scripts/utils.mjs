@@ -14,6 +14,11 @@ export const TOPOLOGY_PROPERTY_MAP = {
   NAME_LONG: 'name_long',
 }
 
+export const TOPOLOGY_PROPERTY_MODE = {
+  NORMALIZE: 'normalize',
+  PRESERVE: 'preserve',
+}
+
 export const TOPOLOGY_FIELD_NAMES = [
   ...Object.keys(TOPOLOGY_PROPERTY_MAP),
   'CONTINENT',
@@ -40,6 +45,58 @@ export const CONTINENTS = [
   { name: 'North America', slug: 'north-america' },
   { name: 'Oceania', slug: 'oceania' },
   { name: 'South America', slug: 'south-america' },
+]
+
+export const WORLD_LAYERS = [
+  {
+    id: 'countries',
+    name: 'Countries',
+    sourceLayer: 'admin_0_countries',
+    theme: 'cultural',
+    topologyFields: TOPOLOGY_FIELD_NAMES,
+    propertyMode: TOPOLOGY_PROPERTY_MODE.NORMALIZE,
+    propertyMap: TOPOLOGY_PROPERTY_MAP,
+  },
+  {
+    id: 'land',
+    name: 'Land',
+    sourceLayer: 'land',
+    theme: 'physical',
+    topologyFields: [],
+    propertyMode: TOPOLOGY_PROPERTY_MODE.PRESERVE,
+  },
+  {
+    id: 'ocean',
+    name: 'Ocean',
+    sourceLayer: 'ocean',
+    theme: 'physical',
+    topologyFields: [],
+    propertyMode: TOPOLOGY_PROPERTY_MODE.PRESERVE,
+  },
+  {
+    id: 'coastline',
+    name: 'Coastline',
+    sourceLayer: 'coastline',
+    theme: 'physical',
+    topologyFields: [],
+    propertyMode: TOPOLOGY_PROPERTY_MODE.PRESERVE,
+  },
+  {
+    id: 'lakes',
+    name: 'Lakes',
+    sourceLayer: 'lakes',
+    theme: 'physical',
+    topologyFields: [],
+    propertyMode: TOPOLOGY_PROPERTY_MODE.PRESERVE,
+  },
+  {
+    id: 'rivers',
+    name: 'Rivers',
+    sourceLayer: 'rivers_lake_centerlines',
+    theme: 'physical',
+    topologyFields: [],
+    propertyMode: TOPOLOGY_PROPERTY_MODE.PRESERVE,
+  },
 ]
 
 export function fileUrl(path) {
@@ -121,4 +178,8 @@ export function mapshaper(args) {
 
 export function sourceShp(scale) {
   return filePath(`data/raw/natural-earth-vector/${scale}_cultural/ne_${scale}_admin_0_countries.shp`)
+}
+
+export function sourceWorldLayerShp(scale, sourceLayer, theme = 'physical') {
+  return filePath(`data/raw/natural-earth-vector/${scale}_${theme}/ne_${scale}_${sourceLayer}.shp`)
 }

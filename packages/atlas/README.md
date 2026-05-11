@@ -1,12 +1,12 @@
 # @d3-maps/atlas
 
-Ready-to-use TopoJSON maps: world, continents, countries
+Ready-to-use TopoJSON maps: world layers, continents, countries
 
 [**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples)
 
 ## Features
 
-🗺️ Ready-to-use world, country, and continent maps  
+🗺️ Ready-to-use world layers, country, and continent maps  
 🌍 Built from Natural Earth data  
 📦 TopoJSON by default  
 🧑‍💻 Fully typed  
@@ -43,6 +43,22 @@ export function App() {
 }
 ```
 
+### World layers
+
+```tsx
+import { MapBase, MapFeatures } from '@d3-maps/react'
+import Ocean from '@d3-maps/atlas/world/ocean'
+import Coastline from '@d3-maps/atlas/world/coastline'
+
+export function App() {
+  return (
+    <MapBase data={[Ocean, Coastline]}>
+      <MapFeatures />
+    </MapBase>
+  )
+}
+```
+
 ### Individual countries
 
 ```tsx
@@ -64,11 +80,13 @@ export function App() {
 import Russia110m from '@d3-maps/atlas/countries/russia/russia-110m'
 import Russia50m from '@d3-maps/atlas/countries/russia/russia-50m'
 import Russia10m from '@d3-maps/atlas/countries/russia/russia-10m'
+import Ocean110m from '@d3-maps/atlas/world/ocean/ocean-110m'
+import Rivers50m from '@d3-maps/atlas/world/rivers/rivers-50m'
 ```
 
 ## Data
 
-TopoJSON feature properties are intentionally minimal:
+Country TopoJSON feature properties are intentionally minimal:
 
 ```ts
 type AtlasProperties = {
@@ -102,6 +120,8 @@ type CountryMetadata = {
   defaultScale: '110m' | '50m' | '10m'
 }
 ```
+
+World physical layers do not have a stable metadata API. Their source properties are preserved.
 
 ## Scales
 

@@ -9,6 +9,7 @@ import {
   pathExists,
   readJson,
   walkFiles,
+  WORLD_LAYERS,
   writeText,
 } from './utils.mjs'
 
@@ -66,24 +67,24 @@ async function writeBarrelPair(basePath, lines) {
   await writeText(`${basePath}.d.ts`, content)
 }
 
-async function buildWorldCountries() {
-  const dir = `${distDir}/world/countries`
+async function buildWorldLayer(layer) {
+  const dir = `${distDir}/world/${layer.id}`
   const sharedLeafPath = '../../_topology.js'
 
   for (const scale of SCALES) {
     await writeWrapperPair(
-      `${dir}/countries-${scale}`,
-      `countries-${scale}.json`,
+      `${dir}/${layer.id}-${scale}`,
+      `${layer.id}-${scale}.json`,
     )
   }
 
   await writeText(
     `${dir}/index.js`,
-    scaleExports('countries', 'Countries'),
+    scaleExports(layer.id, layer.name),
   )
   await writeText(
     `${dir}/index.d.ts`,
-    scaleDts(sharedLeafPath, 'Countries'),
+    scaleDts(sharedLeafPath, layer.name),
   )
 }
 
@@ -124,9 +125,12 @@ async function buildCountriesBarrel(countries) {
 }
 
 async function buildRootBarrel(continents) {
+  const worldLines = WORLD_LAYERS.flatMap((layer) => [
+    `export { default as ${layer.name} } from './world/${layer.id}/index.js'`,
+    `export { ${layer.name}10m, ${layer.name}50m, ${layer.name}110m } from './world/${layer.id}/index.js'`,
+  ])
   const jsLines = [
-    "export { default as Countries } from './world/countries/index.js'",
-    "export { Countries10m, Countries50m, Countries110m } from './world/countries/index.js'",
+    ...worldLines,
     '',
     ...continents.map((continent) => `export { default as ${continent.exportName} } from './continents/${continent.slug}/index.js'`),
   ]
@@ -167,7 +171,7 @@ await mustExist(filePath('src/metadata/continents.json'))
 
 await copyGeneratedJson()
 await buildSharedTopologyModule()
-await buildWorldCountries()
+for (const layer of WORLD_LAYERS) await buildWorldLayer(layer)
 const countries = await buildEntityModules(
   `${distDir}/countries`,
   filePath('src/metadata/countries.json'),

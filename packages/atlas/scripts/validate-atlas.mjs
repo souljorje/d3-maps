@@ -6,7 +6,9 @@ import {
   filePath,
   pathExists,
   readJson,
+  TOPOLOGY_PROPERTY_MODE,
   walkFiles,
+  WORLD_LAYERS,
 } from './utils.mjs'
 
 function assert(condition, message) {
@@ -23,6 +25,12 @@ function assertOptionalString(value, label) {
 
 function assertOptionalNumber(value, label) {
   assert(value == null || typeof value === 'number', `${label}: expected number or undefined`)
+}
+
+function getFirstGeometry(topology) {
+  const object = topology.objects?.[Object.keys(topology.objects ?? {})[0]]
+  if (!object) return null
+  return object.geometries?.[0] ?? object
 }
 
 const files = []
@@ -58,10 +66,24 @@ const countrySlugs = new Set()
 const countryCodes = new Set()
 
 for (const scale of SCALES) {
-  assert(
-    await pathExists(filePath(`src/world/countries/countries-${scale}.json`)),
-    `Missing world topology for ${scale}`,
-  )
+  for (const layer of WORLD_LAYERS) {
+    const path = filePath(`src/world/${layer.id}/${layer.id}-${scale}.json`)
+    assert(await pathExists(path), `Missing world ${layer.id} topology for ${scale}`)
+
+    const topology = await readJson(path)
+    const geometry = getFirstGeometry(topology)
+    const properties = geometry?.properties ?? {}
+
+    if (layer.propertyMode === TOPOLOGY_PROPERTY_MODE.NORMALIZE) {
+      assertString(properties.id, `world.${layer.id}.id:${scale}`)
+      assertString(properties.name, `world.${layer.id}.name:${scale}`)
+      assertOptionalString(properties.name_long, `world.${layer.id}.name_long:${scale}`)
+      assert(Object.keys(properties).every((key) => ['id', 'name', 'name_long'].includes(key)), `world.${layer.id}: unexpected properties for ${scale}`)
+      continue
+    }
+
+    assert(Object.keys(properties).length > 0, `world.${layer.id}: expected preserved properties for ${scale}`)
+  }
 }
 
 for (const country of countries) {
@@ -86,10 +108,15 @@ for (const country of countries) {
   countryCodes.add(country.adm0A3)
 
   for (const scale of country.scales) {
-    assert(
-      await pathExists(filePath(`src/countries/${country.slug}/${country.slug}-${scale}.json`)),
-      `Missing country topology: ${country.slug}-${scale}`,
-    )
+    const path = filePath(`src/countries/${country.slug}/${country.slug}-${scale}.json`)
+    assert(await pathExists(path), `Missing country topology: ${country.slug}-${scale}`)
+
+    const topology = await readJson(path)
+    const properties = getFirstGeometry(topology)?.properties ?? {}
+    assertString(properties.id, `country.topology.id:${country.slug}-${scale}`)
+    assertString(properties.name, `country.topology.name:${country.slug}-${scale}`)
+    assertOptionalString(properties.name_long, `country.topology.name_long:${country.slug}-${scale}`)
+    assert(Object.keys(properties).every((key) => ['id', 'name', 'name_long'].includes(key)), `country.topology: unexpected properties for ${country.slug}-${scale}`)
   }
 }
 
@@ -103,10 +130,15 @@ for (const continent of continents) {
   assert(continent.defaultScale && continent.scales.includes(continent.defaultScale), `defaultScale not in scales for continent ${continent.slug}`)
 
   for (const scale of continent.scales) {
-    assert(
-      await pathExists(filePath(`src/continents/${continent.slug}/${continent.slug}-${scale}.json`)),
-      `Missing continent topology: ${continent.slug}-${scale}`,
-    )
+    const path = filePath(`src/continents/${continent.slug}/${continent.slug}-${scale}.json`)
+    assert(await pathExists(path), `Missing continent topology: ${continent.slug}-${scale}`)
+
+    const topology = await readJson(path)
+    const properties = getFirstGeometry(topology)?.properties ?? {}
+    assertString(properties.id, `continent.topology.id:${continent.slug}-${scale}`)
+    assertString(properties.name, `continent.topology.name:${continent.slug}-${scale}`)
+    assertOptionalString(properties.name_long, `continent.topology.name_long:${continent.slug}-${scale}`)
+    assert(Object.keys(properties).every((key) => ['id', 'name', 'name_long'].includes(key)), `continent.topology: unexpected properties for ${continent.slug}-${scale}`)
   }
 }
 

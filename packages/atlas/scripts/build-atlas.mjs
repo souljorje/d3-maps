@@ -14,8 +14,11 @@ import {
   SCALES,
   slugify,
   sourceShp,
+  sourceWorldLayerShp,
   TOPOLOGY_FIELD_NAMES,
   TOPOLOGY_PROPERTY_MAP,
+  TOPOLOGY_PROPERTY_MODE,
+  WORLD_LAYERS,
   writeJson,
 } from './utils.mjs'
 
@@ -73,27 +76,31 @@ async function exportGeojsonForMetadata(scale) {
 }
 
 async function exportScaleTopologies(scale) {
-  const input = sourceShp(scale)
-  const worldOutput = filePath(`src/world/countries/countries-${scale}.json`)
+  const worldOutputs = WORLD_LAYERS.map((layer) => ({
+    ...layer,
+    input: sourceWorldLayerShp(scale, layer.sourceLayer, layer.theme),
+    output: filePath(`src/world/${layer.id}/${layer.id}-${scale}.json`),
+  }))
   const countryOutputDir = join(tempRoot, `countries-${scale}`)
   const continentOutputDir = join(tempRoot, `continents-${scale}`)
 
-  await ensureDir(dirname(worldOutput))
+  for (const { output } of worldOutputs) await ensureDir(dirname(output))
   await ensureDir(countryOutputDir)
   await ensureDir(continentOutputDir)
 
+  const countriesLayer = worldOutputs.find((layer) => layer.id === 'countries')
   await mapshaper([
-    input,
+    countriesLayer.input,
     '-clean',
     '-filter-fields',
-    TOPOLOGY_FIELD_NAMES.join(','),
+    countriesLayer.topologyFields.join(','),
     '-rename-layers',
     'features',
     '-o',
     'format=topojson',
     'quantization=1e5',
     'bbox',
-    worldOutput,
+    countriesLayer.output,
     '-split',
     'ADM0_A3',
     'apart',
@@ -118,38 +125,54 @@ async function exportScaleTopologies(scale) {
     `${continentOutputDir}/`,
   ])
 
+  for (const layer of worldOutputs) {
+    if (layer.id === 'countries') continue
+
+    await mapshaper([
+      layer.input,
+      '-clean',
+      '-rename-layers',
+      'features',
+      '-o',
+      'format=topojson',
+      'quantization=1e5',
+      'bbox',
+      layer.output,
+    ])
+  }
+
   return {
     continentOutputDir,
     countryOutputDir,
-    worldOutput,
+    worldOutputs,
   }
 }
 
-function pruneGeometryProperties(geometry) {
-  if (geometry.properties) {
+function transformGeometryProperties(geometry, layer) {
+  if (layer.propertyMode === TOPOLOGY_PROPERTY_MODE.NORMALIZE && geometry.properties) {
     geometry.properties = Object.fromEntries(
-      Object.entries(TOPOLOGY_PROPERTY_MAP)
+      Object.entries(layer.propertyMap)
         .map(([sourceKey, targetKey]) => [targetKey, geometry.properties[sourceKey]])
         .filter(([, value]) => value != null),
     )
   }
 
   if (Array.isArray(geometry.geometries)) {
-    for (const child of geometry.geometries) pruneGeometryProperties(child)
+    for (const child of geometry.geometries) transformGeometryProperties(child, layer)
   }
 }
 
-async function pruneTopologyProperties(path) {
+async function transformTopologyProperties(path, layer) {
   const topology = await readJson(path)
 
   for (const object of Object.values(topology.objects ?? {})) {
-    pruneGeometryProperties(object)
+    transformGeometryProperties(object, layer)
   }
 
   await writeJson(path, topology)
 }
 
-async function moveSplitFiles(sourceDir, targetRoot, slugBySourceName, scale) {
+async function moveSplitFiles(sourceDir, targetRoot, slugBySourceName, scale, layer) {
   const sourceNames = []
 
   for (const entry of await readdir(sourceDir, { withFileTypes: true })) {
@@ -167,7 +190,7 @@ async function moveSplitFiles(sourceDir, targetRoot, slugBySourceName, scale) {
       join(sourceDir, entry.name),
       join(targetDir, `${slug}-${scale}.json`),
     )
-    await pruneTopologyProperties(join(targetDir, `${slug}-${scale}.json`))
+    await transformTopologyProperties(join(targetDir, `${slug}-${scale}.json`), layer)
     sourceNames.push(sourceName)
   }
 
@@ -209,18 +232,28 @@ try {
   const continentSlugByName = new Map(
     CONTINENTS.map((continent) => [continent.name, continent.slug]),
   )
+  const normalizedLayer = {
+    propertyMode: TOPOLOGY_PROPERTY_MODE.NORMALIZE,
+    propertyMap: TOPOLOGY_PROPERTY_MAP,
+  }
 
   for (const scale of SCALES) {
     const shp = sourceShp(scale)
     await mustExist(shp)
+    for (const layer of WORLD_LAYERS) {
+      await mustExist(sourceWorldLayerShp(scale, layer.sourceLayer, layer.theme))
+    }
 
-    const { continentOutputDir, countryOutputDir, worldOutput } = await exportScaleTopologies(scale)
-    await pruneTopologyProperties(worldOutput)
+    const { continentOutputDir, countryOutputDir, worldOutputs } = await exportScaleTopologies(scale)
+    for (const layer of worldOutputs) {
+      await transformTopologyProperties(layer.output, layer)
+    }
     const presentCountryCodes = await moveSplitFiles(
       countryOutputDir,
       filePath('src/countries'),
       countrySlugByCode,
       scale,
+      normalizedLayer,
     )
 
     for (const adm0A3 of presentCountryCodes) {
@@ -233,6 +266,7 @@ try {
       filePath('src/continents'),
       continentSlugByName,
       scale,
+      normalizedLayer,
     )
   }
 
@@ -255,17 +289,18 @@ try {
   )
 
   await writeJson(filePath('src/sources.json'), {
-    naturalEarth: {
+    naturalEarth: WORLD_LAYERS.map((layer) => ({
       name: 'Natural Earth Vector',
       url: 'https://github.com/nvkelso/natural-earth-vector',
       license: 'public domain',
       scales: SCALES,
-      theme: 'cultural',
-      sourceLayer: 'admin_0_countries',
-      topologyFields: Object.values(TOPOLOGY_PROPERTY_MAP),
-      topologySourceFields: TOPOLOGY_FIELD_NAMES,
-      metadataFields: METADATA_FIELD_NAMES,
-    },
+      theme: layer.theme,
+      sourceLayer: layer.sourceLayer,
+      outputLayer: layer.id,
+      topologyFields: layer.id === 'countries' ? Object.values(TOPOLOGY_PROPERTY_MAP) : [],
+      topologySourceFields: layer.topologyFields,
+      metadataFields: layer.id === 'countries' ? METADATA_FIELD_NAMES : [],
+    })),
   })
 } finally {
   await rm(tempRoot, { force: true, recursive: true })

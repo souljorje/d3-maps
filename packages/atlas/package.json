@@ -50,6 +50,38 @@
       "types": "./dist/_topology.d.ts",
       "default": "./dist/world/countries/*.js"
     },
+    "./world/ocean": {
+      "types": "./dist/world/ocean/index.d.ts",
+      "default": "./dist/world/ocean/index.js"
+    },
+    "./world/ocean/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/world/ocean/*.js"
+    },
+    "./world/coastline": {
+      "types": "./dist/world/coastline/index.d.ts",
+      "default": "./dist/world/coastline/index.js"
+    },
+    "./world/coastline/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/world/coastline/*.js"
+    },
+    "./world/lakes": {
+      "types": "./dist/world/lakes/index.d.ts",
+      "default": "./dist/world/lakes/index.js"
+    },
+    "./world/lakes/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/world/lakes/*.js"
+    },
+    "./world/rivers": {
+      "types": "./dist/world/rivers/index.d.ts",
+      "default": "./dist/world/rivers/index.js"
+    },
+    "./world/rivers/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/world/rivers/*.js"
+    },
     "./metadata/countries": {
       "default": "./dist/metadata/countries.json"
     },

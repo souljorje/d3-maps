@@ -15,6 +15,18 @@ async function exists(path) {
 }
 
 if (await exists(target)) {
+  await exec('git', [
+    '-C',
+    target,
+    'sparse-checkout',
+    'set',
+    '110m_cultural',
+    '50m_cultural',
+    '10m_cultural',
+    '110m_physical',
+    '50m_physical',
+    '10m_physical',
+  ])
   await exec('git', ['-C', target, 'pull', '--ff-only'])
 } else {
   await exec('git', [
@@ -35,5 +47,8 @@ if (await exists(target)) {
     '110m_cultural',
     '50m_cultural',
     '10m_cultural',
+    '110m_physical',
+    '50m_physical',
+    '10m_physical',
   ])
 }
