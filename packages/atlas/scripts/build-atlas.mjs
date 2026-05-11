@@ -1,11 +1,12 @@
-import { access, rm } from 'node:fs/promises'
-import { dirname } from 'node:path'
+import { access, readdir, rename, rm } from 'node:fs/promises'
+import { basename, dirname, join } from 'node:path'
 
 import {
   CONTINENTS,
+  DEFAULT_SCALE,
   ensureDir,
   FIELD_NAMES,
-  fileUrl,
+  filePath,
   mapshaper,
   pascalCase,
   readJson,
@@ -19,7 +20,7 @@ async function mustExist(path) {
   try {
     await access(path)
   } catch {
-    throw new Error(`Missing source file: ${path}\nRun: pnpm --filter @d3-maps/atlas fetch`)
+    throw new Error(`Missing source file: ${path}\nRun: pnpm --filter @d3-maps/atlas run sync-data`)
   }
 }
 
@@ -70,7 +71,7 @@ async function exportTopology(input, output, extraArgs = []) {
 
 async function exportGeojsonForMetadata(scale) {
   const input = sourceShp(scale)
-  const output = fileUrl(`data/tmp/countries-${scale}.geojson`).pathname
+  const output = filePath(`data/tmp/countries-${scale}.geojson`)
 
   await ensureDir(dirname(output))
   await mapshaper([
@@ -85,13 +86,75 @@ async function exportGeojsonForMetadata(scale) {
   return output
 }
 
-await rm(fileUrl('src/world').pathname, { recursive: true, force: true })
-await rm(fileUrl('src/countries').pathname, { recursive: true, force: true })
-await rm(fileUrl('src/continents').pathname, { recursive: true, force: true })
-await rm(fileUrl('data/tmp').pathname, { recursive: true, force: true })
-await ensureDir(fileUrl('data/tmp').pathname)
+async function exportSplitTopologies(input, splitField, outputDir) {
+  await ensureDir(outputDir)
+  await mapshaper([
+    input,
+    '-clean',
+    '-filter-fields',
+    FIELD_NAMES.join(','),
+    '-split',
+    splitField,
+    'apart',
+    '-o',
+    'format=topojson',
+    'quantization=1e5',
+    'bbox',
+    'singles',
+    `${outputDir}/`,
+  ])
+}
 
-const countriesBySlug = new Map()
+async function moveSplitFiles(sourceDir, targetRoot, slugBySourceName, scale) {
+  const sourceNames = []
+
+  for (const entry of await readdir(sourceDir, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith('.json')) continue
+
+    const sourceName = basename(entry.name, '.json')
+    const slug = slugBySourceName.get(sourceName)
+    if (!slug) continue
+
+    const targetDir = join(targetRoot, slug)
+    await ensureDir(targetDir)
+    await rename(
+      join(sourceDir, entry.name),
+      join(targetDir, `${slug}-${scale}.json`),
+    )
+    sourceNames.push(sourceName)
+  }
+
+  await rm(sourceDir, { recursive: true, force: true })
+  return sourceNames
+}
+
+async function createCountryMetadata() {
+  const metadataGeojsonPath = await exportGeojsonForMetadata(DEFAULT_SCALE)
+  const geojson = await readJson(metadataGeojsonPath)
+  const countriesByCode = new Map()
+
+  for (const feature of geojson.features) {
+    const country = normalizeCountry(feature.properties)
+    if (!country.slug || !country.adm0A3) continue
+
+    countriesByCode.set(country.adm0A3, {
+      ...country,
+      scales: [],
+    })
+  }
+
+  return countriesByCode
+}
+
+await ensureDir(filePath('data/tmp'))
+
+const countriesByCode = await createCountryMetadata()
+const countrySlugByCode = new Map(
+  [...countriesByCode.values()].map((country) => [country.adm0A3, country.slug]),
+)
+const continentSlugByName = new Map(
+  CONTINENTS.map((continent) => [continent.name, continent.slug]),
+)
 
 for (const scale of SCALES) {
   const shp = sourceShp(scale)
@@ -99,55 +162,52 @@ for (const scale of SCALES) {
 
   await exportTopology(
     shp,
-    fileUrl(`src/world/countries/countries-${scale}.json`).pathname,
+    filePath(`src/world/countries/countries-${scale}.json`),
   )
 
-  const metadataGeojsonPath = await exportGeojsonForMetadata(scale)
-  const geojson = await readJson(metadataGeojsonPath)
+  const countrySplitDir = filePath(`data/tmp/countries-${scale}`)
+  await exportSplitTopologies(shp, 'ADM0_A3', countrySplitDir)
+  const presentCountryCodes = await moveSplitFiles(
+    countrySplitDir,
+    filePath('src/countries'),
+    countrySlugByCode,
+    scale,
+  )
 
-  for (const feature of geojson.features) {
-    const country = normalizeCountry(feature.properties)
-    if (!country.slug || !country.adm0A3) continue
-
-    const existing = countriesBySlug.get(country.slug) ?? country
-    existing.scales = [...new Set([...(existing.scales ?? []), scale])]
-    countriesBySlug.set(country.slug, existing)
-
-    await exportTopology(
-      shp,
-      fileUrl(`src/countries/${country.slug}/${country.slug}-${scale}.json`).pathname,
-      ['-filter', `ADM0_A3 == "${country.adm0A3}"`],
-    )
+  for (const adm0A3 of presentCountryCodes) {
+    const country = countriesByCode.get(adm0A3)
+    if (country) country.scales.push(scale)
   }
 
-  for (const continent of CONTINENTS) {
-    await exportTopology(
-      shp,
-      fileUrl(`src/continents/${continent.slug}/${continent.slug}-${scale}.json`).pathname,
-      ['-filter', `CONTINENT == "${continent.name}"`],
-    )
-  }
+  const continentSplitDir = filePath(`data/tmp/continents-${scale}`)
+  await exportSplitTopologies(shp, 'CONTINENT', continentSplitDir)
+  await moveSplitFiles(
+    continentSplitDir,
+    filePath('src/continents'),
+    continentSlugByName,
+    scale,
+  )
 }
 
-const countries = [...countriesBySlug.values()]
+const countries = [...countriesByCode.values()]
   .sort((a, b) => a.name.localeCompare(b.name))
   .map((country) => ({
     ...country,
-    defaultScale: '110m',
+    defaultScale: country.scales[0] ?? DEFAULT_SCALE,
   }))
 
-await writeJson(fileUrl('src/metadata/countries.json').pathname, countries)
+await writeJson(filePath('src/metadata/countries.json'), countries)
 await writeJson(
-  fileUrl('src/metadata/continents.json').pathname,
+  filePath('src/metadata/continents.json'),
   CONTINENTS.map((continent) => ({
     ...continent,
     exportName: pascalCase(continent.name),
-    defaultScale: '110m',
+    defaultScale: DEFAULT_SCALE,
     scales: SCALES,
   })),
 )
 
-await writeJson(fileUrl('src/metadata/sources.json').pathname, {
+await writeJson(filePath('src/metadata/sources.json'), {
   naturalEarth: {
     name: 'Natural Earth Vector',
     url: 'https://github.com/nvkelso/natural-earth-vector',

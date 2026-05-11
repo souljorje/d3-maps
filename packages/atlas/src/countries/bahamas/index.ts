@@ -1,5 +1,5 @@
-export { default as Bahamas10m } from './bahamas-10m'
+export { default as Bahamas10m } from './bahamas-10m.js'
 
-export { default as Bahamas50m } from './bahamas-50m'
-export { default } from './bahamas-110m'
-export { default as Bahamas110m } from './bahamas-110m'
+export { default as Bahamas50m } from './bahamas-50m.js'
+export { default } from './bahamas-110m.js'
+export { default as Bahamas110m } from './bahamas-110m.js'

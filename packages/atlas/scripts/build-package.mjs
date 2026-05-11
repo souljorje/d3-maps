@@ -1,18 +1,18 @@
 import { cp, mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, extname, join, relative } from 'node:path'
-import { fileURLToPath } from 'node:url'
 
-import { fileUrl } from './utils.mjs'
+import { filePath } from './utils.mjs'
 
-const srcDir = fileURLToPath(fileUrl('src'))
-const distDir = fileURLToPath(fileUrl('dist'))
+const srcDir = filePath('src')
+const distDir = filePath('dist')
 
 function toJs(source) {
   return source
-    .replace(/^import type \{ Topology \} from 'topojson-specification'\n\n/m, '')
+    .replace(/^import type .*$/gm, '')
     .replace(/^export type .*$/gm, '')
+    .replace(/ as unknown as Topology/g, '')
+    .replace(/ as Topology/g, '')
     .replace(/ satisfies Topology/g, '')
-    .replace(/(from '\.\/(?:countries|continents)\/[^']+)\.js'/g, '$1/index.js\'')
 }
 
 function toDts(source) {
@@ -28,7 +28,7 @@ function toDts(source) {
     .join('\n')
     .concat('\n')
 
-  return declarations.replace(/(from '\.\/(?:countries|continents)\/[^']+)\.js'/g, '$1/index.js\'')
+  return declarations
 }
 
 async function* walk(dir) {

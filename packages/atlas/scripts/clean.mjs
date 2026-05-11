@@ -1,5 +1,17 @@
 import { rm } from 'node:fs/promises'
+import process from 'node:process'
 
 import { fileUrl } from './utils.mjs'
 
-await rm(fileUrl('dist'), { force: true, recursive: true })
+const targetGroups = {
+  build: ['dist'],
+  generate: ['src/world', 'src/countries', 'src/continents', 'data/tmp'],
+}
+
+const groupNames = process.argv.slice(2)
+const groups = groupNames.length > 0 ? groupNames : ['build']
+const targets = new Set(groups.flatMap((group) => targetGroups[group] ?? []))
+
+for (const target of targets) {
+  await rm(fileUrl(target), { force: true, recursive: true })
+}

@@ -9,12 +9,12 @@
     "dist"
   ],
   "scripts": {
-    "fetch": "node scripts/fetch-natural-earth.mjs",
-    "generate": "node scripts/build-atlas.mjs && node scripts/generate-wrappers.mjs && node scripts/generate-exports.mjs",
+    "sync-data": "node scripts/sync-natural-earth.mjs",
+    "generate": "node scripts/clean.mjs generate && node scripts/build-atlas.mjs && node scripts/generate-api.mjs",
     "validate": "node scripts/validate-atlas.mjs",
-    "prebuild": "node scripts/clean.mjs",
+    "prebuild": "node scripts/clean.mjs build",
     "build": "node scripts/build-package.mjs",
-    "clean": "node scripts/clean.mjs",
+    "clean": "node scripts/clean.mjs build generate",
     "typecheck": "tsc --noEmit"
   },
   "exports": {

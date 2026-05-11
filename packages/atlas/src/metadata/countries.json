@@ -17,35 +17,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "akrotiri",
-    "exportName": "Akrotiri",
-    "name": "Akrotiri",
-    "adm0A3": "WSB",
-    "continent": "Asia",
-    "region": "Asia",
-    "subregion": "Western Asia",
-    "scales": [
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "aland-islands",
-    "exportName": "AlandIslands",
-    "name": "Åland Islands",
-    "adm0A3": "ALD",
-    "isoA2": "AX",
-    "isoA3": "ALA",
-    "continent": "Europe",
-    "region": "Europe",
-    "subregion": "Northern Europe",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "albania",
     "exportName": "Albania",
     "name": "Albania",
@@ -80,38 +51,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "american-samoa",
-    "exportName": "AmericanSamoa",
-    "name": "American Samoa",
-    "adm0A3": "ASM",
-    "isoA2": "AS",
-    "isoA3": "ASM",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Polynesia",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "andorra",
-    "exportName": "Andorra",
-    "name": "Andorra",
-    "adm0A3": "AND",
-    "isoA2": "AD",
-    "isoA3": "AND",
-    "continent": "Europe",
-    "region": "Europe",
-    "subregion": "Southern Europe",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "angola",
     "exportName": "Angola",
     "name": "Angola",
@@ -129,22 +68,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "anguilla",
-    "exportName": "Anguilla",
-    "name": "Anguilla",
-    "adm0A3": "AIA",
-    "isoA2": "AI",
-    "isoA3": "AIA",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "antarctica",
     "exportName": "Antarctica",
     "name": "Antarctica",
@@ -156,22 +79,6 @@
     "subregion": "Antarctica",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "antigua-and-barbuda",
-    "exportName": "AntiguaAndBarbuda",
-    "name": "Antigua and Barbuda",
-    "adm0A3": "ATG",
-    "isoA2": "AG",
-    "isoA3": "ATG",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -206,36 +113,6 @@
     "subregion": "Western Asia",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "aruba",
-    "exportName": "Aruba",
-    "name": "Aruba",
-    "adm0A3": "ABW",
-    "isoA2": "AW",
-    "isoA3": "ABW",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "ashmore-and-cartier-islands",
-    "exportName": "AshmoreAndCartierIslands",
-    "name": "Ashmore and Cartier Islands",
-    "adm0A3": "ATC",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Australia and New Zealand",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -310,48 +187,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "bahrain",
-    "exportName": "Bahrain",
-    "name": "Bahrain",
-    "adm0A3": "BHR",
-    "isoA2": "BH",
-    "isoA3": "BHR",
-    "continent": "Asia",
-    "region": "Asia",
-    "subregion": "Western Asia",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "baikonur-cosmodrome",
-    "exportName": "BaikonurCosmodrome",
-    "name": "Baikonur Cosmodrome",
-    "adm0A3": "KAB",
-    "continent": "Asia",
-    "region": "Asia",
-    "subregion": "Central Asia",
-    "scales": [
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "bajo-nuevo-bank-petrel-islands",
-    "exportName": "BajoNuevoBankPetrelIslands",
-    "name": "Bajo Nuevo Bank (Petrel Islands)",
-    "adm0A3": "BJN",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "bangladesh",
     "exportName": "Bangladesh",
     "name": "Bangladesh",
@@ -363,22 +198,6 @@
     "subregion": "Southern Asia",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "barbados",
-    "exportName": "Barbados",
-    "name": "Barbados",
-    "adm0A3": "BRB",
-    "isoA2": "BB",
-    "isoA3": "BRB",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -453,22 +272,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "bermuda",
-    "exportName": "Bermuda",
-    "name": "Bermuda",
-    "adm0A3": "BMU",
-    "isoA2": "BM",
-    "isoA3": "BMU",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Northern America",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "bhutan",
     "exportName": "Bhutan",
     "name": "Bhutan",
@@ -481,19 +284,6 @@
     "scales": [
       "110m",
       "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "bir-tawil",
-    "exportName": "BirTawil",
-    "name": "Bir Tawil",
-    "adm0A3": "BRT",
-    "continent": "Africa",
-    "region": "Africa",
-    "subregion": "Northern Africa",
-    "scales": [
       "10m"
     ],
     "defaultScale": "110m"
@@ -561,51 +351,6 @@
     "subregion": "South America",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "brazilian-island",
-    "exportName": "BrazilianIsland",
-    "name": "Brazilian Island",
-    "adm0A3": "BRI",
-    "continent": "South America",
-    "region": "Americas",
-    "subregion": "South America",
-    "scales": [
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "british-indian-ocean-territory",
-    "exportName": "BritishIndianOceanTerritory",
-    "name": "British Indian Ocean Territory",
-    "adm0A3": "IOT",
-    "isoA2": "IO",
-    "isoA3": "IOT",
-    "continent": "Seven seas (open ocean)",
-    "region": "Africa",
-    "subregion": "Seven seas (open ocean)",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "british-virgin-islands",
-    "exportName": "BritishVirginIslands",
-    "name": "British Virgin Islands",
-    "adm0A3": "VGB",
-    "isoA2": "VG",
-    "isoA3": "VGB",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -731,22 +476,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "cayman-islands",
-    "exportName": "CaymanIslands",
-    "name": "Cayman Islands",
-    "adm0A3": "CYM",
-    "isoA2": "KY",
-    "isoA3": "CYM",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "central-african-republic",
     "exportName": "CentralAfricanRepublic",
     "name": "Central African Republic",
@@ -815,19 +544,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "clipperton-island",
-    "exportName": "ClippertonIsland",
-    "name": "Clipperton Island",
-    "adm0A3": "CLP",
-    "continent": "Seven seas (open ocean)",
-    "region": "Americas",
-    "subregion": "Central America",
-    "scales": [
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "colombia",
     "exportName": "Colombia",
     "name": "Colombia",
@@ -840,51 +556,6 @@
     "scales": [
       "110m",
       "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "comoros",
-    "exportName": "Comoros",
-    "name": "Comoros",
-    "adm0A3": "COM",
-    "isoA2": "KM",
-    "isoA3": "COM",
-    "continent": "Africa",
-    "region": "Africa",
-    "subregion": "Eastern Africa",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "cook-islands",
-    "exportName": "CookIslands",
-    "name": "Cook Islands",
-    "adm0A3": "COK",
-    "isoA2": "CK",
-    "isoA3": "COK",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Polynesia",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "coral-sea-islands",
-    "exportName": "CoralSeaIslands",
-    "name": "Coral Sea Islands",
-    "adm0A3": "CSI",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Australia and New Zealand",
-    "scales": [
       "10m"
     ],
     "defaultScale": "110m"
@@ -958,22 +629,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "curacao",
-    "exportName": "Curacao",
-    "name": "Curaçao",
-    "adm0A3": "CUW",
-    "isoA2": "CW",
-    "isoA3": "CUW",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "cyprus",
     "exportName": "Cyprus",
     "name": "Cyprus",
@@ -986,19 +641,6 @@
     "scales": [
       "110m",
       "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "cyprus-u-n-buffer-zone",
-    "exportName": "CyprusUNBufferZone",
-    "name": "Cyprus U.N. Buffer Zone",
-    "adm0A3": "CNM",
-    "continent": "Asia",
-    "region": "Asia",
-    "subregion": "Western Asia",
-    "scales": [
       "10m"
     ],
     "defaultScale": "110m"
@@ -1072,19 +714,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "dhekelia",
-    "exportName": "Dhekelia",
-    "name": "Dhekelia",
-    "adm0A3": "ESB",
-    "continent": "Asia",
-    "region": "Asia",
-    "subregion": "Western Asia",
-    "scales": [
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "djibouti",
     "exportName": "Djibouti",
     "name": "Djibouti",
@@ -1096,22 +725,6 @@
     "subregion": "Eastern Africa",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "dominica",
-    "exportName": "Dominica",
-    "name": "Dominica",
-    "adm0A3": "DMA",
-    "isoA2": "DM",
-    "isoA3": "DMA",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -1254,22 +867,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "faeroe-islands",
-    "exportName": "FaeroeIslands",
-    "name": "Faeroe Islands",
-    "adm0A3": "FRO",
-    "isoA2": "FO",
-    "isoA3": "FRO",
-    "continent": "Europe",
-    "region": "Europe",
-    "subregion": "Northern Europe",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "falkland-islands-malvinas",
     "exportName": "FalklandIslandsMalvinas",
     "name": "Falkland Islands / Malvinas",
@@ -1281,22 +878,6 @@
     "subregion": "South America",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "federated-states-of-micronesia",
-    "exportName": "FederatedStatesOfMicronesia",
-    "name": "Federated States of Micronesia",
-    "adm0A3": "FSM",
-    "isoA2": "FM",
-    "isoA3": "FSM",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Micronesia",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -1346,22 +927,6 @@
     "subregion": "Western Europe",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "french-polynesia",
-    "exportName": "FrenchPolynesia",
-    "name": "French Polynesia",
-    "adm0A3": "PYF",
-    "isoA2": "PF",
-    "isoA3": "PYF",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Polynesia",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -1453,21 +1018,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "gibraltar",
-    "exportName": "Gibraltar",
-    "name": "Gibraltar",
-    "adm0A3": "GIB",
-    "isoA2": "GI",
-    "isoA3": "GIB",
-    "continent": "Europe",
-    "region": "Europe",
-    "subregion": "Southern Europe",
-    "scales": [
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "greece",
     "exportName": "Greece",
     "name": "Greece",
@@ -1502,38 +1052,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "grenada",
-    "exportName": "Grenada",
-    "name": "Grenada",
-    "adm0A3": "GRD",
-    "isoA2": "GD",
-    "isoA3": "GRD",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "guam",
-    "exportName": "Guam",
-    "name": "Guam",
-    "adm0A3": "GUM",
-    "isoA2": "GU",
-    "isoA3": "GUM",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Micronesia",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "guatemala",
     "exportName": "Guatemala",
     "name": "Guatemala",
@@ -1545,22 +1063,6 @@
     "subregion": "Central America",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "guernsey",
-    "exportName": "Guernsey",
-    "name": "Guernsey",
-    "adm0A3": "GGY",
-    "isoA2": "GG",
-    "isoA3": "GGY",
-    "continent": "Europe",
-    "region": "Europe",
-    "subregion": "Northern Europe",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -1635,22 +1137,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "heard-i-and-mcdonald-islands",
-    "exportName": "HeardIAndMcdonaldIslands",
-    "name": "Heard I. and McDonald Islands",
-    "adm0A3": "HMD",
-    "isoA2": "HM",
-    "isoA3": "HMD",
-    "continent": "Seven seas (open ocean)",
-    "region": "Africa",
-    "subregion": "Seven seas (open ocean)",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "honduras",
     "exportName": "Honduras",
     "name": "Honduras",
@@ -1662,22 +1148,6 @@
     "subregion": "Central America",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "hong-kong",
-    "exportName": "HongKong",
-    "name": "Hong Kong",
-    "adm0A3": "HKG",
-    "isoA2": "HK",
-    "isoA3": "HKG",
-    "continent": "Asia",
-    "region": "Asia",
-    "subregion": "Eastern Asia",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -1729,20 +1199,6 @@
     "subregion": "Southern Asia",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "indian-ocean-territories",
-    "exportName": "IndianOceanTerritories",
-    "name": "Indian Ocean Territories",
-    "adm0A3": "IOA",
-    "continent": "Asia",
-    "region": "Africa",
-    "subregion": "Seven seas (open ocean)",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -1817,22 +1273,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "isle-of-man",
-    "exportName": "IsleOfMan",
-    "name": "Isle of Man",
-    "adm0A3": "IMN",
-    "isoA2": "IM",
-    "isoA3": "IMN",
-    "continent": "Europe",
-    "region": "Europe",
-    "subregion": "Northern Europe",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "israel",
     "exportName": "Israel",
     "name": "Israel",
@@ -1901,22 +1341,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "jersey",
-    "exportName": "Jersey",
-    "name": "Jersey",
-    "adm0A3": "JEY",
-    "isoA2": "JE",
-    "isoA3": "JEY",
-    "continent": "Europe",
-    "region": "Europe",
-    "subregion": "Northern Europe",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "jordan",
     "exportName": "Jordan",
     "name": "Jordan",
@@ -1979,22 +1403,6 @@
     "subregion": "Southern Africa",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "kiribati",
-    "exportName": "Kiribati",
-    "name": "Kiribati",
-    "adm0A3": "KIR",
-    "isoA2": "KI",
-    "isoA3": "KIR",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Micronesia",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -2152,22 +1560,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "liechtenstein",
-    "exportName": "Liechtenstein",
-    "name": "Liechtenstein",
-    "adm0A3": "LIE",
-    "isoA2": "LI",
-    "isoA3": "LIE",
-    "continent": "Europe",
-    "region": "Europe",
-    "subregion": "Western Europe",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "lithuania",
     "exportName": "Lithuania",
     "name": "Lithuania",
@@ -2196,22 +1588,6 @@
     "subregion": "Western Europe",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "macao",
-    "exportName": "Macao",
-    "name": "Macao",
-    "adm0A3": "MAC",
-    "isoA2": "MO",
-    "isoA3": "MAC",
-    "continent": "Asia",
-    "region": "Asia",
-    "subregion": "Eastern Asia",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -2269,22 +1645,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "maldives",
-    "exportName": "Maldives",
-    "name": "Maldives",
-    "adm0A3": "MDV",
-    "isoA2": "MV",
-    "isoA3": "MDV",
-    "continent": "Seven seas (open ocean)",
-    "region": "Asia",
-    "subregion": "Southern Asia",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "mali",
     "exportName": "Mali",
     "name": "Mali",
@@ -2302,38 +1662,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "malta",
-    "exportName": "Malta",
-    "name": "Malta",
-    "adm0A3": "MLT",
-    "isoA2": "MT",
-    "isoA3": "MLT",
-    "continent": "Europe",
-    "region": "Europe",
-    "subregion": "Southern Europe",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "marshall-islands",
-    "exportName": "MarshallIslands",
-    "name": "Marshall Islands",
-    "adm0A3": "MHL",
-    "isoA2": "MH",
-    "isoA3": "MHL",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Micronesia",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "mauritania",
     "exportName": "Mauritania",
     "name": "Mauritania",
@@ -2345,22 +1673,6 @@
     "subregion": "Western Africa",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "mauritius",
-    "exportName": "Mauritius",
-    "name": "Mauritius",
-    "adm0A3": "MUS",
-    "isoA2": "MU",
-    "isoA3": "MUS",
-    "continent": "Seven seas (open ocean)",
-    "region": "Africa",
-    "subregion": "Eastern Africa",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -2401,22 +1713,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "monaco",
-    "exportName": "Monaco",
-    "name": "Monaco",
-    "adm0A3": "MCO",
-    "isoA2": "MC",
-    "isoA3": "MCO",
-    "continent": "Europe",
-    "region": "Europe",
-    "subregion": "Western Europe",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "mongolia",
     "exportName": "Mongolia",
     "name": "Mongolia",
@@ -2445,22 +1741,6 @@
     "subregion": "Southern Europe",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "montserrat",
-    "exportName": "Montserrat",
-    "name": "Montserrat",
-    "adm0A3": "MSR",
-    "isoA2": "MS",
-    "isoA3": "MSR",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -2529,22 +1809,6 @@
     "subregion": "Southern Africa",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "nauru",
-    "exportName": "Nauru",
-    "name": "Nauru",
-    "adm0A3": "NRU",
-    "isoA2": "NR",
-    "isoA3": "NRU",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Micronesia",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -2670,38 +1934,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "niue",
-    "exportName": "Niue",
-    "name": "Niue",
-    "adm0A3": "NIU",
-    "isoA2": "NU",
-    "isoA3": "NIU",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Polynesia",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "norfolk-island",
-    "exportName": "NorfolkIsland",
-    "name": "Norfolk Island",
-    "adm0A3": "NFK",
-    "isoA2": "NF",
-    "isoA3": "NFK",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Australia and New Zealand",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "north-macedonia",
     "exportName": "NorthMacedonia",
     "name": "North Macedonia",
@@ -2728,22 +1960,6 @@
     "subregion": "Western Asia",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "northern-mariana-islands",
-    "exportName": "NorthernMarianaIslands",
-    "name": "Northern Mariana Islands",
-    "adm0A3": "MNP",
-    "isoA2": "MP",
-    "isoA3": "MNP",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Micronesia",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -2793,22 +2009,6 @@
     "subregion": "Southern Asia",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "palau",
-    "exportName": "Palau",
-    "name": "Palau",
-    "adm0A3": "PLW",
-    "isoA2": "PW",
-    "isoA3": "PLW",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Micronesia",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -2917,22 +2117,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "pitcairn-islands",
-    "exportName": "PitcairnIslands",
-    "name": "Pitcairn Islands",
-    "adm0A3": "PCN",
-    "isoA2": "PN",
-    "isoA3": "PCN",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Polynesia",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "poland",
     "exportName": "Poland",
     "name": "Poland",
@@ -2995,22 +2179,6 @@
     "subregion": "Western Asia",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "republic-of-cabo-verde",
-    "exportName": "RepublicOfCaboVerde",
-    "name": "Republic of Cabo Verde",
-    "adm0A3": "CPV",
-    "isoA2": "CV",
-    "isoA3": "CPV",
-    "continent": "Africa",
-    "region": "Africa",
-    "subregion": "Western Africa",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -3102,166 +2270,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "saint-helena",
-    "exportName": "SaintHelena",
-    "name": "Saint Helena",
-    "adm0A3": "SHN",
-    "isoA2": "SH",
-    "isoA3": "SHN",
-    "continent": "Seven seas (open ocean)",
-    "region": "Africa",
-    "subregion": "Western Africa",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "saint-kitts-and-nevis",
-    "exportName": "SaintKittsAndNevis",
-    "name": "Saint Kitts and Nevis",
-    "adm0A3": "KNA",
-    "isoA2": "KN",
-    "isoA3": "KNA",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "saint-lucia",
-    "exportName": "SaintLucia",
-    "name": "Saint Lucia",
-    "adm0A3": "LCA",
-    "isoA2": "LC",
-    "isoA3": "LCA",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "saint-pierre-and-miquelon",
-    "exportName": "SaintPierreAndMiquelon",
-    "name": "Saint Pierre and Miquelon",
-    "adm0A3": "SPM",
-    "isoA2": "PM",
-    "isoA3": "SPM",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Northern America",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "saint-vincent-and-the-grenadines",
-    "exportName": "SaintVincentAndTheGrenadines",
-    "name": "Saint Vincent and the Grenadines",
-    "adm0A3": "VCT",
-    "isoA2": "VC",
-    "isoA3": "VCT",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "saint-barthelemy",
-    "exportName": "SaintBarthelemy",
-    "name": "Saint-Barthélemy",
-    "adm0A3": "BLM",
-    "isoA2": "BL",
-    "isoA3": "BLM",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "saint-martin",
-    "exportName": "SaintMartin",
-    "name": "Saint-Martin",
-    "adm0A3": "MAF",
-    "isoA2": "MF",
-    "isoA3": "MAF",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "samoa",
-    "exportName": "Samoa",
-    "name": "Samoa",
-    "adm0A3": "WSM",
-    "isoA2": "WS",
-    "isoA3": "WSM",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Polynesia",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "san-marino",
-    "exportName": "SanMarino",
-    "name": "San Marino",
-    "adm0A3": "SMR",
-    "isoA2": "SM",
-    "isoA3": "SMR",
-    "continent": "Europe",
-    "region": "Europe",
-    "subregion": "Southern Europe",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "sao-tome-and-principe",
-    "exportName": "SaoTomeAndPrincipe",
-    "name": "São Tomé and Principe",
-    "adm0A3": "STP",
-    "isoA2": "ST",
-    "isoA3": "STP",
-    "continent": "Africa",
-    "region": "Africa",
-    "subregion": "Middle Africa",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "saudi-arabia",
     "exportName": "SaudiArabia",
     "name": "Saudi Arabia",
@@ -3274,19 +2282,6 @@
     "scales": [
       "110m",
       "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "scarborough-reef",
-    "exportName": "ScarboroughReef",
-    "name": "Scarborough Reef",
-    "adm0A3": "SCR",
-    "continent": "Asia",
-    "region": "Asia",
-    "subregion": "South-Eastern Asia",
-    "scales": [
       "10m"
     ],
     "defaultScale": "110m"
@@ -3326,49 +2321,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "serranilla-bank",
-    "exportName": "SerranillaBank",
-    "name": "Serranilla Bank",
-    "adm0A3": "SER",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "seychelles",
-    "exportName": "Seychelles",
-    "name": "Seychelles",
-    "adm0A3": "SYC",
-    "isoA2": "SC",
-    "isoA3": "SYC",
-    "continent": "Seven seas (open ocean)",
-    "region": "Africa",
-    "subregion": "Eastern Africa",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "siachen-glacier",
-    "exportName": "SiachenGlacier",
-    "name": "Siachen Glacier",
-    "adm0A3": "KAS",
-    "continent": "Asia",
-    "region": "Asia",
-    "subregion": "Southern Asia",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "sierra-leone",
     "exportName": "SierraLeone",
     "name": "Sierra Leone",
@@ -3380,38 +2332,6 @@
     "subregion": "Western Africa",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "singapore",
-    "exportName": "Singapore",
-    "name": "Singapore",
-    "adm0A3": "SGP",
-    "isoA2": "SG",
-    "isoA3": "SGP",
-    "continent": "Asia",
-    "region": "Asia",
-    "subregion": "South-Eastern Asia",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "sint-maarten",
-    "exportName": "SintMaarten",
-    "name": "Sint Maarten",
-    "adm0A3": "SXM",
-    "isoA2": "SX",
-    "isoA3": "SXM",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -3518,22 +2438,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "south-georgia-and-the-islands",
-    "exportName": "SouthGeorgiaAndTheIslands",
-    "name": "South Georgia and the Islands",
-    "adm0A3": "SGS",
-    "isoA2": "GS",
-    "isoA3": "SGS",
-    "continent": "Seven seas (open ocean)",
-    "region": "Americas",
-    "subregion": "Seven seas (open ocean)",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "south-sudan",
     "exportName": "SouthSudan",
     "name": "South Sudan",
@@ -3551,19 +2455,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "southern-patagonian-ice-field",
-    "exportName": "SouthernPatagonianIceField",
-    "name": "Southern Patagonian Ice Field",
-    "adm0A3": "SPI",
-    "continent": "South America",
-    "region": "Americas",
-    "subregion": "South America",
-    "scales": [
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "spain",
     "exportName": "Spain",
     "name": "Spain",
@@ -3576,19 +2467,6 @@
     "scales": [
       "110m",
       "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "spratly-islands",
-    "exportName": "SpratlyIslands",
-    "name": "Spratly Islands",
-    "adm0A3": "PGA",
-    "continent": "Asia",
-    "region": "Asia",
-    "subregion": "South-Eastern Asia",
-    "scales": [
       "10m"
     ],
     "defaultScale": "110m"
@@ -3815,22 +2693,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "tonga",
-    "exportName": "Tonga",
-    "name": "Tonga",
-    "adm0A3": "TON",
-    "isoA2": "TO",
-    "isoA3": "TON",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Polynesia",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "trinidad-and-tobago",
     "exportName": "TrinidadAndTobago",
     "name": "Trinidad and Tobago",
@@ -3893,38 +2755,6 @@
     "subregion": "Central Asia",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "turks-and-caicos-islands",
-    "exportName": "TurksAndCaicosIslands",
-    "name": "Turks and Caicos Islands",
-    "adm0A3": "TCA",
-    "isoA2": "TC",
-    "isoA3": "TCA",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "tuvalu",
-    "exportName": "Tuvalu",
-    "name": "Tuvalu",
-    "adm0A3": "TUV",
-    "isoA2": "TV",
-    "isoA3": "TUV",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Polynesia",
-    "scales": [
       "50m",
       "10m"
     ],
@@ -4016,37 +2846,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "united-states-minor-outlying-islands",
-    "exportName": "UnitedStatesMinorOutlyingIslands",
-    "name": "United States Minor Outlying Islands",
-    "adm0A3": "UMI",
-    "isoA2": "UM",
-    "isoA3": "UMI",
-    "continent": "North America",
-    "region": "Oceania",
-    "subregion": "Seven seas (open ocean)",
-    "scales": [
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "united-states-virgin-islands",
-    "exportName": "UnitedStatesVirginIslands",
-    "name": "United States Virgin Islands",
-    "adm0A3": "VIR",
-    "isoA2": "VI",
-    "isoA3": "VIR",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "uruguay",
     "exportName": "Uruguay",
     "name": "Uruguay",
@@ -4059,19 +2858,6 @@
     "scales": [
       "110m",
       "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "us-naval-base-guantanamo-bay",
-    "exportName": "UsNavalBaseGuantanamoBay",
-    "name": "US Naval Base Guantanamo Bay",
-    "adm0A3": "USG",
-    "continent": "North America",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "scales": [
       "10m"
     ],
     "defaultScale": "110m"
@@ -4111,22 +2897,6 @@
     "defaultScale": "110m"
   },
   {
-    "slug": "vatican",
-    "exportName": "Vatican",
-    "name": "Vatican",
-    "adm0A3": "VAT",
-    "isoA2": "VA",
-    "isoA3": "VAT",
-    "continent": "Europe",
-    "region": "Europe",
-    "subregion": "Southern Europe",
-    "scales": [
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
     "slug": "venezuela",
     "exportName": "Venezuela",
     "name": "Venezuela",
@@ -4155,22 +2925,6 @@
     "subregion": "South-Eastern Asia",
     "scales": [
       "110m",
-      "50m",
-      "10m"
-    ],
-    "defaultScale": "110m"
-  },
-  {
-    "slug": "wallis-and-futuna-islands",
-    "exportName": "WallisAndFutunaIslands",
-    "name": "Wallis and Futuna Islands",
-    "adm0A3": "WLF",
-    "isoA2": "WF",
-    "isoA3": "WLF",
-    "continent": "Oceania",
-    "region": "Oceania",
-    "subregion": "Polynesia",
-    "scales": [
       "50m",
       "10m"
     ],
