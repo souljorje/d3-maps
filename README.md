@@ -41,7 +41,7 @@ CDN
 <script setup lang="ts">
 import { MapBase, MapFeatures, type MapData } from '@d3-maps/vue'
 
-const { default: data } = await import('world-atlas/countries-110m.json')
+const { default: data } = await import('@d3-maps/atlas/world/countries')
 const mapData: MapData = data
 </script>
 
@@ -78,7 +78,7 @@ export function MapView() {
   const [data, setData] = useState<MapData | null>(null)
 
   useEffect(() => {
-    import('world-atlas/countries-110m.json').then(({ default: world }) => {
+    import('@d3-maps/atlas/world/countries').then(({ default: world }) => {
       setData(world as MapData)
     })
   }, [])

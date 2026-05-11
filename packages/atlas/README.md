@@ -11,8 +11,6 @@ Ready-to-use TopoJSON maps: world, continents, countries
 📦 TopoJSON by default  
 🧑‍💻 Fully typed  
 🪶 Tree-shakable exports  
-⚛️ Works with `@d3-maps/react`  
-🟢 Works with `@d3-maps/vue`
 
 ## Installation
 
@@ -63,9 +61,46 @@ export function App() {
 ### Specific scale
 
 ```ts
-import Russia110m from '@d3-maps/atlas/countries/russia/110m'
-import Russia50m from '@d3-maps/atlas/countries/russia/50m'
-import Russia10m from '@d3-maps/atlas/countries/russia/10m'
+import Russia110m from '@d3-maps/atlas/countries/russia/russia-110m'
+import Russia50m from '@d3-maps/atlas/countries/russia/russia-50m'
+import Russia10m from '@d3-maps/atlas/countries/russia/russia-10m'
+```
+
+## Data
+
+TopoJSON feature properties are intentionally minimal:
+
+```ts
+type AtlasProperties = {
+  id: string // adm0A3
+  name: string
+  name_long?: string
+}
+```
+
+More data available in metadata:
+
+```ts
+import countries from '@d3-maps/atlas/metadata/countries'
+import continents from '@d3-maps/atlas/metadata/continents'
+```
+
+```ts
+type CountryMetadata = {
+  slug: string
+  exportName: string
+  name: string
+  adm0A3: string
+  isoA2?: string
+  isoA3?: string
+  continent?: string
+  region?: string
+  subregion?: string
+  popEst?: number
+  gdpMd?: number
+  scales: Array<'110m' | '50m' | '10m'>
+  defaultScale: '110m' | '50m' | '10m'
+}
 ```
 
 ## Scales
@@ -78,7 +113,7 @@ Atlas files are available in Natural Earth scales:
 | `50m`  | More detail, still suitable for web apps               |
 | `10m`  | Highest detail, larger files                           |
 
-Default imports use `110m`:
+Default imports use the coarsest available scale:
 
 ```ts
 import Russia from '@d3-maps/atlas/countries/russia'
@@ -90,11 +125,13 @@ Same as:
 import Russia from '@d3-maps/atlas/countries/russia/110m'
 ```
 
+If an entity is not available in `110m`, the default falls back to `50m`, then `10m`
+
 ## Data source
 
 Generated from [Natural Earth](https://www.naturalearthdata.com/).
 
-Natural Earth data is public domain. Generated files preserve source metadata.
+Natural Earth data is public domain.
 
 ## License
 

@@ -36,7 +36,7 @@ export function WorldMap() {
   const [data, setData] = useState<MapData | null>(null)
 
   useEffect(() => {
-    import('@d3-maps/atlas/world/countries/countries-110m')
+    import('@d3-maps/atlas/world/countries')
       .then(({ default: json }) => setData(json))
   }, [])
 

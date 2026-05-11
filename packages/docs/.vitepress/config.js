@@ -185,6 +185,7 @@ const docsSidebar = [
           { text: 'Styling', link: '/guide/core-concepts#styling' },
           { text: 'Responsiveness', link: '/guide/core-concepts#responsiveness' },
         ] },
+      { text: 'Atlas', link: '/guide/atlas' },
       { text: 'Architecture', link: '/guide/architecture' },
       { text: 'Troubleshooting', link: '/guide/troubleshooting' },
       { text: 'Migrate from react-simple-maps', link: '/guide/migration-from-react-simple-maps' },

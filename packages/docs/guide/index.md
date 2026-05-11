@@ -89,8 +89,10 @@ bun add @d3-maps/react
 Load a map data object first
 
 ```ts
-const { default: data } = await import('@d3-maps/atlas/world/countries/countries-110m')
+const { default: data } = await import('@d3-maps/atlas/world/countries')
 ```
+
+See [Atlas](/guide/atlas) for more maps
 
 ## Render the map
 
