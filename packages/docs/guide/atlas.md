@@ -4,7 +4,7 @@ description: TopoJSON world, continent, and country maps usage
 
 # Atlas
 
-`@d3-maps/atlas` gives you ready-to-use TopoJSON for world, continent, and country maps
+`@d3-maps/atlas` is a TopoJSON collection of world, continent, and country maps
 
 ## Install
 
@@ -178,20 +178,20 @@ export function App() {
 
 ## Scales
 
+| Scale | Use it for |
+| --- | --- |
+| `110m` | World maps, dashboards, examples, and the smallest payload |
+| `50m` | Regional maps or closer zoom where `110m` looks too coarse |
+| `10m` | Country detail views where coastline and border detail matter |
+
 Default country imports use the coarsest available scale. In most cases that is `110m`.
 
 ```ts
 import Japan from '@d3-maps/atlas/countries/japan' // japan-110m
 import Japan10m from '@d3-maps/atlas/countries/japan/japan-10m'
 import Japan50m from '@d3-maps/atlas/countries/japan/japan-50m'
-import Countries110m from '@d3-maps/atlas/world/countries/countries-110m'
+import Japan110m from '@d3-maps/atlas/world/countries/countries-110m'
 ```
-
-| Scale | Use it for |
-| --- | --- |
-| `110m` | World maps, dashboards, examples, and the smallest payload |
-| `50m` | Regional maps or closer zoom where `110m` looks too coarse |
-| `10m` | Country detail views where coastline and border detail matter |
 
 ## Data properties
 
