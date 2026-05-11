@@ -363,6 +363,14 @@ export default defineConfig({
           replacement: REPO_ROOT,
         },
         {
+          find: /^@d3-maps\/atlas\/(.+)$/,
+          replacement: `${PACKAGES_DIR.replace(/\\/g, '/')}/atlas/dist/$1`,
+        },
+        {
+          find: /^@d3-maps\/atlas$/,
+          replacement: `${PACKAGES_DIR.replace(/\\/g, '/')}/atlas/dist/index.js`,
+        },
+        {
           find: /^@d3-maps\/(\w+)\/(.+)$/,
           replacement: `${PACKAGES_DIR.replace(/\\/g, '/')}/$1/src/$2`,
         },

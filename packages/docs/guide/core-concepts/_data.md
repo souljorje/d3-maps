@@ -1,6 +1,6 @@
 ## Data
 
-[MapBase](/components/map-base) accepts GeoJSON or TopoJSON and normalizes to GeoJSON before render. Both formats used for geo data encoding. TopoJSON is compact, GeoJSON is rich.
+[MapBase](/components/map-base) accepts GeoJSON, TopoJSON, or an array of either and normalizes everything to GeoJSON features before render. TopoJSON is compact, GeoJSON is rich.
 
 :::tabs key:framework
 

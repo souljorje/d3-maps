@@ -10,7 +10,7 @@ Renders the root `<svg>` and provides a reactive map context to children.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `data` | [MapData](/api/core/map#mapdata) | — | TopoJSON or GeoJSON |
+| `data` | [MapData](/api/core/map#mapdata) | — | TopoJSON, GeoJSON, or an array of either |
 | `width?` | `number` | `600` |  |
 | `height?` | `number` | `width/aspectRatio` |  |
 | `aspectRatio?` | `number` | `2 / 1` | Used to derive `height` when `height` is not provided. |

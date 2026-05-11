@@ -171,9 +171,6 @@ catalogs:
     vue-tsc:
       specifier: ^3.2.0
       version: 3.2.8
-    world-atlas:
-      specifier: ^2.0.2
-      version: 2.0.2
 
 importers:
 
@@ -289,6 +286,9 @@ importers:
 
   packages/docs:
     dependencies:
+      '@d3-maps/atlas':
+        specifier: workspace:*
+        version: link:../atlas
       '@d3-maps/core':
         specifier: workspace:*
         version: link:../core
@@ -310,9 +310,6 @@ importers:
       vue:
         specifier: 'catalog:'
         version: 3.5.25(typescript@5.9.3)
-      world-atlas:
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
       '@tailwindcss/vite':
         specifier: 'catalog:'
@@ -5371,9 +5368,6 @@ packages:
   word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
     engines: {node: '>=0.10.0'}
-
-  world-atlas@2.0.2:
-    resolution: {integrity: sha512-IXfV0qwlKXpckz1FhwXVwKRjiIhOnWttOskm5CtxMsjgE/MXAYRHWJqgXOpM8IkcPBoXnyTU5lFHcYa5ChG0LQ==}
 
   wrap-ansi@7.0.0:
     resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==}
@@ -10758,8 +10752,6 @@ snapshots:
       '@types/node': 25.6.2
 
   word-wrap@1.2.5: {}
-
-  world-atlas@2.0.2: {}
 
   wrap-ansi@7.0.0:
     dependencies:
