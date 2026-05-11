@@ -23,7 +23,8 @@ import { applyModifiers } from './utils'
 
 export type MapMeshData = ReturnType<typeof mesh>
 
-export type MapData = ExtendedFeatureCollection | Topology
+export type MapDataItem = ExtendedFeatureCollection | Topology
+export type MapData = MapDataItem | MapDataItem[]
 export type DataTransformer = (features: MapFeatureData[]) => MapFeatureData[]
 
 /**
@@ -139,35 +140,32 @@ export function makeProjection({
  * Normalizes input map data to GeoJSON features.
  *
  * - TopoJSON is converted via `topojson-client`.
- * - If provided, `dataTransformer` is applied to the feature array.
+ * - Array input is flattened into one feature array.
+ * - If provided, `dataTransformer` is applied once after flattening.
  */
 export function makeFeatures(
   geoData: MapData,
   dataTransformer?: DataTransformer,
   topologyObjectKey?: string,
 ): MapFeatureData[] {
-  let geoJson: ExtendedFeatureCollection
-  if (isTopology(geoData)) {
-    const topoObject = getTopoObject(geoData, topologyObjectKey)
-    const normalizedGeoJson = feature(geoData, topoObject)
-    geoJson = (normalizedGeoJson.type === 'FeatureCollection'
-      ? normalizedGeoJson
-      : { type: 'FeatureCollection', features: [normalizedGeoJson] }) as ExtendedFeatureCollection
-  } else {
-    geoJson = geoData
-  }
+  const dataItems = Array.isArray(geoData) ? geoData : [geoData]
+  const features = dataItems.flatMap((item) => makeFeaturesFromItem(item, topologyObjectKey))
 
-  return dataTransformer ? dataTransformer(geoJson.features) : geoJson.features
+  return dataTransformer ? dataTransformer(features) : features
 }
 
 /**
  * Returns a TopoJSON mesh when topology data is provided.
  */
 export function makeMesh(geoData: MapData, topologyObjectKey?: string): MapMeshData | undefined {
-  if (!isTopology(geoData)) return undefined
+  const dataItems = Array.isArray(geoData) ? geoData : [geoData]
+  const topologyItems = dataItems.filter(isTopology)
 
-  const topoObject = getTopoObject(geoData, topologyObjectKey)
-  return mesh(geoData, topoObject) as MapMeshData
+  if (topologyItems.length !== 1) return undefined
+
+  const topology = topologyItems[0]
+  const topoObject = getTopoObject(topology, topologyObjectKey)
+  return mesh(topology, topoObject) as MapMeshData
 }
 
 /**
@@ -209,8 +207,29 @@ export function makeMapContext({
 /**
  * Type guard for TopoJSON topology inputs.
  */
-export function isTopology(data: MapData): data is Topology {
+export function isTopology(data: unknown): data is Topology {
   return (data as Topology)?.type === 'Topology'
+}
+
+export function makeFeaturesFromItem(
+  item: MapDataItem,
+  topologyObjectKey?: string,
+): MapFeatureData[] {
+  return isTopology(item)
+    ? topologyToFeatures(item, topologyObjectKey)
+    : item.features
+}
+
+export function topologyToFeatures(
+  topology: Topology,
+  topologyObjectKey?: string,
+): MapFeatureData[] {
+  const topoObject = getTopoObject(topology, topologyObjectKey)
+  const normalizedGeoJson = feature(topology, topoObject)
+
+  return normalizedGeoJson.type === 'FeatureCollection'
+    ? normalizedGeoJson.features as MapFeatureData[]
+    : [normalizedGeoJson as MapFeatureData]
 }
 
 export function getTopoObject(geoData: Topology, topologyObjectKey?: string): GeometryObject {

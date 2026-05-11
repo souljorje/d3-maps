@@ -130,6 +130,39 @@ describe('makeFeatures', () => {
     expect(features[0].properties?.id).toBe('demo')
   })
 
+  it('merges features from multiple topology inputs', () => {
+    const features = makeFeatures([sampleTopology, sampleTopology])
+
+    expect(features).toHaveLength(2)
+    expect(features.map((feature) => feature.properties?.id)).toEqual(['demo', 'demo'])
+  })
+
+  it('merges features from multiple geojson inputs', () => {
+    const features = makeFeatures([sampleGeoJson, sampleGeoJson])
+
+    expect(features).toHaveLength(2)
+    expect(features.map((feature) => feature.properties?.id)).toEqual(['demo', 'demo'])
+  })
+
+  it('merges features from mixed topology and geojson inputs', () => {
+    const mixedData = [sampleTopology, sampleGeoJson]
+    const features = makeFeatures(mixedData)
+
+    expectTypeOf(features).toMatchTypeOf(sampleGeoJson.features)
+    expect(features).toHaveLength(2)
+    expect(features.map((feature) => feature.properties?.id)).toEqual(['demo', 'demo'])
+  })
+
+  it('runs the transformer after merging array inputs', () => {
+    const features = makeFeatures(
+      [sampleTopology, sampleGeoJson, sampleTopology],
+      (items) => items.slice(1, 3),
+    )
+
+    expect(features).toHaveLength(2)
+    expect(features.map((feature) => feature.properties?.id)).toEqual(['demo', 'demo'])
+  })
+
   it('uses the requested topology object', () => {
     const features = makeFeatures(sampleTopologyTwoObjects, undefined, 'pair')
 
@@ -162,6 +195,10 @@ describe('makeMesh', () => {
     expect(defaultMesh?.coordinates).toHaveLength(1)
     expect(selectedMesh?.coordinates).toHaveLength(2)
   })
+
+  it('returns undefined for multiple topology inputs', () => {
+    expect(makeMesh([sampleTopology, sampleTopology])).toBeUndefined()
+  })
 })
 
 describe('makeMapContext', () => {
@@ -182,6 +219,13 @@ describe('makeMapContext', () => {
   it('includes mesh helpers for topology input', () => {
     const context = makeMapContext({ data: sampleTopology })
     expect(typeof context.renderMesh()).toBe('string')
+  })
+
+  it('merges features from array map data', () => {
+    const context = makeMapContext({ data: [sampleTopology, sampleTopology] })
+
+    expect(context.features).toHaveLength(2)
+    expect(context.renderMesh()).toBeNull()
   })
 
   it('uses the requested topology object throughout the map context', () => {
