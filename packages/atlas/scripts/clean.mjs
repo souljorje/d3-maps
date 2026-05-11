@@ -5,7 +5,17 @@ import { fileUrl } from './utils.mjs'
 
 const targetGroups = {
   build: ['dist'],
-  generate: ['src/world', 'src/countries', 'src/continents', 'data/tmp'],
+  generate: [
+    'data/generated',
+    'data/tmp',
+    'src/world',
+    'src/countries',
+    'src/continents',
+    'src/metadata',
+    'src/metadata/countries.json',
+    'src/metadata/continents.json',
+    'src/metadata/sources.json',
+  ],
 }
 
 const groupNames = process.argv.slice(2)

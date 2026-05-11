@@ -1,68 +1,180 @@
-import { cp, mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
-import { dirname, extname, join, relative } from 'node:path'
+import { cp } from 'node:fs/promises'
+import { dirname } from 'node:path'
 
-import { filePath } from './utils.mjs'
+import {
+  DEFAULT_SCALE,
+  SCALES,
+  ensureDir,
+  filePath,
+  pathExists,
+  readJson,
+  walkFiles,
+  writeText,
+} from './utils.mjs'
 
 const srcDir = filePath('src')
 const distDir = filePath('dist')
 
-function toJs(source) {
-  return source
-    .replace(/^import type .*$/gm, '')
-    .replace(/^export type .*$/gm, '')
-    .replace(/ as unknown as Topology/g, '')
-    .replace(/ as Topology/g, '')
-    .replace(/ satisfies Topology/g, '')
+async function mustExist(path) {
+  if (await pathExists(path)) return
+  throw new Error(`Missing generated data: ${path}\nRun: pnpm --filter @d3-maps/atlas generate`)
 }
 
-function toDts(source) {
-  const constMatch = source.match(/const ([\w$]+) = /)
-  if (constMatch) {
-    const [, name] = constMatch
-    return `import type { Topology } from 'topojson-specification'\n\ndeclare const ${name}: Topology\n\nexport default ${name}\n`
+function wrapperJs(jsonFile) {
+  return [
+    `import data from './${jsonFile}' with { type: 'json' }`,
+    '',
+    'export default data',
+  ].join('\n')
+}
+
+function scaleDts(sharedPath, exportName, defaultScale = DEFAULT_SCALE) {
+  return [
+    `export { default } from '${sharedPath}'`,
+    '',
+    ...SCALES.map((scale) => `export { default as ${exportName}${scale} } from '${sharedPath}'`),
+  ].join('\n')
+}
+
+function scaleExports(baseName, exportName, defaultScale = DEFAULT_SCALE) {
+  return [
+    `export { default } from './${baseName}-${defaultScale}.js'`,
+    '',
+    ...SCALES.map((scale) => `export { default as ${exportName}${scale} } from './${baseName}-${scale}.js'`),
+  ].join('\n')
+}
+
+async function copyGeneratedJson() {
+  for await (const sourcePath of walkFiles(srcDir)) {
+    if (!sourcePath.endsWith('.json')) continue
+
+    const relativePath = sourcePath.slice(srcDir.length + 1)
+    const targetPath = `${distDir}/${relativePath}`
+    await ensureDir(dirname(targetPath))
+    await cp(sourcePath, targetPath)
+  }
+}
+
+async function writeWrapperPair(basePath, jsonFile) {
+  await writeText(`${basePath}.js`, wrapperJs(jsonFile))
+}
+
+async function writeBarrelPair(basePath, lines) {
+  const content = Array.isArray(lines) ? lines.join('\n') : lines
+  await writeText(`${basePath}.js`, content)
+  await writeText(`${basePath}.d.ts`, content)
+}
+
+async function buildWorldCountries() {
+  const dir = `${distDir}/world/countries`
+  const sharedLeafPath = '../../_topology.js'
+
+  for (const scale of SCALES) {
+    await writeWrapperPair(
+      `${dir}/countries-${scale}`,
+      `countries-${scale}.json`,
+    )
   }
 
-  const declarations = source
-    .split('\n')
-    .filter((line) => line.startsWith('export '))
-    .join('\n')
-    .concat('\n')
-
-  return declarations
+  await writeText(
+    `${dir}/index.js`,
+    scaleExports('countries', 'Countries'),
+  )
+  await writeText(
+    `${dir}/index.d.ts`,
+    scaleDts(sharedLeafPath, 'Countries'),
+  )
 }
 
-async function* walk(dir) {
-  for (const entry of await readdir(dir, { withFileTypes: true })) {
-    const path = join(dir, entry.name)
-    if (entry.isDirectory()) {
-      yield* walk(path)
-      continue
+async function buildEntityModules(rootDir, metadataPath) {
+  const entities = await readJson(metadataPath)
+  const sharedLeafPath = '../../_topology.js'
+
+  for (const entity of entities) {
+    const { defaultScale, exportName, scales, slug } = entity
+    const dir = `${rootDir}/${slug}`
+
+    for (const scale of scales) {
+      await writeWrapperPair(
+        `${dir}/${slug}-${scale}`,
+        `${slug}-${scale}.json`,
+      )
     }
 
-    yield path
-  }
-}
-
-async function write(path, content) {
-  await mkdir(dirname(path), { recursive: true })
-  await writeFile(path, content.endsWith('\n') ? content : `${content}\n`, 'utf8')
-}
-
-for await (const sourcePath of walk(srcDir)) {
-  const rel = relative(srcDir, sourcePath)
-  const ext = extname(sourcePath)
-
-  if (ext === '.json') {
-    await mkdir(dirname(join(distDir, rel)), { recursive: true })
-    await cp(sourcePath, join(distDir, rel))
-    continue
+    await writeText(
+      `${dir}/index.js`,
+      scaleExports(slug, exportName, defaultScale),
+    )
+    await writeText(
+      `${dir}/index.d.ts`,
+      scaleDts(sharedLeafPath, exportName, defaultScale),
+    )
   }
 
-  if (ext !== '.ts') continue
-
-  const source = await readFile(sourcePath, 'utf8')
-  const outBase = join(distDir, rel.replace(/\.ts$/, ''))
-
-  await write(`${outBase}.js`, toJs(source))
-  await write(`${outBase}.d.ts`, toDts(source))
+  return entities
 }
+
+async function buildCountriesBarrel(countries) {
+  const lines = countries.map((country) => (
+    `export { default as ${country.exportName} } from './countries/${country.slug}/index.js'`
+  ))
+
+  await writeBarrelPair(`${distDir}/countries`, lines)
+}
+
+async function buildRootBarrel(continents) {
+  const jsLines = [
+    "export { default as Countries } from './world/countries/index.js'",
+    "export { Countries10m, Countries50m, Countries110m } from './world/countries/index.js'",
+    '',
+    ...continents.map((continent) => `export { default as ${continent.exportName} } from './continents/${continent.slug}/index.js'`),
+  ]
+  const dtsLines = [
+    ...jsLines,
+    '',
+    "export type { Topology } from './types.js'",
+  ]
+
+  await writeText(`${distDir}/index.js`, jsLines.join('\n'))
+  await writeText(`${distDir}/index.d.ts`, dtsLines.join('\n'))
+}
+
+async function buildTypesModule() {
+  await writeText(`${distDir}/types.js`, 'export {}')
+  await writeText(
+    `${distDir}/types.d.ts`,
+    "export type { Topology } from 'topojson-specification'",
+  )
+}
+
+async function buildSharedTopologyModule() {
+  await writeText(`${distDir}/_topology.js`, 'export {}')
+  await writeText(
+    `${distDir}/_topology.d.ts`,
+    [
+      "import type { Topology } from 'topojson-specification'",
+      '',
+      'declare const topology: Topology',
+      '',
+      'export default topology',
+    ].join('\n'),
+  )
+}
+
+await mustExist(filePath('src/metadata/countries.json'))
+await mustExist(filePath('src/metadata/continents.json'))
+
+await copyGeneratedJson()
+await buildSharedTopologyModule()
+await buildWorldCountries()
+const countries = await buildEntityModules(
+  `${distDir}/countries`,
+  filePath('src/metadata/countries.json'),
+)
+const continents = await buildEntityModules(
+  `${distDir}/continents`,
+  filePath('src/metadata/continents.json'),
+)
+await buildCountriesBarrel(countries)
+await buildRootBarrel(continents)
+await buildTypesModule()

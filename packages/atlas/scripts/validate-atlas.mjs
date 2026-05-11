@@ -13,9 +13,8 @@ function assert(condition, message) {
   if (!condition) throw new Error(message)
 }
 
-const srcDir = filePath('src')
 const files = []
-for await (const file of walkFiles(srcDir)) files.push(file)
+for await (const file of walkFiles(filePath('src'))) files.push(file)
 const topologyFiles = files.filter((file) => file.endsWith('.json') && !file.includes('/metadata/'))
 
 assert(topologyFiles.length > 0, 'No topology files generated')
@@ -32,7 +31,6 @@ for (const file of topologyFiles) {
 
 const countries = await readJson(filePath('src/metadata/countries.json'))
 const continents = await readJson(filePath('src/metadata/continents.json'))
-const countryExports = await readFile(filePath('src/countries.ts'), 'utf8')
 
 assert(countries.length > 0, 'No country metadata generated')
 assert(continents.length === CONTINENTS.length, 'Continent metadata is incomplete')
@@ -45,7 +43,6 @@ for (const scale of SCALES) {
 }
 
 for (const country of countries) {
-  assert(countryExports.includes(`as ${country.exportName}`), `missing country export: ${country.exportName}`)
   assert(country.scales.length > 0, `missing scales for ${country.slug}`)
 
   for (const scale of country.scales) {

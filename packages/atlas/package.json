@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "sync-data": "node scripts/sync-natural-earth.mjs",
-    "generate": "node scripts/clean.mjs generate && node scripts/build-atlas.mjs && node scripts/generate-api.mjs",
+    "generate": "node scripts/clean.mjs generate && node scripts/build-atlas.mjs",
     "validate": "node scripts/validate-atlas.mjs",
     "prebuild": "node scripts/clean.mjs build",
     "build": "node scripts/build-package.mjs",
@@ -26,9 +26,29 @@
       "types": "./dist/countries.d.ts",
       "default": "./dist/countries.js"
     },
+    "./countries/*": {
+      "types": "./dist/countries/*/index.d.ts",
+      "default": "./dist/countries/*/index.js"
+    },
+    "./countries/*/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/countries/*/*.js"
+    },
+    "./continents/*": {
+      "types": "./dist/continents/*/index.d.ts",
+      "default": "./dist/continents/*/index.js"
+    },
+    "./continents/*/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/continents/*/*.js"
+    },
     "./world/countries": {
       "types": "./dist/world/countries/index.d.ts",
       "default": "./dist/world/countries/index.js"
+    },
+    "./world/countries/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/world/countries/*.js"
     },
     "./metadata/countries": {
       "default": "./dist/metadata/countries.json"
