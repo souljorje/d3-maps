@@ -1,10 +1,10 @@
 ---
-description: TopoJSON world, continent, and country maps usage
+description: TopoJSON world layers, continent, and country maps usage
 ---
 
 # Atlas
 
-`@d3-maps/atlas` is a TopoJSON collection of world, continent, and country maps
+`@d3-maps/atlas` is a TopoJSON collection of world layers, continent, and country maps
 
 ## Install
 
@@ -60,6 +60,44 @@ import Countries from '@d3-maps/atlas/world/countries'
 export function App() {
   return (
     <MapBase data={Countries}>
+      <MapFeatures />
+    </MapBase>
+  )
+}
+```
+
+:::
+
+### World layers
+
+:::tabs key:framework
+
+== Vue
+
+```vue [vue]
+<script setup lang="ts">
+import { MapBase, MapFeatures } from '@d3-maps/vue'
+import Land from '@d3-maps/atlas/world/land'
+import Coastline from '@d3-maps/atlas/world/coastline'
+</script>
+
+<template>
+  <MapBase :data="[Land, Coastline]">
+    <MapFeatures />
+  </MapBase>
+</template>
+```
+
+== React
+
+```tsx [react]
+import { MapBase, MapFeatures } from '@d3-maps/react'
+import Land from '@d3-maps/atlas/world/land'
+import Coastline from '@d3-maps/atlas/world/coastline'
+
+export function App() {
+  return (
+    <MapBase data={[Land, Coastline]}>
       <MapFeatures />
     </MapBase>
   )
@@ -195,7 +233,7 @@ import Japan110m from '@d3-maps/atlas/world/countries/countries-110m'
 
 ## Data properties
 
-Atlas TopoJSON feature properties are intentionally minimal
+Country TopoJSON feature properties are intentionally minimal
 
 ```ts
 type AtlasProperties = {
@@ -230,13 +268,20 @@ type CountryMetadata = {
 }
 ```
 
+World physical layers do not carry a stable metadata API. Their source properties are preserved.
+
 ## Import matrix
 
 | Entity | Default import | Scale-specific import pattern |
 | --- | --- | --- |
+| Country | `@d3-maps/atlas/countries/<slug>` | `@d3-maps/atlas/countries/<slug>/<slug>-<scale>` |
+| Continent | `@d3-maps/atlas/continents/<slug>` | Continent default entry only |
 | World countries | `@d3-maps/atlas/world/countries` | `@d3-maps/atlas/world/countries/countries-<scale>` |
-| One continent | `@d3-maps/atlas/continents/<slug>` | Continent default entry only |
-| One country | `@d3-maps/atlas/countries/<slug>` | `@d3-maps/atlas/countries/<slug>/<slug>-<scale>` |
+| World land | `@d3-maps/atlas/world/land` | `@d3-maps/atlas/world/land/land-<scale>` |
+| World ocean | `@d3-maps/atlas/world/ocean` | `@d3-maps/atlas/world/ocean/ocean-<scale>` |
+| World coastline | `@d3-maps/atlas/world/coastline` | `@d3-maps/atlas/world/coastline/coastline-<scale>` |
+| World lakes | `@d3-maps/atlas/world/lakes` | `@d3-maps/atlas/world/lakes/lakes-<scale>` |
+| World rivers | `@d3-maps/atlas/world/rivers` | `@d3-maps/atlas/world/rivers/rivers-<scale>` |
 
 ## Keep bundle size down
 
