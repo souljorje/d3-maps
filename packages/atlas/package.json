@@ -56,9 +56,6 @@
     "./metadata/continents": {
       "default": "./dist/metadata/continents.json"
     },
-    "./metadata/sources": {
-      "default": "./dist/metadata/sources.json"
-    },
     "./package.json": "./package.json"
   },
   "dependencies": {

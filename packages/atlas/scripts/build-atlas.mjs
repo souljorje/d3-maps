@@ -1,18 +1,21 @@
-import { access, readdir, rename, rm } from 'node:fs/promises'
+import { access, mkdtemp, readdir, rename, rm } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
 import { basename, dirname, join } from 'node:path'
 
 import {
   CONTINENTS,
   DEFAULT_SCALE,
   ensureDir,
-  FIELD_NAMES,
   filePath,
   mapshaper,
+  METADATA_FIELD_NAMES,
   pascalCase,
   readJson,
   SCALES,
   slugify,
   sourceShp,
+  TOPOLOGY_FIELD_NAMES,
+  TOPOLOGY_PROPERTY_MAP,
   writeJson,
 } from './utils.mjs'
 
@@ -47,18 +50,20 @@ function normalizeCountry(properties) {
     continent: fieldValue(properties, 'CONTINENT'),
     region: fieldValue(properties, 'REGION_UN'),
     subregion: fieldValue(properties, 'SUBREGION'),
+    popEst: fieldValue(properties, 'POP_EST'),
+    gdpMd: fieldValue(properties, 'GDP_MD'),
   }
 }
 
 async function exportGeojsonForMetadata(scale) {
   const input = sourceShp(scale)
-  const output = filePath(`data/tmp/countries-${scale}.geojson`)
+  const output = join(tempRoot, `countries-${scale}.geojson`)
 
   await ensureDir(dirname(output))
   await mapshaper([
     input,
     '-filter-fields',
-    FIELD_NAMES.join(','),
+    METADATA_FIELD_NAMES.join(','),
     '-o',
     'format=geojson',
     output,
@@ -70,8 +75,8 @@ async function exportGeojsonForMetadata(scale) {
 async function exportScaleTopologies(scale) {
   const input = sourceShp(scale)
   const worldOutput = filePath(`src/world/countries/countries-${scale}.json`)
-  const countryOutputDir = filePath(`data/tmp/countries-${scale}`)
-  const continentOutputDir = filePath(`data/tmp/continents-${scale}`)
+  const countryOutputDir = join(tempRoot, `countries-${scale}`)
+  const continentOutputDir = join(tempRoot, `continents-${scale}`)
 
   await ensureDir(dirname(worldOutput))
   await ensureDir(countryOutputDir)
@@ -81,7 +86,7 @@ async function exportScaleTopologies(scale) {
     input,
     '-clean',
     '-filter-fields',
-    FIELD_NAMES.join(','),
+    TOPOLOGY_FIELD_NAMES.join(','),
     '-rename-layers',
     'features',
     '-o',
@@ -116,7 +121,32 @@ async function exportScaleTopologies(scale) {
   return {
     continentOutputDir,
     countryOutputDir,
+    worldOutput,
   }
+}
+
+function pruneGeometryProperties(geometry) {
+  if (geometry.properties) {
+    geometry.properties = Object.fromEntries(
+      Object.entries(TOPOLOGY_PROPERTY_MAP)
+        .map(([sourceKey, targetKey]) => [targetKey, geometry.properties[sourceKey]])
+        .filter(([, value]) => value != null),
+    )
+  }
+
+  if (Array.isArray(geometry.geometries)) {
+    for (const child of geometry.geometries) pruneGeometryProperties(child)
+  }
+}
+
+async function pruneTopologyProperties(path) {
+  const topology = await readJson(path)
+
+  for (const object of Object.values(topology.objects ?? {})) {
+    pruneGeometryProperties(object)
+  }
+
+  await writeJson(path, topology)
 }
 
 async function moveSplitFiles(sourceDir, targetRoot, slugBySourceName, scale) {
@@ -137,6 +167,7 @@ async function moveSplitFiles(sourceDir, targetRoot, slugBySourceName, scale) {
       join(sourceDir, entry.name),
       join(targetDir, `${slug}-${scale}.json`),
     )
+    await pruneTopologyProperties(join(targetDir, `${slug}-${scale}.json`))
     sourceNames.push(sourceName)
   }
 
@@ -145,84 +176,97 @@ async function moveSplitFiles(sourceDir, targetRoot, slugBySourceName, scale) {
 }
 
 async function createCountryMetadata() {
-  const metadataGeojsonPath = await exportGeojsonForMetadata(DEFAULT_SCALE)
-  const geojson = await readJson(metadataGeojsonPath)
   const countriesByCode = new Map()
 
-  for (const feature of geojson.features) {
-    const country = normalizeCountry(feature.properties)
-    if (!country.slug || !country.adm0A3) continue
+  for (const scale of SCALES) {
+    const metadataGeojsonPath = await exportGeojsonForMetadata(scale)
+    const geojson = await readJson(metadataGeojsonPath)
 
-    countriesByCode.set(country.adm0A3, {
-      ...country,
-      scales: [],
-    })
+    for (const feature of geojson.features) {
+      const country = normalizeCountry(feature.properties)
+      if (!country.slug || !country.adm0A3) continue
+
+      const existing = countriesByCode.get(country.adm0A3)
+      if (existing) continue
+
+      countriesByCode.set(country.adm0A3, {
+        ...country,
+        scales: [],
+      })
+    }
   }
 
   return countriesByCode
 }
 
-await ensureDir(filePath('data/tmp'))
+const tempRoot = await mkdtemp(join(tmpdir(), 'd3-maps-atlas-'))
 
-const countriesByCode = await createCountryMetadata()
-const countrySlugByCode = new Map(
-  [...countriesByCode.values()].map((country) => [country.adm0A3, country.slug]),
-)
-const continentSlugByName = new Map(
-  CONTINENTS.map((continent) => [continent.name, continent.slug]),
-)
-
-for (const scale of SCALES) {
-  const shp = sourceShp(scale)
-  await mustExist(shp)
-
-  const { continentOutputDir, countryOutputDir } = await exportScaleTopologies(scale)
-  const presentCountryCodes = await moveSplitFiles(
-    countryOutputDir,
-    filePath('src/countries'),
-    countrySlugByCode,
-    scale,
+try {
+  const countriesByCode = await createCountryMetadata()
+  const countrySlugByCode = new Map(
+    [...countriesByCode.values()].map((country) => [country.adm0A3, country.slug]),
+  )
+  const continentSlugByName = new Map(
+    CONTINENTS.map((continent) => [continent.name, continent.slug]),
   )
 
-  for (const adm0A3 of presentCountryCodes) {
-    const country = countriesByCode.get(adm0A3)
-    if (country) country.scales.push(scale)
+  for (const scale of SCALES) {
+    const shp = sourceShp(scale)
+    await mustExist(shp)
+
+    const { continentOutputDir, countryOutputDir, worldOutput } = await exportScaleTopologies(scale)
+    await pruneTopologyProperties(worldOutput)
+    const presentCountryCodes = await moveSplitFiles(
+      countryOutputDir,
+      filePath('src/countries'),
+      countrySlugByCode,
+      scale,
+    )
+
+    for (const adm0A3 of presentCountryCodes) {
+      const country = countriesByCode.get(adm0A3)
+      if (country) country.scales.push(scale)
+    }
+
+    await moveSplitFiles(
+      continentOutputDir,
+      filePath('src/continents'),
+      continentSlugByName,
+      scale,
+    )
   }
 
-  await moveSplitFiles(
-    continentOutputDir,
-    filePath('src/continents'),
-    continentSlugByName,
-    scale,
+  const countries = [...countriesByCode.values()]
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((country) => ({
+      ...country,
+      defaultScale: country.scales[0] ?? DEFAULT_SCALE,
+    }))
+
+  await writeJson(filePath('src/metadata/countries.json'), countries)
+  await writeJson(
+    filePath('src/metadata/continents.json'),
+    CONTINENTS.map((continent) => ({
+      ...continent,
+      exportName: pascalCase(continent.name),
+      defaultScale: DEFAULT_SCALE,
+      scales: SCALES,
+    })),
   )
+
+  await writeJson(filePath('src/sources.json'), {
+    naturalEarth: {
+      name: 'Natural Earth Vector',
+      url: 'https://github.com/nvkelso/natural-earth-vector',
+      license: 'public domain',
+      scales: SCALES,
+      theme: 'cultural',
+      sourceLayer: 'admin_0_countries',
+      topologyFields: Object.values(TOPOLOGY_PROPERTY_MAP),
+      topologySourceFields: TOPOLOGY_FIELD_NAMES,
+      metadataFields: METADATA_FIELD_NAMES,
+    },
+  })
+} finally {
+  await rm(tempRoot, { force: true, recursive: true })
 }
-
-const countries = [...countriesByCode.values()]
-  .sort((a, b) => a.name.localeCompare(b.name))
-  .map((country) => ({
-    ...country,
-    defaultScale: country.scales[0] ?? DEFAULT_SCALE,
-  }))
-
-await writeJson(filePath('src/metadata/countries.json'), countries)
-await writeJson(
-  filePath('src/metadata/continents.json'),
-  CONTINENTS.map((continent) => ({
-    ...continent,
-    exportName: pascalCase(continent.name),
-    defaultScale: DEFAULT_SCALE,
-    scales: SCALES,
-  })),
-)
-
-await writeJson(filePath('src/metadata/sources.json'), {
-  naturalEarth: {
-    name: 'Natural Earth Vector',
-    url: 'https://github.com/nvkelso/natural-earth-vector',
-    license: 'public domain',
-    scales: SCALES,
-    theme: 'cultural',
-    sourceLayer: 'admin_0_countries',
-    fields: FIELD_NAMES,
-  },
-})

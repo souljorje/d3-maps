@@ -47,6 +47,7 @@ function scaleExports(baseName, exportName, defaultScale = DEFAULT_SCALE) {
 async function copyGeneratedJson() {
   for await (const sourcePath of walkFiles(srcDir)) {
     if (!sourcePath.endsWith('.json')) continue
+    if (sourcePath === filePath('src/sources.json')) continue
 
     const relativePath = sourcePath.slice(srcDir.length + 1)
     const targetPath = `${distDir}/${relativePath}`

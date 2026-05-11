@@ -8,7 +8,18 @@ export const ROOT = new URL('..', import.meta.url)
 export const SCALES = ['110m', '50m', '10m']
 export const DEFAULT_SCALE = SCALES[0]
 
-export const FIELD_NAMES = [
+export const TOPOLOGY_PROPERTY_MAP = {
+  ADM0_A3: 'id',
+  NAME: 'name',
+  NAME_LONG: 'name_long',
+}
+
+export const TOPOLOGY_FIELD_NAMES = [
+  ...Object.keys(TOPOLOGY_PROPERTY_MAP),
+  'CONTINENT',
+]
+
+export const METADATA_FIELD_NAMES = [
   'ADM0_A3',
   'ISO_A2',
   'ISO_A3',
@@ -54,7 +65,7 @@ export async function pathExists(path) {
 
 export async function writeJson(path, value) {
   await ensureDir(dirname(path))
-  await writeFile(path, `${JSON.stringify(value, null, 2)}\n`, 'utf8')
+  await writeFile(path, `${JSON.stringify(value)}\n`, 'utf8')
 }
 
 export async function writeText(path, value) {

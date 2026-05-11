@@ -12,9 +12,7 @@ const targetGroups = {
     'src/countries',
     'src/continents',
     'src/metadata',
-    'src/metadata/countries.json',
-    'src/metadata/continents.json',
-    'src/metadata/sources.json',
+    'src/sources.json',
   ],
 }
 
