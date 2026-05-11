@@ -1,0 +1,53 @@
+{
+  "name": "@d3-maps/atlas",
+  "version": "0.0.0",
+  "description": "Ready-to-use TopoJSON atlas data",
+  "type": "module",
+  "private": false,
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "fetch": "node scripts/fetch-natural-earth.mjs",
+    "generate": "node scripts/build-atlas.mjs && node scripts/generate-wrappers.mjs && node scripts/generate-exports.mjs",
+    "validate": "node scripts/validate-atlas.mjs",
+    "prebuild": "node scripts/clean.mjs",
+    "build": "node scripts/build-package.mjs",
+    "clean": "node scripts/clean.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./countries": {
+      "types": "./dist/countries.d.ts",
+      "default": "./dist/countries.js"
+    },
+    "./world/countries": {
+      "types": "./dist/world/countries/index.d.ts",
+      "default": "./dist/world/countries/index.js"
+    },
+    "./metadata/countries": {
+      "default": "./dist/metadata/countries.json"
+    },
+    "./metadata/continents": {
+      "default": "./dist/metadata/continents.json"
+    },
+    "./metadata/sources": {
+      "default": "./dist/metadata/sources.json"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@types/topojson-specification": "catalog:",
+    "execa": "catalog:"
+  },
+  "devDependencies": {
+    "mapshaper": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  }
+}
