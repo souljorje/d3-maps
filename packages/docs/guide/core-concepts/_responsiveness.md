@@ -68,5 +68,5 @@ The **parent element must have height**, otherwise the map collapses.
 By default the projection uses:  
 `fitExtent([[1, 1], [width - 1, height - 1]], { type: 'Sphere' })`  
 
-`projectionConfig` can override that with `fitExtent`, `fitSize`, `fitWidth`, or `fitHeight`
+`projectionConfig.fit` can switch that to normalized `features` or one `object`, and explicit `fitExtent`, `fitSize`, `fitWidth`, or `fitHeight` still override it
 :::
