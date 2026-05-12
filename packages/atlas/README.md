@@ -16,7 +16,7 @@ Ready-to-use TopoJSON maps: world layers, continents, countries
 
 ```bash
 npm install @d3-maps/atlas
-````
+```
 
 ```bash
 pnpm add @d3-maps/atlas
@@ -142,7 +142,7 @@ import Russia from '@d3-maps/atlas/countries/russia'
 Same as:
 
 ```ts
-import Russia from '@d3-maps/atlas/countries/russia/110m'
+import Russia from '@d3-maps/atlas/countries/russia-110m'
 ```
 
 If an entity is not available in `110m`, the default falls back to `50m`, then `10m`

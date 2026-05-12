@@ -5,7 +5,7 @@ Solid and Svelte support coming soon.
 
 <!-- ![@d3-maps/vue](https://img.shields.io/bundlephobia/minzip/%40d3-maps/vue) -->
 
-[**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples)
+[**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples) · [**Migrate from react-simple-maps**](https://d3-maps.netlify.app/guide/migration-from-react-simple-maps.html)
 
 ## Features
 
@@ -36,6 +36,8 @@ CDN
   import 'https://esm.sh/@d3-maps/vue/style.css'
 </script>
 ```
+
+Usage
 
 ```vue
 <script setup lang="ts">
@@ -68,6 +70,8 @@ CDN
   import 'https://esm.sh/@d3-maps/react/style.css'
 </script>
 ```
+
+Usage
 
 ```tsx
 import { useEffect, useState } from 'react'
