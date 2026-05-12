@@ -4,9 +4,31 @@
   "description": "Ready-to-use TopoJSON atlas data",
   "type": "module",
   "private": false,
+  "author": "Georgii Bukharov <souljorje@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://d3-maps.netlify.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/souljorje/d3-maps.git",
+    "directory": "packages/atlas"
+  },
+  "bugs": {
+    "url": "https://github.com/souljorje/d3-maps/issues"
+  },
+  "keywords": [
+    "d3",
+    "topojson",
+    "geojson",
+    "atlas",
+    "map"
+  ],
   "sideEffects": false,
+  "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist/*"
   ],
   "scripts": {
     "sync-data": "node scripts/sync-natural-earth.mjs",
@@ -49,6 +71,14 @@
     "./world/countries/*": {
       "types": "./dist/_topology.d.ts",
       "default": "./dist/world/countries/*.js"
+    },
+    "./world/land": {
+      "types": "./dist/world/land/index.d.ts",
+      "default": "./dist/world/land/index.js"
+    },
+    "./world/land/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/world/land/*.js"
     },
     "./world/ocean": {
       "types": "./dist/world/ocean/index.d.ts",
