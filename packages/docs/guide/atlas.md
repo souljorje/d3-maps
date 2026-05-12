@@ -231,45 +231,6 @@ import Japan50m from '@d3-maps/atlas/countries/japan/japan-50m'
 import Japan110m from '@d3-maps/atlas/world/countries/countries-110m'
 ```
 
-## Data properties
-
-Country TopoJSON feature properties are intentionally minimal
-
-```ts
-type AtlasProperties = {
-  id: string // adm0A3
-  name: string
-  name_long?: string
-}
-```
-
-Use Atlas metadata when you need richer country or continent information
-
-```ts
-import countries from '@d3-maps/atlas/metadata/countries'
-import continents from '@d3-maps/atlas/metadata/continents'
-```
-
-```ts
-type CountryMetadata = {
-  slug: string
-  exportName: string
-  name: string
-  adm0A3: string
-  isoA2?: string
-  isoA3?: string
-  continent?: string
-  region?: string
-  subregion?: string
-  popEst?: number
-  gdpMd?: number
-  scales: Array<'110m' | '50m' | '10m'>
-  defaultScale: '110m' | '50m' | '10m'
-}
-```
-
-World physical layers do not carry a stable metadata API. Their source properties are preserved.
-
 ## Import matrix
 
 | Entity | Default import | Scale-specific import pattern |
@@ -283,6 +244,22 @@ World physical layers do not carry a stable metadata API. Their source propertie
 | World lakes | `@d3-maps/atlas/world/lakes` | `@d3-maps/atlas/world/lakes/lakes-<scale>` |
 | World rivers | `@d3-maps/atlas/world/rivers` | `@d3-maps/atlas/world/rivers/rivers-<scale>` |
 
+## Metadata
+
+Use metadata when you need richer country or continent information.
+
+```ts
+import countries from '@d3-maps/atlas/metadata/countries'
+import continents from '@d3-maps/atlas/metadata/continents'
+```
+
+## Data types
+
+Types can be imported from `@d3-maps/atlas/types`.
+Country, continent, and world-countries properties are by default typed as `AtlasFeatureProperties`
+
+<<< @/../atlas/src/types.ts#types
+
 ## Keep bundle size down
 
 Choose the narrowest import that matches the map you render
@@ -292,6 +269,6 @@ Choose the narrowest import that matches the map you render
 - Use `50m` before `10m` when you need more detail
 - Avoid loading world data and many country datasets together unless the UI needs both
 
-## Data source
+## Source
 
 Generated from [Natural Earth](https://www.naturalearthdata.com/)

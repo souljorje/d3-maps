@@ -15,6 +15,7 @@ import {
 
 const srcDir = filePath('src')
 const distDir = filePath('dist')
+const srcTypesPath = filePath('src/types.ts')
 
 async function mustExist(path) {
   if (await pathExists(path)) return
@@ -45,6 +46,16 @@ function scaleExports(baseName, exportName, defaultScale = DEFAULT_SCALE) {
   ].join('\n')
 }
 
+function metadataDts(typeName, importPath) {
+  return [
+    `import type { ${typeName} } from '${importPath}'`,
+    '',
+    `declare const data: ${typeName}[]`,
+    '',
+    'export default data',
+  ].join('\n')
+}
+
 async function copyGeneratedJson() {
   for await (const sourcePath of walkFiles(srcDir)) {
     if (!sourcePath.endsWith('.json')) continue
@@ -69,7 +80,9 @@ async function writeBarrelPair(basePath, lines) {
 
 async function buildWorldLayer(layer) {
   const dir = `${distDir}/world/${layer.id}`
-  const sharedLeafPath = '../../_topology.js'
+  const sharedLeafPath = layer.propertyMode === 'normalize'
+    ? '../../_country-topology.js'
+    : '../../_topology.js'
 
   for (const scale of SCALES) {
     await writeWrapperPair(
@@ -90,7 +103,7 @@ async function buildWorldLayer(layer) {
 
 async function buildEntityModules(rootDir, metadataPath) {
   const entities = await readJson(metadataPath)
-  const sharedLeafPath = '../../_topology.js'
+  const sharedLeafPath = '../../_country-topology.js'
 
   for (const entity of entities) {
     const { defaultScale, exportName, scales, slug } = entity
@@ -137,7 +150,7 @@ async function buildRootBarrel(continents) {
   const dtsLines = [
     ...jsLines,
     '',
-    "export type { Topology } from './types.js'",
+    "export type { AtlasCountryTopology, AtlasFeatureProperties, AtlasScale, ContinentMetadata, CountryMetadata, Topology } from './types.js'",
   ]
 
   await writeText(`${distDir}/index.js`, jsLines.join('\n'))
@@ -146,9 +159,25 @@ async function buildRootBarrel(continents) {
 
 async function buildTypesModule() {
   await writeText(`${distDir}/types.js`, 'export {}')
+  await cp(srcTypesPath, `${distDir}/types.d.ts`)
+}
+
+async function buildMetadataModule() {
   await writeText(
-    `${distDir}/types.d.ts`,
-    "export type { Topology } from 'topojson-specification'",
+    `${distDir}/metadata/countries.js`,
+    wrapperJs('countries.json'),
+  )
+  await writeText(
+    `${distDir}/metadata/countries.d.ts`,
+    metadataDts('CountryMetadata', '../types.js'),
+  )
+  await writeText(
+    `${distDir}/metadata/continents.js`,
+    wrapperJs('continents.json'),
+  )
+  await writeText(
+    `${distDir}/metadata/continents.d.ts`,
+    metadataDts('ContinentMetadata', '../types.js'),
   )
 }
 
@@ -166,11 +195,26 @@ async function buildSharedTopologyModule() {
   )
 }
 
+async function buildSharedCountryTopologyModule() {
+  await writeText(`${distDir}/_country-topology.js`, 'export {}')
+  await writeText(
+    `${distDir}/_country-topology.d.ts`,
+    [
+      "import type { AtlasCountryTopology } from './types.js'",
+      '',
+      'declare const topology: AtlasCountryTopology',
+      '',
+      'export default topology',
+    ].join('\n'),
+  )
+}
+
 await mustExist(filePath('src/metadata/countries.json'))
 await mustExist(filePath('src/metadata/continents.json'))
 
 await copyGeneratedJson()
 await buildSharedTopologyModule()
+await buildSharedCountryTopologyModule()
 for (const layer of WORLD_LAYERS) await buildWorldLayer(layer)
 const countries = await buildEntityModules(
   `${distDir}/countries`,
@@ -183,3 +227,4 @@ const continents = await buildEntityModules(
 await buildCountriesBarrel(countries)
 await buildRootBarrel(continents)
 await buildTypesModule()
+await buildMetadataModule()

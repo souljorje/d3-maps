@@ -44,6 +44,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "default": "./dist/types.js"
+    },
     "./countries": {
       "types": "./dist/countries.d.ts",
       "default": "./dist/countries.js"
@@ -113,10 +117,12 @@
       "default": "./dist/world/rivers/*.js"
     },
     "./metadata/countries": {
-      "default": "./dist/metadata/countries.json"
+      "types": "./dist/metadata/countries.d.ts",
+      "default": "./dist/metadata/countries.js"
     },
     "./metadata/continents": {
-      "default": "./dist/metadata/continents.json"
+      "types": "./dist/metadata/continents.d.ts",
+      "default": "./dist/metadata/continents.js"
     },
     "./package.json": "./package.json"
   },

@@ -74,19 +74,26 @@ export function App() {
 }
 ```
 
-### Specific scale
+## Scales
+
+| Scale | Use it for |
+| --- | --- |
+| `110m` | World maps, dashboards, examples, and the smallest payload |
+| `50m` | Regional maps or closer zoom where `110m` looks too coarse |
+| `10m` | Country detail views where coastline and border detail matter |
+
+Default country imports use the coarsest available scale. In most cases that is `110m`, if not then `50m`, then `10m`.
 
 ```ts
-import Russia110m from '@d3-maps/atlas/countries/russia/russia-110m'
-import Russia50m from '@d3-maps/atlas/countries/russia/russia-50m'
-import Russia10m from '@d3-maps/atlas/countries/russia/russia-10m'
-import Ocean110m from '@d3-maps/atlas/world/ocean/ocean-110m'
-import Rivers50m from '@d3-maps/atlas/world/rivers/rivers-50m'
+import Japan from '@d3-maps/atlas/countries/japan' // japan-110m
+import Japan10m from '@d3-maps/atlas/countries/japan/japan-10m'
+import Japan50m from '@d3-maps/atlas/countries/japan/japan-50m'
+import Japan110m from '@d3-maps/atlas/world/countries/countries-110m'
 ```
 
 ## Data
 
-Country TopoJSON feature properties are intentionally minimal:
+Country, continent, and world-countries properties are normalized and typed:
 
 ```ts
 type AtlasProperties = {
@@ -96,56 +103,12 @@ type AtlasProperties = {
 }
 ```
 
-More data available in metadata:
+Use metadata when you need richer country or continent information:
 
 ```ts
-import countries from '@d3-maps/atlas/metadata/countries'
 import continents from '@d3-maps/atlas/metadata/continents'
+import countries from '@d3-maps/atlas/metadata/countries'
 ```
-
-```ts
-type CountryMetadata = {
-  slug: string
-  exportName: string
-  name: string
-  adm0A3: string
-  isoA2?: string
-  isoA3?: string
-  continent?: string
-  region?: string
-  subregion?: string
-  popEst?: number
-  gdpMd?: number
-  scales: Array<'110m' | '50m' | '10m'>
-  defaultScale: '110m' | '50m' | '10m'
-}
-```
-
-World physical layers do not have a stable metadata API. Their source properties are preserved.
-
-## Scales
-
-Atlas files are available in Natural Earth scales:
-
-| Scale  | Use case                                               |
-| ------ | ------------------------------------------------------ |
-| `110m` | Default. Fast, small, good for examples and dashboards |
-| `50m`  | More detail, still suitable for web apps               |
-| `10m`  | Highest detail, larger files                           |
-
-Default imports use the coarsest available scale:
-
-```ts
-import Russia from '@d3-maps/atlas/countries/russia'
-```
-
-Same as:
-
-```ts
-import Russia from '@d3-maps/atlas/countries/russia-110m'
-```
-
-If an entity is not available in `110m`, the default falls back to `50m`, then `10m`
 
 ## Data source
 

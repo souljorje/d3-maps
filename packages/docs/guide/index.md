@@ -4,8 +4,7 @@ description: Guide for building simple interactive SVG map with React, Vue, and 
 
 # Get started
 
-`d3-maps` is a set of components and helpers simplifying creating SVG maps with [D3](https://d3js.org/).  
-Works with your favorite framework, batteries included.
+`d3-maps` is a set of components and helpers simplifying creating SVG maps with [D3](https://d3js.org/). Works with your favorite framework, batteries included.
 
 Let's build your first map with `d3-maps` 👇
 
