@@ -16,13 +16,17 @@ import {
   setupZoom,
 } from '@d3-maps/core'
 import {
-  createContext,
+  useCallback,
   useContext,
   useEffect,
-  useEffectEvent,
   useMemo,
 } from 'react'
 
+import {
+  MapZoomContextValue,
+  MapZoomPresenceContextValue,
+} from './internal/mapZoomContext'
+import { useLatest } from './useLatest'
 import {
   useMapContext,
 } from './useMapContext'
@@ -42,8 +46,6 @@ export interface UseMapZoomResult extends MapZoomState {
     callback: ZoomToObjectCallback,
   ) => void
 }
-
-export const MapZoomContextValue = createContext<MapZoomState | undefined>(undefined)
 
 export interface MapZoomEventCallbacks {
   onZoomStart?: (event: ZoomEvent) => void
@@ -82,6 +84,9 @@ export function useCreateMapZoom(
     onZoom,
     onZoomEnd,
   } = eventCallbacks
+  const onZoomStartRef = useLatest(onZoomStart)
+  const onZoomRef = useLatest(onZoom)
+  const onZoomEndRef = useLatest(onZoomEnd)
   const centerX = center?.[0]
   const centerY = center?.[1]
   const resolvedCenter = useMemo<[number, number] | undefined>(() => {
@@ -90,16 +95,16 @@ export function useCreateMapZoom(
     return [centerX, centerY]
   }, [centerX, centerY])
 
-  const onZoomStartEvent = useEffectEvent((event: ZoomEvent) => {
-    onZoomStart?.(event)
-  })
-  const onZoomEvent = useEffectEvent((event: ZoomEvent) => {
+  const onZoomStartEvent = useCallback((event: ZoomEvent) => {
+    onZoomStartRef.current?.(event)
+  }, [])
+  const onZoomEvent = useCallback((event: ZoomEvent) => {
     applyZoomGroupTransform(containerRef.current, event.transform)
-    onZoom?.(event)
-  })
-  const onZoomEndEvent = useEffectEvent((event: ZoomEvent) => {
-    onZoomEnd?.(event)
-  })
+    onZoomRef.current?.(event)
+  }, [])
+  const onZoomEndEvent = useCallback((event: ZoomEvent) => {
+    onZoomEndRef.current?.(event)
+  }, [])
 
   const zoomBehavior = useMemo(() => {
     return createZoomBehavior({
@@ -179,4 +184,8 @@ export function useMapZoom(): UseMapZoomResult | undefined {
       },
     }
   }, [mapContext, zoomContext])
+}
+
+export function useInsideMapZoom(): boolean {
+  return useContext(MapZoomPresenceContextValue)
 }

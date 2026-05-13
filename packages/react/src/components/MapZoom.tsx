@@ -14,7 +14,13 @@ import {
 } from '@d3-maps/core'
 import { useRef } from 'react'
 
-import { MapZoomContextValue, useCreateMapZoom } from '../hooks/useMapZoom'
+import {
+  MapZoomContextValue,
+  MapZoomPresenceContextValue,
+} from '../hooks/internal/mapZoomContext'
+import {
+  useCreateMapZoom,
+} from '../hooks/useMapZoom'
 
 export interface MapZoomProps
   extends ZoomProps,
@@ -64,15 +70,17 @@ export function MapZoom(props: MapZoomProps): ReactElement {
     : 'd3-map-zoom'
 
   return (
-    <MapZoomContextValue.Provider value={zoomContext}>
-      <g
-        {...groupProps}
-        ref={containerRef}
-        className={mergedClassName}
-        name="zoom"
-      >
-        {children}
-      </g>
-    </MapZoomContextValue.Provider>
+    <MapZoomPresenceContextValue.Provider value>
+      <MapZoomContextValue.Provider value={zoomContext}>
+        <g
+          {...groupProps}
+          ref={containerRef}
+          className={mergedClassName}
+          name="zoom"
+        >
+          {children}
+        </g>
+      </MapZoomContextValue.Provider>
+    </MapZoomPresenceContextValue.Provider>
   )
 }

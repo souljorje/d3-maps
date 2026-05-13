@@ -1,17 +1,34 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import {
+  act,
   fireEvent,
   render,
   screen,
 } from '@testing-library/react'
+import {
+  memo,
+  useState,
+} from 'react'
 
 import {
   MapBase,
   MapFeature,
+  MapZoom,
 } from '../src'
-import { MapZoomContextValue } from '../src/hooks/useMapZoom'
+import { useMapObject } from '../src/hooks/useMapObject'
 import { sampleGeoJson } from './fixtures'
+
+vi.mock('@d3-maps/core', async () => {
+  const actual = await vi.importActual<typeof import('@d3-maps/core')>('@d3-maps/core')
+
+  return {
+    ...actual,
+    applyZoom: () => {},
+    createZoomBehavior: () => ({}),
+    setupZoom: () => {},
+  }
+})
 
 describe('mapFeature', () => {
   it('throws without map context', () => {
@@ -67,14 +84,8 @@ describe('mapFeature', () => {
 
   it('resets active state on global mouseup when element mouseup is missed', () => {
     render(
-      <MapZoomContextValue.Provider value={{
-        center: undefined,
-        zoom: 1,
-        minZoom: 1,
-        maxZoom: 8,
-      }}
-      >
-        <MapBase data={sampleGeoJson}>
+      <MapBase data={sampleGeoJson}>
+        <MapZoom>
           <MapFeature
             data-testid="map-feature"
             data={sampleGeoJson.features[0]}
@@ -83,8 +94,8 @@ describe('mapFeature', () => {
               active: { opacity: 0.7 },
             }}
           />
-        </MapBase>
-      </MapZoomContextValue.Provider>,
+        </MapZoom>
+      </MapBase>,
     )
 
     const path = screen.getByTestId('map-feature')
@@ -95,5 +106,39 @@ describe('mapFeature', () => {
 
     fireEvent.mouseUp(window)
     expect(path?.style.opacity).toBe('0.9')
+  })
+
+  it('does not rerender map object hook consumers when only zoom state changes', () => {
+    const renderSpy = vi.fn()
+    let setZoom: ((zoom: number) => void) | undefined
+
+    const Probe = memo(() => {
+      renderSpy()
+      useMapObject<SVGGElement>({})
+      return <g data-testid="map-object-probe" />
+    })
+
+    function Harness() {
+      const [zoom, updateZoom] = useState(1)
+      setZoom = updateZoom
+
+      return (
+        <MapBase data={sampleGeoJson}>
+          <MapZoom zoom={zoom}>
+            <Probe />
+          </MapZoom>
+        </MapBase>
+      )
+    }
+
+    render(<Harness />)
+
+    expect(renderSpy).toHaveBeenCalledTimes(1)
+
+    act(() => {
+      setZoom?.(2)
+    })
+
+    expect(renderSpy).toHaveBeenCalledTimes(1)
   })
 })

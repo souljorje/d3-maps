@@ -24,7 +24,7 @@ import {
 } from 'react'
 
 import { useLatest } from './useLatest'
-import { useMapZoom } from './useMapZoom'
+import { useInsideMapZoom } from './useMapZoom'
 
 interface MapObjectEventHandlers<T extends Element> {
   onMouseEnter: MouseEventHandler<T>
@@ -49,7 +49,7 @@ export function useMapObject<TElement extends Element>(
 ): UseMapObjectResult<TElement> {
   const [state, setState] = useState<MapObjectState>('default')
   const stateRef = useRef(state)
-  const insideZoom = Boolean(useMapZoom())
+  const insideZoom = useInsideMapZoom()
 
   // Keep stable DOM handlers while still calling the latest user callbacks
   const onMouseEnterRef = useLatest(options.onMouseEnter)
