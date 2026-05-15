@@ -57,7 +57,7 @@
       "default": "./dist/countries/*/index.js"
     },
     "./countries/*/*": {
-      "types": "./dist/_topology.d.ts",
+      "types": "./dist/_country-topology.d.ts",
       "default": "./dist/countries/*/*.js"
     },
     "./continents/*": {

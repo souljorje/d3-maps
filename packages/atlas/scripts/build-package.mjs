@@ -231,30 +231,49 @@ async function buildSharedCountryTopologyModule() {
   ])
 }
 
-await Promise.all([
-  mustExist(filePath('src/metadata/countries.json')),
-  mustExist(filePath('src/metadata/continents.json')),
-])
+async function buildSharedModules() {
+  await Promise.all([
+    buildSharedTopologyModule(),
+    buildSharedCountryTopologyModule(),
+    buildTypesModule(),
+    buildMetadataModule(),
+  ])
+}
 
-await Promise.all([
-  copyGeneratedJson(),
-  buildSharedTopologyModule(),
-  buildSharedCountryTopologyModule(),
-  buildTypesModule(),
-  buildMetadataModule(),
-  ...WORLD_LAYERS.map((layer) => buildWorldLayer(layer)),
-])
-const [countries, continents] = await Promise.all([
-  buildEntityModules(
-    `${distDir}/countries`,
-    filePath('src/metadata/countries.json'),
-  ),
-  buildEntityModules(
-    `${distDir}/continents`,
-    filePath('src/metadata/continents.json'),
-  ),
-])
-await Promise.all([
-  buildCountriesBarrel(countries),
-  buildRootBarrel(continents),
-])
+async function buildWorldModules() {
+  await Promise.all(WORLD_LAYERS.map((layer) => buildWorldLayer(layer)))
+}
+
+async function buildEntityBarrels() {
+  const [countries, continents] = await Promise.all([
+    buildEntityModules(
+      `${distDir}/countries`,
+      filePath('src/metadata/countries.json'),
+    ),
+    buildEntityModules(
+      `${distDir}/continents`,
+      filePath('src/metadata/continents.json'),
+    ),
+  ])
+
+  await Promise.all([
+    buildCountriesBarrel(countries),
+    buildRootBarrel(continents),
+  ])
+}
+
+async function build() {
+  await Promise.all([
+    mustExist(filePath('src/metadata/countries.json')),
+    mustExist(filePath('src/metadata/continents.json')),
+  ])
+
+  await Promise.all([
+    copyGeneratedJson(),
+    buildSharedModules(),
+    buildWorldModules(),
+  ])
+  await buildEntityBarrels()
+}
+
+await build()
