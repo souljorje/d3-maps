@@ -1,5 +1,12 @@
 # @d3-maps/vue
 
+## 0.11.1
+
+### Patch Changes
+
+- Updated dependencies [[`e28d478`](https://github.com/souljorje/d3-maps/commit/e28d478b66f1ba123accdf6dc81998c444f3c15d)]:
+  - @d3-maps/core@0.12.0
+
 ## 0.11.0
 
 ### Minor Changes

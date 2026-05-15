@@ -1,5 +1,14 @@
 # @d3-maps/react
 
+## 0.8.1
+
+### Patch Changes
+
+- [#38](https://github.com/souljorje/d3-maps/pull/38) [`e28d478`](https://github.com/souljorje/d3-maps/commit/e28d478b66f1ba123accdf6dc81998c444f3c15d) Thanks [@souljorje](https://github.com/souljorje)! - - Fixed `MapBase` leaking map config props like `topologyObjectKey` onto the rendered SVG element
+
+- Updated dependencies [[`e28d478`](https://github.com/souljorje/d3-maps/commit/e28d478b66f1ba123accdf6dc81998c444f3c15d)]:
+  - @d3-maps/core@0.12.0
+
 ## 0.8.0
 
 ### Minor Changes
