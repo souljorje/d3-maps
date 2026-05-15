@@ -212,16 +212,13 @@ importers:
       '@types/topojson-specification':
         specifier: 'catalog:'
         version: 1.0.5
+    devDependencies:
       execa:
         specifier: 'catalog:'
         version: 9.6.1
-    devDependencies:
       mapshaper:
         specifier: 'catalog:'
         version: 0.7.13(@types/geojson@7946.0.16)
-      tsdown:
-        specifier: 'catalog:'
-        version: 0.21.7(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@tsdown/css@0.21.7)(synckit@0.11.12)(typescript@5.9.3)(vue-tsc@3.2.8(typescript@5.9.3))
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
@@ -243,6 +240,9 @@ importers:
       '@types/d3-zoom':
         specifier: 'catalog:'
         version: 3.0.8
+      '@types/geojson':
+        specifier: 'catalog:'
+        version: 7946.0.16
       '@types/topojson-client':
         specifier: 'catalog:'
         version: 3.1.5
@@ -268,9 +268,6 @@ importers:
         specifier: 'catalog:'
         version: 3.1.0
     devDependencies:
-      '@types/geojson':
-        specifier: 'catalog:'
-        version: 7946.0.16
       tsdown:
         specifier: 'catalog:'
         version: 0.21.7(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@tsdown/css@0.21.7)(synckit@0.11.12)(typescript@5.9.3)(vue-tsc@3.2.8(typescript@5.9.3))
