@@ -2,7 +2,7 @@
 
 Interactive SVG maps with React and D3.  
 
-[**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples) · [**Migrate from react-simple-maps**](https://d3-maps.netlify.app/guide/migration-from-react-simple-maps.html)
+[**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples) · [**Migrate from react-simple-maps**](https://d3-maps.netlify.app/guide/migration-from-react-simple-maps)
 
 ## Features
 
@@ -40,9 +40,9 @@ bun add @d3-maps/react
 
 ```tsx
 import '@d3-maps/react/style.css'
-import { MapBase, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
 
-export function App({ mapData }: { mapData: unknown }) {
+export function App({ mapData }: { mapData: MapData }) {
   return (
     <MapBase data={mapData}>
       <MapFeatures />

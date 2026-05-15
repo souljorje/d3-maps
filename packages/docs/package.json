@@ -20,14 +20,14 @@
     "preview": "vitepress preview"
   },
   "dependencies": {
+    "@d3-maps/atlas": "workspace:*",
     "@d3-maps/core": "workspace:*",
     "@d3-maps/vue": "workspace:*",
     "d3-array": "catalog:",
     "d3-geo": "catalog:",
     "d3-scale": "catalog:",
     "d3-shape": "catalog:",
-    "vue": "catalog:",
-    "world-atlas": "catalog:"
+    "vue": "catalog:"
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:",

@@ -124,7 +124,7 @@ const mapContext = useCreateMapContext(computed(() => {
 }))
 
 onMounted(async () => {
-  const { default: mapData } = await import('world-atlas/countries-110m.json')
+  const { default: mapData } = await import('@d3-maps/atlas/world/countries')
   data.value = mapData
 })
 

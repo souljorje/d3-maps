@@ -2,7 +2,7 @@
   "name": "d3-maps",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.25.0",
+  "packageManager": "pnpm@11.0.0",
   "engines": {
     "node": ">= 22"
   },
@@ -23,9 +23,6 @@
     "lint": "eslint ./packages --max-warnings 0 --cache",
     "lintfix": "pnpm run lint --fix"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
     "@changesets/changelog-github": "catalog:",
@@ -39,11 +36,11 @@
     "turbo": "catalog:"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged && pnpm test"
+    "pre-commit": "pnpm exec lint-staged && pnpm test"
   },
   "lint-staged": {
     "*.{ts,tsx,vue}": [
-      "eslint --fix --max-warnings=0"
+      "eslint --fix --max-warnings=0 --no-warn-ignored"
     ]
   }
 }

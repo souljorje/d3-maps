@@ -62,7 +62,7 @@ onMounted(async () => {
 })
 
 async function fetchMap() {
-  const { default: data } = await import('world-atlas/countries-110m.json')
+  const { default: data } = await import('@d3-maps/atlas/world/countries')
   mapData.value = data
 }
 

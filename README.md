@@ -5,7 +5,7 @@ Solid and Svelte support coming soon.
 
 <!-- ![@d3-maps/vue](https://img.shields.io/bundlephobia/minzip/%40d3-maps/vue) -->
 
-[**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples)
+[**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples) · [**Migrate from react-simple-maps**](https://d3-maps.netlify.app/guide/migration-from-react-simple-maps)
 
 ## Features
 
@@ -37,11 +37,13 @@ CDN
 </script>
 ```
 
+Usage
+
 ```vue
 <script setup lang="ts">
 import { MapBase, MapFeatures, type MapData } from '@d3-maps/vue'
 
-const { default: data } = await import('world-atlas/countries-110m.json')
+const { default: data } = await import('@d3-maps/atlas/world/countries')
 const mapData: MapData = data
 </script>
 
@@ -69,6 +71,8 @@ CDN
 </script>
 ```
 
+Usage
+
 ```tsx
 import { useEffect, useState } from 'react'
 import '@d3-maps/react/style.css'
@@ -78,7 +82,7 @@ export function MapView() {
   const [data, setData] = useState<MapData | null>(null)
 
   useEffect(() => {
-    import('world-atlas/countries-110m.json').then(({ default: world }) => {
+    import('@d3-maps/atlas/world/countries').then(({ default: world }) => {
       setData(world as MapData)
     })
   }, [])
