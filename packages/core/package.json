@@ -38,6 +38,7 @@
     "@types/d3-shape": "catalog:",
     "@types/d3-transition": "catalog:",
     "@types/d3-zoom": "catalog:",
+    "@types/geojson": "catalog:",
     "@types/topojson-client": "catalog:",
     "@types/topojson-specification": "catalog:",
     "d3-geo": "catalog:",
@@ -48,7 +49,6 @@
     "topojson-client": "catalog:"
   },
   "devDependencies": {
-    "@types/geojson": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "vite-tsconfig-paths": "catalog:",
