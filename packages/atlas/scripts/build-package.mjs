@@ -30,19 +30,19 @@ function wrapperJs(jsonFile) {
   ].join('\n')
 }
 
-function scaleDts(sharedPath, exportName, defaultScale = DEFAULT_SCALE) {
+function scaleDts(sharedPath, exportName, scales, defaultScale = DEFAULT_SCALE) {
   return [
     `export { default } from '${sharedPath}'`,
     '',
-    ...SCALES.map((scale) => `export { default as ${exportName}${scale} } from '${sharedPath}'`),
+    ...scales.map((scale) => `export { default as ${exportName}${scale} } from '${sharedPath}'`),
   ].join('\n')
 }
 
-function scaleExports(baseName, exportName, defaultScale = DEFAULT_SCALE) {
+function scaleExports(baseName, exportName, scales, defaultScale = DEFAULT_SCALE) {
   return [
     `export { default } from './${baseName}-${defaultScale}.js'`,
     '',
-    ...SCALES.map((scale) => `export { default as ${exportName}${scale} } from './${baseName}-${scale}.js'`),
+    ...scales.map((scale) => `export { default as ${exportName}${scale} } from './${baseName}-${scale}.js'`),
   ].join('\n')
 }
 
@@ -93,11 +93,11 @@ async function buildWorldLayer(layer) {
 
   await writeText(
     `${dir}/index.js`,
-    scaleExports(layer.id, layer.name),
+    scaleExports(layer.id, layer.name, SCALES),
   )
   await writeText(
     `${dir}/index.d.ts`,
-    scaleDts(sharedLeafPath, layer.name),
+    scaleDts(sharedLeafPath, layer.name, SCALES),
   )
 }
 
@@ -118,11 +118,11 @@ async function buildEntityModules(rootDir, metadataPath) {
 
     await writeText(
       `${dir}/index.js`,
-      scaleExports(slug, exportName, defaultScale),
+      scaleExports(slug, exportName, scales, defaultScale),
     )
     await writeText(
       `${dir}/index.d.ts`,
-      scaleDts(sharedLeafPath, exportName, defaultScale),
+      scaleDts(sharedLeafPath, exportName, scales, defaultScale),
     )
   }
 
