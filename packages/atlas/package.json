@@ -31,12 +31,10 @@
     "dist/*"
   ],
   "scripts": {
-    "sync-data": "node scripts/sync-natural-earth.mjs",
-    "generate": "node scripts/clean.mjs generate && node scripts/build-atlas.mjs",
-    "validate": "node scripts/validate-atlas.mjs",
-    "prebuild": "node scripts/clean.mjs build",
-    "build": "node scripts/build-package.mjs",
-    "clean": "node scripts/clean.mjs build generate",
+    "sync-data": "node scripts/sync-data.mjs",
+    "generate": "node scripts/generate.mjs",
+    "validate": "node scripts/validate.mjs",
+    "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit"
   },
   "exports": {
@@ -49,8 +47,8 @@
       "default": "./dist/types.js"
     },
     "./countries": {
-      "types": "./dist/countries.d.ts",
-      "default": "./dist/countries.js"
+      "types": "./dist/countries/index.d.ts",
+      "default": "./dist/countries/index.js"
     },
     "./countries/*": {
       "types": "./dist/countries/*/index.d.ts",
@@ -127,12 +125,11 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@types/topojson-specification": "catalog:",
-    "execa": "catalog:"
+    "@types/topojson-specification": "catalog:"
   },
   "devDependencies": {
+    "execa": "catalog:",
     "mapshaper": "catalog:",
-    "tsdown": "catalog:",
     "typescript": "catalog:"
   }
 }
