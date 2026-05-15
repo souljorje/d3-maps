@@ -88,7 +88,7 @@ Default country imports use the coarsest available scale. In most cases that is 
 import Japan from '@d3-maps/atlas/countries/japan' // japan-110m
 import Japan10m from '@d3-maps/atlas/countries/japan/japan-10m'
 import Japan50m from '@d3-maps/atlas/countries/japan/japan-50m'
-import Japan110m from '@d3-maps/atlas/world/countries/countries-110m'
+import Japan110m from '@d3-maps/atlas/countries/japan/japan-110m'
 ```
 
 ## Data
