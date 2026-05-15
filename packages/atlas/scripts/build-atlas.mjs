@@ -201,8 +201,11 @@ async function moveSplitFiles(sourceDir, targetRoot, slugBySourceName, scale, la
 async function createCountryMetadata() {
   const countriesByCode = new Map()
 
-  for (const scale of SCALES) {
-    const metadataGeojsonPath = await exportGeojsonForMetadata(scale)
+  const metadataGeojsonPaths = await Promise.all(
+    SCALES.map((scale) => exportGeojsonForMetadata(scale)),
+  )
+
+  for (const metadataGeojsonPath of metadataGeojsonPaths) {
     const geojson = await readJson(metadataGeojsonPath)
 
     for (const feature of geojson.features) {
@@ -238,36 +241,34 @@ try {
   }
 
   for (const scale of SCALES) {
-    const shp = sourceShp(scale)
-    await mustExist(shp)
-    for (const layer of WORLD_LAYERS) {
-      await mustExist(sourceWorldLayerShp(scale, layer.sourceLayer, layer.theme))
-    }
+    await Promise.all([
+      mustExist(sourceShp(scale)),
+      ...WORLD_LAYERS.map((layer) => mustExist(sourceWorldLayerShp(scale, layer.sourceLayer, layer.theme))),
+    ])
 
     const { continentOutputDir, countryOutputDir, worldOutputs } = await exportScaleTopologies(scale)
-    for (const layer of worldOutputs) {
-      await transformTopologyProperties(layer.output, layer)
-    }
-    const presentCountryCodes = await moveSplitFiles(
-      countryOutputDir,
-      filePath('src/countries'),
-      countrySlugByCode,
-      scale,
-      normalizedLayer,
-    )
+    await Promise.all(worldOutputs.map((layer) => transformTopologyProperties(layer.output, layer)))
+    const [presentCountryCodes] = await Promise.all([
+      moveSplitFiles(
+        countryOutputDir,
+        filePath('src/countries'),
+        countrySlugByCode,
+        scale,
+        normalizedLayer,
+      ),
+      moveSplitFiles(
+        continentOutputDir,
+        filePath('src/continents'),
+        continentSlugByName,
+        scale,
+        normalizedLayer,
+      ),
+    ])
 
     for (const adm0A3 of presentCountryCodes) {
       const country = countriesByCode.get(adm0A3)
       if (country) country.scales.push(scale)
     }
-
-    await moveSplitFiles(
-      continentOutputDir,
-      filePath('src/continents'),
-      continentSlugByName,
-      scale,
-      normalizedLayer,
-    )
   }
 
   const countries = [...countriesByCode.values()]
