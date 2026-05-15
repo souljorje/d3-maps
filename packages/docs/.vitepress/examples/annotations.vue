@@ -58,7 +58,7 @@ const cities: City[] = [
 ]
 
 onMounted(async () => {
-  const { default: mapData } = await import('@d3-maps/atlas/world/countries/countries-110m')
+  const { default: mapData } = await import('@d3-maps/atlas/world/countries')
   data.value = mapData
 })
 </script>

@@ -46,7 +46,7 @@ export default function ConnectionsExample(): JSX.Element | null {
     let isCancelled = false
 
     async function loadMap(): Promise<void> {
-      const { default: payload } = await import('@d3-maps/atlas/world/countries/countries-110m')
+      const { default: payload } = await import('@d3-maps/atlas/world/countries')
 
       if (!isCancelled) {
         setMapData(payload)
