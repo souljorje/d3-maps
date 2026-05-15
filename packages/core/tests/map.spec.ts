@@ -8,14 +8,16 @@ import { geoNaturalEarth1 } from 'd3-geo'
 import {
   getTopoObject,
   isTopology,
-  makeFeatures,
   makeMapContext,
   makeMesh,
+  makeObjectsFromItem,
   makeProjection,
 } from '../src'
 import {
   sampleGeoJson,
   sampleGeoJsonTwoFeatures,
+  sampleGeometryCollection,
+  samplePolygon,
   sampleTopology,
   sampleTopologyTwoObjects,
 } from './fixtures'
@@ -37,6 +39,13 @@ const PROJECTION_BASE = {
   projection: geoNaturalEarth1,
 }
 
+const EMPTY_TOPOLOGY = {
+  type: 'Topology',
+  transform: { scale: [1, 1], translate: [0, 0] },
+  objects: {},
+  arcs: [],
+} satisfies Topology
+
 function makeProjectionFromBase(overrides: Partial<Parameters<typeof makeProjection>[0]> = {}) {
   return makeProjection({
     ...PROJECTION_BASE,
@@ -44,32 +53,36 @@ function makeProjectionFromBase(overrides: Partial<Parameters<typeof makeProject
   })
 }
 
+function expectProjectionTranslation(
+  projection: ReturnType<typeof makeProjection>,
+  expected: [number, number],
+) {
+  expect(projection.translate()).toEqual(expected)
+}
+
 describe('makeProjection', () => {
-  it('creates projection', () => {
+  it('creates a projection instance', () => {
     const projection = makeProjectionFromBase()
     expectTypeOf(projection).toEqualTypeOf(geoNaturalEarth1())
   })
 
-  it('defaults to sphere fit when no fit mode or explicit fit method is provided', () => {
-    const defaultProjection = makeProjectionFromBase()
+  it('defaults to sphere fit', () => {
+    const projection = makeProjectionFromBase()
     const sphereProjection = makeProjectionFromBase({
-      config: {
-        fit: 'sphere',
-      },
-      features: sampleGeoJson.features,
+      config: { fit: 'sphere' },
     })
 
-    expect(defaultProjection.scale()).toBeCloseTo(sphereProjection.scale())
-    expect(defaultProjection.translate()).toEqual(sphereProjection.translate())
+    expect(projection.scale()).toBeCloseTo(sphereProjection.scale())
+    expectProjectionTranslation(projection, sphereProjection.translate() as [number, number])
   })
 
-  it('applies full projection config', () => {
+  it('applies projection modifiers', () => {
     const projection = makeProjectionFromBase({
       config: {
         angle: 12,
-        scale: 200,
         center: [[20, 10]],
         rotate: [[0, 0, 10]],
+        scale: 200,
         translate: [[30, 40]],
         clipAngle: 90,
         clipExtent: [[[0, 0], [90, 80]]],
@@ -80,10 +93,10 @@ describe('makeProjection', () => {
     })
 
     expect(projection.angle()).toBeCloseTo(12)
-    expect(Math.round(projection.scale())).toBe(200)
     expect(projection.center()).toEqual([20, 10])
     expect(projection.rotate()).toEqual([0, 0, 10])
-    expect(projection.translate()).toEqual([30, 40])
+    expect(Math.round(projection.scale())).toBe(200)
+    expectProjectionTranslation(projection, [30, 40])
     expect(projection.clipAngle()).toBe(90)
     expect(projection.clipExtent()).toEqual([[0, 0], [90, 80]])
     expect(projection.precision()).toBe(0.5)
@@ -91,33 +104,19 @@ describe('makeProjection', () => {
     expect(projection.reflectY()).toBe(true)
   })
 
-  it('applies fitSize from config', () => {
-    const projection = makeProjectionFromBase({
-      config: {
-        fitSize: [[100, 80], sphereGeoJson],
-      },
-    })
+  it.each([
+    ['fitSize', { fitSize: [[100, 80], sphereGeoJson] }, [50, 40]],
+    ['fitExtent', { fitExtent: [[[0, 0], [100, 80]], sphereGeoJson] }, [50, 40]],
+  ] as const)('applies %s from config', (_name, config, expectedTranslate) => {
+    const projection = makeProjectionFromBase({ config })
 
     expect(projection.scale()).toBeGreaterThan(0)
-    expect(projection.translate()).toEqual([50, 40])
-  })
-
-  it('applies fitExtent from config', () => {
-    const projection = makeProjectionFromBase({
-      config: {
-        fitExtent: [[[0, 0], [100, 80]], sphereGeoJson],
-      },
-    })
-
-    expect(projection.scale()).toBeGreaterThan(0)
-    expect(projection.translate()).toEqual([50, 40])
+    expectProjectionTranslation(projection, expectedTranslate)
   })
 
   it('applies fitWidth from config', () => {
     const projection = makeProjectionFromBase({
-      config: {
-        fitWidth: [120, sphereGeoJson],
-      },
+      config: { fitWidth: [120, sphereGeoJson] },
     })
 
     expect(projection.scale()).toBeGreaterThan(0)
@@ -126,51 +125,50 @@ describe('makeProjection', () => {
 
   it('applies fitHeight from config', () => {
     const projection = makeProjectionFromBase({
-      config: {
-        fitHeight: [90, sphereGeoJson],
-      },
+      config: { fitHeight: [90, sphereGeoJson] },
     })
 
     expect(projection.scale()).toBeGreaterThan(0)
     expect(projection.translate()[1]).toBeCloseTo(45)
   })
 
-  it('fits to normalized features when requested', () => {
+  it('fits to an explicit object', () => {
     const sphereProjection = makeProjectionFromBase({
+      config: { fit: 'sphere' },
+    })
+    const objectProjection = makeProjectionFromBase({
       config: {
-        fit: 'sphere',
+        fit: 'object',
+        fitObject: sampleGeoJson.features[0],
       },
-      features: sampleGeoJson.features,
+    })
+
+    expect(objectProjection.scale()).toBeGreaterThan(sphereProjection.scale())
+  })
+
+  it('fits to normalized features', () => {
+    const sphereProjection = makeProjectionFromBase({
+      config: { fit: 'sphere' },
     })
     const featuresProjection = makeProjectionFromBase({
-      config: {
-        fit: 'features',
-      },
+      config: { fit: 'features' },
       features: sampleGeoJson.features,
     })
 
     expect(featuresProjection.scale()).toBeGreaterThan(sphereProjection.scale())
   })
 
-  it('fits to one feature object when requested', () => {
-    const featuresProjection = makeProjectionFromBase({
-      config: {
-        fit: 'features',
-      },
-      features: sampleGeoJsonTwoFeatures.features,
-    })
-    const objectProjection = makeProjectionFromBase({
-      config: {
-        fit: 'object',
-        fitObjectId: 'demo',
-      },
-      features: sampleGeoJsonTwoFeatures.features,
-    })
+  it('throws for invalid fit inputs', () => {
+    expect(() => makeProjectionFromBase({
+      config: { fit: 'object' },
+    })).toThrow('projectionConfig.fitObject is required when projectionConfig.fit is "object"')
 
-    expect(objectProjection.scale()).toBeGreaterThan(featuresProjection.scale())
+    expect(() => makeProjectionFromBase({
+      config: { fit: 'features' },
+    })).toThrow('projectionConfig.fit "features" requires at least one feature')
   })
 
-  it('explicit fit methods override fit mode', () => {
+  it('prefers explicit fit methods over fit mode', () => {
     const projection = makeProjectionFromBase({
       config: {
         fit: 'features',
@@ -181,83 +179,39 @@ describe('makeProjection', () => {
 
     expect(projection.translate()[0]).toBeCloseTo(60)
   })
-
-  it('throws when object fit is requested without fitObjectId', () => {
-    expect(() => makeProjectionFromBase({
-      config: {
-        fit: 'object',
-      },
-      features: sampleGeoJson.features,
-    })).toThrow(/fitObjectId/)
-  })
-
-  it('throws when object fit target is missing', () => {
-    expect(() => makeProjectionFromBase({
-      config: {
-        fit: 'object',
-        fitObjectId: 'missing',
-      },
-      features: sampleGeoJson.features,
-    })).toThrow(/missing/)
-  })
 })
 
-describe('makeFeatures', () => {
-  it('returns features from geojson and runs transformer', () => {
-    const features = makeFeatures(sampleGeoJson, (items) => items.slice(0, 1))
-
-    expect(features).toHaveLength(1)
-    expect(features[0].properties?.id).toBe('demo')
+describe('normalizers', () => {
+  it('flattens features and geometries into object units', () => {
+    expect(makeObjectsFromItem(sampleGeoJsonTwoFeatures)).toHaveLength(2)
+    expect(makeObjectsFromItem(sampleTopology)).toHaveLength(1)
+    expect(makeObjectsFromItem(sampleTopologyTwoObjects, 'pair')).toHaveLength(2)
+    expect(makeObjectsFromItem(sampleGeoJson)).toHaveLength(1)
+    expect(makeObjectsFromItem(sampleGeoJsonTwoFeatures)).toHaveLength(2)
+    expect(makeObjectsFromItem(sampleGeometryCollection)).toHaveLength(2)
+    expect(makeObjectsFromItem(samplePolygon)).toHaveLength(1)
   })
 
-  it('merges features from multiple topology inputs', () => {
-    const features = makeFeatures([sampleTopology, sampleTopology])
+  it('derives geometries only from geometry inputs', () => {
+    const context = makeMapContext({ data: sampleGeometryCollection })
 
-    expect(features).toHaveLength(2)
-    expect(features.map((feature) => feature.properties?.id)).toEqual(['demo', 'demo'])
+    expect(context.geometries.map(({ data }) => data.type)).toEqual(['Polygon', 'LineString'])
+    expect(context.features).toEqual([])
   })
 
-  it('merges features from multiple geojson inputs', () => {
-    const features = makeFeatures([sampleGeoJson, sampleGeoJson])
+  it('keeps topology-derived geometry collections as features after topojson normalization', () => {
+    const context = makeMapContext({
+      data: sampleTopologyTwoObjects,
+      topologyObjectKey: 'pair',
+    })
 
-    expect(features).toHaveLength(2)
-    expect(features.map((feature) => feature.properties?.id)).toEqual(['demo', 'demo'])
-  })
-
-  it('merges features from mixed topology and geojson inputs', () => {
-    const mixedData = [sampleTopology, sampleGeoJson]
-    const features = makeFeatures(mixedData)
-
-    expectTypeOf(features).toMatchTypeOf(sampleGeoJson.features)
-    expect(features).toHaveLength(2)
-    expect(features.map((feature) => feature.properties?.id)).toEqual(['demo', 'demo'])
-  })
-
-  it('runs the transformer after merging array inputs', () => {
-    const features = makeFeatures(
-      [sampleTopology, sampleGeoJson, sampleTopology],
-      (items) => items.slice(1, 3),
-    )
-
-    expect(features).toHaveLength(2)
-    expect(features.map((feature) => feature.properties?.id)).toEqual(['demo', 'demo'])
-  })
-
-  it('uses the requested topology object', () => {
-    const features = makeFeatures(sampleTopologyTwoObjects, undefined, 'pair')
-
-    expect(features).toHaveLength(2)
-    expect(features.map((feature) => feature.properties?.id)).toEqual(['pair-1', 'pair-2'])
-  })
-
-  it('throws a helpful error for an unknown topology object key', () => {
-    expect(() => makeFeatures(sampleTopologyTwoObjects, undefined, 'missing'))
-      .toThrow()
+    expect(context.features).toHaveLength(2)
+    expect(context.geometries).toEqual([])
   })
 })
 
 describe('makeMesh', () => {
-  it('returns undefined for geojson input', () => {
+  it('returns undefined for non-topology input', () => {
     expect(makeMesh(sampleGeoJson)).toBeUndefined()
   })
 
@@ -268,7 +222,7 @@ describe('makeMesh', () => {
     expect(topologyMesh?.coordinates.length).toBeGreaterThan(0)
   })
 
-  it('uses the requested topology object for topology meshes', () => {
+  it('uses the requested topology object', () => {
     const defaultMesh = makeMesh(sampleTopologyTwoObjects)
     const selectedMesh = makeMesh(sampleTopologyTwoObjects, 'pair')
 
@@ -282,7 +236,7 @@ describe('makeMesh', () => {
 })
 
 describe('makeMapContext', () => {
-  it('produces context with path generator', () => {
+  it('builds render-ready context', () => {
     const context = makeMapContext({
       width: 400,
       height: 300,
@@ -292,36 +246,36 @@ describe('makeMapContext', () => {
     expect(context.width).toBe(400)
     expect(context.height).toBe(300)
     expect(context.features).toHaveLength(1)
-    expect(typeof context.path(context.features[0])).toBe('string')
+    expect(context.geometries).toEqual([])
+    expect(typeof context.path(context.features[0].data)).toBe('string')
     expect(context.renderMesh()).toBeNull()
   })
 
-  it('passes normalized features into projection fitting', () => {
+  it('passes transformed features into projection fitting', () => {
     const context = makeMapContext({
       width: 400,
       height: 300,
       data: sampleGeoJsonTwoFeatures,
       dataTransformer: (features) => features.slice(1),
-      projectionConfig: {
-        fit: 'features',
-      },
+      projectionConfig: { fit: 'features' },
     })
 
     const expectedProjection = makeProjection({
       width: 400,
       height: 300,
       projection: geoNaturalEarth1,
-      config: {
-        fit: 'features',
-      },
+      config: { fit: 'features' },
       features: [sampleGeoJsonTwoFeatures.features[1]],
     })
 
     expect(context.projection.scale()).toBeCloseTo(expectedProjection.scale())
-    expect(context.projection.translate()).toEqual(expectedProjection.translate())
+    expectProjectionTranslation(
+      context.projection as ReturnType<typeof makeProjection>,
+      expectedProjection.translate() as [number, number],
+    )
   })
 
-  it('includes mesh helpers for topology input', () => {
+  it('includes mesh path for topology input', () => {
     const context = makeMapContext({ data: sampleTopology })
     expect(typeof context.renderMesh()).toBe('string')
   })
@@ -330,89 +284,66 @@ describe('makeMapContext', () => {
     const context = makeMapContext({ data: [sampleTopology, sampleTopology] })
 
     expect(context.features).toHaveLength(2)
+    expect(context.geometries).toEqual([])
     expect(context.renderMesh()).toBeNull()
   })
 
-  it('uses the requested topology object throughout the map context', () => {
+  it('uses the requested topology object throughout the context', () => {
     const context = makeMapContext({
       data: sampleTopologyTwoObjects,
       topologyObjectKey: 'pair',
     })
 
     expect(context.features).toHaveLength(2)
+    expect(context.geometries).toEqual([])
     expect(typeof context.renderMesh()).toBe('string')
   })
 
-  it('fits to normalized features by default in features mode', () => {
-    const oneFeature = makeMapContext({
-      data: sampleGeoJson,
-      projectionConfig: {
-        fit: 'features',
-      },
-    })
-
-    const twoFeatures = makeMapContext({
+  it('supports object fit and features fit', () => {
+    const sphereFit = makeMapContext({
       data: sampleGeoJsonTwoFeatures,
-      projectionConfig: {
-        fit: 'features',
-      },
+      projectionConfig: { fit: 'sphere' },
     })
-
-    expect(oneFeature.features).toHaveLength(1)
-    expect(twoFeatures.features).toHaveLength(2)
-    expect(twoFeatures.projection.scale()).toBeLessThan(oneFeature.projection.scale())
-  })
-
-  it('fits to a selected topology object in object mode', () => {
-    const featuresMode = makeMapContext({
-      data: sampleGeoJsonTwoFeatures,
-      projectionConfig: {
-        fit: 'features',
-      },
-    })
-
-    const objectMode = makeMapContext({
+    const objectFit = makeMapContext({
       data: sampleGeoJsonTwoFeatures,
       projectionConfig: {
         fit: 'object',
-        fitObjectId: 'demo-2',
+        fitObject: sampleGeoJsonTwoFeatures.features[1],
       },
     })
+    const featuresFit = makeMapContext({
+      data: sampleGeoJsonTwoFeatures,
+      projectionConfig: { fit: 'features' },
+    })
 
-    expect(featuresMode.features).toHaveLength(2)
-    expect(objectMode.features).toHaveLength(2)
-    expect(objectMode.projection.scale()).toBeGreaterThan(featuresMode.projection.scale())
+    expect(objectFit.projection.scale()).toBeGreaterThan(sphereFit.projection.scale())
+    expect(featuresFit.projection.scale()).toBeGreaterThan(sphereFit.projection.scale())
   })
 
-  it('throws when object mode has no usable fitObjectId', () => {
+  it('throws for invalid fit configuration', () => {
     expect(() => makeMapContext({
       data: sampleGeoJsonTwoFeatures,
-      projectionConfig: {
-        fit: 'object',
-      },
-    })).toThrow()
+      projectionConfig: { fit: 'object' },
+    })).toThrow('projectionConfig.fitObject is required when projectionConfig.fit is "object"')
 
     expect(() => makeMapContext({
-      data: sampleGeoJsonTwoFeatures,
-      projectionConfig: {
-        fit: 'object',
-        fitObjectId: 'missing',
-      },
-    })).toThrow()
+      data: sampleGeometryCollection,
+      projectionConfig: { fit: 'features' },
+    })).toThrow('projectionConfig.fit "features" requires at least one feature')
   })
 
-  it('prefers explicit fitSize over fit mode', () => {
+  it('prefers explicit fit methods over fit mode', () => {
     const context = makeMapContext({
       data: sampleTopologyTwoObjects,
       projectionConfig: {
         fit: 'object',
-        fitObjectId: 'pair',
+        fitObject: sampleGeoJson.features[0],
         fitSize: [[100, 80], sphereGeoJson],
       },
     })
 
     expect(context.projection.scale()).toBeGreaterThan(0)
-    expect(context.projection.translate()).toEqual([50, 40])
+    expectProjectionTranslation(context.projection as ReturnType<typeof makeProjection>, [50, 40])
   })
 })
 
@@ -425,20 +356,14 @@ describe('getTopoObject', () => {
     expect(getTopoObject(sampleTopologyTwoObjects, 'pair').type).toBe('GeometryCollection')
   })
 
-  it('throws when topology data does not contain any objects', () => {
-    const emptyTopology = {
-      type: 'Topology',
-      transform: { scale: [1, 1], translate: [0, 0] },
-      objects: {},
-      arcs: [],
-    } satisfies Topology
-
-    expect(() => getTopoObject(emptyTopology)).toThrow()
+  it('throws when topology has no objects', () => {
+    expect(() => getTopoObject(EMPTY_TOPOLOGY)).toThrow()
   })
 })
 
 describe('isTopology', () => {
-  it('returns false for geojson input', () => {
+  it('detects topology input', () => {
+    expect(isTopology(sampleTopology)).toBe(true)
     expect(isTopology(sampleGeoJson)).toBe(false)
   })
 })

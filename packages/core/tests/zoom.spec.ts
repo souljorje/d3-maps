@@ -58,7 +58,7 @@ describe('zoom helpers', () => {
 
   it('gets zoom view for an object from its projected bounds', () => {
     const context = makeTestMapContext()
-    const feature = context.features[0]
+    const feature = context.features[0].data
     const [[x0, y0], [x1, y1]] = context.path.bounds(feature)
     const boundsWidth = x1 - x0
     const boundsHeight = y1 - y0

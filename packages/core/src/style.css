@@ -6,7 +6,6 @@
   width: 100%;
   height: auto;
 
-  [name="background"],
   [name="graticule"],
   [name="feature"],
   [name="mesh"] {
@@ -16,8 +15,7 @@
       stroke-width: var(--d3m-stroke-w);
     }
   }
-
-  [name="border"],
+  [name="sphere"],
   [name="line"],
   [name="annotation-line"] {
     &:not([stroke-width]) {

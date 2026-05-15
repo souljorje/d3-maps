@@ -23,16 +23,10 @@ export interface GraticuleConfig extends MethodsToModifiers<GeoGraticuleGenerato
  */
 export interface MapGraticuleProps<TStyle = unknown> extends MapObjectProps<TStyle> {
   config?: GraticuleConfig
-  background?: boolean | string
-  border?: boolean | string
 }
 
 export function renderGraticule(context: MapContext, config?: GraticuleConfig): string | null {
   const graticule = geoGraticule()
   applyModifiers(graticule, config)
   return context.path(graticule())
-}
-
-export function renderOutline(context: MapContext): string | null {
-  return context.path({ type: 'Sphere' })
 }

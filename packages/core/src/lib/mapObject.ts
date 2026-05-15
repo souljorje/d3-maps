@@ -1,7 +1,4 @@
-import type {
-  ExtendedFeature,
-  GeoGeometryObjects,
-} from 'd3-geo'
+import type { GeoPermissibleObjects } from 'd3-geo'
 
 import {
   isElement,
@@ -9,7 +6,7 @@ import {
   noop,
 } from './utils'
 
-export type MapObjectData = GeoGeometryObjects | ExtendedFeature
+export type MapObjectData = GeoPermissibleObjects
 
 export type MapObjectEventType = 'mouseenter' | 'mouseleave' | 'mousedown' | 'mouseup' | 'focus' | 'blur'
 export type MapObjectGlobalMouseupListener = () => void

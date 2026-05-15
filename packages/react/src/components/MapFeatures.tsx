@@ -2,7 +2,7 @@
 
 import type {
   MapFeaturesProps as CoreMapFeaturesProps,
-  MapFeatureData,
+  RenderedFeature,
 } from '@d3-maps/core'
 import type {
   CSSProperties,
@@ -11,13 +11,11 @@ import type {
   SVGProps,
 } from 'react'
 
-import { getFeatureKey } from '@d3-maps/core'
-
 import { useMapContext } from '../hooks/useMapContext'
-import { MapFeature } from './MapFeature'
+import { MapObject } from './MapObject'
 
 interface MapFeaturesRenderProps {
-  features: MapFeatureData[]
+  features: RenderedFeature[]
 }
 
 type MapFeaturesChildren = ReactNode | ((props: MapFeaturesRenderProps) => ReactNode)
@@ -35,7 +33,6 @@ function isRenderProp(children: MapFeaturesChildren | undefined): children is (p
 }
 
 export function MapFeatures({
-  idKey = 'id',
   styles,
   children,
   ...groupProps
@@ -54,11 +51,12 @@ export function MapFeatures({
     >
       {
         resolvedChildren
-        ?? features.map((feature, index) => (
-          <MapFeature
-            key={getFeatureKey(feature, idKey, index)}
-            data={feature}
+        ?? features.map(({ key, d }) => (
+          <MapObject
+            key={key}
+            d={d}
             styles={styles}
+            name="feature"
           />
         ))
       }

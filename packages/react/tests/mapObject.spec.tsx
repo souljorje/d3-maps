@@ -8,28 +8,20 @@ import {
 
 import {
   MapBase,
-  MapFeature,
+  MapObject,
 } from '../src'
 import { MapZoomContextValue } from '../src/hooks/useMapZoom'
 import { sampleGeoJson } from './fixtures'
 
-describe('mapFeature', () => {
-  it('throws without map context', () => {
-    expect(() => render(
-      <svg>
-        <MapFeature data={sampleGeoJson.features[0]} />
-      </svg>,
-    )).toThrowError('useMapContext must be used inside Map')
-  })
-
+describe('mapObject', () => {
   it('resolves styles across interaction states', () => {
     const onMouseUp = vi.fn()
 
     render(
       <MapBase data={sampleGeoJson}>
-        <MapFeature
-          data-testid="map-feature"
-          data={sampleGeoJson.features[0]}
+        <MapObject
+          data-testid="map-object"
+          d="M0,0L10,0"
           tabIndex={0}
           styles={{
             default: { opacity: 0.9 },
@@ -42,7 +34,7 @@ describe('mapFeature', () => {
       </MapBase>,
     )
 
-    const path = screen.getByTestId('map-feature')
+    const path = screen.getByTestId('map-object')
     expect(path?.style.opacity).toBe('0.9')
 
     fireEvent.focus(path)
@@ -75,9 +67,9 @@ describe('mapFeature', () => {
       }}
       >
         <MapBase data={sampleGeoJson}>
-          <MapFeature
-            data-testid="map-feature"
-            data={sampleGeoJson.features[0]}
+          <MapObject
+            data-testid="map-object"
+            d="M0,0L10,0"
             styles={{
               default: { opacity: 0.9 },
               active: { opacity: 0.7 },
@@ -87,7 +79,7 @@ describe('mapFeature', () => {
       </MapZoomContextValue.Provider>,
     )
 
-    const path = screen.getByTestId('map-feature')
+    const path = screen.getByTestId('map-object')
     expect(path?.style.opacity).toBe('0.9')
 
     fireEvent.mouseDown(path)

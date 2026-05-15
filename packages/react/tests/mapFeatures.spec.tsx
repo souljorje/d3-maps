@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
+import type { RenderedFeature } from '@d3-maps/core'
+
 import {
   fireEvent,
   render,
@@ -8,8 +10,8 @@ import {
 
 import {
   MapBase,
-  MapFeature,
   MapFeatures,
+  MapObject,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
@@ -34,10 +36,11 @@ describe('mapFeatures', () => {
               data-count={String(features.length)}
             >
               {
-                features.map((feature) => (
-                  <MapFeature
-                    key={String(feature.id)}
-                    data={feature}
+                features.map(({ key, data, d }: RenderedFeature) => (
+                  <MapObject
+                    key={key}
+                    d={d}
+                    name={data.properties?.id as string | undefined}
                   />
                 ))
               }

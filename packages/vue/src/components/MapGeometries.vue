@@ -1,19 +1,19 @@
 <template>
-  <g name="features">
-    <slot :features="features">
+  <g name="geometries">
+    <slot :geometries="geometries">
       <MapObject
-        v-for="{ key, d } in features"
+        v-for="{ key, d } in geometries"
         :key="key"
         :d="d"
         :styles="styles"
-        name="feature"
+        name="geometry"
       />
     </slot>
   </g>
 </template>
 
 <script setup lang="ts">
-import type { MapFeaturesProps, RenderedFeature } from '@d3-maps/core'
+import type { MapGeometriesProps, RenderedGeometry } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
 import { computed } from 'vue'
@@ -21,8 +21,8 @@ import { computed } from 'vue'
 import { useMapContext } from '../hooks/useMapContext'
 import MapObject from './MapObject.vue'
 
-defineProps<MapFeaturesProps<StyleValue>>()
+defineProps<MapGeometriesProps<StyleValue>>()
 
 const context = useMapContext()
-const features = computed<RenderedFeature[]>(() => context.value.features)
+const geometries = computed<RenderedGeometry[]>(() => context.value.geometries)
 </script>

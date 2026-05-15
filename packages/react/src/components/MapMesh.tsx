@@ -10,7 +10,7 @@ import type {
 import { useMemo } from 'react'
 
 import { useMapContext } from '../hooks/useMapContext'
-import { useMapObject } from '../hooks/useMapObject'
+import { MapObject } from './MapObject'
 
 export interface MapMeshProps
   extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style'>,
@@ -27,19 +27,13 @@ export function MapMesh({
     return context.renderMesh() ?? undefined
   }, [context])
 
-  const { style, ...events } = useMapObject<SVGPathElement>({
-    styles,
-    ...props,
-  })
-
   return (
-    <path
+    <MapObject
       {...props}
       d={path}
-      style={style}
+      styles={styles}
       fill={fill}
       name="mesh"
-      {...events}
     />
   )
 }

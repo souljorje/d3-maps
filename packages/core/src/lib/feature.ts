@@ -1,8 +1,11 @@
-import type { ExtendedFeature } from 'd3-geo'
-
 import type {
-  MapObjectProps,
-} from './mapObject'
+  Feature,
+  FeatureCollection,
+  GeoJsonProperties,
+} from 'geojson'
+
+import type { MapGeometryData } from './geometry'
+import type { MapObjectProps } from './mapObject'
 
 import { isStringOrNumber } from './utils'
 
@@ -11,21 +14,19 @@ import { isStringOrNumber } from './utils'
  *
  * This type allows extra top-level fields to be attached in `dataTransformer` (e.g. choropleth colors).
  */
-export type MapFeatureData = (ExtendedFeature & Record<string, unknown>) | ExtendedFeature
+export type MapFeatureData =
+  & Feature<MapGeometryData | null, GeoJsonProperties>
+  & Record<string, unknown>
 
-/**
- * Shared props contract for a single rendered feature.
- */
-export interface MapFeatureProps<TStyle = unknown> extends MapObjectProps<TStyle> {
-  data: MapFeatureData
-}
+export type MapFeatureCollectionData =
+  & Omit<FeatureCollection<MapGeometryData | null, GeoJsonProperties>, 'features'>
+  & { features: MapFeatureData[] }
+  & Record<string, unknown>
 
 /**
  * Shared props contract for feature collections rendered from the current map context.
  */
-export interface MapFeaturesProps<TStyle = unknown> extends Omit<MapFeatureProps<TStyle>, 'data'> {
-  idKey?: string
-}
+export interface MapFeaturesProps<TStyle = unknown> extends MapObjectProps<TStyle> {}
 
 /**
  * Resolves a stable key for a feature.

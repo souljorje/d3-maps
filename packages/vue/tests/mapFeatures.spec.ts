@@ -1,16 +1,18 @@
 import { describe, expect, it } from 'vitest'
 
-import type { MapFeatureData as D3MapFeatureData } from '@d3-maps/core'
+import type { RenderedFeature } from '@d3-maps/core'
 
 import { mount } from '@vue/test-utils'
 import { h } from 'vue'
 
 import {
   MapBase,
-  MapFeature,
   MapFeatures,
+  MapObject,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
+
+const MapObjectComponent = MapObject as unknown as Parameters<typeof h>[0]
 
 describe('mapFeatures', () => {
   it('renders features by default', () => {
@@ -36,14 +38,18 @@ describe('mapFeatures', () => {
           MapFeatures,
           {},
           {
-            default: ({ features }: { features: D3MapFeatureData[] }) =>
+            default: ({ features }: { features: RenderedFeature[] }) =>
               h('g', {
                 'data-testid': 'map-features-group',
                 'data-count': String(features.length),
-              }, features.map((feature, index) => h(MapFeature, {
-                key: `${String(feature.id)}-${index}`,
-                data: feature,
-              }))),
+              }, features.map(({ key, data, d }) => h(
+                MapObjectComponent,
+                {
+                  key,
+                  d,
+                  name: data.properties?.id as string | undefined,
+                },
+              ))),
           },
         ),
       },

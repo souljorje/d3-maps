@@ -1,9 +1,9 @@
 <template>
-  <path
+  <MapObject
     v-bind="pathAttrs"
     :d="path"
     :fill="fill"
-    :style="style"
+    :styles="styles"
   />
 </template>
 
@@ -14,12 +14,11 @@ import type { StyleValue } from 'vue'
 import { getLinePath } from '@d3-maps/core'
 import {
   computed,
-  toRef,
   useAttrs,
 } from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
-import { useMapObject } from '../hooks/useMapObject'
+import MapObject from './MapObject.vue'
 
 defineOptions({
   inheritAttrs: false,
@@ -49,10 +48,8 @@ const path = computed<string | undefined>(() => {
 
 const pathName = computed(() => (attrs.name as string | undefined) ?? 'line')
 const fill = computed(() => (attrs.fill as string | undefined) ?? 'none')
-const { style, ...events } = useMapObject(toRef(props, 'styles'))
 const pathAttrs = computed(() => ({
   ...attrs,
-  ...events,
   name: pathName.value,
 }))
 </script>
