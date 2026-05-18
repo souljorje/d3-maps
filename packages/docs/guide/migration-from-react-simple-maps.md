@@ -20,7 +20,7 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 | Line | `Line` -> `MapLine` |
 | Annotation | `Annotation` -> `MapAnnotation` |
 | Graticule | `Graticule` -> `MapGraticule` |
-| Sphere | `Sphere` -> `MapGraticule` (`background`/`border`) |
+| Sphere | `Sphere` -> `MapSphere` |
 
 ## 1. Migrate data
 
@@ -115,10 +115,10 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 
 ## 6. Migrate sphere component
 
-`Sphere` -> [MapGraticule](/components/map-graticule) with `background` and/or `border`.
+`Sphere` -> [MapSphere](/components/map-sphere).
 
 ```tsx
-<MapGraticule background="#eee" border="#333" />
+<MapSphere fill="#eee" />
 ```
 
 ## 7. Rename line component
@@ -173,5 +173,5 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 | [Line](https://www.react-simple-maps.io/docs/line/) | [MapLine](/components/map-line) |
 | [ZoomableGroup](https://www.react-simple-maps.io/docs/zoomable-group/) | [MapZoom](/components/map-zoom) |
 | [Graticule](https://www.react-simple-maps.io/docs/graticule/) | [MapGraticule](/components/map-graticule) |
-| [Sphere](https://www.react-simple-maps.io/docs/sphere/) | [MapGraticule](/components/map-graticule) (`background`/`border`) or a custom SVG layer |
+| [Sphere](https://www.react-simple-maps.io/docs/sphere/) | [MapSphere](/components/map-sphere) or a custom SVG layer |
 | [Annotation](https://www.react-simple-maps.io/docs/annotation/) | [MapAnnotation](/components/map-annotation) |

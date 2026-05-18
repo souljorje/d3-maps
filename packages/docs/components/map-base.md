@@ -34,7 +34,7 @@ and usage example below
 ```ts
 projectionConfig.fit ?? 'sphere'
 projectionConfig.fit === 'features' // fit normalized features
-projectionConfig.fit === 'object' // fit one feature by projectionConfig.fitObjectId
+projectionConfig.fit === 'object' // fit projectionConfig.fitObject
 fitExtent / fitSize / fitWidth / fitHeight // explicit fit methods still win
 precision ?? 0.2
 ```
@@ -46,8 +46,8 @@ Source: [packages/core/src/lib/map.ts](https://github.com/souljorje/d3-maps/blob
 Built-in fit modes:
 
 - `fit: 'sphere'` keeps the world-map default
-- `fit: 'features'` fits the full normalized feature collection
-- `fit: 'object'` fits one normalized feature by `fitObjectId`
+- `fit: 'features'` fits the normalized feature collection
+- `fit: 'object'` fits `projectionConfig.fitObject`
 - explicit `fitExtent`, `fitSize`, `fitWidth`, and `fitHeight` override `fit`
 
 ## Usage

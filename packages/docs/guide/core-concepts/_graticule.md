@@ -1,6 +1,6 @@
-## Graticule
+## Sphere and Graticule 
 
-[MapGraticule](/components/map-graticule) renders latitude and longitude grid lines and can also draw the map outline and background
+[MapGraticule](/components/map-graticule) renders latitude and longitude grid lines. Use [MapSphere](/components/map-sphere) for the map outline and background
 
 :::tabs key:framework
 
@@ -13,7 +13,8 @@
     :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
   >
-    <MapGraticule border />
+    <MapSphere />
+    <MapGraticule />
     <MapFeatures />
     <MapMesh stroke="#fff" />
   </MapBase>
@@ -28,7 +29,8 @@
   projection={geoEquirectangular}
   dataTransformer={dataTransformer}
 >
-  <MapGraticule border />
+  <MapSphere />
+  <MapGraticule />
   <MapFeatures />
   <MapMesh stroke="#fff" />
 </MapBase>

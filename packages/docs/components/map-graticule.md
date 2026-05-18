@@ -1,19 +1,15 @@
 ---
-description: Component for D3 SVG map graticules and outlines in React and Vue
+description: Component for D3 SVG map graticule lines in React and Vue
 ---
 
 # MapGraticule
 
-Renders graticule lines and optional outline as SVG `<path>` layers.  
-Outline is rendered only when `background` or `border` is provided.  
-The outline is drawn as two paths: fill under lines and border over lines
+Renders graticule lines as an SVG `<path>` layer
 
 ## Props
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `background?` | `boolean \| string` | — | `true` renders background outline with no inline fill, `string` sets outline fill color |
-| `border?` | `boolean \| string` | — | `true` renders border outline with no inline stroke, `string` sets outline stroke color |
 | `config?` | [GraticuleConfig](/api/core/graticule#graticuleconfig) | — | See [usage](#config) below |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | Applies map-object interaction styles to the lines path |
 
@@ -36,11 +32,10 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
 ```vue
 <template>
   <MapBase :data="mapData">
+    <MapSphere fill="#fff" stroke="#cbd5e1" />
     <MapFeatures fill="#f1f5f9" />
     <MapGraticule
       stroke="#94a3b8"
-      background="#ffffff"
-      border="#cbd5e1"
       :config="{
         step: [[15, 15]],
         precision: 2.5,
@@ -54,11 +49,10 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
 
 ```tsx
 <MapBase data={mapData}>
+  <MapSphere fill="#fff" stroke="#cbd5e1" />
   <MapFeatures fill="#f1f5f9" />
   <MapGraticule
     stroke="#94a3b8"
-    background="#ffffff"
-    border="#cbd5e1"
     config={{
       step: [[15, 15]],
       precision: 2.5,

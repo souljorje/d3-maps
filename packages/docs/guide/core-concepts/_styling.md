@@ -16,15 +16,16 @@ const styles = {
 
 == Vue
 
-```vue{9} [vue]
+```vue{10} [vue]
 <template>
   <MapBase
     :data="data"
     :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
   >
+    <MapSphere />
     <MapZoom>
-      <MapGraticule border />
+      <MapGraticule />
       <MapFeatures :styles="styles"/>
       <MapMesh stroke="#fff" />
       <MapMarker :coordinates="[-83.0457538, 42.331427]">
@@ -42,14 +43,15 @@ const styles = {
 
 == React
 
-```tsx{8} [react]
+```tsx{9} [react]
 <MapBase
   data={data}
   projection={geoEquirectangular}
   dataTransformer={dataTransformer}
 >
+  <MapSphere />
   <MapZoom>
-    <MapGraticule border />
+    <MapGraticule />
     <MapFeatures styles={styles} />
     <MapMesh stroke="#fff" />
     <MapMarker coordinates={[-83.0457538, 42.331427]}>
@@ -97,8 +99,7 @@ Plain CSS can also target the generated SVG elements directly
 | [MapMesh](/components/map-mesh) | `[name="mesh"]` |
 | [MapMarker](/components/map-marker) | `[name="marker"]` |
 | [MapGraticule](/components/map-graticule) lines | `[name="graticule"]` |
-| [MapGraticule](/components/map-graticule) border | `[name="border"]` |
-| [MapGraticule](/components/map-graticule) background | `[name="background"]` |
+| [MapSphere](/components/map-sphere) | `[name="sphere"]` |
 | [MapLine](/components/map-line) | `[name="line"]` |
 | [MapAnnotation](/components/map-annotation) connector | `[name="annotation-line"]` |
 | [MapZoom](/components/map-zoom) | `[name="zoom"]` |

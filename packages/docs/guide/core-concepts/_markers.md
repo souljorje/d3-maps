@@ -6,15 +6,16 @@
 
 == Vue
 
-```vue{11-18} [vue]
+```vue{12-19} [vue]
 <template>
   <MapBase
     :data="data"
     :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
   >
+    <MapSphere />
     <MapZoom>
-      <MapGraticule border />
+      <MapGraticule />
       <MapFeatures />
       <MapMesh stroke="#fff" />
       <MapMarker :coordinates="[-83.0457538, 42.331427]">
@@ -32,14 +33,15 @@
 
 == React
 
-```tsx{10-17} [react]
+```tsx{11-18} [react]
 <MapBase
   data={data}
   projection={geoEquirectangular}
   dataTransformer={dataTransformer}
 >
+  <MapSphere />
   <MapZoom>
-    <MapGraticule border />
+    <MapGraticule />
     <MapFeatures />
     <MapMesh stroke="#fff" />
     <MapMarker coordinates={[-83.0457538, 42.331427]}>

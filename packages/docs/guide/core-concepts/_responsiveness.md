@@ -15,8 +15,9 @@
       :data-transformer="dataTransformer"
       :aspect-ratio="2 / 1"
     >
+      <MapSphere />
       <MapZoom>
-        <MapGraticule border />
+        <MapGraticule />
         <MapFeatures :styles="styles"/>
         <MapMesh stroke="#fff" />
         <MapMarker :coordinates="[-83.0457538, 42.331427]">
@@ -43,8 +44,9 @@
     dataTransformer={dataTransformer}
     aspectRatio={2 / 1}
   >
+    <MapSphere />
     <MapZoom>
-      <MapGraticule border />
+      <MapGraticule />
       <MapFeatures styles={styles} />
       <MapMesh stroke="#fff" />
       <MapMarker coordinates={[-83.0457538, 42.331427]}>
@@ -68,5 +70,5 @@ The **parent element must have height**, otherwise the map collapses.
 By default the projection uses:  
 `fitExtent([[1, 1], [width - 1, height - 1]], { type: 'Sphere' })`  
 
-`projectionConfig.fit` can switch that to normalized `features` or one `object`, and explicit `fitExtent`, `fitSize`, `fitWidth`, or `fitHeight` still override it
+`projectionConfig.fit` can switch that to `features` to fit normalized features, or `object` to fit `projectionConfig.fitObject`, and explicit `fitExtent`, `fitSize`, `fitWidth`, or `fitHeight` still override it
 :::

@@ -24,10 +24,10 @@
             <template #default="{ features: renderedFeatures }">
               <MapFeature
                 v-for="(feature) in renderedFeatures"
-                :key="getFeatureKey(feature)"
-                :data="feature"
-                :data-feature-key="getFeatureKey(feature)"
-                :aria-label="getFeatureLabel(feature)"
+                :key="feature.key"
+                :data="feature.data"
+                :data-feature-key="feature.key"
+                :aria-label="getFeatureLabel(feature.data)"
                 :styles="{
                   focus: {
                     fill: 'lightskyblue',
@@ -36,8 +36,8 @@
                 class="cursor-pointer"
                 role="button"
                 tabindex="0"
-                @click="zoomToFeature(feature)"
-                @keydown.enter.space.prevent="zoomToFeature(feature)"
+                @click="zoomToFeature(feature.data)"
+                @keydown.enter.space.prevent="zoomToFeature(feature.data)"
               />
             </template>
           </MapFeatures>
@@ -96,7 +96,6 @@ import type {
 } from '@d3-maps/vue'
 
 import {
-  getFeatureKey,
   getObjectZoomView,
   useCreateMapContext,
 } from '@d3-maps/vue'
@@ -161,10 +160,10 @@ async function zoomToRandomCountry() {
   const feature = mapContext.value.features[randomIndex]
 
   const featureElement = mapRoot.value?.querySelector<SVGPathElement>(
-    `[data-feature-key="${getFeatureKey(feature)}"]`,
+    `[data-feature-key="${feature.key}"]`,
   )
   if (featureElement) {
-    zoomToFeature(feature)
+    zoomToFeature(feature.data)
     featureElement.focus({ preventScroll: true })
   }
 }
