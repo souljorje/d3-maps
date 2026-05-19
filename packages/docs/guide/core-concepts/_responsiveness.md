@@ -18,7 +18,7 @@
       <MapSphere />
       <MapZoom>
         <MapGraticule />
-        <MapFeatures :styles="styles"/>
+        <MapObjects :styles="styles"/>
         <MapMesh stroke="#fff" />
         <MapMarker :coordinates="[-83.0457538, 42.331427]">
           <text
@@ -47,7 +47,7 @@
     <MapSphere />
     <MapZoom>
       <MapGraticule />
-      <MapFeatures styles={styles} />
+      <MapObjects styles={styles} />
       <MapMesh stroke="#fff" />
       <MapMarker coordinates={[-83.0457538, 42.331427]}>
         <text
@@ -68,7 +68,7 @@
 The **parent element must have height**, otherwise the map collapses.
 
 By default the projection uses:  
-`fitExtent([[1, 1], [width - 1, height - 1]], { type: 'Sphere' })`  
+`fitExtent([[padding, padding], [width - padding, height - padding]], { type: 'Sphere' })`  
 
-`projectionConfig.fit` can switch that to `features` to fit normalized features, or `object` to fit `projectionConfig.fitObject`, and explicit `fitExtent`, `fitSize`, `fitWidth`, or `fitHeight` still override it
+Top-level `fit` defaults to shared `data` when present, otherwise `sphere`. `projectionConfig.padding` defaults to `1`, and explicit `fitExtent`, `fitSize`, `fitWidth`, or `fitHeight` still override the built-in fit flow
 :::

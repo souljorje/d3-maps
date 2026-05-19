@@ -1,4 +1,4 @@
-import { sampleGeoJson } from '~/tests/fixtures/map'
+import { sampleGeoJson } from '~/tests/fixtures/mapData'
 
 import { makeMapContext } from '../src'
 
@@ -6,10 +6,12 @@ export {
   sampleGeoJson,
   sampleGeoJsonTwoFeatures,
   sampleGeometryCollection,
+  sampleGeometryCollectionFeature,
   samplePolygon,
   sampleTopology,
+  sampleTopologyObjectKey,
   sampleTopologyTwoObjects,
-} from '~/tests/fixtures/map'
+} from '~/tests/fixtures/mapData'
 
 export function makeTestMapContext(): ReturnType<typeof makeMapContext> {
   return makeMapContext({

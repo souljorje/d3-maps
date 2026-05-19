@@ -1,9 +1,9 @@
 'use client'
 
 import type {
-  MapObjectInteractionController,
+  InteractionController,
+  InteractionState,
   MapObjectProps,
-  MapObjectState,
 } from '@d3-maps/core'
 import type {
   CSSProperties,
@@ -12,8 +12,8 @@ import type {
 } from 'react'
 
 import {
-  resolveObjectStyle,
-  useMapObjectEvents,
+  resolveInteractionStyle,
+  useInteractionEvents,
 } from '@d3-maps/core'
 import {
   useCallback,
@@ -47,7 +47,7 @@ export interface UseMapObjectResult<TElement extends Element>
 export function useMapObject<TElement extends Element>(
   options: UseMapObjectOptions<TElement>,
 ): UseMapObjectResult<TElement> {
-  const [state, setState] = useState<MapObjectState>('default')
+  const [state, setState] = useState<InteractionState>('default')
   const stateRef = useRef(state)
   const insideZoom = Boolean(useMapZoom())
 
@@ -63,14 +63,14 @@ export function useMapObject<TElement extends Element>(
     stateRef.current = state
   }, [state])
 
-  const syncState = useCallback((nextState: MapObjectState) => {
+  const syncState = useCallback((nextState: InteractionState) => {
     if (stateRef.current === nextState) return
     stateRef.current = nextState
     setState(nextState)
   }, [])
 
-  const interactionController = useMemo<MapObjectInteractionController<MouseEvent>>(() => {
-    return useMapObjectEvents(syncState, insideZoom)
+  const interactionController = useMemo<InteractionController<MouseEvent>>(() => {
+    return useInteractionEvents(syncState, insideZoom)
   }, [insideZoom, syncState])
 
   useEffect(() => {
@@ -79,7 +79,7 @@ export function useMapObject<TElement extends Element>(
     }
   }, [interactionController])
 
-  const style = useMemo(() => resolveObjectStyle(state, options.styles), [state, options.styles])
+  const style = useMemo(() => resolveInteractionStyle(state, options.styles), [state, options.styles])
 
   const onMouseEnter = useCallback<MouseEventHandler<TElement>>((event) => {
     interactionController.onMouseenter()

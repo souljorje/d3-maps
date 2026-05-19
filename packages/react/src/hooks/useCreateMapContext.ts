@@ -14,9 +14,9 @@ export function useCreateMapContext(
 ): MapContext | undefined {
   return useMemo(() => {
     if (context) return context
-    if (!config?.data) return undefined
+    if (!config) return undefined
 
-    return makeMapContext(config as MapProps)
+    return makeMapContext(config)
   }, [
     context,
     config?.width,
@@ -25,7 +25,6 @@ export function useCreateMapContext(
     config?.projection,
     config?.projectionConfig,
     config?.data,
-    config?.topologyObjectKey,
     config?.dataTransformer,
   ])
 }

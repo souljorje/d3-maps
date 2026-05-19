@@ -1,17 +1,19 @@
-import type { MapData, MapFeatureData } from '@d3-maps/react'
+import type {
+  MapData,
+  MapObjectData,
+} from '@d3-maps/react'
 import type {
   JSX,
   KeyboardEvent as ReactKeyboardEvent,
 } from 'react'
 
 import {
-  getFeatureKey,
   getObjectZoomView,
   MapBase,
-  MapFeature,
-  MapFeatures,
   MapGraticule,
   MapMesh,
+  MapObject,
+  MapObjects,
   MapZoom,
   useCreateMapContext,
 } from '@d3-maps/react'
@@ -25,6 +27,7 @@ const initialZoom = 1
 const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
+type MapGeoFeature = Extract<MapObjectData, { type: 'Feature' }>
 
 export default function ProgrammaticZoomExample(): JSX.Element | null {
   const [mapData, setMapData] = useState<MapData>()
@@ -80,7 +83,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
     setActiveCountryLabel('World')
   }
 
-  function zoomToFeature(feature: MapFeatureData): void {
+  function zoomToFeature(feature: MapGeoFeature): void {
     const view = getObjectZoomView(mapContext, feature, {
       minZoom,
       maxZoom,
@@ -94,13 +97,13 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   }
 
   function onFeatureClick(
-    feature: MapFeatureData,
+    feature: MapGeoFeature,
   ): void {
     zoomToFeature(feature)
   }
 
   function onFeatureKeyDown(
-    feature: MapFeatureData,
+    feature: MapGeoFeature,
     event: ReactKeyboardEvent<SVGPathElement>,
   ): void {
     if (event.key !== 'Enter' && event.key !== ' ') return
@@ -111,8 +114,9 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   }
 
   async function zoomToRandomCountry(): Promise<void> {
-    const randomIndex = Math.floor(Math.random() * mapContext.features.length)
-    const feature = mapContext.features[randomIndex]
+    const features = mapContext.objects.filter((object): object is MapGeoFeature => object.type === 'Feature')
+    const randomIndex = Math.floor(Math.random() * features.length)
+    const feature = features[randomIndex]
 
     if (!feature) return
 
@@ -156,13 +160,13 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
               border
               pointerEvents="none"
             />
-            <MapFeatures fill="var(--vp-c-neutral-inverse)">
-              {({ features }) => features.map((feature, index) => (
-                <MapFeature
-                  key={getFeatureKey(feature, 'id', index)}
-                  data={feature}
-                  data-feature-key={getFeatureKey(feature)}
-                  aria-label={getFeatureLabel(feature)}
+            <MapObjects fill="var(--vp-c-neutral-inverse)">
+              {({ objects }) => objects.map((feature) => (
+                <MapObject
+                  key={feature.key}
+                  d={feature.d}
+                  data-feature-key={feature.key}
+                  aria-label={feature.type === 'Feature' ? getFeatureLabel(feature) : undefined}
                   role="button"
                   tabIndex={0}
                   style={{ cursor: 'pointer' }}
@@ -171,11 +175,15 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
                       fill: 'lightskyblue',
                     },
                   }}
-                  onClick={() => onFeatureClick(feature)}
-                  onKeyDown={(event) => onFeatureKeyDown(feature, event)}
+                  onClick={() => {
+                    if (feature.type === 'Feature') onFeatureClick(feature)
+                  }}
+                  onKeyDown={(event) => {
+                    if (feature.type === 'Feature') onFeatureKeyDown(feature, event)
+                  }}
                 />
               ))}
-            </MapFeatures>
+            </MapObjects>
             <MapMesh pointerEvents="none" />
           </MapZoom>
         </MapBase>
@@ -237,7 +245,7 @@ function isDragOnlyFilter(event: Event): boolean {
   return event.type !== 'wheel' && event.type !== 'dblclick'
 }
 
-function getFeatureLabel(feature: MapFeatureData): string {
+function getFeatureLabel(feature: MapGeoFeature): string {
   return String(
     feature.properties?.name
     ?? 'Country',

@@ -1,6 +1,6 @@
 ## Styling
 
-[MapFeature](/components/map-feature)*, [MapMarker](/components/map-marker), [MapMesh](/components/map-mesh), [MapGraticule](/components/map-graticule), [MapLine](/components/map-line), and [MapAnnotation](/components/map-annotation) expose a `styles` prop for interaction-state styling  
+[MapObject](/components/map-object)*, [MapMarker](/components/map-marker), [MapMesh](/components/map-mesh), [MapGraticule](/components/map-graticule), [MapLine](/components/map-line), and [MapAnnotation](/components/map-annotation) expose a `styles` prop for interaction-state styling  
 
 <!-- TODO: check if it works with Solid and svelte -->
 ```ts
@@ -26,7 +26,7 @@ const styles = {
     <MapSphere />
     <MapZoom>
       <MapGraticule />
-      <MapFeatures :styles="styles"/>
+      <MapObjects :styles="styles"/>
       <MapMesh stroke="#fff" />
       <MapMarker :coordinates="[-83.0457538, 42.331427]">
         <text
@@ -52,7 +52,7 @@ const styles = {
   <MapSphere />
   <MapZoom>
     <MapGraticule />
-    <MapFeatures styles={styles} />
+    <MapObjects styles={styles} />
     <MapMesh stroke="#fff" />
     <MapMarker coordinates={[-83.0457538, 42.331427]}>
       <text
@@ -68,7 +68,7 @@ const styles = {
 
 :::
 
-> \* [MapFeatures](/components/map-features) forwards `styles` to internally rendered `MapFeature`s
+> \* [MapObjects](/components/map-objects) forwards `styles` to internally rendered `MapObject`s
 
 ### CSS
 
@@ -95,7 +95,7 @@ Plain CSS can also target the generated SVG elements directly
 | Component | CSS selector |
 | --- | --- |
 | [MapBase](/components/map-base) | `.d3-map` |
-| [MapFeature](/components/map-feature) | `[name="feature"]` |
+| [MapObject](/components/map-object) | `[name="object"]` |
 | [MapMesh](/components/map-mesh) | `[name="mesh"]` |
 | [MapMarker](/components/map-marker) | `[name="marker"]` |
 | [MapGraticule](/components/map-graticule) lines | `[name="graticule"]` |

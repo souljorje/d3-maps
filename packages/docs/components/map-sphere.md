@@ -28,7 +28,7 @@ The default `fill` is `none` and the default `stroke` is `currentColor`
   <MapBase :data="mapData">
     <MapSphere fill="#f8fafc" />
     <MapZoom>
-      <MapFeatures fill="#f1f5f9" />
+      <MapObjects fill="#f1f5f9" />
       <MapGraticule
         stroke="#94a3b8"
         :config="{
@@ -47,7 +47,7 @@ The default `fill` is `none` and the default `stroke` is `currentColor`
 <MapBase data={mapData}>
   <MapSphere fill="#f8fafc" />
   <MapZoom>
-    <MapFeatures fill="#f1f5f9" />
+    <MapObjects fill="#f1f5f9" />
     <MapGraticule
       stroke="#94a3b8"
       config={{

@@ -20,14 +20,14 @@
             border
             pointer-events="none"
           />
-          <MapFeatures fill="var(--vp-c-neutral-inverse)">
-            <template #default="{ features: renderedFeatures }">
-              <MapFeature
-                v-for="(feature) in renderedFeatures"
+          <MapObjects fill="var(--vp-c-neutral-inverse)">
+            <template #default="{ objects: renderedFeatures }">
+              <MapObject
+                v-for="feature in renderedFeatures"
                 :key="feature.key"
-                :data="feature.data"
+                :d="feature.d"
                 :data-feature-key="feature.key"
-                :aria-label="getFeatureLabel(feature.data)"
+                :aria-label="feature.type === 'Feature' ? getFeatureLabel(feature) : undefined"
                 :styles="{
                   focus: {
                     fill: 'lightskyblue',
@@ -36,11 +36,11 @@
                 class="cursor-pointer"
                 role="button"
                 tabindex="0"
-                @click="zoomToFeature(feature.data)"
-                @keydown.enter.space.prevent="zoomToFeature(feature.data)"
+                @click="feature.type === 'Feature' && zoomToFeature(feature)"
+                @keydown.enter.space.prevent="feature.type === 'Feature' && zoomToFeature(feature)"
               />
             </template>
-          </MapFeatures>
+          </MapObjects>
           <MapMesh pointer-events="none" />
         </MapZoom>
       </MapBase>
@@ -91,8 +91,7 @@
 
 <script setup lang="ts">
 import type {
-  MapData,
-  MapFeatureData,
+  MapDataSource,
 } from '@d3-maps/vue'
 
 import {
@@ -110,7 +109,7 @@ const initialZoom = 1
 const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
-const data = ref<MapData>()
+const data = ref<MapDataSource>()
 const center = ref<[number, number]>()
 const zoom = ref(initialZoom)
 const activeCountryLabel = ref('World')
@@ -121,6 +120,9 @@ const mapContext = useCreateMapContext(computed(() => {
     data: data.value,
   }
 }))
+
+type RenderedMapObject = NonNullable<typeof mapContext.value>['objects'][number]
+type MapGeoFeature = Extract<RenderedMapObject, { type: 'Feature' }>
 
 onMounted(async () => {
   const { default: mapData } = await import('@d3-maps/atlas/world/countries')
@@ -156,19 +158,22 @@ function setZoom(nextZoom: number) {
 async function zoomToRandomCountry() {
   if (!mapContext.value) return
 
-  const randomIndex = Math.floor(Math.random() * mapContext.value.features.length)
-  const feature = mapContext.value.features[randomIndex]
+  const features = mapContext.value.objects.filter((object): object is MapGeoFeature => object.type === 'Feature')
+  const randomIndex = Math.floor(Math.random() * features.length)
+  const feature = features[randomIndex]
+
+  if (!feature) return
 
   const featureElement = mapRoot.value?.querySelector<SVGPathElement>(
     `[data-feature-key="${feature.key}"]`,
   )
   if (featureElement) {
-    zoomToFeature(feature.data)
+    zoomToFeature(feature)
     featureElement.focus({ preventScroll: true })
   }
 }
 
-function zoomToFeature(feature: MapFeatureData) {
+function zoomToFeature(feature: MapGeoFeature) {
   if (!mapContext.value) return
 
   const view = getObjectZoomView(mapContext.value, feature, {
@@ -191,7 +196,7 @@ function clampZoom(value: number) {
   return Math.min(maxZoom, Math.max(minZoom, value))
 }
 
-function getFeatureLabel(feature: MapFeatureData) {
+function getFeatureLabel(feature: MapGeoFeature) {
   return feature.properties?.name ?? 'Country'
 }
 </script>

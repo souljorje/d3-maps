@@ -22,8 +22,8 @@ export function useCreateMapContext(
     if (resolvedContext) return resolvedContext
 
     const resolvedConfig = unref(config)
-    if (!resolvedConfig?.data) return undefined
+    if (!resolvedConfig) return undefined
 
-    return makeMapContext(resolvedConfig as MapProps)
+    return makeMapContext(resolvedConfig)
   })
 }

@@ -3,8 +3,8 @@ import type { MapData } from '@d3-maps/react'
 import {
   MapAnnotation,
   MapBase,
-  MapFeatures,
   MapMarker,
+  MapObjects,
 } from '@d3-maps/react'
 import {
   useEffect,
@@ -54,7 +54,7 @@ export default function AnnotationExample(): JSX.Element | null {
   return mapData
     ? (
         <MapBase data={mapData}>
-          <MapFeatures />
+          <MapObjects />
           {cities.map((city) => (
             <MapAnnotation
               key={city.name}

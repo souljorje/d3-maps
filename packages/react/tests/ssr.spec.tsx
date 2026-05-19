@@ -5,7 +5,7 @@ import { renderToString } from 'react-dom/server'
 import {
   MapAnnotation,
   MapBase,
-  MapFeatures,
+  MapObjects,
   MapZoom,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
@@ -16,7 +16,7 @@ describe('SSR', () => {
     const html = renderToString(
       <MapBase data={sampleGeoJson}>
         <MapZoom>
-          <MapFeatures />
+          <MapObjects />
           <MapAnnotation coordinates={[2.3522, 48.8566]}>
             <text>Paris</text>
           </MapAnnotation>

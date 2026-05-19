@@ -2,10 +2,10 @@ import type { MapData } from '@d3-maps/react'
 
 import {
   MapBase,
-  MapFeatures,
   MapGraticule,
   MapMarker,
   MapMesh,
+  MapObjects,
 } from '@d3-maps/react'
 import { useEffect, useState } from 'react'
 
@@ -50,7 +50,7 @@ export default function MarkersExample(): JSX.Element | null {
     ? (
         <MapBase data={mapData}>
           <MapGraticule border />
-          <MapFeatures />
+          <MapObjects />
           <MapMesh />
           {
             cities.map((item) => (

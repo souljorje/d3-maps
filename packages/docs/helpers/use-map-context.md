@@ -1,11 +1,11 @@
 ---
-description: Helper for reading map size, features, and path state inside custom D3 SVG map layers with React and Vue
+description: Helper for reading map size, objects, and path state inside custom D3 SVG map layers with React and Vue
 ---
 
 # useMapContext
 
 Reads the current map context from [MapBase](/components/map-base)  
-Use it in custom layers when you need the resolved map size, normalized features, or the shared path generator  
+Use it in custom layers when you need the resolved map size, normalized objects, or the shared path generator  
 Throws an error if used outside `MapBase`
 
 ## Return value
@@ -29,7 +29,7 @@ import { computed } from 'vue'
 import { useMapContext } from '@d3-maps/vue'
 
 const context = useMapContext()
-const featureCountLabel = computed(() => `${context.value.features.length} features`)
+const featureCountLabel = computed(() => `${context.value.objects.length} objects`)
 </script>
 
 <template>
@@ -55,7 +55,7 @@ function FeatureCountLabel() {
 
   return (
     <text x={12} y={20} fontSize={14} fill="#111">
-      {context.features.length} features
+      {context.objects.length} objects
     </text>
   )
 }

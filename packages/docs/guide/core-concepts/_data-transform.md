@@ -1,11 +1,11 @@
 ## Data transformation
 
-`dataTransformer` preprocesses GeoJSON features before render. It is useful for filtering, enrichment, or normalization.
+`dataTransformer` preprocesses normalized GeoJSON objects before render. It is useful for filtering, enrichment, or normalization.
 
 ```ts
 // e.g. don't render Antarctica 🇦🇶
-function dataTransformer(features) {
-  return features.filter((x) => x.properties?.name !== 'Antarctica')
+function dataTransformer(objects) {
+  return objects.filter((object) => object.type !== 'Feature' || object.properties?.name !== 'Antarctica')
 }
 ```
 
@@ -19,7 +19,7 @@ function dataTransformer(features) {
     :data="data"
     :data-transformer="dataTransformer"
   >
-    <MapFeatures />
+    <MapObjects />
   </MapBase>
 </template>
 ```
@@ -31,7 +31,7 @@ function dataTransformer(features) {
   data={data}
   dataTransformer={dataTransformer}
 >
-  <MapFeatures />
+  <MapObjects />
 </MapBase>
 ```
 

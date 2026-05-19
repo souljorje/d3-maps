@@ -15,7 +15,7 @@
   >
     <MapSphere />
     <MapGraticule />
-    <MapFeatures />
+    <MapObjects />
     <MapMesh stroke="#fff" />
   </MapBase>
 </template>
@@ -31,7 +31,7 @@
 >
   <MapSphere />
   <MapGraticule />
-  <MapFeatures />
+  <MapObjects />
   <MapMesh stroke="#fff" />
 </MapBase>
 ```

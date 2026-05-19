@@ -13,7 +13,7 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 | --- | --- |
 | Data | `Geographies.geography` -> `MapBase.data` |
 | Data transform | `Geographies.parseGeographies` -> `MapBase.dataTransformer` |
-| Style prop | `Geography.style` -> `MapFeature.styles` |
+| Style prop | `Geography.style` -> `MapObject.styles` |
 | Style states | `style.pressed` -> `styles.active` |
 | Zoom wrapper | `ZoomableGroup` -> `MapZoom` |
 | Marker | `Marker` -> `MapMarker` |
@@ -29,11 +29,11 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 - `Geographies.parseGeographies` -> `MapBase.dataTransformer`  
 
 ```tsx
-import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
+import { MapBase, MapObjects, type MapDataSource } from '@d3-maps/react'
 import { useEffect, useState } from 'react'
 
 export function WorldMap() {
-  const [data, setData] = useState<MapData | null>(null)
+  const [data, setData] = useState<MapDataSource | null>(null)
 
   useEffect(() => {
     import('@d3-maps/atlas/world/countries')
@@ -45,9 +45,9 @@ export function WorldMap() {
   return (
     <MapBase
       data={data}
-      dataTransformer={(features) => features.filter((f) => f.properties?.name !== 'Antarctica')}
+      dataTransformer={(objects) => objects.filter((object) => object.type !== 'Feature' || object.properties?.name !== 'Antarctica')}
     >
-      <MapFeatures />
+      <MapObjects />
     </MapBase>
   )
 }
@@ -55,13 +55,13 @@ export function WorldMap() {
 
 ## 2. Rename style prop
 
-- `Geography.style` -> `MapFeature.styles`  
+- `Geography.style` -> `MapObject.styles`  
 - `style.pressed` -> `styles.active`
 
-This style model is supported by `MapFeature`, `MapFeatures`, `MapMarker`, `MapMesh`, and `MapGraticule`
+This style model is supported by `MapObject`, `MapObjects`, `MapMarker`, `MapMesh`, and `MapGraticule`
 
 ```tsx
-<MapFeature
+<MapObject
   styles={{
     default: { fill: '#e2e8f0' },
     hover: { fill: '#fb923c' },
@@ -89,7 +89,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
     onZoom={() => {}}
     onZoomEnd={() => {}}
   >
-    <MapFeatures />
+    <MapObjects />
   </MapZoom>
 </MapBase>
 ```
@@ -142,7 +142,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 
 ```tsx
 <MapBase data={data}>
-  <MapFeatures />
+  <MapObjects />
   <MapAnnotation
     coordinates={[2.3522, 48.8566]}
     length={36}
@@ -167,8 +167,8 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 | react-simple-maps | d3-maps |
 | --- | --- |
 | [ComposableMap](https://www.react-simple-maps.io/docs/composable-map/) | [MapBase](/components/map-base) |
-| [Geographies](https://www.react-simple-maps.io/docs/geographies/) | [MapFeatures](/components/map-features) |
-| [Geography](https://www.react-simple-maps.io/docs/geography/) | [MapFeature](/components/map-feature) |
+| [Geographies](https://www.react-simple-maps.io/docs/geographies/) | [MapObjects](/components/map-objects) |
+| [Geography](https://www.react-simple-maps.io/docs/geography/) | [MapObject](/components/map-object) |
 | [Marker](https://www.react-simple-maps.io/docs/marker/) | [MapMarker](/components/map-marker) |
 | [Line](https://www.react-simple-maps.io/docs/line/) | [MapLine](/components/map-line) |
 | [ZoomableGroup](https://www.react-simple-maps.io/docs/zoomable-group/) | [MapZoom](/components/map-zoom) |

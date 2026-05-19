@@ -40,7 +40,7 @@ defineSlots<{
 const unresolvedContext = useCreateMapContext(props, toRef(props, 'context'))
 const context = computed(() => {
   if (!unresolvedContext.value) {
-    throw new Error('Map requires data or context')
+    throw new Error('MapBase requires props or context')
   }
 
   return unresolvedContext.value

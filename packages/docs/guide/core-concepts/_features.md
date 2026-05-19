@@ -2,7 +2,7 @@
 
 A feature is a geographic entity such as a country or state.  
 
-[MapFeatures](/components/map-features) renders the full collection, while [MapFeature](/components/map-feature) renders a single one. The slot or render-function form exposes per-feature rendering control.
+[MapObjects](/components/map-objects) renders the full collection, while [MapObject](/components/map-object) is the low-level primitive for custom single-object rendering. The slot or render-function form exposes per-object rendering control.
 
 :::tabs key:framework
 
@@ -15,15 +15,15 @@ A feature is a geographic entity such as a country or state.
     :data-transformer="dataTransformer"
     :projection="geoEquirectangular"
   >
-    <MapFeatures>
-      <template #default="{ features }">
-        <MapFeature
-          v-for="feature in features"
-          :key="feature.id"
-          :data="feature"
+    <MapObjects>
+      <template #default="{ objects }">
+        <MapObject
+          v-for="object in objects"
+          :key="object.key"
+          :d="object.d"
         />
       </template>
-    </MapFeatures>
+    </MapObjects>
   </MapBase>
 </template>
 ```
@@ -36,18 +36,18 @@ A feature is a geographic entity such as a country or state.
   dataTransformer={dataTransformer}
   projection={geoEquirectangular}
 >
-  <MapFeatures>
-    {({ features }) => (
+  <MapObjects>
+    {({ objects }) => (
       <>
-        {features.map((feature) => (
-          <MapFeature
-            key={String(feature.id)}
-            data={feature}
+        {objects.map((object) => (
+          <MapObject
+            key={object.key}
+            d={object.d}
           />
         ))}
       </>
     )}
-  </MapFeatures>
+  </MapObjects>
 </MapBase>
 ```
 

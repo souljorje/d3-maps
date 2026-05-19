@@ -11,12 +11,13 @@ import {
 
 import {
   MapBase,
-  MapFeatures,
+  MapObjects,
   useCreateMapContext,
 } from '../src'
 import {
   sampleGeoJson,
   sampleGeoJsonTwoFeatures,
+  sampleTopologyObjectKey,
   sampleTopologyTwoObjects,
 } from './fixtures'
 
@@ -49,13 +50,13 @@ describe('map', () => {
     expect(wrapper.get('[data-testid="map-size-group"]').attributes('data-size')).toBe('420x210')
   })
 
-  it('updates rendered features when map data prop changes', async () => {
+  it('updates rendered objects when map data prop changes', async () => {
     const wrapper = mount(MapBase, {
       props: {
         data: sampleGeoJson,
       },
       slots: {
-        default: () => h(MapFeatures),
+        default: () => h(MapObjects),
       },
     })
 
@@ -68,20 +69,41 @@ describe('map', () => {
     expect(wrapper.findAll('path')).toHaveLength(2)
   })
 
-  it('updates rendered features when topologyObjectKey changes', async () => {
+  it('updates rendered objects when topology data and objectKey change', async () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleTopologyTwoObjects,
+        data: sampleGeoJson,
       },
       slots: {
-        default: () => h(MapFeatures),
+        default: () => h(MapObjects),
       },
     })
 
     expect(wrapper.findAll('path')).toHaveLength(1)
 
     await wrapper.setProps({
-      topologyObjectKey: 'pair',
+      data: sampleTopologyTwoObjects,
+      objectKey: sampleTopologyObjectKey,
+    })
+
+    expect(wrapper.findAll('path')).toHaveLength(2)
+  })
+
+  it('creates context without shared data for layer-local manual maps', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        fit: 'manual',
+        projectionConfig: {
+          scale: 160,
+          translate: [[450, 250]],
+        },
+      },
+      slots: {
+        default: () => h(MapObjects, {
+          data: sampleTopologyTwoObjects,
+          objectKey: sampleTopologyObjectKey,
+        }),
+      },
     })
 
     expect(wrapper.findAll('path')).toHaveLength(2)
@@ -98,7 +120,7 @@ describe('map', () => {
       setup(props) {
         return () => h('div', {
           'data-testid': 'toolbar-count',
-        }, String(props.context.features.length))
+        }, String(props.context.objects.length))
       },
     })
 
@@ -121,7 +143,7 @@ describe('map', () => {
               context: mapContext,
               'data-testid': 'map-svg',
             }, {
-              default: () => h(MapFeatures),
+              default: () => h(MapObjects),
             }),
           ]
         }

@@ -13,6 +13,8 @@ _ℹ️ Works only with **TopoJSON** data_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
+| `data?` | [MapDataSource](/api/core/data#MapDataSource) | — | Optional layer-local TopoJSON source. Falls back to `MapBase` context data |
+| `objectKey?` | `string` | — | Optional TopoJSON object key. Falls back to `MapBase` context object key |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
@@ -27,8 +29,9 @@ Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
 <template>
   <MapBase
     :data="mapData"
+    object-key="countries"
   >
-    <MapFeatures fill="#fff" />
+    <MapObjects fill="#fff" />
     <MapMesh stroke="#000"/>
   </MapBase>
 </template>
@@ -39,8 +42,9 @@ Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
 ```tsx
 <MapBase
   data={mapData}
+  objectKey="countries"
 >
-  <MapFeatures fill="#fff" />
+  <MapObjects fill="#fff" />
   <MapMesh stroke="#000" />
 </MapBase>
 ```

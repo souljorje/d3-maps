@@ -2,10 +2,10 @@ import type { MapData, ZoomEvent } from '@d3-maps/react'
 
 import {
   MapBase,
-  MapFeatures,
   MapGraticule,
   MapMarker,
   MapMesh,
+  MapObjects,
   MapZoom,
 } from '@d3-maps/react'
 import { geoNaturalEarth1 } from 'd3-geo'
@@ -71,7 +71,7 @@ export default function ZoomExample(): JSX.Element | null {
         >
           <MapZoom onZoom={updateMarkerScale}>
             <MapGraticule border />
-            <MapFeatures />
+            <MapObjects />
             <MapMesh />
             {
               initialCities.map((item) => (

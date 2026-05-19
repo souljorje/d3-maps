@@ -31,13 +31,13 @@ bun add @d3-maps/atlas
 ### World countries
 
 ```tsx
-import { MapBase, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapObjects } from '@d3-maps/react'
 import Countries from '@d3-maps/atlas/world/countries'
 
 export function App() {
   return (
     <MapBase data={Countries}>
-      <MapFeatures />
+      <MapObjects />
     </MapBase>
   )
 }
@@ -46,14 +46,14 @@ export function App() {
 ### World layers
 
 ```tsx
-import { MapBase, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapObjects } from '@d3-maps/react'
 import Ocean from '@d3-maps/atlas/world/ocean'
 import Coastline from '@d3-maps/atlas/world/coastline'
 
 export function App() {
   return (
     <MapBase data={[Ocean, Coastline]}>
-      <MapFeatures />
+      <MapObjects />
     </MapBase>
   )
 }
@@ -62,13 +62,13 @@ export function App() {
 ### Individual countries
 
 ```tsx
-import { MapBase, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapObjects } from '@d3-maps/react'
 import { Georgia, Germany, Russia } from '@d3-maps/atlas/countries'
 
 export function App() {
   return (
     <MapBase data={[Georgia, Germany, Russia]}>
-      <MapFeatures />
+      <MapObjects />
     </MapBase>
   )
 }

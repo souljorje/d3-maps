@@ -12,8 +12,8 @@
 | --- | --- | --- |
 | Public API | packages/core/src/index.ts | Export all supported public symbols. |
 | Map context/projection model | packages/core/src/lib/map.ts | Map data/context contracts and projection setup. |
-| Map object interaction model | packages/core/src/lib/mapObject.ts | Shared map object types, state, events, style resolution. |
-| Feature model | packages/core/src/lib/feature.ts | `MapFeatureData` and `MapFeatureProps` contracts plus feature key resolver. |
+| Map object model | packages/core/src/lib/mapObject.ts | Shared map object render/data contracts and object enrichment helpers. |
+| Interaction model | packages/core/src/lib/interaction.ts | Shared interaction state, style resolution, and DOM event helpers. |
 | Marker model | packages/core/src/lib/marker.ts | Marker coordinate/props contracts plus marker transform resolver. |
 | Zoom model and behavior | packages/core/src/lib/zoom.ts | Zoom types/events/contracts and behavior setup helpers. |
 | Shared utilities | packages/core/src/lib/utils.ts | Reusable assertions/null checks/helpers. |
@@ -33,7 +33,7 @@
 | Framework boundaries | Keep package framework-agnostic and side-effect-free. |
 | API stability | Add new exports via packages/core/src/index.ts and flag breaking changes. |
 | Shared abstractions | Keep reusable logic in core; adapters should be framework-specific wrappers only. |
-| Domain contracts | Treat `feature.ts`, `marker.ts`, `zoom.ts`, and `mapObject.ts` as shared model/type contracts, not view-only helpers. |
+| Domain contracts | Treat `map.ts`, `marker.ts`, `zoom.ts`, `mapObject.ts`, and `interaction.ts` as shared model/type contracts, not view-only helpers. |
 | Map context inputs | If helper depends on map context values, accept the context object. |
 | Build ownership | Keep D3 and TopoJSON runtime plus published type dependencies owned here, not mirrored into adapters. |
 

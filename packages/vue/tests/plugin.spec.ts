@@ -7,6 +7,7 @@ import {
   MapBase,
   MapLine,
   MapMesh,
+  MapObjects,
   plugin,
 } from '../src'
 
@@ -23,6 +24,13 @@ describe('@d3-maps/vue plugin', () => {
     app.use(plugin)
 
     expect(app.component('MapMesh')).toBe(MapMesh)
+  })
+
+  it('registers the MapObjects component', () => {
+    const app = createApp({ template: '<div />' })
+    app.use(plugin)
+
+    expect(app.component('MapObjects')).toBe(MapObjects)
   })
 
   it('registers the MapLine component', () => {

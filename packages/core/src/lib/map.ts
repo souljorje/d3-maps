@@ -4,84 +4,34 @@ import type {
   GeoProjection,
   GeoSphere,
 } from 'd3-geo'
-import type { GeometryObject, Topology } from 'topojson-specification'
+import type { GeometryCollection } from 'geojson'
 
 import type {
-  MapFeatureCollectionData,
-  MapFeatureData,
-} from './feature'
-import type {
-  MapGeometryCollectionData,
-  MapGeometryData,
-} from './geometry'
+  MapData,
+  MapDataRef,
+  MapDataSource,
+  MapDataTransformer,
+} from './data'
+import type { MapObjectData } from './mapObject'
 import type { MethodsToModifiers } from './utils'
 
 import {
   geoNaturalEarth1,
   geoPath,
 } from 'd3-geo'
+
 import {
-  feature,
-  mesh,
-} from 'topojson-client'
+  isFeature,
+  resolveMapData,
+} from './data'
+import { makeMapObjects } from './mapObject'
+import { applyModifiers } from './utils'
 
-import { getFeatureKey } from './feature'
-import { applyModifiers, isObject } from './utils'
-
-export type MapMeshData = ReturnType<typeof mesh>
-export type ProjectionFit = 'sphere' | 'features' | 'object'
-
-export type MapGeoJsonData =
-  | MapGeometryData
-  | MapGeometryCollectionData
-  | MapFeatureData
-  | MapFeatureCollectionData
-export type MapTopologyData = Topology
-export type MapDataItem = MapGeoJsonData | MapTopologyData
-export type MapData = MapDataItem | MapDataItem[]
-export type DataTransformer = (features: MapFeatureData[]) => MapFeatureData[]
-
-type FlatMapObjectData = MapFeatureData | MapGeometryData
-
-/**
- * Precomputed render unit for a GeoJSON feature.
- */
-export interface RenderedFeature {
-  /**
-   * Stable render key derived from feature identity.
-   */
-  key: string | number
-  /**
-   * Original feature data.
-   */
-  data: MapFeatureData
-  /**
-   * Feature properties for ergonomic slot/render access.
-   */
-  properties: MapFeatureData['properties']
-  /**
-   * Precomputed SVG path string for the feature.
-   */
-  d?: string
-}
-
-/**
- * Precomputed render unit for a non-feature geometry.
- */
-export interface RenderedGeometry {
-  /**
-   * Stable render key for the geometry.
-   */
-  key: number
-  /**
-   * Original geometry data.
-   */
-  data: MapGeometryData
-  /**
-   * Precomputed SVG path string for the geometry.
-   */
-  d?: string
-}
+export type MapFit =
+  | 'data'
+  | 'sphere'
+  | 'manual'
+  | MapDataSource
 
 /**
  * Extra projection method calls to apply before rendering.
@@ -94,18 +44,9 @@ export interface RenderedGeometry {
 export interface ProjectionConfig
   extends Omit<MethodsToModifiers<GeoProjection>, 'invert' | 'stream'> {
   /**
-   * Built-in fit target to use when explicit `fitExtent`, `fitSize`, `fitWidth`, or `fitHeight`
-   * are not provided.
-   *
-   * - `sphere`: fit the full globe
-   * - `features`: fit the normalized feature collection
-   * - `object`: fit the provided `fitObject`
+   * Padding used by the built-in fit modes when explicit fit methods are not provided.
    */
-  fit?: ProjectionFit
-  /**
-   * GeoJSON object to fit when `fit` is set to `object`.
-   */
-  fitObject?: GeoPermissibleObjects
+  padding?: number
 }
 
 /**
@@ -113,7 +54,7 @@ export interface ProjectionConfig
  *
  * In adapters, this is usually passed as component props.
  */
-export interface MapProps {
+export interface MapProps extends MapDataRef {
   width?: number
   height?: number
   aspectRatio?: number
@@ -128,29 +69,25 @@ export interface MapProps {
    */
   projectionConfig?: ProjectionConfig
   /**
-   * TopoJSON or GeoJSON input.
-   *
-   * TopoJSON is automatically converted to GeoJSON features and geometries.
+   * Built-in fit source. Defaults to `data` when present, otherwise sphere.
    */
-  data: MapData
+  fit?: MapFit
   /**
-   * Optional TopoJSON object key to use when `data` contains multiple objects.
-   *
-   * If omitted, the first object is used for backward compatibility.
+   * TopoJSON object key used when `fit` is an explicit topology.
    */
-  topologyObjectKey?: string
+  fitObjectKey?: string
   /**
-   * Optional feature transformer (filter/augment/normalize features).
+   * Optional normalized-object transformer (filter/augment/normalize objects).
    */
-  dataTransformer?: DataTransformer
+  dataTransformer?: MapDataTransformer
 }
 
 /**
  * Fully computed, framework-agnostic map context.
  *
- * Adapters provide this context to child layers (features, geometries, markers, custom SVG).
+ * Adapters provide this context to child layers (objects, markers, custom SVG).
  */
-export interface MapContext {
+export interface MapContext extends MapDataRef {
   /**
    * Resolved SVG width used by the map.
    */
@@ -160,25 +97,21 @@ export interface MapContext {
    */
   height: number
   /**
+   * Normalized object data after the map-level data transformer is applied.
+   */
+  objectData: MapData
+  /**
    * Configured projection instance shared by map layers.
    */
   projection: GeoProjection
   /**
-   * Render-ready feature units for the current map.
+   * Render-ready GeoJSON objects for the current map.
    */
-  features: RenderedFeature[]
-  /**
-   * Render-ready non-feature geometry units for the current map.
-   */
-  geometries: RenderedGeometry[]
+  objects: MapObjectData[]
   /**
    * Shared path generator bound to the map projection.
    */
   path: GeoPath
-  /**
-   * Renders a TopoJSON mesh path when one is available.
-   */
-  renderMesh: () => string | null
 }
 
 const DEFAULT_WIDTH = 600
@@ -196,19 +129,18 @@ export function makeProjection({
   height,
   config = {},
   projection,
-  features = [],
+  fit = SPHERE,
 }: {
   width: number
   height: number
   config?: ProjectionConfig
   projection: () => GeoProjection
-  features?: MapFeatureData[]
+  fit?: GeoPermissibleObjects | 'manual'
 }): GeoProjection {
   const mapProjection = projection()
 
   const {
-    fit,
-    fitObject,
+    padding = FIT_PADDING,
     fitExtent,
     fitSize,
     fitWidth,
@@ -235,13 +167,13 @@ export function makeProjection({
       fitWidth,
       fitHeight,
     })
-  } else {
+  } else if (fit !== 'manual') {
     mapProjection.fitExtent(
       [
-        [FIT_PADDING, FIT_PADDING],
-        [width - FIT_PADDING, height - FIT_PADDING],
+        [padding, padding],
+        [width - padding, height - padding],
       ],
-      resolveFitTarget(fit, fitObject, features),
+      fit,
     )
   }
 
@@ -256,19 +188,6 @@ export function makeProjection({
 }
 
 /**
- * Returns a TopoJSON mesh when topology data is provided.
- */
-export function makeMesh(geoData: MapData, topologyObjectKey?: string): MapMeshData | undefined {
-  const topologyItems = getMapDataItems(geoData).filter(isTopology)
-
-  if (topologyItems.length !== 1) return undefined
-
-  const topology = topologyItems[0]
-  const topoObject = getTopoObject(topology, topologyObjectKey)
-  return mesh(topology, topoObject) as MapMeshData
-}
-
-/**
  * Creates a full {@link MapContext} from a {@link MapProps}.
  */
 export function makeMapContext({
@@ -276,165 +195,87 @@ export function makeMapContext({
   height: passedHeight,
   aspectRatio = DEFAULT_ASPECT_RATIO,
   data,
-  topologyObjectKey,
+  objectKey,
+  fit,
+  fitObjectKey,
   dataTransformer,
   projection: providedProjection = geoNaturalEarth1,
   projectionConfig,
-}: MapProps): MapContext {
-  const { features: rawFeatures, geometries: geometryData } = normalizeMapData(data, topologyObjectKey)
-  const featureData = dataTransformer?.(rawFeatures) ?? rawFeatures
+}: MapProps = {}): MapContext {
+  const objectData: MapData = data == null
+    ? []
+    : resolveMapData(data, objectKey, dataTransformer)
   const height = passedHeight ?? width / aspectRatio
   const projection = makeProjection({
     width,
     height,
     projection: providedProjection,
     config: projectionConfig,
-    features: featureData,
+    fit: resolveFitTarget({
+      objectData,
+      fit,
+      fitObjectKey,
+    }),
   })
 
   const pathFn = geoPath().projection(projection)
-  const mapMesh = makeMesh(data, topologyObjectKey)
-  const meshPath = mapMesh ? pathFn(mapMesh) : null
-  const { features, geometries } = makeRenderedMapData(featureData, geometryData, pathFn)
+  const objects = makeMapObjects(objectData, pathFn)
 
   return {
     width,
     height,
+    data,
+    objectKey,
+    objectData,
     projection,
-    features,
-    geometries,
+    objects,
     path: pathFn,
-    renderMesh: () => meshPath,
   }
 }
 
-/**
- * Type guard for TopoJSON topology inputs.
- */
-export function isTopology(data: unknown): data is Topology {
-  return isObject(data) && data.type === 'Topology'
-}
-
-function normalizeMapData(
-  geoData: MapData,
-  topologyObjectKey?: string,
-): {
-  features: MapFeatureData[]
-  geometries: MapGeometryData[]
-} {
-  const features: MapFeatureData[] = []
-  const geometries: MapGeometryData[] = []
-
-  for (const item of getMapDataItems(geoData)) {
-    for (const object of makeObjectsFromItem(item, topologyObjectKey)) {
-      if (object.type === 'Feature') {
-        features.push(object as MapFeatureData)
-      } else {
-        geometries.push(object)
-      }
-    }
+function resolveFitTarget({
+  objectData,
+  fit,
+  fitObjectKey,
+}: {
+  objectData: MapData
+  fit?: MapFit
+  fitObjectKey?: string
+}): GeoPermissibleObjects | 'manual' {
+  if (fit === 'manual') {
+    return 'manual'
   }
 
-  return { features, geometries }
-}
-
-function makeRenderedMapData(
-  featuresData: MapFeatureData[],
-  geometryData: MapGeometryData[],
-  path: GeoPath,
-): {
-  features: RenderedFeature[]
-  geometries: RenderedGeometry[]
-} {
-  return {
-    features: featuresData.map((data, index): RenderedFeature => ({
-      key: getFeatureKey(data, 'id', index) ?? index,
-      data,
-      properties: data.properties,
-      d: path(data) ?? undefined,
-    })),
-
-    geometries: geometryData.map((data, index): RenderedGeometry => ({
-      key: index,
-      data,
-      d: path(data) ?? undefined,
-    })),
-  }
-}
-
-export function makeObjectsFromItem(
-  item: MapDataItem,
-  topologyObjectKey?: string,
-): FlatMapObjectData[] {
-  const geoJson = isTopology(item)
-    ? topologyToGeoJson(item, topologyObjectKey)
-    : item
-  return makeObjectsFromGeoJson(geoJson)
-}
-
-export function getTopoObject(geoData: Topology, topologyObjectKey?: string): GeometryObject {
-  const objectKey = topologyObjectKey ?? Object.keys(geoData.objects)[0]
-  const object = geoData.objects[objectKey]
-
-  if (!object) {
-    throw new Error(`Topology object "${objectKey ?? ''}" not found`)
+  if (fit === 'sphere') {
+    return SPHERE
   }
 
-  return object as GeometryObject
-}
-
-function resolveFitTarget(
-  fit: ProjectionFit | undefined,
-  fitObject: GeoPermissibleObjects | undefined,
-  features: MapFeatureData[],
-): GeoPermissibleObjects {
-  if (fit === 'object') {
-    if (!fitObject) {
-      throw new Error('projectionConfig.fitObject is required when projectionConfig.fit is "object"')
-    }
-
-    return fitObject
+  if (fit === 'data') {
+    return toGeometryCollection(objectData)
   }
 
-  if (fit === 'features') {
-    if (features.length === 0) {
-      throw new Error('projectionConfig.fit "features" requires at least one feature')
-    }
+  if (fit != null) {
+    return toGeometryCollection(resolveMapData(fit, fitObjectKey))
+  }
 
-    return {
-      type: 'FeatureCollection',
-      features,
-    } satisfies MapFeatureCollectionData
+  if (objectData.length > 0) {
+    return toGeometryCollection(objectData)
   }
 
   return SPHERE
 }
 
-function getMapDataItems(geoData: MapData): MapDataItem[] {
-  return Array.isArray(geoData) ? geoData : [geoData]
-}
+function toGeometryCollection(
+  items: MapData,
+): GeometryCollection {
+  return {
+    type: 'GeometryCollection',
+    geometries: items.flatMap((item) => {
+      if (isFeature(item)) {
+        return item.geometry ? [item.geometry] : []
+      }
 
-function topologyToGeoJson(
-  topology: Topology,
-  topologyObjectKey?: string,
-): MapFeatureData | MapFeatureCollectionData {
-  const topoObject = getTopoObject(topology, topologyObjectKey)
-  const geoJson = feature(topology, topoObject)
-
-  return geoJson.type === 'FeatureCollection'
-    ? geoJson as MapFeatureCollectionData
-    : geoJson as MapFeatureData
-}
-
-function makeObjectsFromGeoJson(geoJson: MapGeoJsonData): FlatMapObjectData[] {
-  switch (geoJson.type) {
-    case 'FeatureCollection':
-      return geoJson.features
-
-    case 'GeometryCollection':
-      return geoJson.geometries
-
-    default:
-      return [geoJson]
+      return [item]
+    }),
   }
 }

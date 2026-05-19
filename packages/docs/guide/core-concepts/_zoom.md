@@ -16,7 +16,7 @@
     <MapSphere />
     <MapZoom>
       <MapGraticule />
-      <MapFeatures />
+      <MapObjects />
       <MapMesh stroke="#fff" />
     </MapZoom>
   </MapBase>
@@ -34,7 +34,7 @@
   <MapSphere />
   <MapZoom>
     <MapGraticule />
-    <MapFeatures />
+    <MapObjects />
     <MapMesh stroke="#fff" />
   </MapZoom>
 </MapBase>

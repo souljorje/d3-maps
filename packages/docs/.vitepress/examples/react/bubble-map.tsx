@@ -3,9 +3,9 @@ import type { MapData, ZoomEvent } from '@d3-maps/react'
 import {
   getInverseZoomScale,
   MapBase,
-  MapFeatures,
   MapMarker,
   MapMesh,
+  MapObjects,
   MapZoom,
 } from '@d3-maps/react'
 import { extent } from 'd3-array'
@@ -109,7 +109,7 @@ export default function BubbleMapExample(): JSX.Element {
         maxZoom={100}
         onZoom={updateMarkerScale}
       >
-        <MapFeatures />
+        <MapObjects />
         <g>
           {
             cities.map((item) => (

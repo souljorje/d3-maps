@@ -6,7 +6,7 @@
   >
     <MapZoom @zoom="updateMarkerScale">
       <MapGraticule border />
-      <MapFeatures />
+      <MapObjects />
       <MapMesh />
       <MapMarker
         v-for="(item, index) in cities"

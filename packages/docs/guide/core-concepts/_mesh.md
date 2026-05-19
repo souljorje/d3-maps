@@ -13,7 +13,7 @@
     :projection="geoEquirectangular"
     :data-transformer="dataTransformer"
   >
-    <MapFeatures />
+    <MapObjects />
     <MapMesh stroke="#fff" />
   </MapBase>
 </template>
@@ -27,7 +27,7 @@
   projection={geoEquirectangular}
   dataTransformer={dataTransformer}
 >
-  <MapFeatures />
+  <MapObjects />
   <MapMesh stroke="#fff" />
 </MapBase>
 ```

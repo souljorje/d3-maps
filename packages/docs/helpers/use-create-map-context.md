@@ -37,11 +37,11 @@ Create the context once in the parent, pass it to sibling UI by prop, and pass t
 import { computed } from 'vue'
 import {
   useCreateMapContext,
-  type MapData,
+  type MapDataSource,
 } from '@d3-maps/vue'
 
 const props = defineProps<{
-  data: MapData
+  data: MapDataSource
 }>()
 
 const context = useCreateMapContext(computed(() => ({
@@ -53,7 +53,7 @@ const context = useCreateMapContext(computed(() => ({
 <template>
   <Toolbar :context="context" />
   <MapBase :context="context">
-    <MapFeatures />
+    <MapObjects />
   </MapBase>
 </template>
 ```
@@ -63,12 +63,12 @@ const context = useCreateMapContext(computed(() => ({
 ```tsx
 import {
   MapBase,
-  MapFeatures,
+  MapObjects,
   useCreateMapContext,
-  type MapData,
+  type MapDataSource,
 } from '@d3-maps/react'
 
-export function Example({ data }: { data: MapData }) {
+export function Example({ data }: { data: MapDataSource }) {
   const context = useCreateMapContext({
     data,
     width: 420,
@@ -80,7 +80,7 @@ export function Example({ data }: { data: MapData }) {
     <>
       <Toolbar context={context} />
       <MapBase context={context}>
-        <MapFeatures />
+        <MapObjects />
       </MapBase>
     </>
   )

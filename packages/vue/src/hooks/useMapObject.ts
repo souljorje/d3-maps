@@ -1,6 +1,7 @@
 import type {
-  MapObjectInteractionController,
-  MapObjectState,
+  InteractionController,
+  InteractionState,
+  InteractionStyles,
 } from '@d3-maps/core'
 import type {
   ComputedRef,
@@ -9,8 +10,8 @@ import type {
 } from 'vue'
 
 import {
-  resolveObjectStyle,
-  useMapObjectEvents,
+  resolveInteractionStyle,
+  useInteractionEvents,
 } from '@d3-maps/core'
 import {
   computed,
@@ -32,9 +33,9 @@ export interface UseMapObjectResult {
 }
 
 export function useMapObject(
-  styles: MaybeRef<Partial<Record<MapObjectState, StyleValue>> | undefined>,
+  styles: MaybeRef<InteractionStyles<StyleValue> | undefined>,
 ): UseMapObjectResult {
-  const state = ref<MapObjectState>('default')
+  const state = ref<InteractionState>('default')
   const insideZoom = Boolean(useMapZoom())
 
   const {
@@ -45,7 +46,7 @@ export function useMapObject(
     onFocus,
     onBlur,
     dispose,
-  }: MapObjectInteractionController<MouseEvent> = useMapObjectEvents((nextState) => {
+  }: InteractionController<MouseEvent> = useInteractionEvents((nextState) => {
     state.value = nextState
   }, insideZoom)
 
@@ -53,7 +54,7 @@ export function useMapObject(
     dispose()
   })
 
-  const style = computed(() => resolveObjectStyle(state.value, unref(styles)))
+  const style = computed(() => resolveInteractionStyle(state.value, unref(styles)))
 
   return {
     style,

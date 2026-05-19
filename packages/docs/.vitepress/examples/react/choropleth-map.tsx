@@ -1,9 +1,9 @@
-import type { MapData, MapFeatureData } from '@d3-maps/react'
+import type { MapData, MapObjectData } from '@d3-maps/react'
 
 import {
   MapBase,
-  MapFeature,
-  MapFeatures,
+  MapObject,
+  MapObjects,
 } from '@d3-maps/react'
 import { extent } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
@@ -19,6 +19,8 @@ interface CountryStat {
   id: string
   value: number
 }
+
+type ChoroplethFeature = Extract<MapObjectData, { type: 'Feature' }> & { color?: string }
 
 export default function ChoroplethMapExample(): JSX.Element {
   const [mapData, setMapData] = useState<MapData>()
@@ -95,12 +97,14 @@ export default function ChoroplethMapExample(): JSX.Element {
     minAndMaxValues[1],
   ])
 
-  const dataTransformer = useCallback((features: MapFeatureData[]): MapFeatureData[] => {
-    return features.map((feature) => {
-      const country = data.find((item) => item.id === String(feature.id))
+  const dataTransformer = useCallback((objects: MapNormalizedData): MapNormalizedData => {
+    return objects.map((object) => {
+      if (object.type !== 'Feature') return object
+
+      const country = data.find((item) => item.id === String(object.id))
       const colorValue = country ? colorScale(country.value) : ''
 
-      return { ...feature, color: colorValue }
+      return { ...object, color: colorValue }
     })
   }, [
     data,
@@ -120,31 +124,34 @@ export default function ChoroplethMapExample(): JSX.Element {
       data={mapData}
       dataTransformer={dataTransformer}
     >
-      <MapFeatures>
-        {({ features }) => (
+      <MapObjects>
+        {({ objects }) => (
           <>
             {
-              features.map((feature) => (
-                <MapFeature
-                  key={String(feature.id)}
-                  data={feature}
-                  styles={{
-                    default: {
-                      fill: String(feature.color),
-                      stroke: '#777',
-                    },
-                    hover: {
-                      fill: String(feature.color),
-                      stroke: '#777',
-                      opacity: 0.8,
-                    },
-                  }}
-                />
-              ))
+              objects
+                .filter((object): object is ChoroplethFeature => object.type === 'Feature')
+                .map((feature) => (
+                  <MapObject
+                    key={String(feature.id)}
+                    d={feature.d}
+                    name="object"
+                    styles={{
+                      default: {
+                        fill: String(feature.color),
+                        stroke: '#777',
+                      },
+                      hover: {
+                        fill: String(feature.color),
+                        stroke: '#777',
+                        opacity: 0.8,
+                      },
+                    }}
+                  />
+                ))
             }
           </>
         )}
-      </MapFeatures>
+      </MapObjects>
     </MapBase>
   )
 }

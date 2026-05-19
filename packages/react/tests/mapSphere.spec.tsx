@@ -4,8 +4,8 @@ import { render } from '@testing-library/react'
 
 import {
   MapBase,
-  MapFeatures,
   MapGraticule,
+  MapObjects,
   MapSphere,
   MapZoom,
 } from '../src'
@@ -61,7 +61,7 @@ describe('mapSphere', () => {
         <MapSphere />
         <MapZoom>
           <MapGraticule data-testid="map-graticule-lines" />
-          <MapFeatures />
+          <MapObjects />
         </MapZoom>
       </MapBase>,
     )

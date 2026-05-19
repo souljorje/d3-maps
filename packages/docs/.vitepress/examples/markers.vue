@@ -3,7 +3,7 @@
     v-if="data"
     :data="data"
   >
-    <MapFeatures />
+    <MapObjects />
     <MapMarker
       v-for="item in cities"
       :key="item.city"

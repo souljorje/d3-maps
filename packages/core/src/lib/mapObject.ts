@@ -1,188 +1,61 @@
-import type { GeoPermissibleObjects } from 'd3-geo'
+import type { GeoPath } from 'd3-geo'
 
-import {
-  isElement,
-  isObject,
-  noop,
-} from './utils'
+import type {
+  MapDataItem,
+  MapDataRef,
+  MapDataTransformer,
+} from './data'
+import type { InteractiveProps } from './interaction'
 
-export type MapObjectData = GeoPermissibleObjects
+import { isFeature } from './data'
+import { isStringOrNumber } from './utils'
 
-export type MapObjectEventType = 'mouseenter' | 'mouseleave' | 'mousedown' | 'mouseup' | 'focus' | 'blur'
-export type MapObjectGlobalMouseupListener = () => void
-export type MapObjectGlobalMouseupSubscription = (
-  listener: MapObjectGlobalMouseupListener,
-) => (() => void)
+export type MapObjectData<T extends MapDataItem = MapDataItem> = T & {
+  key: string | number
+  d?: string
+}
+export type MapObjectKey = string | number
+export type MapObjectKeyAccessor<T extends MapDataItem = MapDataItem> = (
+  item: T,
+  index: number,
+) => MapObjectKey | undefined
 
-/**
- * Supported interaction states for map objects.
- */
-export const mapObjectState = ['default', 'hover', 'active', 'focus'] as const
-export type MapObjectState = typeof mapObjectState[number]
-export interface MapObjectProps<TStyle = unknown> {
-  styles?: Partial<Record<MapObjectState, TStyle>>
+export interface MapObjectProps<TStyle = unknown> extends InteractiveProps<TStyle> {}
+
+export interface MapDataObjectProps<TStyle = unknown>
+  extends MapObjectProps<TStyle>, MapDataRef {}
+
+export interface MapObjectsProps<TStyle = unknown>
+  extends MapDataObjectProps<TStyle> {
+  dataTransformer?: MapDataTransformer
+  getKey?: MapObjectKeyAccessor
 }
 
-export type ElementMapObjectMouseDownSource =
-  | Element
-  | { currentTarget: EventTarget | null }
-  | null
-  | undefined
-export type MapObjectMouseDownSource<TTarget = unknown> =
-  | TTarget
-  | ElementMapObjectMouseDownSource
+export function getMapObjectKey(
+  item: MapDataItem,
+  index: number,
+): MapObjectKey {
+  if ('id' in item && isStringOrNumber(item.id)) return item.id
 
-export interface MapObjectInteractionController<TTarget = unknown> {
-  onMouseenter: () => MapObjectState
-  onMouseleave: () => MapObjectState
-  onMousedown: (source?: MapObjectMouseDownSource<TTarget>) => MapObjectState
-  onMouseup: () => MapObjectState
-  onFocus: () => MapObjectState
-  onBlur: () => MapObjectState
-  dispose: () => void
+  if (isFeature(item)) {
+    const id = item.properties?.id
+    if (isStringOrNumber(id)) return id
+
+    const name = item.properties?.name
+    if (isStringOrNumber(name)) return name
+  }
+
+  return index
 }
 
-/**
- * Maps DOM event names to interaction state updates.
- */
-export function getObjectStateUpdate(event: MapObjectEventType): MapObjectState {
-  switch (event) {
-    case 'mouseenter':
-    case 'mouseup':
-      return 'hover'
-    case 'mouseleave':
-    case 'blur':
-      return 'default'
-    case 'mousedown':
-      return 'active'
-    case 'focus':
-      return 'focus'
-    default:
-      return 'default'
-  }
-}
-
-/**
- * Resolves a style value for the current state (falls back to `default`).
- */
-export function resolveObjectStyle<TStyle>(
-  state: MapObjectState,
-  styles?: MapObjectProps<TStyle>['styles'],
-): TStyle | undefined {
-  return styles?.[state] ?? styles?.default
-}
-
-export function useMapObjectEvents<TTarget = unknown>(
-  onStateChange?: (state: MapObjectState) => void,
-  recoverOnGlobalMouseup = false,
-): MapObjectInteractionController<TTarget> {
-  let state: MapObjectState = 'default'
-  let isHovered = false
-  let isFocused = false
-  let isActive = false
-  let pressedTarget: MapObjectMouseDownSource<TTarget> = null
-  let removeGlobalMouseup: () => void = noop
-
-  const getResolvedState = (): MapObjectState => {
-    if (isActive) return 'active'
-    if (isFocused) return 'focus'
-    if (isHovered) return 'hover'
-    return 'default'
-  }
-
-  const setState = (nextState: MapObjectState): MapObjectState => {
-    if (state === nextState) return state
-    state = nextState
-    onStateChange?.(state)
-    return state
-  }
-
-  const syncState = (): MapObjectState => {
-    return setState(getResolvedState())
-  }
-
-  const clearInteraction = (): void => {
-    isActive = false
-    pressedTarget = null
-    removeGlobalMouseup()
-    removeGlobalMouseup = noop
-  }
-
-  const registerGlobalMouseup = (): void => {
-    if (!recoverOnGlobalMouseup) return
-
-    const onGlobalMouseup = (): MapObjectState => {
-      isHovered = isHoveredSource(pressedTarget)
-      clearInteraction()
-      return syncState()
-    }
-    removeGlobalMouseup()
-    removeGlobalMouseup = subscribeWindow('mouseup', onGlobalMouseup)
-  }
-
-  return {
-    onMouseenter: () => {
-      isHovered = true
-      return syncState()
-    },
-    onMouseleave: () => {
-      isHovered = false
-      clearInteraction()
-      return syncState()
-    },
-    onMousedown: (source) => {
-      isActive = true
-      pressedTarget = normalizeMouseDownSource(source)
-      registerGlobalMouseup()
-      return syncState()
-    },
-    onMouseup: () => {
-      clearInteraction()
-      return syncState()
-    },
-    onFocus: () => {
-      isFocused = true
-      return syncState()
-    },
-    onBlur: () => {
-      isFocused = false
-      clearInteraction()
-      return syncState()
-    },
-    dispose: () => clearInteraction(),
-  }
-}
-
-function getElementTarget(source: unknown): Element | null {
-  if (isElement(source)) return source
-  if (!isObject(source)) return null
-  if (!('currentTarget' in source)) return null
-  return isElement(source.currentTarget) ? source.currentTarget : null
-}
-
-function normalizeMouseDownSource<TTarget>(
-  source: MapObjectMouseDownSource<TTarget>,
-): MapObjectMouseDownSource<TTarget> {
-  return getElementTarget(source) ?? source ?? null
-}
-
-function isHoveredSource(source: unknown): boolean {
-  const target = getElementTarget(source)
-  if (!isElement(target)) return false
-  try {
-    return target.matches(':hover')
-  } catch {
-    return false
-  }
-}
-
-function subscribeWindow(
-  ev: string,
-  listener: MapObjectGlobalMouseupListener,
-): () => void {
-  if (typeof window === 'undefined') return noop
-  window.addEventListener(ev, listener, true)
-  return () => {
-    window.removeEventListener(ev, listener, true)
-  }
+export function makeMapObjects<T extends MapDataItem>(
+  items: readonly T[],
+  path: GeoPath,
+  getKey: MapObjectKeyAccessor<T> = getMapObjectKey,
+): MapObjectData<T>[] {
+  return items.map((item, index): MapObjectData<T> => ({
+    ...item,
+    key: getKey(item, index) ?? index,
+    d: path(item) ?? undefined,
+  }))
 }

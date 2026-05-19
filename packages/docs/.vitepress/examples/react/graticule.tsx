@@ -2,9 +2,9 @@ import type { MapData } from '@d3-maps/react'
 
 import {
   MapBase,
-  MapFeatures,
   MapGraticule,
   MapMesh,
+  MapObjects,
 } from '@d3-maps/react'
 import {
   useEffect,
@@ -39,7 +39,7 @@ export default function GraticuleExample(): JSX.Element | null {
             background
             border
           />
-          <MapFeatures />
+          <MapObjects />
           <MapMesh />
         </MapBase>
       )

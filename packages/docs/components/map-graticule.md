@@ -33,7 +33,7 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
 <template>
   <MapBase :data="mapData">
     <MapSphere fill="#fff" stroke="#cbd5e1" />
-    <MapFeatures fill="#f1f5f9" />
+    <MapObjects fill="#f1f5f9" />
     <MapGraticule
       stroke="#94a3b8"
       :config="{
@@ -50,7 +50,7 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
 ```tsx
 <MapBase data={mapData}>
   <MapSphere fill="#fff" stroke="#cbd5e1" />
-  <MapFeatures fill="#f1f5f9" />
+  <MapObjects fill="#f1f5f9" />
   <MapGraticule
     stroke="#94a3b8"
     config={{

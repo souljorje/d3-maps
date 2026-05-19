@@ -16,7 +16,7 @@
     <MapSphere />
     <MapZoom>
       <MapGraticule />
-      <MapFeatures />
+      <MapObjects />
       <MapMesh stroke="#fff" />
       <MapMarker :coordinates="[-83.0457538, 42.331427]">
         <text
@@ -42,7 +42,7 @@
   <MapSphere />
   <MapZoom>
     <MapGraticule />
-    <MapFeatures />
+    <MapObjects />
     <MapMesh stroke="#fff" />
     <MapMarker coordinates={[-83.0457538, 42.331427]}>
       <text

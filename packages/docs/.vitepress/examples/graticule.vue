@@ -7,20 +7,20 @@
       background
       border
     />
-    <MapFeatures />
+    <MapObjects />
     <MapMesh />
   </MapBase>
 </template>
 
 <script setup lang="ts">
-import type { MapData } from '@d3-maps/vue'
+import type { MapDataSource } from '@d3-maps/vue'
 
 import {
   onMounted,
   ref,
 } from 'vue'
 
-const data = ref<MapData>()
+const data = ref<MapDataSource>()
 
 onMounted(async () => {
   const { default: mapData } = await import('@d3-maps/atlas/world/countries')

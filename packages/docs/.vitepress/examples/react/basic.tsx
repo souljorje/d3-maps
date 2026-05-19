@@ -2,8 +2,8 @@ import type { MapData } from '@d3-maps/react'
 
 import {
   MapBase,
-  MapFeatures,
   MapMesh,
+  MapObjects,
 } from '@d3-maps/react'
 import { useEffect, useState } from 'react'
 
@@ -31,7 +31,7 @@ export default function BasicExample(): JSX.Element | null {
   return mapData
     ? (
         <MapBase data={mapData}>
-          <MapFeatures />
+          <MapObjects />
           <MapMesh />
         </MapBase>
       )

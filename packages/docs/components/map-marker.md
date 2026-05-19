@@ -22,7 +22,7 @@ Positions anything on the map based on coordinates
 ```vue
 <template>
   <MapBase :data="mapData">
-    <MapFeatures />
+    <MapObjects />
     <MapMesh stroke="slategray" />
     <MapMarker
       v-for="item in cities"
@@ -48,7 +48,7 @@ Positions anything on the map based on coordinates
 
 ```tsx
 <MapBase data={mapData}>
-  <MapFeatures />
+  <MapObjects />
   <MapMesh stroke="slategray" />
   {cities.map((item) => (
     <MapMarker

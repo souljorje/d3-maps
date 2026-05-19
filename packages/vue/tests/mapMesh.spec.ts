@@ -10,6 +10,8 @@ import {
 import {
   sampleGeoJson,
   sampleTopology,
+  sampleTopologyObjectKey,
+  sampleTopologyTwoObjects,
 } from './fixtures'
 
 describe('mapMesh', () => {
@@ -41,5 +43,36 @@ describe('mapMesh', () => {
 
     const path = wrapper.get('path')
     expect(path.attributes('d')).toBeUndefined()
+  })
+
+  it('supports topology overrides', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        data: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapMesh, {
+          data: sampleTopologyTwoObjects,
+          objectKey: sampleTopologyObjectKey,
+        }),
+      },
+    })
+
+    expect(wrapper.get('path').attributes('d')).toBeTruthy()
+  })
+
+  it('supports objectKey overrides from context', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        data: sampleTopologyTwoObjects,
+      },
+      slots: {
+        default: () => h(MapMesh, {
+          objectKey: sampleTopologyObjectKey,
+        }),
+      },
+    })
+
+    expect(wrapper.get('path').attributes('d')).toBeTruthy()
   })
 })

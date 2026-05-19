@@ -12,6 +12,8 @@ import {
 import {
   sampleGeoJson,
   sampleTopology,
+  sampleTopologyObjectKey,
+  sampleTopologyTwoObjects,
 } from './fixtures'
 
 describe('mapMesh', () => {
@@ -39,5 +41,28 @@ describe('mapMesh', () => {
     const path = container.querySelector('path')
     expect(path).toBeTruthy()
     expect(path?.getAttribute('d')).toBeNull()
+  })
+
+  it('supports topology overrides', () => {
+    const { container } = render(
+      <MapBase data={sampleGeoJson}>
+        <MapMesh
+          data={sampleTopologyTwoObjects}
+          objectKey={sampleTopologyObjectKey}
+        />
+      </MapBase>,
+    )
+
+    expect(container.querySelector('path')?.getAttribute('d')).toBeTruthy()
+  })
+
+  it('supports objectKey overrides from context', () => {
+    const { container } = render(
+      <MapBase data={sampleTopologyTwoObjects}>
+        <MapMesh objectKey={sampleTopologyObjectKey} />
+      </MapBase>,
+    )
+
+    expect(container.querySelector('path')?.getAttribute('d')).toBeTruthy()
   })
 })

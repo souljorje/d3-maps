@@ -39,7 +39,7 @@ bun add @d3-maps/vue
 ```html
 <script type="module">
   import { createApp } from 'https://esm.sh/vue@3'
-  import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/vue'
+  import { MapBase, MapObjects } from 'https://esm.sh/@d3-maps/vue'
   import 'https://esm.sh/@d3-maps/vue/style.css'
 </script>
 ```
@@ -74,7 +74,7 @@ bun add @d3-maps/react
 <script type="module">
   import React from 'https://esm.sh/react@19'
   import { createRoot } from 'https://esm.sh/react-dom@19/client'
-  import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/react'
+  import { MapBase, MapObjects } from 'https://esm.sh/@d3-maps/react'
   import 'https://esm.sh/@d3-maps/react/style.css'
 </script>
 ```
@@ -103,15 +103,15 @@ Pass the data to `MapBase`
 
 ```vue [vue]
 <script setup lang="ts">
-import { MapBase, MapFeatures, type MapData } from '@d3-maps/vue'
+import { MapBase, MapObjects, type MapDataSource } from '@d3-maps/vue'
 defineProps<{
-  data: MapData
+  data: MapDataSource
 }>()
 </script>
 
 <template>
   <MapBase :data="data">
-    <MapFeatures />
+    <MapObjects />
   </MapBase>
 </template>
 ```
@@ -120,12 +120,12 @@ defineProps<{
 
 ```tsx [react]
 import '@d3-maps/react/style.css'
-import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
+import { MapBase, MapObjects, type MapDataSource } from '@d3-maps/react'
 
-export function MapView({ data }: { data: MapData }) {
+export function MapView({ data }: { data: MapDataSource }) {
   return (
     <MapBase data={data}>
-      <MapFeatures />
+      <MapObjects />
     </MapBase>
   )
 }

@@ -5,8 +5,8 @@ import { h } from 'vue'
 
 import {
   MapBase,
-  MapFeatures,
   MapGraticule,
+  MapObjects,
   MapSphere,
   MapZoom,
 } from '../src'
@@ -70,7 +70,7 @@ describe('mapSphere', () => {
           h(MapZoom, {}, {
             default: () => [
               h(MapGraticule, { 'data-testid': 'map-graticule-lines' }),
-              h(MapFeatures),
+              h(MapObjects),
             ],
           }),
         ],

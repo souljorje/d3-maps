@@ -2,9 +2,9 @@ import type { MapData } from '@d3-maps/react'
 
 import {
   MapBase,
-  MapFeatures,
   MapLine,
   MapMarker,
+  MapObjects,
 } from '@d3-maps/react'
 import { curveBasis } from 'd3-shape'
 import {
@@ -63,7 +63,7 @@ export default function ConnectionsExample(): JSX.Element | null {
   return mapData
     ? (
         <MapBase data={mapData}>
-          <MapFeatures />
+          <MapObjects />
 
           {
             cities.map((city) => (

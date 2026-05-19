@@ -55,7 +55,7 @@ Use native attributes [marker-start](https://developer.mozilla.org/en-US/docs/We
 ```vue
 <template>
   <MapBase :data="mapData">
-    <MapFeatures />
+    <MapObjects />
     <MapLine
       :coordinates="[
         [-122.4194, 37.7749],
@@ -79,7 +79,7 @@ import { curveBasis } from 'd3-shape'
 import { curveBasis } from 'd3-shape'
 
 <MapBase data={mapData}>
-  <MapFeatures />
+  <MapObjects />
   <MapLine
     coordinates={[
       [-122.4194, 37.7749],

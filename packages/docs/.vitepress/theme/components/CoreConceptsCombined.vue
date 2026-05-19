@@ -9,7 +9,7 @@
     >
       <MapZoom>
         <MapGraticule border />
-        <MapFeatures
+        <MapObjects
           :styles="{
             default: { fill: 'lightblue' },
             hover: { fill: 'skyblue' },
@@ -36,8 +36,8 @@
 
 <script setup lang="ts">
 import type {
-  DataTransformer,
-  MapData,
+  MapDataSource,
+  MapDataTransformer,
 } from '@d3-maps/vue'
 
 import { geoEquirectangular } from 'd3-geo'
@@ -47,10 +47,10 @@ import {
   ref,
 } from 'vue'
 
-const data = ref<MapData>()
+const data = ref<MapDataSource>()
 
-const dataTransformer: DataTransformer = (features) => (
-  features.filter((feature) => feature.properties?.name !== 'Antarctica')
+const dataTransformer: MapDataTransformer = (objects) => (
+  objects.filter((object) => object.type !== 'Feature' || object.properties?.name !== 'Antarctica')
 )
 
 onMounted(async () => {

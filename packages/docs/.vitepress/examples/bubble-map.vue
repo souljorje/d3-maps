@@ -8,7 +8,7 @@
       :max-zoom="100"
       @zoom="updateMarkerScale"
     >
-      <MapFeatures />
+      <MapObjects />
       <g>
         <MapMarker
           v-for="(item, index) in cities"

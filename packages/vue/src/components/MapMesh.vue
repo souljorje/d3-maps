@@ -8,16 +8,27 @@
 </template>
 
 <script setup lang="ts">
-import type { MapObjectProps } from '@d3-maps/core'
+import type { MapMeshProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
+import {
+  makeMesh,
+  resolveMapDataRef,
+} from '@d3-maps/core'
 import { computed } from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
 import MapObject from './MapObject.vue'
 
-defineProps<MapObjectProps<StyleValue>>()
+const props = defineProps<MapMeshProps<StyleValue>>()
 const context = useMapContext()
 
-const path = computed<string | undefined>(() => context.value.renderMesh() ?? undefined)
+const path = computed<string | undefined>(() => {
+  const [resolvedData, resolvedObjectKey] = resolveMapDataRef(
+    props,
+    context.value,
+  )
+  const meshData = makeMesh(resolvedData, resolvedObjectKey)
+  return meshData == null ? undefined : context.value.path(meshData) ?? undefined
+})
 </script>

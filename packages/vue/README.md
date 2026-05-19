@@ -31,7 +31,7 @@ bun add @d3-maps/vue
 
 ```html
 <script type="module">
-  import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/vue'
+  import { MapBase, MapObjects } from 'https://esm.sh/@d3-maps/vue'
   import 'https://esm.sh/@d3-maps/vue/style.css'
 </script>
 ```
@@ -40,17 +40,20 @@ bun add @d3-maps/vue
 
 ```html
 <script setup lang="ts">
-import type { MapData } from '@d3-maps/core'
+import type { MapDataSource } from '@d3-maps/core'
 
-import { MapBase, MapFeatures } from '@d3-maps/vue'
+import { MapBase, MapObjects } from '@d3-maps/vue'
 defineProps<{
-  data: MapData
+  data: MapDataSource
 }>()
 </script>
 
 <template>
-  <MapBase :data="data">
-    <MapFeatures />
+  <MapBase
+    :data="data"
+    object-key="countries"
+  >
+    <MapObjects />
   </MapBase>
 </template>
 ```

@@ -31,7 +31,7 @@ Interaction state is tracked on the wrapper `<g>`.
 ```vue
 <template>
   <MapBase :data="mapData">
-    <MapFeatures />
+    <MapObjects />
     <MapAnnotation
       :coordinates="[2.3522, 48.8566]"
       :length="40"
@@ -56,7 +56,7 @@ Interaction state is tracked on the wrapper `<g>`.
 
 ```tsx
 <MapBase data={mapData}>
-  <MapFeatures />
+  <MapObjects />
   <MapAnnotation
     coordinates={[2.3522, 48.8566]}
     length={40}

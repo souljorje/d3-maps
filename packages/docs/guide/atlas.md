@@ -40,13 +40,13 @@ bun add @d3-maps/atlas
 
 ```vue [vue]
 <script setup lang="ts">
-import { MapBase, MapFeatures } from '@d3-maps/vue'
+import { MapBase, MapObjects } from '@d3-maps/vue'
 import Countries from '@d3-maps/atlas/world/countries'
 </script>
 
 <template>
   <MapBase :data="Countries">
-    <MapFeatures />
+    <MapObjects />
   </MapBase>
 </template>
 ```
@@ -54,13 +54,13 @@ import Countries from '@d3-maps/atlas/world/countries'
 == React
 
 ```tsx [react]
-import { MapBase, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapObjects } from '@d3-maps/react'
 import Countries from '@d3-maps/atlas/world/countries'
 
 export function App() {
   return (
     <MapBase data={Countries}>
-      <MapFeatures />
+      <MapObjects />
     </MapBase>
   )
 }
@@ -76,14 +76,14 @@ export function App() {
 
 ```vue [vue]
 <script setup lang="ts">
-import { MapBase, MapFeatures } from '@d3-maps/vue'
+import { MapBase, MapObjects } from '@d3-maps/vue'
 import Land from '@d3-maps/atlas/world/land'
 import Coastline from '@d3-maps/atlas/world/coastline'
 </script>
 
 <template>
   <MapBase :data="[Land, Coastline]">
-    <MapFeatures />
+    <MapObjects />
   </MapBase>
 </template>
 ```
@@ -91,14 +91,14 @@ import Coastline from '@d3-maps/atlas/world/coastline'
 == React
 
 ```tsx [react]
-import { MapBase, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapObjects } from '@d3-maps/react'
 import Land from '@d3-maps/atlas/world/land'
 import Coastline from '@d3-maps/atlas/world/coastline'
 
 export function App() {
   return (
     <MapBase data={[Land, Coastline]}>
-      <MapFeatures />
+      <MapObjects />
     </MapBase>
   )
 }
@@ -114,13 +114,13 @@ export function App() {
 
 ```vue [vue]
 <script setup lang="ts">
-import { MapBase, MapFeatures } from '@d3-maps/vue'
+import { MapBase, MapObjects } from '@d3-maps/vue'
 import Africa from '@d3-maps/atlas/continents/africa'
 </script>
 
 <template>
   <MapBase :data="Africa">
-    <MapFeatures />
+    <MapObjects />
   </MapBase>
 </template>
 ```
@@ -128,13 +128,13 @@ import Africa from '@d3-maps/atlas/continents/africa'
 == React
 
 ```tsx [react]
-import { MapBase, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapObjects } from '@d3-maps/react'
 import Africa from '@d3-maps/atlas/continents/africa'
 
 export function App() {
   return (
     <MapBase data={Africa}>
-      <MapFeatures />
+      <MapObjects />
     </MapBase>
   )
 }
@@ -150,13 +150,13 @@ export function App() {
 
 ```vue [vue]
 <script setup lang="ts">
-import { MapBase, MapFeatures } from '@d3-maps/vue'
+import { MapBase, MapObjects } from '@d3-maps/vue'
 import Japan from '@d3-maps/atlas/countries/japan'
 </script>
 
 <template>
   <MapBase :data="Japan">
-    <MapFeatures />
+    <MapObjects />
   </MapBase>
 </template>
 ```
@@ -164,13 +164,13 @@ import Japan from '@d3-maps/atlas/countries/japan'
 == React
 
 ```tsx [react]
-import { MapBase, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapObjects } from '@d3-maps/react'
 import Japan from '@d3-maps/atlas/countries/japan'
 
 export function App() {
   return (
     <MapBase data={Japan}>
-      <MapFeatures />
+      <MapObjects />
     </MapBase>
   )
 }
@@ -186,13 +186,13 @@ export function App() {
 
 ```vue [vue]
 <script setup lang="ts">
-import { MapBase, MapFeatures } from '@d3-maps/vue'
+import { MapBase, MapObjects } from '@d3-maps/vue'
 import { Georgia, Germany, Russia } from '@d3-maps/atlas/countries'
 </script>
 
 <template>
   <MapBase :data="[Georgia, Germany, Russia]">
-    <MapFeatures />
+    <MapObjects />
   </MapBase>
 </template>
 ```
@@ -200,13 +200,13 @@ import { Georgia, Germany, Russia } from '@d3-maps/atlas/countries'
 == React
 
 ```tsx [react]
-import { MapBase, MapFeatures } from '@d3-maps/react'
+import { MapBase, MapObjects } from '@d3-maps/react'
 import { Georgia, Germany, Russia } from '@d3-maps/atlas/countries'
 
 export function App() {
   return (
     <MapBase data={[Georgia, Germany, Russia]}>
-      <MapFeatures />
+      <MapObjects />
     </MapBase>
   )
 }

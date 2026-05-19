@@ -9,7 +9,7 @@ import { renderToString } from 'vue/server-renderer'
 import {
   MapAnnotation,
   MapBase,
-  MapFeatures,
+  MapObjects,
   MapZoom,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
@@ -22,7 +22,7 @@ describe('SSR', () => {
         h(MapBase, { data: sampleGeoJson }, {
           default: () => h(MapZoom, null, {
             default: () => [
-              h(MapFeatures),
+              h(MapObjects),
               h(MapAnnotation, { coordinates: [2.3522, 48.8566] }, {
                 default: () => h('text', 'Paris'),
               }),

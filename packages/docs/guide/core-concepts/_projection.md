@@ -19,7 +19,7 @@ import { geoEquirectangular } from 'd3-geo'
     :data-transformer="dataTransformer"
     :projection="geoEquirectangular"
   >
-    <MapFeatures />
+    <MapObjects />
   </MapBase>
 </template>
 ```
@@ -34,7 +34,7 @@ import { geoEquirectangular } from 'd3-geo'
   dataTransformer={dataTransformer}
   projection={geoEquirectangular}
 >
-  <MapFeatures />
+  <MapObjects />
 </MapBase>
 ```
 
