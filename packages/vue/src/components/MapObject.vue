@@ -14,7 +14,7 @@ import type { StyleValue } from 'vue'
 
 import { toRef } from 'vue'
 
-import { useMapObject } from '../hooks/useMapObject'
+import { useInteraction } from '../hooks/useInteraction'
 
 type MapObjectPathProps = MapObjectProps<StyleValue> & {
   tag?: 'path'
@@ -28,5 +28,5 @@ type Props = MapObjectPathProps | MapObjectGroupProps
 
 const props = withDefaults(defineProps<Props>(), { tag: 'path' })
 
-const { style, ...events } = useMapObject(toRef(props, 'styles'))
+const { style, ...events } = useInteraction(toRef(props, 'styles'))
 </script>

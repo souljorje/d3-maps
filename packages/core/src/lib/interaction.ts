@@ -9,7 +9,7 @@ export type InteractionState = typeof interactionState[number]
 
 export type InteractionStyles<TStyle = unknown> = Partial<Record<InteractionState, TStyle>>
 
-export interface InteractiveProps<TStyle = unknown> {
+export interface InteractionProps<TStyle = unknown> {
   styles?: InteractionStyles<TStyle>
 }
 

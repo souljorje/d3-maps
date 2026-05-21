@@ -213,7 +213,7 @@ const docsSidebar = [
       { text: 'useCreateMapContext', link: '/helpers/use-create-map-context' },
       { text: 'useMapContext', link: '/helpers/use-map-context' },
       { text: 'useMapZoom', link: '/helpers/use-map-zoom' },
-      { text: 'useMapObject', link: '/helpers/use-map-object' },
+      { text: 'useInteraction', link: '/helpers/use-interaction' },
       { text: 'getFeatureKey', link: '/helpers/get-feature-key' },
       { text: 'getObjectZoomView', link: '/helpers/get-object-zoom-view' },
     ],

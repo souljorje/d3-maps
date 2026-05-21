@@ -22,7 +22,7 @@ import {
 
 import { useMapZoom } from './useMapZoom'
 
-export interface UseMapObjectResult {
+export interface UseInteractionResult {
   style: ComputedRef<StyleValue | undefined>
   onMouseenter: () => void
   onMouseleave: () => void
@@ -32,9 +32,9 @@ export interface UseMapObjectResult {
   onBlur: () => void
 }
 
-export function useMapObject(
+export function useInteraction(
   styles: MaybeRef<InteractionStyles<StyleValue> | undefined>,
-): UseMapObjectResult {
+): UseInteractionResult {
   const state = ref<InteractionState>('default')
   const insideZoom = Boolean(useMapZoom())
 

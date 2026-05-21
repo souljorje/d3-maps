@@ -1,3 +1,3 @@
-import type { InteractiveProps } from './interaction'
+import type { InteractionProps } from './interaction'
 
-export interface MapObjectProps<TStyle = unknown> extends InteractiveProps<TStyle> {}
+export interface MapObjectProps<TStyle = unknown> extends InteractionProps<TStyle> {}

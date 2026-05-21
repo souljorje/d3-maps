@@ -35,18 +35,18 @@ interface MapObjectEventHandlers<T extends Element> {
   onBlur: FocusEventHandler<T>
 }
 
-export interface UseMapObjectOptions<TElement extends Element>
+export interface UseInteractionOptions<TElement extends Element>
   extends MapObjectProps<CSSProperties>,
   Partial<MapObjectEventHandlers<TElement>> {}
 
-export interface UseMapObjectResult<TElement extends Element>
+export interface UseInteractionResult<TElement extends Element>
   extends MapObjectEventHandlers<TElement> {
   style?: CSSProperties
 }
 
-export function useMapObject<TElement extends Element>(
-  options: UseMapObjectOptions<TElement>,
-): UseMapObjectResult<TElement> {
+export function useInteraction<TElement extends Element>(
+  options: UseInteractionOptions<TElement>,
+): UseInteractionResult<TElement> {
   const [state, setState] = useState<InteractionState>('default')
   const stateRef = useRef(state)
   const insideZoom = Boolean(useMapZoom())

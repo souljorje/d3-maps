@@ -8,7 +8,7 @@ import type {
   SVGProps,
 } from 'react'
 
-import { useMapObject } from '../hooks/useMapObject'
+import { useInteraction } from '../hooks/useInteraction'
 
 interface MapObjectBaseProps extends CoreMapObjectProps<CSSProperties> {
   name?: string
@@ -39,7 +39,7 @@ export function MapObject(props: MapObjectProps): ReactElement | null {
       name,
       ...groupProps
     } = props
-    const { style, ...events } = useMapObject<SVGGElement>({
+    const { style, ...events } = useInteraction<SVGGElement>({
       styles,
       ...groupProps,
     })
@@ -63,7 +63,7 @@ export function MapObject(props: MapObjectProps): ReactElement | null {
     name,
     ...pathProps
   } = props
-  const { style, ...events } = useMapObject<SVGPathElement>({
+  const { style, ...events } = useInteraction<SVGPathElement>({
     styles,
     ...pathProps,
   })

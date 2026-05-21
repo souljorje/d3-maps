@@ -86,4 +86,4 @@ import { isFeature } from '@d3-maps/react'
 
 ## Helpers
 
-- See [useMapObject](/helpers/use-map-object)
+- See [useInteraction](/helpers/use-interaction)
