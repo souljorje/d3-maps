@@ -7,11 +7,13 @@ import { mount } from '@vue/test-utils'
 import {
   defineComponent,
   h,
+  nextTick,
+  ref,
 } from 'vue'
 
 import {
   MapBase,
-  MapObjects,
+  MapFeatures,
   useCreateMapContext,
 } from '../src'
 import {
@@ -25,7 +27,6 @@ describe('map', () => {
   it('renders default viewBox from map defaults', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
         'data-testid': 'map-svg',
       },
     })
@@ -36,7 +37,6 @@ describe('map', () => {
   it('renders scoped-slot children with map context', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
         width: 420,
       },
       slots: {
@@ -50,41 +50,62 @@ describe('map', () => {
     expect(wrapper.get('[data-testid="map-size-group"]').attributes('data-size')).toBe('420x210')
   })
 
-  it('updates rendered objects when map data prop changes', async () => {
-    const wrapper = mount(MapBase, {
-      props: {
-        data: sampleGeoJson,
-      },
-      slots: {
-        default: () => h(MapObjects),
+  it('updates rendered objects when layer data changes', async () => {
+    const currentFit = ref(sampleGeoJson)
+    const currentData = ref(sampleGeoJson)
+
+    const Harness = defineComponent({
+      setup() {
+        return () => h(MapBase, {
+          fit: currentFit.value,
+        }, {
+          default: () => h(MapFeatures, {
+            data: currentData.value,
+          }),
+        })
       },
     })
+
+    const wrapper = mount(Harness)
 
     expect(wrapper.findAll('path')).toHaveLength(1)
 
-    await wrapper.setProps({
-      data: sampleGeoJsonTwoFeatures,
-    })
+    currentFit.value = sampleGeoJsonTwoFeatures
+    currentData.value = sampleGeoJsonTwoFeatures
+    await nextTick()
 
     expect(wrapper.findAll('path')).toHaveLength(2)
   })
 
   it('updates rendered objects when topology data and objectKey change', async () => {
-    const wrapper = mount(MapBase, {
-      props: {
-        data: sampleGeoJson,
-      },
-      slots: {
-        default: () => h(MapObjects),
+    const currentFit = ref(sampleGeoJson as typeof sampleGeoJson | typeof sampleTopologyTwoObjects)
+    const currentFitObjectKey = ref<string | undefined>(undefined)
+    const currentData = ref(sampleGeoJson as typeof sampleGeoJson | typeof sampleTopologyTwoObjects)
+    const currentObjectKey = ref<string | undefined>(undefined)
+
+    const Harness = defineComponent({
+      setup() {
+        return () => h(MapBase, {
+          fit: currentFit.value,
+          fitObjectKey: currentFitObjectKey.value,
+        }, {
+          default: () => h(MapFeatures, {
+            data: currentData.value,
+            objectKey: currentObjectKey.value,
+          }),
+        })
       },
     })
+
+    const wrapper = mount(Harness)
 
     expect(wrapper.findAll('path')).toHaveLength(1)
 
-    await wrapper.setProps({
-      data: sampleTopologyTwoObjects,
-      objectKey: sampleTopologyObjectKey,
-    })
+    currentFit.value = sampleTopologyTwoObjects
+    currentFitObjectKey.value = sampleTopologyObjectKey
+    currentData.value = sampleTopologyTwoObjects
+    currentObjectKey.value = sampleTopologyObjectKey
+    await nextTick()
 
     expect(wrapper.findAll('path')).toHaveLength(2)
   })
@@ -99,7 +120,7 @@ describe('map', () => {
         },
       },
       slots: {
-        default: () => h(MapObjects, {
+        default: () => h(MapFeatures, {
           data: sampleTopologyTwoObjects,
           objectKey: sampleTopologyObjectKey,
         }),
@@ -119,15 +140,15 @@ describe('map', () => {
       },
       setup(props) {
         return () => h('div', {
-          'data-testid': 'toolbar-count',
-        }, String(props.context.objects.length))
+          'data-testid': 'toolbar-width',
+        }, String(props.context.width))
       },
     })
 
     const Harness = defineComponent({
       setup() {
         const context = useCreateMapContext({
-          data: sampleGeoJson,
+          fit: sampleGeoJson,
           width: 420,
         })
 
@@ -143,7 +164,9 @@ describe('map', () => {
               context: mapContext,
               'data-testid': 'map-svg',
             }, {
-              default: () => h(MapObjects),
+              default: () => h(MapFeatures, {
+                data: sampleGeoJson,
+              }),
             }),
           ]
         }
@@ -152,7 +175,7 @@ describe('map', () => {
 
     const wrapper = mount(Harness)
 
-    expect(wrapper.get('[data-testid="toolbar-count"]').text()).toBe('1')
+    expect(wrapper.get('[data-testid="toolbar-width"]').text()).toBe('420')
     expect(wrapper.get('[data-testid="map-svg"]').attributes('viewBox')).toBe('0 0 420 210')
     expect(wrapper.findAll('path')).toHaveLength(1)
   })

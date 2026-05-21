@@ -1,10 +1,10 @@
-import type { MapData } from '@d3-maps/react'
+import type { MapDataSource } from '@d3-maps/react'
 
 import {
   MapBase,
+  MapFeatures,
   MapLine,
   MapMarker,
-  MapObjects,
 } from '@d3-maps/react'
 import { curveBasis } from 'd3-shape'
 import {
@@ -40,7 +40,7 @@ const returnFlight = [
 ]
 
 export default function ConnectionsExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapData>()
+  const [mapData, setMapData] = useState<MapDataSource>()
 
   useEffect(() => {
     let isCancelled = false
@@ -62,8 +62,8 @@ export default function ConnectionsExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <MapBase data={mapData}>
-          <MapObjects />
+        <MapBase>
+          <MapFeatures data={mapData} />
 
           {
             cities.map((city) => (

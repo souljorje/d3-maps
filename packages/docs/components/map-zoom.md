@@ -74,7 +74,7 @@ Callbacks:
       clickDistance: [8], // also can be array-wrapped
     }"
   >
-    <MapObjects />
+    <MapFeatures />
   </MapZoom>
 </template>
 ```
@@ -91,7 +91,7 @@ Callbacks:
     clickDistance: [8], // also can be array-wrapped
   }}
 >
-  <MapObjects />
+  <MapFeatures />
 </MapZoom>
 ```
 

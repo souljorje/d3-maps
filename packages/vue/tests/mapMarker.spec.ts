@@ -13,7 +13,7 @@ describe('mapMarker', () => {
   it('uses projection transform from context', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
         width: 400,
         height: 300,
       },
@@ -39,7 +39,7 @@ describe('mapMarker', () => {
   it('recomputes marker transform when map context changes', async () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
         width: 300,
       },
       slots: {
@@ -60,7 +60,7 @@ describe('mapMarker', () => {
   it('allows overriding the outer group name', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapMarker, {

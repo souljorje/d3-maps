@@ -5,8 +5,8 @@ import { h } from 'vue'
 
 import {
   MapBase,
+  MapFeatures,
   MapGraticule,
-  MapObjects,
   MapSphere,
   MapZoom,
 } from '../src'
@@ -15,7 +15,7 @@ import { sampleGeoJson } from './fixtures'
 function mountWithMapSphere(props: Record<string, unknown> = {}) {
   return mount(MapBase, {
     props: {
-      data: sampleGeoJson,
+      fit: sampleGeoJson,
     },
     slots: {
       default: () => h(MapSphere, props),
@@ -62,7 +62,7 @@ describe('mapSphere', () => {
   it('allows users to keep sphere outside zoomed content', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => [
@@ -70,7 +70,7 @@ describe('mapSphere', () => {
           h(MapZoom, {}, {
             default: () => [
               h(MapGraticule, { 'data-testid': 'map-graticule-lines' }),
-              h(MapObjects),
+              h(MapFeatures),
             ],
           }),
         ],

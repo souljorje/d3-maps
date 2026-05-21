@@ -1,10 +1,10 @@
-import type { MapData } from '@d3-maps/react'
+import type { MapDataSource } from '@d3-maps/react'
 
 import {
   MapAnnotation,
   MapBase,
+  MapFeatures,
   MapMarker,
-  MapObjects,
 } from '@d3-maps/react'
 import {
   useEffect,
@@ -31,7 +31,7 @@ const cities: City[] = [
 ]
 
 export default function AnnotationExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapData>()
+  const [mapData, setMapData] = useState<MapDataSource>()
 
   useEffect(() => {
     let isCancelled = false
@@ -53,8 +53,8 @@ export default function AnnotationExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <MapBase data={mapData}>
-          <MapObjects />
+        <MapBase>
+          <MapFeatures data={mapData} />
           {cities.map((city) => (
             <MapAnnotation
               key={city.name}

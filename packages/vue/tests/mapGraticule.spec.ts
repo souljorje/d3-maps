@@ -12,7 +12,7 @@ import { sampleGeoJson } from './fixtures'
 function mountWithMapGraticule(props: Record<string, unknown> = {}) {
   return mount(MapBase, {
     props: {
-      data: sampleGeoJson,
+      fit: sampleGeoJson,
     },
     slots: {
       default: () =>
@@ -72,7 +72,7 @@ describe('mapGraticule', () => {
 
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
         width: 600,
       },
       slots: {

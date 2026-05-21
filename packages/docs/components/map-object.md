@@ -6,7 +6,7 @@ description: Low-level interactive SVG path or group primitive for custom D3 map
 
 Renders a single interactive SVG element.
 
-Use it directly when you already have a path string or when you want to take full control over how objects from `MapObjects` are rendered.
+Use it directly when you already have a path string or when you want to take full control over how features from `MapFeatures` are rendered.
 
 ## Props
 
@@ -14,7 +14,7 @@ Use it directly when you already have a path string or when you want to take ful
 | --- | --- | --- | --- |
 | `d?` | `string` | — | Path data for the default `path` mode |
 | `tag?` | `'path' \| 'g'` | `'path'` | Render a `path` or interactive `g` |
-| `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | Interaction-state styles, see [styling guide](/guide/core-concepts/#styling) |
+| `styles?` | [MapObject['styles']](/api/core/object#property-styles) | — | Interaction-state styles, see [styling guide](/guide/core-concepts/#styling) |
 
 Use native SVG attrs like `fill`, `stroke`, `role`, `aria-label`, and `tabindex` / `tabIndex` directly on `MapObject`.
 
@@ -26,23 +26,26 @@ Use native SVG attrs like `fill`, `stroke`, `role`, `aria-label`, and `tabindex`
 
 ```vue
 <template>
-  <MapBase :data="mapData">
-    <MapObjects #default="{ objects }">
+  <MapBase>
+    <MapFeatures 
+      :data="mapData" 
+      #default="{ features }"
+    >
       <MapObject
-        v-for="object in objects"
-        :key="object.key"
-        :d="object.d"
-        :fill="isFeature(object) ? 'darkorange' : 'none'"
+        v-for="feature in features"
+        :key="feature.key"
+        :d="feature.d"
+        :fill="isFeature(feature) ? 'darkorange' : 'none'"
         :styles="{
           default: { opacity: 0.9 },
           focus: { stroke: 'darkgreen' },
           hover: { opacity: 0.8 },
         }"
         role="button"
-        :aria-label="isFeature(object) ? object.properties?.name : undefined"
+        :aria-label="isFeature(feature) ? feature.properties?.name : undefined"
         tabindex="0"
       />
-    </MapObjects>
+    </MapFeatures>
   </MapBase>
 </template>
 
@@ -56,28 +59,26 @@ import { isFeature } from '@d3-maps/vue'
 ```tsx
 import { isFeature } from '@d3-maps/react'
 
-<MapBase data={mapData}>
-  <MapObjects>
-    {({ objects }) => (
-      <>
-        {objects.map((object) => (
-          <MapObject
-            key={object.key}
-            d={object.d}
-            fill={isFeature(object) ? 'darkorange' : 'none'}
-            styles={{
-              default: { opacity: 0.9 },
-              focus: { stroke: 'darkgreen' },
-              hover: { opacity: 0.8 },
-            }}
-            role="button"
-            aria-label={isFeature(object) ? String(object.properties?.name ?? 'Object') : undefined}
-            tabIndex={0}
-          />
-        ))}
-      </>
-    )}
-  </MapObjects>
+<MapBase>
+  <MapFeatures data={mapData}>
+    {({ features }) =>
+      features.map((feature) => (
+        <MapObject
+          key={feature.key}
+          d={feature.d}
+          fill={isFeature(feature) ? 'darkorange' : 'none'}
+          styles={{
+            default: { opacity: 0.9 },
+            focus: { stroke: 'darkgreen' },
+            hover: { opacity: 0.8 },
+          }}
+          role="button"
+          aria-label={isFeature(feature) ? String(feature.properties?.name ?? 'Object') : undefined}
+          tabIndex={0}
+        />
+      ))
+    }
+  </MapFeatures>
 </MapBase>
 ```
 

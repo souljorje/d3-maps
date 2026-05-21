@@ -1,13 +1,13 @@
 <template>
   <MapBase
     v-if="data"
-    :data="data"
+
     :projection="projection"
   >
     <MapZoom @zoom="updateMarkerScale">
       <MapGraticule border />
-      <MapObjects />
-      <MapMesh />
+      <MapFeatures :data="data" />
+      <MapMesh :data="data" />
       <MapMarker
         v-for="(item, index) in cities"
         :key="index"

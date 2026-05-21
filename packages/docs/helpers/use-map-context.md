@@ -1,11 +1,11 @@
 ---
-description: Helper for reading map size, objects, and path state inside custom D3 SVG map layers with React and Vue
+description: Helper for reading map size, projection, and path state inside custom D3 SVG map layers with React and Vue
 ---
 
 # useMapContext
 
 Reads the current map context from [MapBase](/components/map-base)  
-Use it in custom layers when you need the resolved map size, normalized objects, or the shared path generator  
+Use it in custom layers when you need the resolved map size, projection, or shared path generator  
 Throws an error if used outside `MapBase`
 
 ## Return value
@@ -29,18 +29,12 @@ import { computed } from 'vue'
 import { useMapContext } from '@d3-maps/vue'
 
 const context = useMapContext()
-const featureCountLabel = computed(() => `${context.value.objects.length} objects`)
+const sizeLabel = computed(() => `${context.value.width}x${context.value.height}`)
 </script>
 
 <template>
-  <text
-    v-if="featureCountLabel"
-    x="12"
-    y="20"
-    font-size="12"
-    fill="#111"
-  >
-    {{ featureCountLabel }}
+  <text x="12" y="20" font-size="12" fill="#111">
+    {{ sizeLabel }}
   </text>
 </template>
 ```
@@ -50,12 +44,12 @@ const featureCountLabel = computed(() => `${context.value.objects.length} object
 ```tsx
 import { useMapContext } from '@d3-maps/react'
 
-function FeatureCountLabel() {
+function SizeLabel() {
   const context = useMapContext()
 
   return (
     <text x={12} y={20} fontSize={14} fill="#111">
-      {context.objects.length} objects
+      {context.width}x{context.height}
     </text>
   )
 }
@@ -66,5 +60,6 @@ function FeatureCountLabel() {
 ## Best Practice
 
 - Use `useMapContext` in components rendered inside `MapBase`
-- Use `MapBase` slot/render-prop context when that already gives you what you need
+- Pass data explicitly to built-in layers and custom data layers
+- Use `MapBase` slot or render-prop context when that already gives you what you need
 - Use [useCreateMapContext](/helpers/use-create-map-context) in the parent and pass the same `context` object to both `MapBase` and any sibling UI that needs it

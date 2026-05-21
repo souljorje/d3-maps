@@ -5,9 +5,9 @@ import { createApp } from 'vue'
 import {
   MapAnnotation,
   MapBase,
+  MapFeatures,
   MapLine,
   MapMesh,
-  MapObjects,
   plugin,
 } from '../src'
 
@@ -26,11 +26,11 @@ describe('@d3-maps/vue plugin', () => {
     expect(app.component('MapMesh')).toBe(MapMesh)
   })
 
-  it('registers the MapObjects component', () => {
+  it('registers the MapFeatures component', () => {
     const app = createApp({ template: '<div />' })
     app.use(plugin)
 
-    expect(app.component('MapObjects')).toBe(MapObjects)
+    expect(app.component('MapFeatures')).toBe(MapFeatures)
   })
 
   it('registers the MapLine component', () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import type { MapObjectData } from '@d3-maps/core'
+import type { MapFeature } from '@d3-maps/core'
 
 import {
   fireEvent,
@@ -11,8 +11,8 @@ import {
 import {
   isFeature,
   MapBase,
+  MapFeatures,
   MapObject,
-  MapObjects,
 } from '../src'
 import {
   sampleGeoJson,
@@ -22,11 +22,11 @@ import {
   sampleTopologyTwoObjects,
 } from './fixtures'
 
-describe('mapObjects', () => {
-  it('renders normalized objects by default', () => {
+describe('mapFeatures', () => {
+  it('renders normalized features by default', () => {
     const { container } = render(
-      <MapBase data={sampleGeometryCollection}>
-        <MapObjects />
+      <MapBase fit={sampleGeometryCollection}>
+        <MapFeatures data={sampleGeometryCollection} />
       </MapBase>,
     )
 
@@ -36,17 +36,20 @@ describe('mapObjects', () => {
   it('supports render-prop children', () => {
     const { container } = render(
       <MapBase
-        data={sampleTopologyTwoObjects}
-        objectKey={sampleTopologyObjectKey}
+        fit={sampleTopologyTwoObjects}
+        fitObjectKey={sampleTopologyObjectKey}
       >
-        <MapObjects>
-          {({ objects }) => (
+        <MapFeatures
+          data={sampleTopologyTwoObjects}
+          objectKey={sampleTopologyObjectKey}
+        >
+          {({ features }) => (
             <g
-              data-testid="map-objects-group"
-              data-count={String(objects.length)}
+              data-testid="map-features-group"
+              data-count={String(features.length)}
             >
               {
-                objects.map(({ key, d }: MapObjectData) => (
+                features.map(({ key, d }: MapFeature) => (
                   <MapObject
                     key={key}
                     d={d}
@@ -55,18 +58,19 @@ describe('mapObjects', () => {
               }
             </g>
           )}
-        </MapObjects>
+        </MapFeatures>
       </MapBase>,
     )
 
-    expect(screen.getByTestId('map-objects-group').getAttribute('data-count')).toBe('2')
+    expect(screen.getByTestId('map-features-group').getAttribute('data-count')).toBe('2')
     expect(container.querySelectorAll('path')).toHaveLength(2)
   })
 
   it('forwards styles to default-rendered objects', () => {
     const { container } = render(
-      <MapBase data={sampleGeoJson}>
-        <MapObjects
+      <MapBase fit={sampleGeoJson}>
+        <MapFeatures
+          data={sampleGeoJson}
           styles={{
             default: { opacity: 0.9 },
             hover: { opacity: 0.7 },
@@ -84,8 +88,8 @@ describe('mapObjects', () => {
 
   it('supports explicit layer data overrides', () => {
     const { container } = render(
-      <MapBase data={sampleGeoJson}>
-        <MapObjects
+      <MapBase fit={sampleGeoJson}>
+        <MapFeatures
           data={sampleTopologyTwoObjects}
           objectKey={sampleTopologyObjectKey}
         />
@@ -98,10 +102,14 @@ describe('mapObjects', () => {
   it('supports layer-level data transformers', () => {
     const { container } = render(
       <MapBase
-        data={sampleTopologyTwoObjects}
-        objectKey={sampleTopologyObjectKey}
+        fit={sampleTopologyTwoObjects}
+        fitObjectKey={sampleTopologyObjectKey}
       >
-        <MapObjects dataTransformer={(objects) => objects.slice(0, 1)} />
+        <MapFeatures
+          data={sampleTopologyTwoObjects}
+          objectKey={sampleTopologyObjectKey}
+          transformer={(objects) => objects.slice(0, 1)}
+        />
       </MapBase>,
     )
 
@@ -110,15 +118,16 @@ describe('mapObjects', () => {
 
   it('supports custom object keys', () => {
     render(
-      <MapBase data={sampleGeoJson}>
-        <MapObjects
+      <MapBase fit={sampleGeoJson}>
+        <MapFeatures
+          data={sampleGeoJson}
           getKey={(item, index) => isFeature(item)
             ? item.properties?.id ?? `custom-${index}`
             : undefined}
         >
-          {({ objects }) => (
+          {({ features }) => (
             <g data-testid="map-object-keys">
-              {objects.map(({ key }) => (
+              {features.map(({ key }) => (
                 <g
                   key={key}
                   data-key={String(key)}
@@ -126,7 +135,7 @@ describe('mapObjects', () => {
               ))}
             </g>
           )}
-        </MapObjects>
+        </MapFeatures>
       </MapBase>,
     )
 
@@ -135,8 +144,8 @@ describe('mapObjects', () => {
 
   it('preserves feature geometry collections as single objects', () => {
     const { container } = render(
-      <MapBase data={sampleGeometryCollectionFeature}>
-        <MapObjects />
+      <MapBase fit={sampleGeometryCollectionFeature}>
+        <MapFeatures data={sampleGeometryCollectionFeature} />
       </MapBase>,
     )
 
@@ -145,18 +154,24 @@ describe('mapObjects', () => {
 
   it('accepts native svg attrs on the objects group', () => {
     const { container } = render(
-      <MapBase data={sampleGeoJson}>
-        <MapObjects fill="darkorange" />
+      <MapBase fit={sampleGeoJson}>
+        <MapFeatures
+          data={sampleGeoJson}
+          fill="darkorange"
+        />
       </MapBase>,
     )
 
-    expect(container.querySelector('g[name="objects"]')?.getAttribute('fill')).toBe('darkorange')
+    expect(container.querySelector('g[name="features"]')?.getAttribute('fill')).toBe('darkorange')
   })
 
-  it('supports layer objectKey overrides', () => {
+  it('supports explicit layer objectKey overrides', () => {
     const { container } = render(
-      <MapBase data={sampleTopologyTwoObjects}>
-        <MapObjects objectKey={sampleTopologyObjectKey} />
+      <MapBase fit={sampleTopologyTwoObjects}>
+        <MapFeatures
+          data={sampleTopologyTwoObjects}
+          objectKey={sampleTopologyObjectKey}
+        />
       </MapBase>,
     )
 

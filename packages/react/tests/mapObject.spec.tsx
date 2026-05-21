@@ -18,7 +18,7 @@ describe('mapObject', () => {
     const onMouseUp = vi.fn()
 
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapObject
           data-testid="map-object"
           d="M0,0L10,0"
@@ -66,7 +66,7 @@ describe('mapObject', () => {
         maxZoom: 8,
       }}
       >
-        <MapBase data={sampleGeoJson}>
+        <MapBase fit={sampleGeoJson}>
           <MapObject
             data-testid="map-object"
             d="M0,0L10,0"

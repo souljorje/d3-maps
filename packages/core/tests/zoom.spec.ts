@@ -11,9 +11,13 @@ import {
   getObjectZoomView,
   getZoomScale,
   getZoomViewportCenter,
+  resolveMapData,
   ZOOM_DEFAULTS,
 } from '../src'
-import { makeTestMapContext } from './fixtures'
+import {
+  makeTestMapContext,
+  sampleGeoJson,
+} from './fixtures'
 
 const createBehavior = (options?: ZoomBehaviorOptions) => createZoomBehavior(undefined, options)
 
@@ -58,7 +62,7 @@ describe('zoom helpers', () => {
 
   it('gets zoom view for an object from its projected bounds', () => {
     const context = makeTestMapContext()
-    const object = context.objectData[0]
+    const object = resolveMapData(sampleGeoJson)[0]
     const [[x0, y0], [x1, y1]] = context.path.bounds(object)
     const boundsWidth = x1 - x0
     const boundsHeight = y1 - y0

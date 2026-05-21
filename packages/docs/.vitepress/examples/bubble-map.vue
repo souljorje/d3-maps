@@ -2,13 +2,12 @@
   <MapBase
     v-if="data"
     :projection="projection"
-    :data="data"
   >
     <MapZoom
       :max-zoom="100"
       @zoom="updateMarkerScale"
     >
-      <MapObjects />
+      <MapFeatures :data="data" />
       <g>
         <MapMarker
           v-for="(item, index) in cities"
@@ -23,7 +22,7 @@
           />
         </MapMarker>
       </g>
-      <MapMesh />
+      <MapMesh :data="data" />
     </MapZoom>
   </MapBase>
 </template>

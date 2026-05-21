@@ -5,9 +5,7 @@
     class="grid gap-3"
   >
     <div class="relative aspect-2/1">
-      <MapBase
-        :context="mapContext"
-      >
+      <MapBase :context="mapContext">
         <MapZoom
           :center="center"
           :zoom="zoom"
@@ -20,10 +18,13 @@
             border
             pointer-events="none"
           />
-          <MapObjects fill="var(--vp-c-neutral-inverse)">
-            <template #default="{ objects: renderedFeatures }">
+          <MapFeatures
+            :data="data"
+            fill="var(--vp-c-neutral-inverse)"
+          >
+            <template #default="{ features }">
               <MapObject
-                v-for="feature in renderedFeatures"
+                v-for="feature in features"
                 :key="feature.key"
                 :d="feature.d"
                 :data-feature-key="feature.key"
@@ -40,8 +41,11 @@
                 @keydown.enter.space.prevent="feature.type === 'Feature' && zoomToFeature(feature)"
               />
             </template>
-          </MapObjects>
-          <MapMesh pointer-events="none" />
+          </MapFeatures>
+          <MapMesh
+            :data="data"
+            pointer-events="none"
+          />
         </MapZoom>
       </MapBase>
     </div>
@@ -90,10 +94,11 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  MapDataSource,
-} from '@d3-maps/vue'
+import type { MapData } from '@d3-maps/vue'
 
+import {
+  makeMapFeatures,
+} from '@d3-maps/core'
 import {
   getObjectZoomView,
   useCreateMapContext,
@@ -109,19 +114,25 @@ const initialZoom = 1
 const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
-const data = ref<MapDataSource>()
+const data = ref<MapData>()
 const center = ref<[number, number]>()
 const zoom = ref(initialZoom)
 const activeCountryLabel = ref('World')
 const mapRoot = ref<HTMLElement | null>(null)
 
-const mapContext = useCreateMapContext(computed(() => {
-  return {
-    data: data.value,
-  }
-}))
+const mapContext = useCreateMapContext(computed(() => ({
+  fit: data.value,
+})))
 
-type RenderedMapObject = NonNullable<typeof mapContext.value>['objects'][number]
+const renderedFeatures = computed(() => {
+  if (!data.value || !mapContext.value) return []
+
+  return makeMapFeatures(mapContext.value, {
+    data: data.value,
+  })
+})
+
+type RenderedMapObject = typeof renderedFeatures.value[number]
 type MapGeoFeature = Extract<RenderedMapObject, { type: 'Feature' }>
 
 onMounted(async () => {
@@ -156,9 +167,7 @@ function setZoom(nextZoom: number) {
 }
 
 async function zoomToRandomCountry() {
-  if (!mapContext.value) return
-
-  const features = mapContext.value.objects.filter((object): object is MapGeoFeature => object.type === 'Feature')
+  const features = renderedFeatures.value.filter((object): object is MapGeoFeature => object.type === 'Feature')
   const randomIndex = Math.floor(Math.random() * features.length)
   const feature = features[randomIndex]
 

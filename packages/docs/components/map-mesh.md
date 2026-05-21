@@ -4,8 +4,8 @@ description: Component for D3 SVG map TopoJSON borders and boundary lines in Rea
 
 # MapMesh
 
-Renders a TopoJSON mesh as an SVG `<path>`.  
-Use it to draw shared borders/edges (for example country boundaries) on top of feature fills.
+Renders a TopoJSON mesh as an SVG `<path>`  
+Use it to draw shared borders or edges on top of features
 
 _ℹ️ Works only with **TopoJSON** data_
 
@@ -13,11 +13,11 @@ _ℹ️ Works only with **TopoJSON** data_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `data?` | [MapDataSource](/api/core/data#MapDataSource) | — | Optional layer-local TopoJSON source. Falls back to `MapBase` context data |
-| `objectKey?` | `string` | — | Optional TopoJSON object key. Falls back to `MapBase` context object key |
-| `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
+| `data?` | [MapData](/api/core/data#MapData) | — | TopoJSON source |
+| `objectKey?` | `string` | — | TopoJSON object key for `data` |
+| `styles?` | [MapObject['styles']](/api/core/object#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
-Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
+Use native SVG presentation attrs like `stroke` and `fill` directly on `MapMesh`
 
 ## Usage
 
@@ -27,12 +27,17 @@ Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
 
 ```vue
 <template>
-  <MapBase
-    :data="mapData"
-    object-key="countries"
-  >
-    <MapObjects fill="#fff" />
-    <MapMesh stroke="#000"/>
+  <MapBase>
+    <MapFeatures
+      :data="mapData"
+      object-key="countries"
+      fill="#fff"
+    />
+    <MapMesh
+      :data="mapData"
+      object-key="countries"
+      stroke="#000"
+    />
   </MapBase>
 </template>
 ```
@@ -40,12 +45,17 @@ Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
 == React
 
 ```tsx
-<MapBase
-  data={mapData}
-  objectKey="countries"
->
-  <MapObjects fill="#fff" />
-  <MapMesh stroke="#000" />
+<MapBase>
+  <MapFeatures
+    data={mapData}
+    objectKey="countries"
+    fill="#fff"
+  />
+  <MapMesh
+    data={mapData}
+    objectKey="countries"
+    stroke="#000"
+  />
 </MapBase>
 ```
 

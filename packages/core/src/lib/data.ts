@@ -1,62 +1,102 @@
 import type * as GeoJSON from 'geojson'
 import type { Topology } from 'topojson-specification'
 
+import type { MapContext } from './map'
+import type { MapObjectProps } from './object'
+
 import { feature } from 'topojson-client'
 
-import {
-  isObject,
-} from './utils'
+import { isObject, isStringOrNumber } from './utils'
 
-export type MapDataSource = GeoJSON.GeoJSON | Topology
-export type MapDataItem = GeoJSON.Feature | GeoJSON.Geometry
-export type MapData = readonly MapDataItem[]
-export interface MapDataRef {
-  data?: MapDataSource
+export type MapData = GeoJSON.GeoJSON | Topology
+export type MapFeatureData = GeoJSON.Feature | GeoJSON.Geometry
+export type MapFeatureTransformer = (
+  features: readonly MapFeatureData[],
+) => readonly MapFeatureData[]
+
+export type MapFeature<T extends MapFeatureData = MapFeatureData> = T & {
+  key: string | number
+  d?: string
+}
+
+export type MapFeatureKey = string | number
+
+export type MapFeatureKeyAccessor<T extends MapFeatureData = MapFeatureData> = (
+  item: T,
+  index: number,
+) => MapFeatureKey | undefined
+
+export interface MapFeaturesProps<TStyle = unknown> extends MapObjectProps<TStyle> {
+  data?: MapData
+  transformer?: MapFeatureTransformer
+  getKey?: MapFeatureKeyAccessor
   objectKey?: string
 }
-export type MapDataTransformer = (
-  objects: MapData,
-) => MapData
 
-export function isFeature(data: MapDataItem): data is GeoJSON.Feature {
+export function isFeature(data: MapFeatureData): data is GeoJSON.Feature {
   return data.type === 'Feature'
 }
 
-/**
- * Type guard for TopoJSON topology inputs.
- */
 export function isTopology(data: unknown): data is Topology {
   return isObject(data) && data.type === 'Topology'
 }
 
-export function normalizeMapData(
-  data: MapDataSource,
-  objectKey?: string,
-): MapData {
-  const geoJson = isTopology(data)
-    ? topologyToGeoJson(data, objectKey)
-    : data
+export function getFeatureKey(
+  item: MapFeatureData,
+  index: number,
+): MapFeatureKey {
+  if ('id' in item && isStringOrNumber(item.id)) return item.id
 
-  return makeObjectsFromGeoJson(geoJson)
+  if (isFeature(item)) {
+    const id = item.properties?.id
+    if (isStringOrNumber(id)) return id
+
+    const name = item.properties?.name
+    if (isStringOrNumber(name)) return name
+  }
+
+  return index
 }
 
 export function resolveMapData(
-  data: MapDataSource,
+  data: MapData,
   objectKey?: string,
-  dataTransformer?: MapDataTransformer,
-): MapData {
-  const objects = normalizeMapData(data, objectKey)
-  return dataTransformer?.([...objects]) ?? objects
+  transformer?: MapFeatureTransformer,
+): readonly MapFeatureData[] {
+  const geoJson = isTopology(data)
+    ? topologyToGeoJson(data, objectKey)
+    : data
+  const features = makeObjectsFromGeoJson(geoJson)
+  return transformer?.([...features]) ?? features
 }
 
-export function resolveMapDataRef(
-  local?: MapDataRef,
-  shared?: MapDataRef,
-): [MapDataSource | undefined, string | undefined] {
-  return [
-    local?.data ?? shared?.data,
-    local?.objectKey ?? shared?.objectKey,
-  ]
+export function makeMapFeatures<T extends MapFeatureData = MapFeatureData>(
+  context: Pick<MapContext, 'path'>,
+  {
+    data,
+    objectKey,
+    transformer,
+    getKey = getFeatureKey as MapFeatureKeyAccessor<T>,
+  }: {
+    data?: MapData
+    objectKey?: string
+    transformer?: MapFeatureTransformer
+    getKey?: MapFeatureKeyAccessor<T>
+  },
+): MapFeature<T>[] {
+  if (data == null) return []
+
+  const items = resolveMapData(
+    data,
+    objectKey,
+    transformer,
+  ) as readonly T[]
+
+  return items.map((item, index): MapFeature<T> => ({
+    ...item,
+    key: getKey(item, index) ?? index,
+    d: context.path(item) ?? undefined,
+  }))
 }
 
 function topologyToGeoJson(
@@ -68,7 +108,7 @@ function topologyToGeoJson(
 
 function makeObjectsFromGeoJson(
   geoJson: GeoJSON.GeoJSON,
-): MapData {
+): readonly MapFeatureData[] {
   switch (geoJson.type) {
     case 'FeatureCollection':
       return geoJson.features

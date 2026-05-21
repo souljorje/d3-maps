@@ -5,7 +5,7 @@ import { renderToString } from 'react-dom/server'
 import {
   MapAnnotation,
   MapBase,
-  MapObjects,
+  MapFeatures,
   MapZoom,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
@@ -14,9 +14,9 @@ import { sampleGeoJson } from './fixtures'
 describe('SSR', () => {
   it('renders map component tree without DOM access errors', () => {
     const html = renderToString(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom>
-          <MapObjects />
+          <MapFeatures data={sampleGeoJson} />
           <MapAnnotation coordinates={[2.3522, 48.8566]}>
             <text>Paris</text>
           </MapAnnotation>

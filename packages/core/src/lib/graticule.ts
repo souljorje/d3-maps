@@ -1,7 +1,7 @@
 import type { GeoGraticuleGenerator } from 'd3-geo'
 
 import type { MapContext } from './map'
-import type { MapObjectProps } from './mapObject'
+import type { MapObjectProps } from './object'
 import type { MethodsToModifiers } from './utils'
 
 import { geoGraticule } from 'd3-geo'

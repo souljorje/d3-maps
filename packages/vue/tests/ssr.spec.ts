@@ -9,7 +9,7 @@ import { renderToString } from 'vue/server-renderer'
 import {
   MapAnnotation,
   MapBase,
-  MapObjects,
+  MapFeatures,
   MapZoom,
 } from '../src'
 import { sampleGeoJson } from './fixtures'
@@ -19,10 +19,10 @@ describe('SSR', () => {
   it('renders map component tree without DOM access errors', async () => {
     const app = createSSRApp({
       render: () =>
-        h(MapBase, { data: sampleGeoJson }, {
+        h(MapBase, { fit: sampleGeoJson }, {
           default: () => h(MapZoom, null, {
             default: () => [
-              h(MapObjects),
+              h(MapFeatures),
               h(MapAnnotation, { coordinates: [2.3522, 48.8566] }, {
                 default: () => h('text', 'Paris'),
               }),

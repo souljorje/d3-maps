@@ -12,9 +12,7 @@
 import type { MapGraticuleProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
-import {
-  renderGraticule,
-} from '@d3-maps/core'
+import { renderGraticule } from '@d3-maps/core'
 import {
   computed,
   useAttrs,

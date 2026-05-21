@@ -1,6 +1,6 @@
-import type { MapDataSource } from '@d3-maps/core'
+import type { MapData } from '@d3-maps/core'
 
-type Topology = Extract<MapDataSource, { type: 'Topology' }>
+type Topology = Extract<MapData, { type: 'Topology' }>
 
 const sampleFeature: GeoJSON.Feature = {
   type: 'Feature',

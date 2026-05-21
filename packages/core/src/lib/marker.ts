@@ -1,5 +1,5 @@
 import type { MapContext } from './map'
-import type { MapObjectProps } from './mapObject'
+import type { MapObjectProps } from './object'
 
 import { makeTransform } from './utils'
 

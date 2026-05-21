@@ -15,7 +15,7 @@ import { sampleGeoJson } from './fixtures'
 describe('mapGraticule', () => {
   it('renders graticule lines inside map context', () => {
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapGraticule
           data-testid="map-graticule-lines"
           stroke="#334155"
@@ -31,7 +31,7 @@ describe('mapGraticule', () => {
 
   it('renders only graticule lines', () => {
     const { container } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapGraticule data-testid="map-graticule-lines" />
       </MapBase>,
     )
@@ -43,7 +43,7 @@ describe('mapGraticule', () => {
     const onMouseUp = vi.fn()
 
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapGraticule
           data-testid="map-graticule-lines"
           styles={{
@@ -75,7 +75,7 @@ describe('mapGraticule', () => {
     const onBlur = vi.fn()
 
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapGraticule
           data-testid="map-graticule-focus"
           tabIndex={0}

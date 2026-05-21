@@ -4,8 +4,8 @@ import { render } from '@testing-library/react'
 
 import {
   MapBase,
+  MapFeatures,
   MapGraticule,
-  MapObjects,
   MapSphere,
   MapZoom,
 } from '../src'
@@ -14,7 +14,7 @@ import { sampleGeoJson } from './fixtures'
 describe('mapSphere', () => {
   it('renders a single sphere path by default', () => {
     const { container } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapSphere />
       </MapBase>,
     )
@@ -30,7 +30,7 @@ describe('mapSphere', () => {
 
   it('renders a custom fill on the same sphere path', () => {
     const { container } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapSphere fill="#fef3c7" />
       </MapBase>,
     )
@@ -44,7 +44,7 @@ describe('mapSphere', () => {
 
   it('allows overriding stroke on the same sphere path', () => {
     const { container } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapSphere fill="#f8fafc" stroke="#cbd5e1" />
       </MapBase>,
     )
@@ -57,11 +57,11 @@ describe('mapSphere', () => {
 
   it('allows users to keep sphere outside zoomed content', () => {
     const { container } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapSphere />
         <MapZoom>
           <MapGraticule data-testid="map-graticule-lines" />
-          <MapObjects />
+          <MapFeatures data={sampleGeoJson} />
         </MapZoom>
       </MapBase>,
     )

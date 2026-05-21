@@ -1,9 +1,8 @@
 <template>
   <MapBase
     v-if="data"
-    :data="data"
   >
-    <MapObjects />
+    <MapFeatures :data="data" />
     <MapMarker
       v-for="item in cities"
       :key="item.city"

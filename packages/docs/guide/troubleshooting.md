@@ -18,7 +18,8 @@ Coordinates are `[longitude, latitude]`
 
 If something overlays incorrectly, render layers top-to-bottom in this order:
 
+- `MapSphere`
 - `MapGraticule`
-- `MapObjects`
+- `MapFeatures`
 - `MapMesh`
 - `MapMarker`

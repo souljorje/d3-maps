@@ -37,15 +37,15 @@ Create the context once in the parent, pass it to sibling UI by prop, and pass t
 import { computed } from 'vue'
 import {
   useCreateMapContext,
-  type MapDataSource,
+  type MapData,
 } from '@d3-maps/vue'
 
 const props = defineProps<{
-  data: MapDataSource
+  data: MapData
 }>()
 
 const context = useCreateMapContext(computed(() => ({
-  data: props.data,
+  fit: props.data,
   width: 420,
 })))
 </script>
@@ -53,7 +53,7 @@ const context = useCreateMapContext(computed(() => ({
 <template>
   <Toolbar :context="context" />
   <MapBase :context="context">
-    <MapObjects />
+    <MapFeatures :data="props.data" />
   </MapBase>
 </template>
 ```
@@ -63,14 +63,14 @@ const context = useCreateMapContext(computed(() => ({
 ```tsx
 import {
   MapBase,
-  MapObjects,
+  MapFeatures,
   useCreateMapContext,
-  type MapDataSource,
+  type MapData,
 } from '@d3-maps/react'
 
-export function Example({ data }: { data: MapDataSource }) {
+export function Example({ data }: { data: MapData }) {
   const context = useCreateMapContext({
-    data,
+    fit: data,
     width: 420,
   })
 
@@ -80,7 +80,7 @@ export function Example({ data }: { data: MapDataSource }) {
     <>
       <Toolbar context={context} />
       <MapBase context={context}>
-        <MapObjects />
+        <MapFeatures data={data} />
       </MapBase>
     </>
   )
@@ -89,7 +89,7 @@ export function Example({ data }: { data: MapDataSource }) {
 
 :::
 
-If neither `config.data` nor `context` is available yet, the helper returns `undefined`
+If neither `config` nor `context` is available yet, the helper returns `undefined`
 
 ## Best Practice
 

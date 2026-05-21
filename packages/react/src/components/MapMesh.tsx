@@ -8,8 +8,7 @@ import type {
 } from 'react'
 
 import {
-  makeMesh,
-  resolveMapDataRef,
+  renderMesh,
 } from '@d3-maps/core'
 import { useMemo } from 'react'
 
@@ -29,14 +28,10 @@ export function MapMesh({
 }: MapMeshProps): ReactElement | null {
   const context = useMapContext()
 
-  const path = useMemo(() => {
-    const [resolvedData, resolvedObjectKey] = resolveMapDataRef(
-      { data, objectKey },
-      context,
-    )
-    const meshData = makeMesh(resolvedData, resolvedObjectKey)
-    return meshData == null ? undefined : context.path(meshData) ?? undefined
-  }, [context, data, objectKey])
+  const path = useMemo(
+    () => renderMesh(context, data, objectKey) ?? undefined,
+    [context, data, objectKey],
+  )
 
   return (
     <MapObject

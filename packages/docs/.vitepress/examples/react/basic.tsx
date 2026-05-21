@@ -1,14 +1,14 @@
-import type { MapData } from '@d3-maps/react'
+import type { MapDataSource } from '@d3-maps/react'
 
 import {
   MapBase,
+  MapFeatures,
   MapMesh,
-  MapObjects,
 } from '@d3-maps/react'
 import { useEffect, useState } from 'react'
 
 export default function BasicExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapData>()
+  const [mapData, setMapData] = useState<MapDataSource>()
 
   useEffect(() => {
     let isCancelled = false
@@ -30,9 +30,9 @@ export default function BasicExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <MapBase data={mapData}>
-          <MapObjects />
-          <MapMesh />
+        <MapBase>
+          <MapFeatures data={mapData} />
+          <MapMesh data={mapData} />
         </MapBase>
       )
     : null

@@ -8,11 +8,8 @@ import type { GeometryCollection } from 'geojson'
 
 import type {
   MapData,
-  MapDataRef,
-  MapDataSource,
-  MapDataTransformer,
+  MapFeatureData,
 } from './data'
-import type { MapObjectData } from './mapObject'
 import type { MethodsToModifiers } from './utils'
 
 import {
@@ -24,14 +21,12 @@ import {
   isFeature,
   resolveMapData,
 } from './data'
-import { makeMapObjects } from './mapObject'
-import { applyModifiers } from './utils'
+import { applyModifiers, isObject } from './utils'
 
 export type MapFit =
-  | 'data'
   | 'sphere'
   | 'manual'
-  | MapDataSource
+  | MapData
 
 /**
  * Extra projection method calls to apply before rendering.
@@ -43,33 +38,23 @@ export type MapFit =
  */
 export interface ProjectionConfig
   extends Omit<MethodsToModifiers<GeoProjection>, 'invert' | 'stream'> {
-  /**
-   * Padding used by the built-in fit modes when explicit fit methods are not provided.
-   */
-  padding?: number
 }
 
-/**
- * Shared props contract for the `Map` component.
- *
- * In adapters, this is usually passed as component props.
- */
-export interface MapProps extends MapDataRef {
-  width?: number
-  height?: number
-  aspectRatio?: number
+export interface MapProjectionProps {
+  width: number
+  height: number
   /**
    * Projection factory from d3-geo (or a compatible implementation).
    *
    * Example: `geoNaturalEarth1`.
    */
-  projection?: () => GeoProjection
+  projection: () => GeoProjection
   /**
    * Projection method arguments passed to the created projection
    */
-  projectionConfig?: ProjectionConfig
+  config?: ProjectionConfig
   /**
-   * Built-in fit source. Defaults to `data` when present, otherwise sphere.
+   * Built-in fit source. Defaults to sphere.
    */
   fit?: MapFit
   /**
@@ -77,17 +62,24 @@ export interface MapProps extends MapDataRef {
    */
   fitObjectKey?: string
   /**
-   * Optional normalized-object transformer (filter/augment/normalize objects).
+   * Padding used by the built-in `fit` when explicit fit methods are not provided.
    */
-  dataTransformer?: MapDataTransformer
+  padding?: number
+}
+
+/**
+ * Shared props contract for the `Map` component.
+ */
+export interface MapProps extends Partial<MapProjectionProps> {
+  aspectRatio?: number
+  projectionConfig?: ProjectionConfig
 }
 
 /**
  * Fully computed, framework-agnostic map context.
- *
- * Adapters provide this context to child layers (objects, markers, custom SVG).
+ * Adapters provide this context to child layers.
  */
-export interface MapContext extends MapDataRef {
+export interface MapContext {
   /**
    * Resolved SVG width used by the map.
    */
@@ -97,17 +89,9 @@ export interface MapContext extends MapDataRef {
    */
   height: number
   /**
-   * Normalized object data after the map-level data transformer is applied.
-   */
-  objectData: MapData
-  /**
    * Configured projection instance shared by map layers.
    */
   projection: GeoProjection
-  /**
-   * Render-ready GeoJSON objects for the current map.
-   */
-  objects: MapObjectData[]
   /**
    * Shared path generator bound to the map projection.
    */
@@ -119,7 +103,7 @@ const DEFAULT_ASPECT_RATIO = 2 / 1
 const DEFAULT_PRECISION = 0.2
 const FIT_PADDING = 1
 
-const SPHERE = { type: 'Sphere' } as const satisfies GeoSphere
+export const SPHERE = { type: 'Sphere' } as const satisfies GeoSphere
 
 /**
  * Creates a configured projection and resolves its fit target.
@@ -129,18 +113,13 @@ export function makeProjection({
   height,
   config = {},
   projection,
-  fit = SPHERE,
-}: {
-  width: number
-  height: number
-  config?: ProjectionConfig
-  projection: () => GeoProjection
-  fit?: GeoPermissibleObjects | 'manual'
-}): GeoProjection {
+  fit,
+  fitObjectKey,
+  padding = FIT_PADDING,
+}: MapProjectionProps): GeoProjection {
   const mapProjection = projection()
 
   const {
-    padding = FIT_PADDING,
     fitExtent,
     fitSize,
     fitWidth,
@@ -154,26 +133,20 @@ export function makeProjection({
 
   applyModifiers(mapProjection, preFitConfig)
 
-  const hasExplicitFit =
-    fitExtent != null
-    || fitSize != null
-    || fitWidth != null
-    || fitHeight != null
-
-  if (hasExplicitFit) {
+  if (fit === 'manual') {
     applyModifiers(mapProjection, {
       fitExtent,
       fitSize,
       fitWidth,
       fitHeight,
     })
-  } else if (fit !== 'manual') {
+  } else {
     mapProjection.fitExtent(
       [
         [padding, padding],
         [width - padding, height - padding],
       ],
-      fit,
+      resolveFitTarget(fit, fitObjectKey),
     )
   }
 
@@ -188,85 +161,45 @@ export function makeProjection({
 }
 
 /**
- * Creates a full {@link MapContext} from a {@link MapProps}.
+ * Creates a full {@link MapContext} from a {@link MapProps}
  */
 export function makeMapContext({
   width = DEFAULT_WIDTH,
   height: passedHeight,
   aspectRatio = DEFAULT_ASPECT_RATIO,
-  data,
-  objectKey,
-  fit,
-  fitObjectKey,
-  dataTransformer,
-  projection: providedProjection = geoNaturalEarth1,
+  projection: projectionFactory = geoNaturalEarth1,
   projectionConfig,
+  ...projectionProps
 }: MapProps = {}): MapContext {
-  const objectData: MapData = data == null
-    ? []
-    : resolveMapData(data, objectKey, dataTransformer)
   const height = passedHeight ?? width / aspectRatio
   const projection = makeProjection({
     width,
     height,
-    projection: providedProjection,
+    projection: projectionFactory,
     config: projectionConfig,
-    fit: resolveFitTarget({
-      objectData,
-      fit,
-      fitObjectKey,
-    }),
+    ...projectionProps,
   })
-
-  const pathFn = geoPath().projection(projection)
-  const objects = makeMapObjects(objectData, pathFn)
 
   return {
     width,
     height,
-    data,
-    objectKey,
-    objectData,
     projection,
-    objects,
-    path: pathFn,
+    path: geoPath().projection(projection),
   }
 }
 
-function resolveFitTarget({
-  objectData,
-  fit,
-  fitObjectKey,
-}: {
-  objectData: MapData
-  fit?: MapFit
-  fitObjectKey?: string
-}): GeoPermissibleObjects | 'manual' {
-  if (fit === 'manual') {
-    return 'manual'
+function resolveFitTarget(
+  fit?: Exclude<MapFit, 'manual'>,
+  fitObjectKey?: string,
+): GeoPermissibleObjects {
+  if (isObject(fit)) {
+    return toGeometryCollection(resolveMapData(fit as MapData, fitObjectKey))
   }
-
-  if (fit === 'sphere') {
-    return SPHERE
-  }
-
-  if (fit === 'data') {
-    return toGeometryCollection(objectData)
-  }
-
-  if (fit != null) {
-    return toGeometryCollection(resolveMapData(fit, fitObjectKey))
-  }
-
-  if (objectData.length > 0) {
-    return toGeometryCollection(objectData)
-  }
-
   return SPHERE
 }
 
 function toGeometryCollection(
-  items: MapData,
+  items: readonly MapFeatureData[],
 ): GeometryCollection {
   return {
     type: 'GeometryCollection',

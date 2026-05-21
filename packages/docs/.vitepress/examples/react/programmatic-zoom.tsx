@@ -1,24 +1,26 @@
 import type {
-  MapData,
-  MapObjectData,
+  MapDataSource,
+  MapFeature,
 } from '@d3-maps/react'
 import type {
   JSX,
   KeyboardEvent as ReactKeyboardEvent,
 } from 'react'
 
+import { makeMapFeatures } from '@d3-maps/core'
 import {
   getObjectZoomView,
   MapBase,
+  MapFeatures,
   MapGraticule,
   MapMesh,
   MapObject,
-  MapObjects,
   MapZoom,
   useCreateMapContext,
 } from '@d3-maps/react'
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -27,10 +29,10 @@ const initialZoom = 1
 const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
-type MapGeoFeature = Extract<MapObjectData, { type: 'Feature' }>
+type MapGeoFeature = Extract<MapFeature, { type: 'Feature' }>
 
 export default function ProgrammaticZoomExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapData>()
+  const [mapData, setMapData] = useState<MapDataSource>()
   const [center, setCenter] = useState<[number, number]>()
   const [zoom, setZoom] = useState(initialZoom)
   const [activeCountryLabel, setActiveCountryLabel] = useState('World')
@@ -40,7 +42,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   const mapContext = useCreateMapContext(
     mapData
       ? {
-          data: mapData,
+          fit: mapData,
         }
       : undefined,
   )
@@ -62,6 +64,12 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
       isCancelled = true
     }
   }, [])
+
+  const renderedFeatures = useMemo(() => {
+    return mapData && mapContext
+      ? makeMapFeatures(mapContext, { data: mapData })
+      : []
+  }, [mapContext, mapData])
 
   if (!mapData || !mapContext) return null
 
@@ -114,7 +122,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   }
 
   async function zoomToRandomCountry(): Promise<void> {
-    const features = mapContext.objects.filter((object): object is MapGeoFeature => object.type === 'Feature')
+    const features = renderedFeatures.filter((feature): feature is MapGeoFeature => feature.type === 'Feature')
     const randomIndex = Math.floor(Math.random() * features.length)
     const feature = features[randomIndex]
 
@@ -122,11 +130,8 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
 
     zoomToFeature(feature)
 
-    const featureKey = getFeatureKey(feature)
-    if (featureKey === undefined) return
-
     await Promise.resolve()
-    focusFeatureByKey(featureKey)
+    focusFeatureByKey(feature.key)
   }
 
   function focusFeatureByKey(featureKey: string | number): void {
@@ -160,8 +165,11 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
               border
               pointerEvents="none"
             />
-            <MapObjects fill="var(--vp-c-neutral-inverse)">
-              {({ objects }) => objects.map((feature) => (
+            <MapFeatures
+              data={mapData}
+              fill="var(--vp-c-neutral-inverse)"
+            >
+              {({ features }) => features.map((feature) => (
                 <MapObject
                   key={feature.key}
                   d={feature.d}
@@ -183,8 +191,11 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
                   }}
                 />
               ))}
-            </MapObjects>
-            <MapMesh pointerEvents="none" />
+            </MapFeatures>
+            <MapMesh
+              data={mapData}
+              pointerEvents="none"
+            />
           </MapZoom>
         </MapBase>
       </div>

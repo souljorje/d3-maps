@@ -12,7 +12,7 @@ import {
 
 import {
   MapBase,
-  MapObjects,
+  MapFeatures,
   useCreateMapContext,
 } from '../src'
 import {
@@ -26,7 +26,6 @@ describe('map', () => {
   it('renders default viewBox from map defaults', () => {
     render(
       <MapBase
-        data={sampleGeoJson}
         data-testid="map-svg"
       />,
     )
@@ -37,7 +36,6 @@ describe('map', () => {
   it('renders render-prop children with map context', () => {
     render(
       <MapBase
-        data={sampleGeoJson}
         width={420}
         data-testid="map-svg"
       >
@@ -55,16 +53,16 @@ describe('map', () => {
 
   it('updates rendered objects when map data prop changes', () => {
     const { container, rerender } = render(
-      <MapBase data={sampleGeoJson}>
-        <MapObjects />
+      <MapBase fit={sampleGeoJson}>
+        <MapFeatures data={sampleGeoJson} />
       </MapBase>,
     )
 
     expect(container.querySelectorAll('path')).toHaveLength(1)
 
     rerender(
-      <MapBase data={sampleGeoJsonTwoFeatures}>
-        <MapObjects />
+      <MapBase fit={sampleGeoJsonTwoFeatures}>
+        <MapFeatures data={sampleGeoJsonTwoFeatures} />
       </MapBase>,
     )
 
@@ -75,8 +73,8 @@ describe('map', () => {
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
     try {
       const { container, rerender } = render(
-        <MapBase data={sampleGeoJson}>
-          <MapObjects />
+        <MapBase fit={sampleGeoJson}>
+          <MapFeatures data={sampleGeoJson} />
         </MapBase>,
       )
 
@@ -84,10 +82,13 @@ describe('map', () => {
 
       rerender(
         <MapBase
-          data={sampleTopologyTwoObjects}
-          objectKey={sampleTopologyObjectKey}
+          fit={sampleTopologyTwoObjects}
+          fitObjectKey={sampleTopologyObjectKey}
         >
-          <MapObjects />
+          <MapFeatures
+            data={sampleTopologyTwoObjects}
+            objectKey={sampleTopologyObjectKey}
+          />
         </MapBase>,
       )
 
@@ -107,7 +108,7 @@ describe('map', () => {
           translate: [[450, 250]],
         }}
       >
-        <MapObjects
+        <MapFeatures
           data={sampleTopologyTwoObjects}
           objectKey={sampleTopologyObjectKey}
         />
@@ -119,12 +120,12 @@ describe('map', () => {
 
   it('renders with an external context object shared with sibling UI', () => {
     function Toolbar({ context }: { context: NonNullable<ReturnType<typeof useCreateMapContext>> }) {
-      return <div data-testid="toolbar-count">{context.objects.length}</div>
+      return <div data-testid="toolbar-width">{context.width}</div>
     }
 
     function Harness() {
       const context = useCreateMapContext({
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
         width: 420,
       })
 
@@ -137,7 +138,7 @@ describe('map', () => {
             context={context}
             data-testid="map-svg"
           >
-            <MapObjects />
+            <MapFeatures data={sampleGeoJson} />
           </MapBase>
         </>
       )
@@ -145,7 +146,7 @@ describe('map', () => {
 
     const { container } = render(<Harness />)
 
-    expect(screen.getByTestId('toolbar-count').textContent).toBe('1')
+    expect(screen.getByTestId('toolbar-width').textContent).toBe('420')
     expect(screen.getByTestId('map-svg').getAttribute('viewBox')).toBe('0 0 420 210')
     expect(container.querySelectorAll('path')).toHaveLength(1)
   })

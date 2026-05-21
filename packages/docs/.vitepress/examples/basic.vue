@@ -1,19 +1,18 @@
 <template>
   <MapBase
     v-if="data"
-    :data="data"
   >
-    <MapObjects />
-    <MapMesh />
+    <MapFeatures :data="data" />
+    <MapMesh :data="data" />
   </MapBase>
 </template>
 
 <script setup lang="ts">
-import type { MapDataSource } from '@d3-maps/vue'
+import type { MapData } from '@d3-maps/vue'
 
 import { onMounted, ref } from 'vue'
 
-const data = ref<MapDataSource>()
+const data = ref<MapData>()
 
 onMounted(async () => {
   const { default: mapData } = await import('@d3-maps/atlas/world/countries')

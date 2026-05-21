@@ -24,7 +24,7 @@ export function useCreateMapContext(
     config?.aspectRatio,
     config?.projection,
     config?.projectionConfig,
-    config?.data,
-    config?.dataTransformer,
+    config?.fit,
+    config?.fitObjectKey,
   ])
 }

@@ -93,7 +93,7 @@ describe('mapZoom', () => {
       },
       render() {
         return h(MapBase, {
-          data: sampleGeoJson,
+          fit: sampleGeoJson,
         }, {
           default: () => h(MapZoom, {
             'data-testid': 'map-zoom-group',
@@ -168,7 +168,7 @@ describe('mapZoom', () => {
       },
       render() {
         return h(MapBase, {
-          data: sampleGeoJson,
+          fit: sampleGeoJson,
         }, {
           default: () => h(MapZoom, {
             center: this.center,
@@ -200,7 +200,7 @@ describe('mapZoom', () => {
       },
       render() {
         return h(MapBase, {
-          data: sampleGeoJson,
+          fit: sampleGeoJson,
         }, {
           default: () => h(MapZoom, {
             center: this.center,

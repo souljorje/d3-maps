@@ -1,20 +1,22 @@
 <template>
   <MapBase
     v-if="mapData && choroplethData.length"
-    :data-transformer="dataTransformer"
-    :data="mapData"
   >
-    <MapObjects v-slot="{ objects }">
+    <MapFeatures
+      v-slot="{ features }"
+      :data="mapData"
+      :transformer="transformer"
+    >
       <template
-        v-for="object in objects"
-        :key="String(object.key)"
+        v-for="feature in features"
+        :key="String(feature.key)"
       >
         <MapObject
-          v-if="object.type === 'Feature'"
-          :d="object.d"
-          name="object"
+          v-if="feature.type === 'Feature'"
+          :d="feature.d"
+          name="feature"
           :style="{
-            fill: getFeatureColor(object),
+            fill: getFeatureColor(feature),
             stroke: '#777',
           }"
           :styles="{
@@ -24,15 +26,15 @@
           }"
         />
       </template>
-    </MapObjects>
+    </MapFeatures>
   </MapBase>
 </template>
 
 <script setup lang="ts">
 import type {
-  MapDataItem,
-  MapDataSource,
-  MapDataTransformer,
+  MapData,
+  MapFeatureData,
+  MapFeatureTransformer,
 } from '@d3-maps/vue'
 
 import { extent } from 'd3-array'
@@ -45,7 +47,7 @@ interface CountryStat {
   value: number
 }
 
-const mapData = ref<MapDataSource>()
+const mapData = ref<MapData>()
 const loading = ref(true)
 const error = ref(false)
 const choroplethData = ref<CountryStat[]>([])
@@ -93,18 +95,18 @@ async function fetchData() {
   })
 }
 
-const dataTransformer: MapDataTransformer = (objects) => {
-  return objects.map((object) => {
-    if (object.type !== 'Feature') return object
+const transformer: MapFeatureTransformer = (features) => {
+  return features.map((feature) => {
+    if (feature.type !== 'Feature') return feature
 
-    const country = choroplethData.value.find((item) => item.id === String(object.id))
+    const country = choroplethData.value.find((item) => item.id === String(feature.id))
     const colorValue = country ? colorScale.value(country.value) : ''
 
-    return { ...object, color: colorValue }
+    return { ...feature, color: colorValue }
   })
 }
 
-function getFeatureColor(feature: MapDataItem): string {
-  return String((feature as MapDataItem & { color?: string }).color ?? '')
+function getFeatureColor(feature: MapFeatureData): string {
+  return String((feature as MapFeatureData & { color?: string }).color ?? '')
 }
 </script>

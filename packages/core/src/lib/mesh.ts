@@ -1,28 +1,32 @@
-import type { MapDataSource } from './data'
-import type { MapDataObjectProps } from './mapObject'
+import type { Topology } from 'topojson-specification'
+
+import type { MapContext } from './map'
+import type { MapObjectProps } from './object'
 
 import { mesh } from 'topojson-client'
 
 import { isTopology } from './data'
 
-export type MapMeshData = ReturnType<typeof mesh>
-
 export interface MapMeshProps<TStyle = unknown>
-  extends MapDataObjectProps<TStyle> {}
+  extends MapObjectProps<TStyle> {
+  data?: Topology
+  objectKey?: string
+}
 
 /**
- * Returns a TopoJSON mesh when topology data is provided.
+ * Renders a TopoJSON mesh path when topology data is provided.
  */
-export function makeMesh(
-  data?: MapDataSource,
+export function renderMesh(
+  context: MapContext,
+  data?: Topology,
   objectKey?: string,
-): MapMeshData | undefined {
-  if (!data || !isTopology(data)) return undefined
+): string | null {
+  if (!data || !isTopology(data)) return null
 
   const resolvedObjectKey = objectKey ?? Object.keys(data.objects)[0]
   const topoObject = resolvedObjectKey == null
     ? undefined
     : data.objects[resolvedObjectKey] as Parameters<typeof mesh>[1]
 
-  return mesh(data, topoObject) as MapMeshData
+  return context.path(mesh(data, topoObject))
 }

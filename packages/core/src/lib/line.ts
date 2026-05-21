@@ -4,7 +4,7 @@ import type {
 } from 'd3-shape'
 
 import type { MapContext } from './map'
-import type { MapObjectProps } from './mapObject'
+import type { MapObjectProps } from './object'
 
 import {
   curveNatural,

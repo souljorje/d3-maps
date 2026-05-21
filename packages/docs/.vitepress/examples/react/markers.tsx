@@ -1,11 +1,11 @@
-import type { MapData } from '@d3-maps/react'
+import type { MapDataSource } from '@d3-maps/react'
 
 import {
   MapBase,
+  MapFeatures,
   MapGraticule,
   MapMarker,
   MapMesh,
-  MapObjects,
 } from '@d3-maps/react'
 import { useEffect, useState } from 'react'
 
@@ -26,7 +26,7 @@ const cities: City[] = [
 ]
 
 export default function MarkersExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapData>()
+  const [mapData, setMapData] = useState<MapDataSource>()
 
   useEffect(() => {
     let isCancelled = false
@@ -48,10 +48,10 @@ export default function MarkersExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <MapBase data={mapData}>
+        <MapBase>
           <MapGraticule border />
-          <MapObjects />
-          <MapMesh />
+          <MapFeatures data={mapData} />
+          <MapMesh data={mapData} />
           {
             cities.map((item) => (
               <MapMarker

@@ -11,8 +11,9 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 
 | Step | Change |
 | --- | --- |
-| Data | `Geographies.geography` -> `MapBase.data` |
-| Data transform | `Geographies.parseGeographies` -> `MapBase.dataTransformer` |
+| Data | `Geographies.geography` -> `MapFeatures.data` |
+| Data transform | `Geographies.parseGeographies` -> `MapFeatures.transformer` |
+| Fit | `ComposableMap` sizing + geography bounds -> `MapBase.fit` |
 | Style prop | `Geography.style` -> `MapObject.styles` |
 | Style states | `style.pressed` -> `styles.active` |
 | Zoom wrapper | `ZoomableGroup` -> `MapZoom` |
@@ -24,16 +25,15 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 
 ## 1. Migrate data
 
-- `Geographies.geography` -> `MapBase.data`  
-  `MapBase.data` supports only data objects, not URLs, data fetching is non-opinionated
-- `Geographies.parseGeographies` -> `MapBase.dataTransformer`  
+- `Geographies.geography` -> `MapFeatures.data`  
+- `Geographies.parseGeographies` -> `MapFeatures.transformer`  
 
 ```tsx
-import { MapBase, MapObjects, type MapDataSource } from '@d3-maps/react'
+import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
 import { useEffect, useState } from 'react'
 
 export function WorldMap() {
-  const [data, setData] = useState<MapDataSource | null>(null)
+  const [data, setData] = useState<MapData | null>(null)
 
   useEffect(() => {
     import('@d3-maps/atlas/world/countries')
@@ -43,11 +43,11 @@ export function WorldMap() {
   if (!data) return null
 
   return (
-    <MapBase
-      data={data}
-      dataTransformer={(objects) => objects.filter((object) => object.type !== 'Feature' || object.properties?.name !== 'Antarctica')}
-    >
-      <MapObjects />
+    <MapBase>
+      <MapFeatures
+        data={data}
+        transformer={(objects) => objects.filter((object) => object.type !== 'Feature' || object.properties?.name !== 'Antarctica')}
+      />
     </MapBase>
   )
 }
@@ -58,7 +58,7 @@ export function WorldMap() {
 - `Geography.style` -> `MapObject.styles`  
 - `style.pressed` -> `styles.active`
 
-This style model is supported by `MapObject`, `MapObjects`, `MapMarker`, `MapMesh`, and `MapGraticule`
+This style model is supported by `MapObject`, `MapFeatures`, `MapMarker`, `MapMesh`, and `MapGraticule`
 
 ```tsx
 <MapObject
@@ -70,7 +70,7 @@ This style model is supported by `MapObject`, `MapObjects`, `MapMarker`, `MapMes
 />
 ```
 
-You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` directly on map components.
+You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` directly on map components
 
 ## 3. Rename zoom component
 
@@ -80,7 +80,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 - `onMoveEnd` -> `onZoomEnd`
 
 ```tsx
-<MapBase data={data}>
+<MapBase>
   <MapZoom
     zoom={1}
     minZoom={1}
@@ -89,14 +89,14 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
     onZoom={() => {}}
     onZoomEnd={() => {}}
   >
-    <MapObjects />
+    <MapFeatures data={data} />
   </MapZoom>
 </MapBase>
 ```
 
 ## 4. Rename marker component
 
-`Marker` -> [MapMarker](/components/map-marker).
+`Marker` -> [MapMarker](/components/map-marker)
 
 ```tsx
 <MapMarker coordinates={[-74.006, 40.7128]}>
@@ -107,7 +107,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 
 ## 5. Rename graticule component
 
-`Graticule` -> [MapGraticule](/components/map-graticule).
+`Graticule` -> [MapGraticule](/components/map-graticule)
 
 ```tsx
 <MapGraticule />
@@ -115,7 +115,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 
 ## 6. Migrate sphere component
 
-`Sphere` -> [MapSphere](/components/map-sphere).
+`Sphere` -> [MapSphere](/components/map-sphere)
 
 ```tsx
 <MapSphere fill="#eee" />
@@ -141,8 +141,8 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 `Annotation` -> [MapAnnotation](/components/map-annotation)
 
 ```tsx
-<MapBase data={data}>
-  <MapObjects />
+<MapBase>
+  <MapFeatures data={data} />
   <MapAnnotation
     coordinates={[2.3522, 48.8566]}
     length={36}
@@ -167,7 +167,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 | react-simple-maps | d3-maps |
 | --- | --- |
 | [ComposableMap](https://www.react-simple-maps.io/docs/composable-map/) | [MapBase](/components/map-base) |
-| [Geographies](https://www.react-simple-maps.io/docs/geographies/) | [MapObjects](/components/map-objects) |
+| [Geographies](https://www.react-simple-maps.io/docs/geographies/) | [MapFeatures](/components/map-features) |
 | [Geography](https://www.react-simple-maps.io/docs/geography/) | [MapObject](/components/map-object) |
 | [Marker](https://www.react-simple-maps.io/docs/marker/) | [MapMarker](/components/map-marker) |
 | [Line](https://www.react-simple-maps.io/docs/line/) | [MapLine](/components/map-line) |

@@ -16,7 +16,7 @@ describe('mapMarker', () => {
   it('uses projection transform from context', () => {
     render(
       <MapBase
-        data={sampleGeoJson}
+        fit={sampleGeoJson}
         width={400}
         height={300}
       >
@@ -44,7 +44,7 @@ describe('mapMarker', () => {
   it('recomputes marker transform when map context changes', () => {
     const { rerender } = render(
       <MapBase
-        data={sampleGeoJson}
+        fit={sampleGeoJson}
         width={300}
       >
         <MapMarker
@@ -58,7 +58,7 @@ describe('mapMarker', () => {
 
     rerender(
       <MapBase
-        data={sampleGeoJson}
+        fit={sampleGeoJson}
         width={700}
       >
         <MapMarker
@@ -74,7 +74,7 @@ describe('mapMarker', () => {
 
   it('allows overriding the outer group name', () => {
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapMarker
           data-testid="map-marker"
           coordinates={[10, 10]}
@@ -91,7 +91,7 @@ describe('mapMarker', () => {
     const onBlur = vi.fn()
 
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapMarker
           data-testid="map-marker-focus"
           coordinates={[10, 10]}

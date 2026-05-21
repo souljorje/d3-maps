@@ -11,7 +11,7 @@ Renders graticule lines as an SVG `<path>` layer
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `config?` | [GraticuleConfig](/api/core/graticule#graticuleconfig) | — | See [usage](#config) below |
-| `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | Applies map-object interaction styles to the lines path |
+| `styles?` | [MapObject['styles']](/api/core/object#property-styles) | — | Applies map-object interaction styles to the lines path |
 
 Use native SVG presentation attrs like `stroke` directly on `MapGraticule` lines.
 
@@ -31,9 +31,9 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
 
 ```vue
 <template>
-  <MapBase :data="mapData">
+  <MapBase>
     <MapSphere fill="#fff" stroke="#cbd5e1" />
-    <MapObjects fill="#f1f5f9" />
+    <MapFeatures :data="mapData" fill="#f1f5f9" />
     <MapGraticule
       stroke="#94a3b8"
       :config="{
@@ -48,9 +48,9 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
 == React
 
 ```tsx
-<MapBase data={mapData}>
+<MapBase>
   <MapSphere fill="#fff" stroke="#cbd5e1" />
-  <MapObjects fill="#f1f5f9" />
+  <MapFeatures data={mapData} fill="#f1f5f9" />
   <MapGraticule
     stroke="#94a3b8"
     config={{

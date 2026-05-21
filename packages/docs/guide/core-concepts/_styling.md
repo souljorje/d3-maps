@@ -16,18 +16,20 @@ const styles = {
 
 == Vue
 
-```vue{10} [vue]
+```vue{11} [vue]
 <template>
   <MapBase
-    :data="data"
     :projection="geoEquirectangular"
-    :data-transformer="dataTransformer"
   >
     <MapSphere />
     <MapZoom>
       <MapGraticule />
-      <MapObjects :styles="styles"/>
-      <MapMesh stroke="#fff" />
+      <MapFeatures
+        :data="data"
+        :transformer="transformer"
+        :styles="styles"
+      />
+      <MapMesh :data="data" stroke="#fff" />
       <MapMarker :coordinates="[-83.0457538, 42.331427]">
         <text
           font-size="14"
@@ -43,17 +45,19 @@ const styles = {
 
 == React
 
-```tsx{9} [react]
+```tsx{10} [react]
 <MapBase
-  data={data}
   projection={geoEquirectangular}
-  dataTransformer={dataTransformer}
 >
   <MapSphere />
   <MapZoom>
     <MapGraticule />
-    <MapObjects styles={styles} />
-    <MapMesh stroke="#fff" />
+    <MapFeatures
+      data={data}
+      transformer={transformer}
+      styles={styles}
+    />
+    <MapMesh data={data} stroke="#fff" />
     <MapMarker coordinates={[-83.0457538, 42.331427]}>
       <text
         fontSize={14}
@@ -68,7 +72,7 @@ const styles = {
 
 :::
 
-> \* [MapObjects](/components/map-objects) forwards `styles` to internally rendered `MapObject`s
+> \* [MapFeatures](/components/map-features) forwards `styles` to internally rendered `MapObject`s
 
 ### CSS
 
@@ -95,7 +99,7 @@ Plain CSS can also target the generated SVG elements directly
 | Component | CSS selector |
 | --- | --- |
 | [MapBase](/components/map-base) | `.d3-map` |
-| [MapObject](/components/map-object) | `[name="object"]` |
+| [MapFeatures](/components/map-features) | `[name="feature"]` |
 | [MapMesh](/components/map-mesh) | `[name="mesh"]` |
 | [MapMarker](/components/map-marker) | `[name="marker"]` |
 | [MapGraticule](/components/map-graticule) lines | `[name="graticule"]` |

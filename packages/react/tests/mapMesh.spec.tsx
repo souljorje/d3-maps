@@ -19,8 +19,9 @@ import {
 describe('mapMesh', () => {
   it('renders mesh for topology data with default fill', () => {
     render(
-      <MapBase data={sampleTopology}>
+      <MapBase fit={sampleTopology}>
         <MapMesh
+          data={sampleTopology}
           data-testid="map-mesh"
           stroke="#000"
         />
@@ -31,9 +32,9 @@ describe('mapMesh', () => {
     expect(mesh?.getAttribute('fill')).toBe('none')
   })
 
-  it('renders mesh path without topology geometry', () => {
+  it('renders mesh path without topology data', () => {
     const { container } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapMesh />
       </MapBase>,
     )
@@ -45,7 +46,7 @@ describe('mapMesh', () => {
 
   it('supports topology overrides', () => {
     const { container } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapMesh
           data={sampleTopologyTwoObjects}
           objectKey={sampleTopologyObjectKey}
@@ -56,10 +57,13 @@ describe('mapMesh', () => {
     expect(container.querySelector('path')?.getAttribute('d')).toBeTruthy()
   })
 
-  it('supports objectKey overrides from context', () => {
+  it('supports explicit objectKey overrides', () => {
     const { container } = render(
-      <MapBase data={sampleTopologyTwoObjects}>
-        <MapMesh objectKey={sampleTopologyObjectKey} />
+      <MapBase fit={sampleTopologyTwoObjects}>
+        <MapMesh
+          data={sampleTopologyTwoObjects}
+          objectKey={sampleTopologyObjectKey}
+        />
       </MapBase>,
     )
 

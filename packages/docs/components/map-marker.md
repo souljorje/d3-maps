@@ -11,7 +11,7 @@ Positions anything on the map based on coordinates
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `coordinates?` | `[number, number]` | — | Marker coordinates in `[longitude, latitude]` format. |
-| `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
+| `styles?` | [MapObject['styles']](/api/core/object#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 ## Usage
 
@@ -21,9 +21,8 @@ Positions anything on the map based on coordinates
 
 ```vue
 <template>
-  <MapBase :data="mapData">
-    <MapObjects />
-    <MapMesh stroke="slategray" />
+  <MapBase>
+    <MapFeatures :data="mapData" />
     <MapMarker
       v-for="item in cities"
       :key="item.city"
@@ -47,9 +46,8 @@ Positions anything on the map based on coordinates
 == React
 
 ```tsx
-<MapBase data={mapData}>
-  <MapObjects />
-  <MapMesh stroke="slategray" />
+<MapBase>
+  <MapFeatures data={mapData} />
   {cities.map((item) => (
     <MapMarker
       key={item.city}

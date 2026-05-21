@@ -21,7 +21,7 @@ describe('mapObject', () => {
 
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(
@@ -83,7 +83,7 @@ describe('mapObject', () => {
         },
       },
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(

@@ -40,13 +40,13 @@ bun add @d3-maps/atlas
 
 ```vue [vue]
 <script setup lang="ts">
-import { MapBase, MapObjects } from '@d3-maps/vue'
+import { MapBase, MapFeatures } from '@d3-maps/vue'
 import Countries from '@d3-maps/atlas/world/countries'
 </script>
 
 <template>
-  <MapBase :data="Countries">
-    <MapObjects />
+  <MapBase :fit="Countries">
+    <MapFeatures :data="Countries" />
   </MapBase>
 </template>
 ```
@@ -54,13 +54,13 @@ import Countries from '@d3-maps/atlas/world/countries'
 == React
 
 ```tsx [react]
-import { MapBase, MapObjects } from '@d3-maps/react'
+import { MapBase, MapFeatures } from '@d3-maps/react'
 import Countries from '@d3-maps/atlas/world/countries'
 
 export function App() {
   return (
-    <MapBase data={Countries}>
-      <MapObjects />
+    <MapBase fit={Countries}>
+      <MapFeatures data={Countries} />
     </MapBase>
   )
 }
@@ -76,14 +76,15 @@ export function App() {
 
 ```vue [vue]
 <script setup lang="ts">
-import { MapBase, MapObjects } from '@d3-maps/vue'
+import { MapBase, MapFeatures } from '@d3-maps/vue'
 import Land from '@d3-maps/atlas/world/land'
 import Coastline from '@d3-maps/atlas/world/coastline'
 </script>
 
 <template>
-  <MapBase :data="[Land, Coastline]">
-    <MapObjects />
+  <MapBase>
+    <MapFeatures :data="Land" />
+    <MapFeatures :data="Coastline" />
   </MapBase>
 </template>
 ```
@@ -91,14 +92,15 @@ import Coastline from '@d3-maps/atlas/world/coastline'
 == React
 
 ```tsx [react]
-import { MapBase, MapObjects } from '@d3-maps/react'
+import { MapBase, MapFeatures } from '@d3-maps/react'
 import Land from '@d3-maps/atlas/world/land'
 import Coastline from '@d3-maps/atlas/world/coastline'
 
 export function App() {
   return (
-    <MapBase data={[Land, Coastline]}>
-      <MapObjects />
+    <MapBase>
+      <MapFeatures data={Land} />
+      <MapFeatures data={Coastline} />
     </MapBase>
   )
 }
@@ -114,13 +116,13 @@ export function App() {
 
 ```vue [vue]
 <script setup lang="ts">
-import { MapBase, MapObjects } from '@d3-maps/vue'
+import { MapBase, MapFeatures } from '@d3-maps/vue'
 import Africa from '@d3-maps/atlas/continents/africa'
 </script>
 
 <template>
-  <MapBase :data="Africa">
-    <MapObjects />
+  <MapBase :fit="Africa">
+    <MapFeatures :data="Africa" />
   </MapBase>
 </template>
 ```
@@ -128,13 +130,13 @@ import Africa from '@d3-maps/atlas/continents/africa'
 == React
 
 ```tsx [react]
-import { MapBase, MapObjects } from '@d3-maps/react'
+import { MapBase, MapFeatures } from '@d3-maps/react'
 import Africa from '@d3-maps/atlas/continents/africa'
 
 export function App() {
   return (
-    <MapBase data={Africa}>
-      <MapObjects />
+    <MapBase fit={Africa}>
+      <MapFeatures data={Africa} />
     </MapBase>
   )
 }
@@ -150,13 +152,13 @@ export function App() {
 
 ```vue [vue]
 <script setup lang="ts">
-import { MapBase, MapObjects } from '@d3-maps/vue'
+import { MapBase, MapFeatures } from '@d3-maps/vue'
 import Japan from '@d3-maps/atlas/countries/japan'
 </script>
 
 <template>
-  <MapBase :data="Japan">
-    <MapObjects />
+  <MapBase :fit="Japan">
+    <MapFeatures :data="Japan" />
   </MapBase>
 </template>
 ```
@@ -164,13 +166,13 @@ import Japan from '@d3-maps/atlas/countries/japan'
 == React
 
 ```tsx [react]
-import { MapBase, MapObjects } from '@d3-maps/react'
+import { MapBase, MapFeatures } from '@d3-maps/react'
 import Japan from '@d3-maps/atlas/countries/japan'
 
 export function App() {
   return (
-    <MapBase data={Japan}>
-      <MapObjects />
+    <MapBase fit={Japan}>
+      <MapFeatures data={Japan} />
     </MapBase>
   )
 }
@@ -186,13 +188,15 @@ export function App() {
 
 ```vue [vue]
 <script setup lang="ts">
-import { MapBase, MapObjects } from '@d3-maps/vue'
+import { MapBase, MapFeatures } from '@d3-maps/vue'
 import { Georgia, Germany, Russia } from '@d3-maps/atlas/countries'
 </script>
 
 <template>
-  <MapBase :data="[Georgia, Germany, Russia]">
-    <MapObjects />
+  <MapBase>
+    <MapFeatures :data="Georgia" />
+    <MapFeatures :data="Germany" />
+    <MapFeatures :data="Russia" />
   </MapBase>
 </template>
 ```
@@ -200,13 +204,15 @@ import { Georgia, Germany, Russia } from '@d3-maps/atlas/countries'
 == React
 
 ```tsx [react]
-import { MapBase, MapObjects } from '@d3-maps/react'
+import { MapBase, MapFeatures } from '@d3-maps/react'
 import { Georgia, Germany, Russia } from '@d3-maps/atlas/countries'
 
 export function App() {
   return (
-    <MapBase data={[Georgia, Germany, Russia]}>
-      <MapObjects />
+    <MapBase>
+      <MapFeatures data={Georgia} />
+      <MapFeatures data={Germany} />
+      <MapFeatures data={Russia} />
     </MapBase>
   )
 }
@@ -222,7 +228,7 @@ export function App() {
 | `50m` | Regional maps or closer zoom where `110m` looks too coarse |
 | `10m` | Country detail views where coastline and border detail matter |
 
-Default country imports use the coarsest available scale. In most cases that is `110m`.
+Default country imports use the coarsest available scale. In most cases that is `110m`
 
 ```ts
 import Japan from '@d3-maps/atlas/countries/japan' // japan-110m
@@ -246,7 +252,7 @@ import Japan110m from '@d3-maps/atlas/countries/japan/japan-110m'
 
 ## Metadata
 
-Use metadata when you need richer country or continent information.
+Use metadata when you need richer country or continent information
 
 ```ts
 import countries from '@d3-maps/atlas/metadata/countries'
@@ -255,20 +261,5 @@ import continents from '@d3-maps/atlas/metadata/continents'
 
 ## Data types
 
-Types can be imported from `@d3-maps/atlas/types`.
+Types can be imported from `@d3-maps/atlas/types`  
 Country, continent, and world-countries properties are by default typed as `AtlasFeatureProperties`
-
-<<< @/../atlas/src/types.ts#types
-
-## Keep bundle size down
-
-Choose the narrowest import that matches the map you render
-
-- Use `@d3-maps/atlas/countries/japan` instead of `@d3-maps/atlas/countries` for one country
-- Use `@d3-maps/atlas/world/countries` before higher-scale world variants
-- Use `50m` before `10m` when you need more detail
-- Avoid loading world data and many country datasets together unless the UI needs both
-
-## Source
-
-Generated from [Natural Earth](https://www.naturalearthdata.com/)

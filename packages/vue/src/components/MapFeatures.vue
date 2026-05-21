@@ -1,0 +1,43 @@
+<template>
+  <g name="features">
+    <slot :features="features">
+      <MapObject
+        v-for="{ key, d } in features"
+        :key="key"
+        :d="d"
+        :styles="styles"
+        name="feature"
+      />
+    </slot>
+  </g>
+</template>
+
+<script setup lang="ts">
+import type {
+  MapFeature,
+  MapFeaturesProps,
+} from '@d3-maps/core'
+import type { StyleValue } from 'vue'
+
+import { makeMapFeatures } from '@d3-maps/core'
+import { computed } from 'vue'
+
+import { useMapContext } from '../hooks/useMapContext'
+import MapObject from './MapObject.vue'
+
+const props = defineProps<MapFeaturesProps<StyleValue>>()
+
+defineSlots<{
+  default?: (props: { features: MapFeature[] }) => unknown
+}>()
+
+const context = useMapContext()
+const features = computed<MapFeature[]>(() => {
+  return makeMapFeatures(context.value, {
+    data: props.data,
+    objectKey: props.objectKey,
+    transformer: props.transformer,
+    getKey: props.getKey,
+  })
+})
+</script>

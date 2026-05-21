@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import type { MapObjectData } from '@d3-maps/core'
+import type { MapFeature } from '@d3-maps/core'
 
 import { mount } from '@vue/test-utils'
 import { h } from 'vue'
@@ -8,8 +8,8 @@ import { h } from 'vue'
 import {
   isFeature,
   MapBase,
+  MapFeatures,
   MapObject,
-  MapObjects,
 } from '../src'
 import {
   sampleGeoJson,
@@ -21,14 +21,16 @@ import {
 
 const MapObjectComponent = MapObject as unknown as Parameters<typeof h>[0]
 
-describe('mapObjects', () => {
-  it('renders normalized objects by default', () => {
+describe('mapFeatures', () => {
+  it('renders normalized features from explicit layer data', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeometryCollection,
+        fit: sampleGeometryCollection,
       },
       slots: {
-        default: () => h(MapObjects),
+        default: () => h(MapFeatures, {
+          data: sampleGeometryCollection,
+        }),
       },
     })
 
@@ -38,19 +40,22 @@ describe('mapObjects', () => {
   it('supports scoped-slot children', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleTopologyTwoObjects,
-        objectKey: sampleTopologyObjectKey,
+        fit: sampleTopologyTwoObjects,
+        fitObjectKey: sampleTopologyObjectKey,
       },
       slots: {
         default: () => h(
-          MapObjects,
-          {},
+          MapFeatures,
           {
-            default: ({ objects }: { objects: MapObjectData[] }) =>
+            data: sampleTopologyTwoObjects,
+            objectKey: sampleTopologyObjectKey,
+          },
+          {
+            default: ({ features }: { features: MapFeature[] }) =>
               h('g', {
-                'data-testid': 'map-objects-group',
-                'data-count': String(objects.length),
-              }, objects.map(({ key, d }) => h(
+                'data-testid': 'map-features-group',
+                'data-count': String(features.length),
+              }, features.map(({ key, d }) => h(
                 MapObjectComponent,
                 {
                   key,
@@ -62,17 +67,18 @@ describe('mapObjects', () => {
       },
     })
 
-    expect(wrapper.get('[data-testid="map-objects-group"]').attributes('data-count')).toBe('2')
+    expect(wrapper.get('[data-testid="map-features-group"]').attributes('data-count')).toBe('2')
     expect(wrapper.findAll('path')).toHaveLength(2)
   })
 
   it('forwards styles to default-rendered objects', async () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
-        default: () => h(MapObjects, {
+        default: () => h(MapFeatures, {
+          data: sampleGeoJson,
           styles: {
             default: { opacity: 0.9 },
             hover: { opacity: 0.7 },
@@ -91,10 +97,10 @@ describe('mapObjects', () => {
   it('supports explicit layer data overrides', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
-        default: () => h(MapObjects, {
+        default: () => h(MapFeatures, {
           data: sampleTopologyTwoObjects,
           objectKey: sampleTopologyObjectKey,
         }),
@@ -107,12 +113,14 @@ describe('mapObjects', () => {
   it('supports layer-level data transformers', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleTopologyTwoObjects,
-        objectKey: sampleTopologyObjectKey,
+        fit: sampleTopologyTwoObjects,
+        fitObjectKey: sampleTopologyObjectKey,
       },
       slots: {
-        default: () => h(MapObjects, {
-          dataTransformer: (objects) => objects.slice(0, 1),
+        default: () => h(MapFeatures, {
+          data: sampleTopologyTwoObjects,
+          objectKey: sampleTopologyObjectKey,
+          transformer: (objects) => objects.slice(0, 1),
         }),
       },
     })
@@ -123,19 +131,20 @@ describe('mapObjects', () => {
   it('supports custom object keys', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(
-          MapObjects,
+          MapFeatures,
           {
+            data: sampleGeoJson,
             getKey: (item, index) => isFeature(item)
               ? item.properties?.id ?? `custom-${index}`
               : undefined,
           },
           {
-            default: ({ objects }: { objects: MapObjectData[] }) =>
-              h('g', { 'data-testid': 'map-object-keys' }, objects.map(({ key }) => h('g', {
+            default: ({ features }: { features: MapFeature[] }) =>
+              h('g', { 'data-testid': 'map-object-keys' }, features.map(({ key }) => h('g', {
                 key,
                 'data-key': String(key),
               }))),
@@ -144,16 +153,18 @@ describe('mapObjects', () => {
       },
     })
 
-    expect(wrapper.get('[data-testid="map-object-keys"] [data-key="demo"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="map-object-keys"] [data-key="demo"]').exists()).toBe(true)
   })
 
   it('preserves feature geometry collections as single objects', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeometryCollectionFeature,
+        fit: sampleGeometryCollectionFeature,
       },
       slots: {
-        default: () => h(MapObjects),
+        default: () => h(MapFeatures, {
+          data: sampleGeometryCollectionFeature,
+        }),
       },
     })
 
@@ -163,23 +174,27 @@ describe('mapObjects', () => {
   it('accepts native svg attrs on the objects group', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
-        default: () => h(MapObjects, { fill: 'darkorange' }),
+        default: () => h(MapFeatures, {
+          data: sampleGeoJson,
+          fill: 'darkorange',
+        }),
       },
     })
 
-    expect(wrapper.find('g[name="objects"]').attributes('fill')).toBe('darkorange')
+    expect(wrapper.find('g[name="features"]').attributes('fill')).toBe('darkorange')
   })
 
-  it('supports layer objectKey overrides', () => {
+  it('supports explicit layer objectKey overrides', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleTopologyTwoObjects,
+        fit: sampleTopologyTwoObjects,
       },
       slots: {
-        default: () => h(MapObjects, {
+        default: () => h(MapFeatures, {
+          data: sampleTopologyTwoObjects,
           objectKey: sampleTopologyObjectKey,
         }),
       },

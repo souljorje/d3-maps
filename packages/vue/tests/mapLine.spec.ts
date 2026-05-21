@@ -45,7 +45,7 @@ describe('mapLine', () => {
   it('renders a projected path inside map context', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapLine, {
@@ -61,7 +61,7 @@ describe('mapLine', () => {
   it('uses default fill value', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapLine, {
@@ -77,7 +77,7 @@ describe('mapLine', () => {
   it('recomputes path when map context changes', async () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
         width: 300,
       },
       slots: {
@@ -101,7 +101,7 @@ describe('mapLine', () => {
   it('renders cartesian paths inside map context', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapLine, {
@@ -121,7 +121,7 @@ describe('mapLine', () => {
   it('renders a path for multi-point coordinates', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapLine, {
@@ -137,7 +137,7 @@ describe('mapLine', () => {
   it('supports custom projected paths', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapLine, {
@@ -154,7 +154,7 @@ describe('mapLine', () => {
   it('uses the provided D3 curve for custom paths', async () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapLine, {
@@ -171,7 +171,7 @@ describe('mapLine', () => {
 
     const curvedWrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapLine, {
@@ -189,7 +189,7 @@ describe('mapLine', () => {
   it('uses curveNatural by default for custom paths', () => {
     const linearWrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapLine, {
@@ -205,7 +205,7 @@ describe('mapLine', () => {
 
     const connectorWrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapLine, {
@@ -222,7 +222,7 @@ describe('mapLine', () => {
   it('applies midpoint shaping for curved connector paths', () => {
     const baseWrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapLine, {
@@ -241,7 +241,7 @@ describe('mapLine', () => {
 
     const midpointWrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapLine, {

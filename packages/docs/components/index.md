@@ -1,5 +1,5 @@
 ---
-description: "D3 SVG map components in React and Vue: MapBase, MapObjects, MapMarker, MapZoom, MapSphere, and MapGraticule"
+description: "D3 SVG map components in React and Vue: MapBase, MapFeatures, MapMarker, MapZoom, MapSphere, and MapGraticule"
 ---
 
 # Components
@@ -7,7 +7,7 @@ description: "D3 SVG map components in React and Vue: MapBase, MapObjects, MapMa
 Components are adapter-level building blocks for rendering map layers
 
 - [MapBase](/components/map-base)
-- [MapObjects](/components/map-objects)
+- [MapFeatures](/components/map-features)
 - [MapObject](/components/map-object)
 - [MapAnnotation](/components/map-annotation)
 - [MapLine](/components/map-line)

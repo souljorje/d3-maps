@@ -41,7 +41,7 @@ function midpointCurve(context: {
 describe('mapAnnotation', () => {
   it('renders connector and content inside map context', () => {
     const { container } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"
@@ -76,7 +76,7 @@ describe('mapAnnotation', () => {
 
   it('uses the provided D3 curve for the connector path', () => {
     const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"
@@ -90,7 +90,7 @@ describe('mapAnnotation', () => {
     const linearPath = screen.getByTestId('annotation-line').getAttribute('d')
 
     rerender(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"

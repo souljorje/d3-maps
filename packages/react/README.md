@@ -31,7 +31,7 @@ bun add @d3-maps/react
 
 ```html
 <script type="module">
-  import { MapBase, MapObjects } from 'https://esm.sh/@d3-maps/react'
+  import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/react'
   import 'https://esm.sh/@d3-maps/react/style.css'
 </script>
 ```
@@ -40,15 +40,12 @@ bun add @d3-maps/react
 
 ```tsx
 import '@d3-maps/react/style.css'
-import { MapBase, MapObjects, type MapDataSource } from '@d3-maps/react'
+import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
 
-export function App({ mapData }: { mapData: MapDataSource }) {
+export function App({ mapData }: { mapData: MapData }) {
   return (
-    <MapBase
-      data={mapData}
-      objectKey="countries"
-    >
-      <MapObjects />
+    <MapBase>
+      <MapFeatures data={mapData} />
     </MapBase>
   )
 }

@@ -18,10 +18,11 @@ describe('mapMesh', () => {
   it('renders mesh for topology data with default fill', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleTopology,
+        fit: sampleTopology,
       },
       slots: {
         default: () => h(MapMesh, {
+          data: sampleTopology,
           'data-testid': 'map-mesh',
           stroke: '#000',
         }),
@@ -31,10 +32,10 @@ describe('mapMesh', () => {
     expect(wrapper.get('[data-testid="map-mesh"]').attributes('fill')).toBe('none')
   })
 
-  it('renders mesh path without topology geometry', () => {
+  it('renders mesh path without topology data', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapMesh),
@@ -48,7 +49,7 @@ describe('mapMesh', () => {
   it('supports topology overrides', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapMesh, {
@@ -61,13 +62,14 @@ describe('mapMesh', () => {
     expect(wrapper.get('path').attributes('d')).toBeTruthy()
   })
 
-  it('supports objectKey overrides from context', () => {
+  it('supports explicit objectKey overrides', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleTopologyTwoObjects,
+        fit: sampleTopologyTwoObjects,
       },
       slots: {
         default: () => h(MapMesh, {
+          data: sampleTopologyTwoObjects,
           objectKey: sampleTopologyObjectKey,
         }),
       },

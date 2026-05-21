@@ -1,10 +1,10 @@
-import type { MapData } from '@d3-maps/react'
+import type { MapDataSource } from '@d3-maps/react'
 
 import {
   MapBase,
+  MapFeatures,
   MapGraticule,
   MapMesh,
-  MapObjects,
 } from '@d3-maps/react'
 import {
   useEffect,
@@ -12,7 +12,7 @@ import {
 } from 'react'
 
 export default function GraticuleExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapData>()
+  const [mapData, setMapData] = useState<MapDataSource>()
 
   useEffect(() => {
     let isCancelled = false
@@ -34,13 +34,13 @@ export default function GraticuleExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <MapBase data={mapData}>
+        <MapBase>
           <MapGraticule
             background
             border
           />
-          <MapObjects />
-          <MapMesh />
+          <MapFeatures data={mapData} />
+          <MapMesh data={mapData} />
         </MapBase>
       )
     : null

@@ -25,10 +25,10 @@ The default `fill` is `none` and the default `stroke` is `currentColor`
 
 ```vue
 <template>
-  <MapBase :data="mapData">
+  <MapBase>
     <MapSphere fill="#f8fafc" />
     <MapZoom>
-      <MapObjects fill="#f1f5f9" />
+      <MapFeatures :data="mapData" fill="#f1f5f9" />
       <MapGraticule
         stroke="#94a3b8"
         :config="{
@@ -44,10 +44,10 @@ The default `fill` is `none` and the default `stroke` is `currentColor`
 == React
 
 ```tsx
-<MapBase data={mapData}>
+<MapBase>
   <MapSphere fill="#f8fafc" />
   <MapZoom>
-    <MapObjects fill="#f1f5f9" />
+    <MapFeatures data={mapData} fill="#f1f5f9" />
     <MapGraticule
       stroke="#94a3b8"
       config={{

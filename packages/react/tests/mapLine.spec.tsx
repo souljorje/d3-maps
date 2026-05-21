@@ -47,7 +47,7 @@ function midpointCurve(context: {
 describe('mapLine', () => {
   it('renders projected line path inside map context', () => {
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapLine
           data-testid="map-line"
           coordinates={LINE_COORDINATES}
@@ -62,7 +62,7 @@ describe('mapLine', () => {
 
   it('uses default fill value', () => {
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapLine
           data-testid="map-line-fill"
           coordinates={LINE_COORDINATES}
@@ -86,7 +86,7 @@ describe('mapLine', () => {
 
   it('renders cartesian paths inside map context', () => {
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapLine
           data-testid="map-line-cartesian"
           coordinates={[
@@ -104,7 +104,7 @@ describe('mapLine', () => {
   it('recomputes line path when map context changes', () => {
     const { rerender } = render(
       <MapBase
-        data={sampleGeoJson}
+        fit={sampleGeoJson}
         width={300}
       >
         <MapLine
@@ -118,7 +118,7 @@ describe('mapLine', () => {
 
     rerender(
       <MapBase
-        data={sampleGeoJson}
+        fit={sampleGeoJson}
         width={700}
       >
         <MapLine
@@ -134,7 +134,7 @@ describe('mapLine', () => {
 
   it('renders a path for multi-point coordinates', () => {
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapLine
           data-testid="map-line-multi-point"
           coordinates={THREE_POINT_COORDINATES}
@@ -147,7 +147,7 @@ describe('mapLine', () => {
 
   it('supports custom projected paths', () => {
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapLine
           data-testid="map-line-custom"
           coordinates={THREE_POINT_COORDINATES}
@@ -161,7 +161,7 @@ describe('mapLine', () => {
 
   it('uses the provided D3 curve for custom paths', () => {
     const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapLine
           data-testid="map-line-curved"
           coordinates={THREE_POINT_COORDINATES}
@@ -173,7 +173,7 @@ describe('mapLine', () => {
     const linearPath = screen.getByTestId('map-line-curved').getAttribute('d')
 
     rerender(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapLine
           data-testid="map-line-curved"
           coordinates={THREE_POINT_COORDINATES}
@@ -188,7 +188,7 @@ describe('mapLine', () => {
 
   it('uses curveNatural by default for custom paths', () => {
     const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapLine
           data-testid="map-line-curved"
           coordinates={THREE_POINT_COORDINATES}
@@ -200,7 +200,7 @@ describe('mapLine', () => {
     const linearPath = screen.getByTestId('map-line-curved').getAttribute('d')
 
     rerender(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapLine
           data-testid="map-line-curved"
           coordinates={THREE_POINT_COORDINATES}
@@ -214,7 +214,7 @@ describe('mapLine', () => {
 
   it('applies midpoint shaping for curved connector paths', () => {
     const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapLine
           data-testid="map-line-midpoint"
           coordinates={[
@@ -229,7 +229,7 @@ describe('mapLine', () => {
     const basePath = screen.getByTestId('map-line-midpoint').getAttribute('d')
 
     rerender(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapLine
           data-testid="map-line-midpoint"
           coordinates={[
@@ -250,7 +250,7 @@ describe('mapLine', () => {
     const onBlur = vi.fn()
 
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapLine
           data-testid="map-line-focus"
           coordinates={LINE_COORDINATES}

@@ -4,9 +4,9 @@ description: Guide for building simple interactive SVG map with React, Vue, and 
 
 # Get started
 
-`d3-maps` is a set of components and helpers simplifying creating SVG maps with [D3](https://d3js.org/). Works with your favorite framework, batteries included.
+`d3-maps` is a set of components and helpers simplifying creating SVG maps with [D3](https://d3js.org/). Works with your favorite framework, batteries included
 
-Let's build your first map with `d3-maps` 👇
+Let's build your first map 👇
 
 ## Install
 
@@ -39,7 +39,7 @@ bun add @d3-maps/vue
 ```html
 <script type="module">
   import { createApp } from 'https://esm.sh/vue@3'
-  import { MapBase, MapObjects } from 'https://esm.sh/@d3-maps/vue'
+  import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/vue'
   import 'https://esm.sh/@d3-maps/vue/style.css'
 </script>
 ```
@@ -74,7 +74,7 @@ bun add @d3-maps/react
 <script type="module">
   import React from 'https://esm.sh/react@19'
   import { createRoot } from 'https://esm.sh/react-dom@19/client'
-  import { MapBase, MapObjects } from 'https://esm.sh/@d3-maps/react'
+  import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/react'
   import 'https://esm.sh/@d3-maps/react/style.css'
 </script>
 ```
@@ -95,7 +95,7 @@ See [Atlas](/guide/atlas) for more maps
 
 ## Render the map
 
-Pass the data to `MapBase`
+Pass the data to `MapFeatures`
 
 :::tabs key:framework
 
@@ -103,15 +103,15 @@ Pass the data to `MapBase`
 
 ```vue [vue]
 <script setup lang="ts">
-import { MapBase, MapObjects, type MapDataSource } from '@d3-maps/vue'
+import { MapBase, MapFeatures, type MapData } from '@d3-maps/vue'
 defineProps<{
-  data: MapDataSource
+  data: MapData
 }>()
 </script>
 
 <template>
-  <MapBase :data="data">
-    <MapObjects />
+  <MapBase>
+    <MapFeatures :data="data" />
   </MapBase>
 </template>
 ```
@@ -120,12 +120,12 @@ defineProps<{
 
 ```tsx [react]
 import '@d3-maps/react/style.css'
-import { MapBase, MapObjects, type MapDataSource } from '@d3-maps/react'
+import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
 
-export function MapView({ data }: { data: MapDataSource }) {
+export function MapView({ data }: { data: MapData }) {
   return (
-    <MapBase data={data}>
-      <MapObjects />
+    <MapBase>
+      <MapFeatures data={data} />
     </MapBase>
   )
 }

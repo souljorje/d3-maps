@@ -17,7 +17,7 @@ Use when you need a callout, label, or badge offset from the original location
 | `margin?` | `number` | `0` | Gap between the anchor point and the connector start |
 | `curve?` | `CurveFactory \| CurveFactoryLineOnly` | `curveNatural` | See [`MapLine.curve`](/components/map-line#props) |
 | `midpoint?` | `[lengthwise: number, crosswise: number]` | — | See [`MapLine.midpoint`](/components/map-line#props) |
-| `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
+| `styles?` | [MapObject['styles']](/api/core/object#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 `styles` and native attributes are bound to the connector `<path>`.  
 Interaction state is tracked on the wrapper `<g>`.
@@ -30,8 +30,8 @@ Interaction state is tracked on the wrapper `<g>`.
 
 ```vue
 <template>
-  <MapBase :data="mapData">
-    <MapObjects />
+  <MapBase>
+    <MapFeatures :data="mapData" />
     <MapAnnotation
       :coordinates="[2.3522, 48.8566]"
       :length="40"
@@ -55,8 +55,8 @@ Interaction state is tracked on the wrapper `<g>`.
 == React
 
 ```tsx
-<MapBase data={mapData}>
-  <MapObjects />
+<MapBase>
+  <MapFeatures data={mapData} />
   <MapAnnotation
     coordinates={[2.3522, 48.8566]}
     length={40}

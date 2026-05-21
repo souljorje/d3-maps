@@ -40,7 +40,7 @@ describe('mapAnnotation', () => {
   it('renders connector and content inside map context', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapAnnotation, {
@@ -79,7 +79,7 @@ describe('mapAnnotation', () => {
   it('uses the provided D3 curve for the connector path', () => {
     const linearWrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapAnnotation, {
@@ -97,7 +97,7 @@ describe('mapAnnotation', () => {
 
     const curvedWrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapAnnotation, {

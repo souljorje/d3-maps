@@ -1,9 +1,8 @@
 <template>
   <MapBase
     v-if="data"
-    :data="data"
   >
-    <MapObjects />
+    <MapFeatures :data="data" />
 
     <MapMarker
       v-for="city in cities"
@@ -70,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MapDataSource } from '@d3-maps/vue'
+import type { MapData } from '@d3-maps/vue'
 
 import { curveBasis } from 'd3-shape'
 import { onMounted, ref } from 'vue'
@@ -102,7 +101,7 @@ const returnFlight = [
   cities[0].coordinates,
 ]
 
-const data = ref<MapDataSource>()
+const data = ref<MapData>()
 
 onMounted(async () => {
   const { default: mapData } = await import('@d3-maps/atlas/world/countries')
