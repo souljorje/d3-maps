@@ -11,7 +11,7 @@ Positions anything on the map based on coordinates
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `coordinates?` | `[number, number]` | — | Marker coordinates in `[longitude, latitude]` format. |
-| `styles?` | [MapObject['styles']](/api/core/object#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
+| `styles?` | [InteractionProps['styles']](/api/core/interaction#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 ## Usage
 

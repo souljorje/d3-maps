@@ -1,14 +1,12 @@
 import type { Topology } from 'topojson-specification'
 
 import type { MapContext } from './map'
-import type { MapObjectProps } from './object'
 
 import { mesh } from 'topojson-client'
 
 import { isTopology } from './data'
 
-export interface MapMeshProps<TStyle = unknown>
-  extends MapObjectProps<TStyle> {
+export interface MapMeshProps {
   data?: Topology
   objectKey?: string
 }

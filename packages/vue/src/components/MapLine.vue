@@ -1,5 +1,5 @@
 <template>
-  <MapObject
+  <MapElement
     v-bind="pathAttrs"
     :d="path"
     :fill="fill"
@@ -18,7 +18,7 @@ import {
 } from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
-import MapObject from './MapObject.vue'
+import MapElement from './MapElement.vue'
 
 defineOptions({
   inheritAttrs: false,

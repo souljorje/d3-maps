@@ -1,6 +1,9 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 
-import type { MapFeature } from '@d3-maps/core'
+import type {
+  MapFeatureData,
+  MapFeatureRendered,
+} from '@d3-maps/core'
 
 import {
   fireEvent,
@@ -11,8 +14,8 @@ import {
 import {
   isFeature,
   MapBase,
+  MapFeature,
   MapFeatures,
-  MapObject,
 } from '../src'
 import {
   sampleGeoJson,
@@ -23,6 +26,16 @@ import {
 } from './fixtures'
 
 describe('mapFeatures', () => {
+  it('renders a standalone feature path', () => {
+    const { container } = render(
+      <MapBase fit={sampleGeoJson}>
+        <MapFeature d="M0,0L10,0" />
+      </MapBase>,
+    )
+
+    expect(container.querySelector('path[name="feature"]')?.getAttribute('d')).toBe('M0,0L10,0')
+  })
+
   it('renders normalized features by default', () => {
     const { container } = render(
       <MapBase fit={sampleGeometryCollection}>
@@ -49,8 +62,8 @@ describe('mapFeatures', () => {
               data-count={String(features.length)}
             >
               {
-                features.map(({ key, d }: MapFeature) => (
-                  <MapObject
+                features.map(({ key, d }: MapFeatureRendered) => (
+                  <MapFeature
                     key={key}
                     d={d}
                   />
@@ -116,6 +129,38 @@ describe('mapFeatures', () => {
     expect(container.querySelectorAll('path')).toHaveLength(1)
   })
 
+  it('exposes transformer enrichment to render props', () => {
+    type ColoredFeature = MapFeatureData & {
+      color: string
+    }
+
+    const { container } = render(
+      <MapBase fit={sampleGeoJson}>
+        <MapFeatures
+          data={sampleGeoJson}
+          transformer={(features): ColoredFeature[] => features.map((feature) => ({
+            ...feature,
+            color: 'darkorange',
+          }))}
+        >
+          {({ features }) => {
+            expectTypeOf(features).toEqualTypeOf<MapFeatureRendered<ColoredFeature>[]>()
+
+            return features.map((feature) => (
+              <MapFeature
+                key={feature.key}
+                d={feature.d}
+                fill={feature.color}
+              />
+            ))
+          }}
+        </MapFeatures>
+      </MapBase>,
+    )
+
+    expect(container.querySelector('path')?.getAttribute('fill')).toBe('darkorange')
+  })
+
   it('supports custom object keys', () => {
     render(
       <MapBase fit={sampleGeoJson}>
@@ -126,7 +171,7 @@ describe('mapFeatures', () => {
             : undefined}
         >
           {({ features }) => (
-            <g data-testid="map-object-keys">
+            <g data-testid="map-feature-keys">
               {features.map(({ key }) => (
                 <g
                   key={key}
@@ -139,7 +184,7 @@ describe('mapFeatures', () => {
       </MapBase>,
     )
 
-    expect(screen.getByTestId('map-object-keys').querySelector('[data-key="demo"]')).not.toBeNull()
+    expect(screen.getByTestId('map-feature-keys').querySelector('[data-key="demo"]')).not.toBeNull()
   })
 
   it('preserves feature geometry collections as single objects', () => {

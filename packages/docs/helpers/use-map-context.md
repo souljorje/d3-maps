@@ -12,8 +12,8 @@ Throws an error if used outside `MapBase`
 
 | Adapter | Type |
 | --- | --- |
-| `@d3-maps/vue` | `ComputedRef<MapContext>` |
-| `@d3-maps/react` | `MapContext` |
+| `@d3-maps/vue` | `ComputedRef<`[MapContext](/api/core/map#mapcontext)`>` |
+| `@d3-maps/react` | [MapContext](/api/core/map#mapcontext) |
 
 See [MapContext API](/api/core/map#mapcontext)
 

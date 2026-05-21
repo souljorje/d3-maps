@@ -1,7 +1,6 @@
 import type { MapContext } from './map'
-import type { MapObjectProps } from './object'
 
-export interface MapSphereProps<TStyle = unknown> extends MapObjectProps<TStyle> {
+export interface MapSphereProps {
   fill?: string
   stroke?: string
 }

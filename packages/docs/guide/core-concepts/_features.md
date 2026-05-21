@@ -2,7 +2,7 @@
 
 A feature is a geographic entity such as a country or state.
 
-[MapFeatures](/components/map-features) renders the full collection, while [MapObject](/components/map-object) is the low-level primitive for custom single-feature rendering. The slot or render-function form exposes per-feature rendering control.
+[MapFeatures](/components/map-features) renders the full collection, while [MapFeature](/components/map-feature) handles custom single-feature rendering. The slot or render-function form exposes per-feature rendering control.
 
 :::tabs key:framework
 
@@ -18,7 +18,7 @@ A feature is a geographic entity such as a country or state.
       :transformer="transformer"
     >
       <template #default="{ features }">
-        <MapObject
+        <MapFeature
           v-for="feature in features"
           :key="feature.key"
           :d="feature.d"
@@ -41,7 +41,7 @@ A feature is a geographic entity such as a country or state.
   >
     {({ features }) =>
       features.map((feature) => (
-        <MapObject
+        <MapFeature
           key={feature.key}
           d={feature.d}
         />

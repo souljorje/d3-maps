@@ -2,7 +2,8 @@
 
 import type {
   MapFeaturesProps as CoreMapFeaturesProps,
-  MapFeature,
+  MapFeatureData,
+  MapFeatureRendered,
 } from '@d3-maps/core'
 import type {
   CSSProperties,
@@ -17,26 +18,29 @@ import {
 import { useMemo } from 'react'
 
 import { useMapContext } from '../hooks/useMapContext'
-import { MapObject } from './MapObject'
+import { MapFeature } from './MapFeature'
 
-interface MapFeaturesRenderProps {
-  features: MapFeature[]
+interface MapFeaturesRenderProps<TFeature extends MapFeatureData = MapFeatureData> {
+  features: MapFeatureRendered<TFeature>[]
 }
 
-type MapFeaturesChildren = ReactNode | ((props: MapFeaturesRenderProps) => ReactNode)
+type MapFeaturesChildren<TFeature extends MapFeatureData = MapFeatureData> =
+  ReactNode | ((props: MapFeaturesRenderProps<TFeature>) => ReactNode)
 type MapFeaturesElementProps = Omit<SVGProps<SVGGElement>, 'children'>
 
-export interface MapFeaturesProps
+export interface MapFeaturesProps<TFeature extends MapFeatureData = MapFeatureData>
   extends MapFeaturesElementProps,
-  CoreMapFeaturesProps<CSSProperties> {
-  children?: MapFeaturesChildren
+  CoreMapFeaturesProps<TFeature, CSSProperties> {
+  children?: MapFeaturesChildren<TFeature>
 }
 
-function isRenderProp(children: MapFeaturesChildren | undefined): children is (props: MapFeaturesRenderProps) => ReactNode {
+function isRenderProp<TFeature extends MapFeatureData>(
+  children: MapFeaturesChildren<TFeature> | undefined,
+): children is (props: MapFeaturesRenderProps<TFeature>) => ReactNode {
   return typeof children === 'function'
 }
 
-export function MapFeatures({
+export function MapFeatures<TFeature extends MapFeatureData = MapFeatureData>({
   data,
   objectKey,
   transformer,
@@ -44,11 +48,11 @@ export function MapFeatures({
   styles,
   children,
   ...groupProps
-}: MapFeaturesProps): ReactElement {
+}: MapFeaturesProps<TFeature>): ReactElement {
   const context = useMapContext()
 
   const features = useMemo(() => {
-    return makeMapFeatures(context, {
+    return makeMapFeatures<TFeature>(context, {
       data,
       objectKey,
       transformer,
@@ -68,11 +72,10 @@ export function MapFeatures({
       {
         resolvedChildren
         ?? features.map(({ key, d }) => (
-          <MapObject
+          <MapFeature
             key={key}
             d={d}
             styles={styles}
-            name="feature"
           />
         ))
       }

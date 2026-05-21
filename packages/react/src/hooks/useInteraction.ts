@@ -3,7 +3,7 @@
 import type {
   InteractionController,
   InteractionState,
-  MapObjectProps,
+  MapElementProps,
 } from '@d3-maps/core'
 import type {
   CSSProperties,
@@ -26,7 +26,7 @@ import {
 import { useLatest } from './useLatest'
 import { useMapZoom } from './useMapZoom'
 
-interface MapObjectEventHandlers<T extends Element> {
+interface MapElementEventHandlers<T extends Element> {
   onMouseEnter: MouseEventHandler<T>
   onMouseLeave: MouseEventHandler<T>
   onMouseDown: MouseEventHandler<T>
@@ -36,11 +36,11 @@ interface MapObjectEventHandlers<T extends Element> {
 }
 
 export interface UseInteractionOptions<TElement extends Element>
-  extends MapObjectProps<CSSProperties>,
-  Partial<MapObjectEventHandlers<TElement>> {}
+  extends MapElementProps<CSSProperties>,
+  Partial<MapElementEventHandlers<TElement>> {}
 
 export interface UseInteractionResult<TElement extends Element>
-  extends MapObjectEventHandlers<TElement> {
+  extends MapElementEventHandlers<TElement> {
   style?: CSSProperties
 }
 

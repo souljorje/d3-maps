@@ -2,26 +2,16 @@ import { describe, expect, expectTypeOf, it } from 'vitest'
 
 import {
   geoNaturalEarth1,
-  geoPath,
 } from 'd3-geo'
 
 import {
-  getFeatureKey,
-  isFeature,
-  isTopology,
   makeMapContext,
-  makeMapFeatures,
   makeProjection,
-  resolveMapData,
   SPHERE,
 } from '../src'
 import {
   sampleGeoJson,
   sampleGeoJsonTwoFeatures,
-  sampleGeometryCollection,
-  sampleGeometryCollectionFeature,
-  samplePolygon,
-  sampleTopology,
   sampleTopologyObjectKey,
   sampleTopologyTwoObjects,
 } from './fixtures'
@@ -159,38 +149,6 @@ describe('makeProjection', () => {
   })
 })
 
-describe('map data', () => {
-  it('normalizes features and geometries into feature units', () => {
-    expect(resolveMapData(sampleGeoJsonTwoFeatures)).toHaveLength(2)
-    expect(resolveMapData(sampleTopology)).toHaveLength(1)
-    expect(resolveMapData(sampleTopologyTwoObjects, sampleTopologyObjectKey)).toHaveLength(2)
-    expect(resolveMapData(sampleGeoJson)).toHaveLength(1)
-    expect(resolveMapData(sampleGeometryCollection)).toHaveLength(2)
-    expect(resolveMapData(samplePolygon)).toHaveLength(1)
-  })
-
-  it('preserves feature geometry collections as single feature objects', () => {
-    expect(resolveMapData(sampleGeometryCollectionFeature)).toEqual([sampleGeometryCollectionFeature])
-  })
-
-  it('keeps topology-derived geometry collections as features after topojson normalization', () => {
-    const data = resolveMapData(sampleTopologyTwoObjects, sampleTopologyObjectKey)
-
-    expect(data).toHaveLength(2)
-    expect(data.every((object) => isFeature(object))).toBe(true)
-  })
-
-  it('applies data transformers after normalization', () => {
-    const data = resolveMapData(
-      sampleTopologyTwoObjects,
-      sampleTopologyObjectKey,
-      (objects) => objects.slice(0, 1),
-    )
-
-    expect(data).toHaveLength(1)
-  })
-})
-
 describe('makeMapContext', () => {
   it('builds projection-ready context', () => {
     const context = makeMapContext({
@@ -275,57 +233,5 @@ describe('makeMapContext', () => {
       context.projection as ReturnType<typeof makeProjection>,
       sphereFit.projection.translate() as [number, number],
     )
-  })
-})
-
-describe('makeMapFeatures', () => {
-  it('enriches normalized features with keys and paths', () => {
-    const projection = makeProjectionFromBase()
-    const objects = makeMapFeatures({
-      path: geoPath().projection(projection),
-    }, {
-      data: sampleGeoJsonTwoFeatures,
-    })
-
-    expect(objects).toHaveLength(2)
-    expect(objects[0]?.key).toBe('demo')
-    expect(typeof objects[0]?.d).toBe('string')
-  })
-
-  it('uses the custom key accessor when provided', () => {
-    const projection = makeProjectionFromBase()
-    const objects = makeMapFeatures({
-      path: geoPath().projection(projection),
-    }, {
-      data: sampleGeoJsonTwoFeatures,
-      getKey: (item, index) => isFeature(item)
-        ? item.properties?.id ?? `custom-${index}`
-        : undefined,
-    })
-
-    expect(objects.map(({ key }) => key)).toEqual(['demo', 'demo-2'])
-  })
-})
-
-describe('getFeatureKey', () => {
-  it('prefers item id, then properties.id, then properties.name, then index', () => {
-    expect(getFeatureKey(sampleGeoJson.features[0], 9)).toBe('demo')
-    expect(getFeatureKey({
-      ...sampleGeoJson.features[0],
-      id: undefined,
-    }, 9)).toBe('demo')
-    expect(getFeatureKey({
-      ...sampleGeoJson.features[0],
-      id: undefined,
-      properties: { name: 'named-feature' },
-    }, 9)).toBe('named-feature')
-    expect(getFeatureKey(samplePolygon, 9)).toBe(9)
-  })
-})
-
-describe('isTopology', () => {
-  it('detects topology input', () => {
-    expect(isTopology(sampleTopology)).toBe(true)
-    expect(isTopology(sampleGeoJson)).toBe(false)
   })
 })

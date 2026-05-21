@@ -12,9 +12,9 @@ Use it when you want to zoom to a feature, marker geometry, or any other permiss
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `context` | `Pick<MapContext, 'path' \| 'width' \| 'height'>` | `—` | Current map path generator and dimensions |
+| `context` | [MapContext](/api/core/map#mapcontext) | `—` | Current map path generator and dimensions |
 | `object` | `GeoPermissibleObjects` | `—` | Geo object to fit |
-| `options?` | `ObjectZoomViewOptions` | `{}` | Optional `minZoom`, `maxZoom`, and `padding` |
+| `options?` | [ObjectZoomViewOptions](/api/core/zoom#objectzoomviewoptions) | `{}` | Optional `minZoom`, `maxZoom`, and `padding` |
 
 ## Return value
 

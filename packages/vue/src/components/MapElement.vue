@@ -9,22 +9,22 @@
 </template>
 
 <script setup lang="ts">
-import type { MapObjectProps } from '@d3-maps/core'
+import type { MapElementProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
 import { toRef } from 'vue'
 
 import { useInteraction } from '../hooks/useInteraction'
 
-type MapObjectPathProps = MapObjectProps<StyleValue> & {
+type MapElementPathProps = MapElementProps<StyleValue> & {
   tag?: 'path'
 }
 
-type MapObjectGroupProps = MapObjectProps<StyleValue> & {
+type MapElementGroupProps = MapElementProps<StyleValue> & {
   tag?: 'g'
 }
 
-type Props = MapObjectPathProps | MapObjectGroupProps
+type Props = MapElementPathProps | MapElementGroupProps
 
 const props = withDefaults(defineProps<Props>(), { tag: 'path' })
 

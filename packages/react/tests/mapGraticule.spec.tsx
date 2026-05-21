@@ -39,34 +39,20 @@ describe('mapGraticule', () => {
     expect(container.querySelectorAll('path')).toHaveLength(1)
   })
 
-  it('applies map-object interaction styles and callbacks on lines path', () => {
+  it('forwards native mouse callbacks on lines path', () => {
     const onMouseUp = vi.fn()
 
     render(
       <MapBase fit={sampleGeoJson}>
         <MapGraticule
           data-testid="map-graticule-lines"
-          styles={{
-            default: { opacity: 0.9 },
-            hover: { opacity: 0.7 },
-            active: { opacity: 0.5 },
-          }}
           onMouseUp={onMouseUp}
         />
       </MapBase>,
     )
 
     const lines = screen.getByTestId('map-graticule-lines')
-    expect(lines.style.opacity).toBe('0.9')
-
-    fireEvent.mouseEnter(lines)
-    expect(lines.style.opacity).toBe('0.7')
-
-    fireEvent.mouseDown(lines)
-    expect(lines.style.opacity).toBe('0.5')
-
     fireEvent.mouseUp(lines)
-    expect(lines.style.opacity).toBe('0.7')
     expect(onMouseUp).toHaveBeenCalledTimes(1)
   })
 

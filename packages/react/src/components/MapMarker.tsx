@@ -11,7 +11,7 @@ import { getMarkerTransform } from '@d3-maps/core'
 import { useMemo } from 'react'
 
 import { useMapContext } from '../hooks/useMapContext'
-import { MapObject } from './MapObject'
+import { MapElement } from './MapElement'
 
 export interface MapMarkerProps
   extends CoreMapMarkerProps<CSSProperties>,
@@ -40,7 +40,7 @@ export function MapMarker({
   if (!transform) return null
 
   return (
-    <MapObject
+    <MapElement
       tag="g"
       {...props}
       transform={transform}
@@ -48,6 +48,6 @@ export function MapMarker({
       name={name}
     >
       {children}
-    </MapObject>
+    </MapElement>
   )
 }

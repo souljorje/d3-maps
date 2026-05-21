@@ -14,7 +14,7 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 | Data | `Geographies.geography` -> `MapFeatures.data` |
 | Data transform | `Geographies.parseGeographies` -> `MapFeatures.transformer` |
 | Fit | `ComposableMap` sizing + geography bounds -> `MapBase.fit` |
-| Style prop | `Geography.style` -> `MapObject.styles` |
+| Style prop | `Geography.style` -> `MapFeature.styles` |
 | Style states | `style.pressed` -> `styles.active` |
 | Zoom wrapper | `ZoomableGroup` -> `MapZoom` |
 | Marker | `Marker` -> `MapMarker` |
@@ -55,13 +55,11 @@ export function WorldMap() {
 
 ## 2. Rename style prop
 
-- `Geography.style` -> `MapObject.styles`  
+- `Geography.style` -> `MapFeature.styles`  
 - `style.pressed` -> `styles.active`
 
-This style model is supported by `MapObject`, `MapFeatures`, `MapMarker`, `MapMesh`, and `MapGraticule`
-
 ```tsx
-<MapObject
+<MapFeature
   styles={{
     default: { fill: '#e2e8f0' },
     hover: { fill: '#fb923c' },
@@ -168,7 +166,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 | --- | --- |
 | [ComposableMap](https://www.react-simple-maps.io/docs/composable-map/) | [MapBase](/components/map-base) |
 | [Geographies](https://www.react-simple-maps.io/docs/geographies/) | [MapFeatures](/components/map-features) |
-| [Geography](https://www.react-simple-maps.io/docs/geography/) | [MapObject](/components/map-object) |
+| [Geography](https://www.react-simple-maps.io/docs/geography/) | [MapFeature](/components/map-feature) |
 | [Marker](https://www.react-simple-maps.io/docs/marker/) | [MapMarker](/components/map-marker) |
 | [Line](https://www.react-simple-maps.io/docs/line/) | [MapLine](/components/map-line) |
 | [ZoomableGroup](https://www.react-simple-maps.io/docs/zoomable-group/) | [MapZoom](/components/map-zoom) |

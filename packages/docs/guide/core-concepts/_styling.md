@@ -1,6 +1,6 @@
 ## Styling
 
-[MapObject](/components/map-object)*, [MapMarker](/components/map-marker), [MapMesh](/components/map-mesh), [MapGraticule](/components/map-graticule), [MapLine](/components/map-line), and [MapAnnotation](/components/map-annotation) expose a `styles` prop for interaction-state styling  
+[MapElement](/components/map-element)*, [MapFeature](/components/map-feature), [MapMarker](/components/map-marker), [MapLine](/components/map-line), and [MapAnnotation](/components/map-annotation) expose a `styles` prop for interaction-state styling  
 
 <!-- TODO: check if it works with Solid and svelte -->
 ```ts
@@ -72,7 +72,7 @@ const styles = {
 
 :::
 
-> \* [MapFeatures](/components/map-features) forwards `styles` to internally rendered `MapObject`s
+> \* [MapFeatures](/components/map-features) forwards `styles` to internally rendered `MapFeature`s
 
 ### CSS
 

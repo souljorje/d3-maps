@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import type { MapFeature } from '@d3-maps/core'
+import type { MapFeatureRendered } from '@d3-maps/core'
 
 import { mount } from '@vue/test-utils'
 import { h } from 'vue'
@@ -8,8 +8,8 @@ import { h } from 'vue'
 import {
   isFeature,
   MapBase,
+  MapFeature,
   MapFeatures,
-  MapObject,
 } from '../src'
 import {
   sampleGeoJson,
@@ -19,9 +19,24 @@ import {
   sampleTopologyTwoObjects,
 } from './fixtures'
 
-const MapObjectComponent = MapObject as unknown as Parameters<typeof h>[0]
+const MapFeatureComponent = MapFeature as unknown as Parameters<typeof h>[0]
 
 describe('mapFeatures', () => {
+  it('renders a standalone feature path', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        fit: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapFeatureComponent, {
+          d: 'M0,0L10,0',
+        }),
+      },
+    })
+
+    expect(wrapper.get('path[name="feature"]').attributes('d')).toBe('M0,0L10,0')
+  })
+
   it('renders normalized features from explicit layer data', () => {
     const wrapper = mount(MapBase, {
       props: {
@@ -51,12 +66,12 @@ describe('mapFeatures', () => {
             objectKey: sampleTopologyObjectKey,
           },
           {
-            default: ({ features }: { features: MapFeature[] }) =>
+            default: ({ features }: { features: MapFeatureRendered[] }) =>
               h('g', {
                 'data-testid': 'map-features-group',
                 'data-count': String(features.length),
               }, features.map(({ key, d }) => h(
-                MapObjectComponent,
+                MapFeatureComponent,
                 {
                   key,
                   d,
@@ -143,8 +158,8 @@ describe('mapFeatures', () => {
               : undefined,
           },
           {
-            default: ({ features }: { features: MapFeature[] }) =>
-              h('g', { 'data-testid': 'map-object-keys' }, features.map(({ key }) => h('g', {
+            default: ({ features }: { features: MapFeatureRendered[] }) =>
+              h('g', { 'data-testid': 'map-feature-keys' }, features.map(({ key }) => h('g', {
                 key,
                 'data-key': String(key),
               }))),
@@ -153,7 +168,7 @@ describe('mapFeatures', () => {
       },
     })
 
-    expect(wrapper.find('[data-testid="map-object-keys"] [data-key="demo"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="map-feature-keys"] [data-key="demo"]').exists()).toBe(true)
   })
 
   it('preserves feature geometry collections as single objects', () => {

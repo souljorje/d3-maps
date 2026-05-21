@@ -2,7 +2,7 @@
 description: Low-level interactive SVG path or group primitive for custom D3 map layers in React and Vue
 ---
 
-# MapObject
+# MapElement
 
 Renders a single interactive SVG element.
 
@@ -14,9 +14,9 @@ Use it directly when you already have a path string or when you want to take ful
 | --- | --- | --- | --- |
 | `d?` | `string` | — | Path data for the default `path` mode |
 | `tag?` | `'path' \| 'g'` | `'path'` | Render a `path` or interactive `g` |
-| `styles?` | [MapObject['styles']](/api/core/object#property-styles) | — | Interaction-state styles, see [styling guide](/guide/core-concepts/#styling) |
+| `styles?` | [InteractionProps['styles']](/api/core/interaction#property-styles) | — | Interaction-state styles, see [styling guide](/guide/core-concepts/#styling) |
 
-Use native SVG attrs like `fill`, `stroke`, `role`, `aria-label`, and `tabindex` / `tabIndex` directly on `MapObject`.
+Use native SVG attrs like `fill`, `stroke`, `role`, `aria-label`, and `tabindex` / `tabIndex` directly on `MapElement`.
 
 ## Usage
 
@@ -31,7 +31,7 @@ Use native SVG attrs like `fill`, `stroke`, `role`, `aria-label`, and `tabindex`
       :data="mapData" 
       #default="{ features }"
     >
-      <MapObject
+      <MapElement
         v-for="feature in features"
         :key="feature.key"
         :d="feature.d"
@@ -63,7 +63,7 @@ import { isFeature } from '@d3-maps/react'
   <MapFeatures data={mapData}>
     {({ features }) =>
       features.map((feature) => (
-        <MapObject
+        <MapElement
           key={feature.key}
           d={feature.d}
           fill={isFeature(feature) ? 'darkorange' : 'none'}

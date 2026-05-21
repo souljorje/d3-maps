@@ -6,7 +6,7 @@ description: Helper for interaction state and resolved styles on custom D3 SVG m
 
 Provides interaction-state transitions and resolved styles for custom map SVG elements.
 
-Used internally by [MapObject](/components/map-object), [MapLine](/components/map-line), [MapAnnotation](/components/map-annotation), [MapMarker](/components/map-marker), and [MapMesh](/components/map-mesh)
+Used internally by [MapElement](/components/map-element), [MapFeature](/components/map-feature), [MapLine](/components/map-line), [MapAnnotation](/components/map-annotation), and [MapMarker](/components/map-marker)
 
 ## Usage
 

@@ -12,7 +12,7 @@ Use it when you need a stable identifier for rendering or DOM targeting
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `item` | `MapFeatureData` | `—` | Feature or geometry to inspect |
+| `item` | [MapFeatureData](/api/core/data#mapfeaturedata) | `—` | Feature or geometry to inspect |
 | `index` | `number` | `—` | Index fallback when no stable key is found |
 
 ## Behavior
@@ -30,4 +30,4 @@ Checks in order:
 const key = getFeatureKey(item, index)
 ```
 
-See [data API](/api/core/data#getfeaturekey)
+See [feature API](/api/core/feature#getfeaturekey)

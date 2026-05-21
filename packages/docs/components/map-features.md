@@ -1,19 +1,21 @@
 ---
-description: Component for default GeoJSON feature rendering on D3 SVG maps in React and Vue
+description: Component for feature rendering on D3 SVG maps in React and Vue
 ---
 
 # MapFeatures
 
 Renders normalized map features from source data
 
+Fields added by `transformer` stay available in custom feature slots and render functions
+
 ## Props
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `data?` | [MapData](/api/core/data#MapData) | — | Layer data source |
+| `data?` | [MapData](/api/core/data#MapData) | — | TopoJSON or GeoJSON |
 | `objectKey?` | `string` | — | TopoJSON object key for `data` |
-| `transformer?` | `(features) => features` | — | Optional layer-local transform for normalized features |
-| `styles?` | [MapObject['styles']](/api/core/object#property-styles) | — | Forwarded to default-rendered [MapObject](/components/map-object) instances |
+| `transformer?` | [MapFeatureTransformer](/api/core/feature#mapfeaturetransformer) | — | Optional transform for normalized features |
+| `styles?` | [InteractionProps['styles']](/api/core/interaction#property-styles) | — | Forwarded to default-rendered [MapFeature](/components/map-feature) instances |
 
 Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatures`
 
@@ -69,7 +71,7 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
 <template>
   <MapFeatures :data="mapData">
     <template #default="{ features }">
-      <MapObject
+      <MapFeature
         v-for="feature in features"
         :key="feature.key"
         :d="feature.d"
@@ -92,7 +94,7 @@ import { isFeature } from '@d3-maps/react'
 <MapFeatures data={mapData}>
   {({ features }) => (
     features.map((feature) => (
-      <MapObject
+      <MapFeature
         key={feature.key}
         d={feature.d}
         fill={isFeature(feature) ? 'darkorange' : 'none'}

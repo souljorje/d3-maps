@@ -1,20 +1,20 @@
 <template>
   <g name="features">
     <slot :features="features">
-      <MapObject
+      <MapFeature
         v-for="{ key, d } in features"
         :key="key"
         :d="d"
         :styles="styles"
-        name="feature"
       />
     </slot>
   </g>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="TFeature extends MapFeatureData = MapFeatureData">
 import type {
-  MapFeature,
+  MapFeatureData,
+  MapFeatureRendered,
   MapFeaturesProps,
 } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
@@ -23,17 +23,17 @@ import { makeMapFeatures } from '@d3-maps/core'
 import { computed } from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
-import MapObject from './MapObject.vue'
+import MapFeature from './MapFeature.vue'
 
-const props = defineProps<MapFeaturesProps<StyleValue>>()
+const props = defineProps<MapFeaturesProps<TFeature, StyleValue>>()
 
 defineSlots<{
-  default?: (props: { features: MapFeature[] }) => unknown
+  default?: (props: { features: MapFeatureRendered<TFeature>[] }) => unknown
 }>()
 
 const context = useMapContext()
-const features = computed<MapFeature[]>(() => {
-  return makeMapFeatures(context.value, {
+const features = computed<MapFeatureRendered<TFeature>[]>(() => {
+  return makeMapFeatures<TFeature>(context.value, {
     data: props.data,
     objectKey: props.objectKey,
     transformer: props.transformer,

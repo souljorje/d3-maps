@@ -1,5 +1,5 @@
 <template>
-  <MapObject
+  <MapElement
     v-if="transform"
     tag="g"
     :transform="transform"
@@ -7,7 +7,7 @@
     :styles="styles"
   >
     <slot />
-  </MapObject>
+  </MapElement>
 </template>
 
 <script setup lang="ts">
@@ -18,7 +18,7 @@ import { getMarkerTransform } from '@d3-maps/core'
 import { computed } from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
-import MapObject from './MapObject.vue'
+import MapElement from './MapElement.vue'
 
 interface Props extends MapMarkerProps<StyleValue> {
   name?: string

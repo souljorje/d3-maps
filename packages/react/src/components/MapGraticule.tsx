@@ -2,7 +2,6 @@
 
 import type { MapGraticuleProps as CoreMapGraticuleProps } from '@d3-maps/core'
 import type {
-  CSSProperties,
   ReactElement,
   SVGProps,
 } from 'react'
@@ -13,15 +12,13 @@ import {
 import { useMemo } from 'react'
 
 import { useMapContext } from '../hooks/useMapContext'
-import { MapObject } from './MapObject'
 
 export interface MapGraticuleProps
-  extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style' | 'fill'>,
-  CoreMapGraticuleProps<CSSProperties> {}
+  extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'fill'>,
+  CoreMapGraticuleProps {}
 
 export function MapGraticule({
   config,
-  styles,
   ...props
 }: MapGraticuleProps): ReactElement | null {
   const context = useMapContext()
@@ -31,10 +28,9 @@ export function MapGraticule({
   }, [context, config])
 
   return (
-    <MapObject
+    <path
       {...props}
       d={graticulePath ?? undefined}
-      styles={styles}
       fill="none"
       name="graticule"
     />

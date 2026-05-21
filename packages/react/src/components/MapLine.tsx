@@ -11,7 +11,7 @@ import { getLinePath } from '@d3-maps/core'
 import { useMemo } from 'react'
 
 import { useMapContext } from '../hooks/useMapContext'
-import { MapObject } from './MapObject'
+import { MapElement } from './MapElement'
 
 export interface MapLineProps
   extends CoreMapLineProps<CSSProperties>,
@@ -48,7 +48,7 @@ export function MapLine({
   ])
 
   return (
-    <MapObject
+    <MapElement
       {...props}
       d={path}
       styles={styles}

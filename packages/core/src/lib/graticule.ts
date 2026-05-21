@@ -1,7 +1,6 @@
 import type { GeoGraticuleGenerator } from 'd3-geo'
 
 import type { MapContext } from './map'
-import type { MapObjectProps } from './object'
 import type { MethodsToModifiers } from './utils'
 
 import { geoGraticule } from 'd3-geo'
@@ -21,7 +20,7 @@ export interface GraticuleConfig extends MethodsToModifiers<GeoGraticuleGenerato
 /**
  * Shared props contract for graticule layers.
  */
-export interface MapGraticuleProps<TStyle = unknown> extends MapObjectProps<TStyle> {
+export interface MapGraticuleProps {
   config?: GraticuleConfig
 }
 

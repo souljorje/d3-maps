@@ -15,8 +15,6 @@ _ℹ️ Works only with **TopoJSON** data_
 | --- | --- | --- | --- |
 | `data?` | [MapData](/api/core/data#MapData) | — | TopoJSON source |
 | `objectKey?` | `string` | — | TopoJSON object key for `data` |
-| `styles?` | [MapObject['styles']](/api/core/object#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
-
 Use native SVG presentation attrs like `stroke` and `fill` directly on `MapMesh`
 
 ## Usage

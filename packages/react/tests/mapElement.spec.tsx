@@ -8,19 +8,19 @@ import {
 
 import {
   MapBase,
-  MapObject,
+  MapElement,
 } from '../src'
 import { MapZoomContextValue } from '../src/hooks/useMapZoom'
 import { sampleGeoJson } from './fixtures'
 
-describe('mapObject', () => {
+describe('mapElement', () => {
   it('resolves styles across interaction states', () => {
     const onMouseUp = vi.fn()
 
     render(
       <MapBase fit={sampleGeoJson}>
-        <MapObject
-          data-testid="map-object"
+        <MapElement
+          data-testid="map-element"
           d="M0,0L10,0"
           tabIndex={0}
           styles={{
@@ -34,7 +34,7 @@ describe('mapObject', () => {
       </MapBase>,
     )
 
-    const path = screen.getByTestId('map-object')
+    const path = screen.getByTestId('map-element')
     expect(path?.style.opacity).toBe('0.9')
 
     fireEvent.focus(path)
@@ -67,8 +67,8 @@ describe('mapObject', () => {
       }}
       >
         <MapBase fit={sampleGeoJson}>
-          <MapObject
-            data-testid="map-object"
+          <MapElement
+            data-testid="map-element"
             d="M0,0L10,0"
             styles={{
               default: { opacity: 0.9 },
@@ -79,7 +79,7 @@ describe('mapObject', () => {
       </MapZoomContextValue.Provider>,
     )
 
-    const path = screen.getByTestId('map-object')
+    const path = screen.getByTestId('map-element')
     expect(path?.style.opacity).toBe('0.9')
 
     fireEvent.mouseDown(path)

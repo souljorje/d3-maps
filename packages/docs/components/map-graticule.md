@@ -11,8 +11,6 @@ Renders graticule lines as an SVG `<path>` layer
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `config?` | [GraticuleConfig](/api/core/graticule#graticuleconfig) | — | See [usage](#config) below |
-| `styles?` | [MapObject['styles']](/api/core/object#property-styles) | — | Applies map-object interaction styles to the lines path |
-
 Use native SVG presentation attrs like `stroke` directly on `MapGraticule` lines.
 
 ### Config

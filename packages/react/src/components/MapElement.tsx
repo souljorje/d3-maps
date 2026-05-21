@@ -1,6 +1,6 @@
 'use client'
 
-import type { MapObjectProps as CoreMapObjectProps } from '@d3-maps/core'
+import type { MapElementProps as CoreMapElementProps } from '@d3-maps/core'
 import type {
   CSSProperties,
   ReactElement,
@@ -10,27 +10,27 @@ import type {
 
 import { useInteraction } from '../hooks/useInteraction'
 
-interface MapObjectBaseProps extends CoreMapObjectProps<CSSProperties> {
+interface MapElementBaseProps extends CoreMapElementProps<CSSProperties> {
   name?: string
 }
 
-interface MapObjectPathProps
+interface MapElementPathProps
   extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style'>,
-  MapObjectBaseProps {
+  MapElementBaseProps {
   tag?: 'path'
   d?: string
 }
 
-interface MapObjectGroupProps
+interface MapElementGroupProps
   extends Omit<SVGProps<SVGGElement>, 'style'>,
-  MapObjectBaseProps {
+  MapElementBaseProps {
   tag: 'g'
   children?: ReactNode
 }
 
-export type MapObjectProps = MapObjectPathProps | MapObjectGroupProps
+export type MapElementProps = MapElementPathProps | MapElementGroupProps
 
-export function MapObject(props: MapObjectProps): ReactElement | null {
+export function MapElement(props: MapElementProps): ReactElement | null {
   if (props.tag === 'g') {
     const {
       tag: _tag,

@@ -8,14 +8,14 @@ import {
 
 import {
   MapBase,
-  MapObject,
+  MapElement,
 } from '../src'
 import { mapZoomKey } from '../src/hooks/useMapZoom'
 import { sampleGeoJson } from './fixtures'
 
-const MapObjectComponent = MapObject as unknown as Parameters<typeof h>[0]
+const MapElementComponent = MapElement as unknown as Parameters<typeof h>[0]
 
-describe('mapObject', () => {
+describe('mapElement', () => {
   it('resolves styles across interaction states', async () => {
     const onMouseup = vi.fn()
 
@@ -25,9 +25,9 @@ describe('mapObject', () => {
       },
       slots: {
         default: () => h(
-          MapObjectComponent,
+          MapElementComponent,
           {
-            'data-testid': 'map-object',
+            'data-testid': 'map-element',
             d: 'M0,0L10,0',
             tabindex: 0,
             styles: {
@@ -42,7 +42,7 @@ describe('mapObject', () => {
       },
     })
 
-    const path = wrapper.get('[data-testid="map-object"]')
+    const path = wrapper.get('[data-testid="map-element"]')
     expect((path.element as SVGPathElement).style.opacity).toBe('0.9')
 
     await path.trigger('focus')
@@ -87,9 +87,9 @@ describe('mapObject', () => {
       },
       slots: {
         default: () => h(
-          MapObjectComponent,
+          MapElementComponent,
           {
-            'data-testid': 'map-object',
+            'data-testid': 'map-element',
             d: 'M0,0L10,0',
             styles: {
               default: { opacity: 0.9 },
@@ -100,7 +100,7 @@ describe('mapObject', () => {
       },
     })
 
-    const path = wrapper.get('[data-testid="map-object"]')
+    const path = wrapper.get('[data-testid="map-element"]')
     expect((path.element as SVGPathElement).style.opacity).toBe('0.9')
 
     await path.trigger('mousedown')

@@ -1,5 +1,5 @@
 <template>
-  <MapObject
+  <path
     :d="path"
     :fill="fill"
     name="sphere"
@@ -15,7 +15,6 @@ import { renderSphere } from '@d3-maps/core'
 import { computed } from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
-import MapObject from './MapObject.vue'
 
 withDefaults(
   defineProps<MapSphereProps>(),

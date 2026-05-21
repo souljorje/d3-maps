@@ -8,7 +8,8 @@ Components are adapter-level building blocks for rendering map layers
 
 - [MapBase](/components/map-base)
 - [MapFeatures](/components/map-features)
-- [MapObject](/components/map-object)
+- [MapFeature](/components/map-feature)
+- [MapElement](/components/map-element)
 - [MapAnnotation](/components/map-annotation)
 - [MapLine](/components/map-line)
 - [MapMarker](/components/map-marker)
