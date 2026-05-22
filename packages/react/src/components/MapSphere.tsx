@@ -28,12 +28,12 @@ export function MapSphere({
 
   return (
     <path
+      data-d3m="sphere"
+      {...props}
       d={path}
       fill={fill}
-      name="sphere"
       pointerEvents="none"
       stroke={stroke}
-      {...props}
     />
   )
 }

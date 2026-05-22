@@ -1,5 +1,5 @@
 <template>
-  <g name="features">
+  <g data-d3m="features">
     <slot :features="features">
       <MapFeature
         v-for="{ key, d } in features"

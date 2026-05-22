@@ -1,7 +1,7 @@
 <template>
   <g
     ref="container"
-    name="zoom"
+    data-d3m="zoom"
   >
     <slot />
   </g>

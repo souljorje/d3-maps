@@ -99,13 +99,13 @@ Plain CSS can also target the generated SVG elements directly
 | Component | CSS selector |
 | --- | --- |
 | [MapBase](/components/map-base) | `.d3-map` |
-| [MapFeatures](/components/map-features) | `[name="feature"]` |
-| [MapMesh](/components/map-mesh) | `[name="mesh"]` |
-| [MapMarker](/components/map-marker) | `[name="marker"]` |
-| [MapGraticule](/components/map-graticule) lines | `[name="graticule"]` |
-| [MapSphere](/components/map-sphere) | `[name="sphere"]` |
-| [MapLine](/components/map-line) | `[name="line"]` |
-| [MapAnnotation](/components/map-annotation) connector | `[name="annotation-line"]` |
-| [MapZoom](/components/map-zoom) | `[name="zoom"]` |
+| [MapFeatures](/components/map-features) | `[data-d3m="feature"]` |
+| [MapMesh](/components/map-mesh) | `[data-d3m="mesh"]` |
+| [MapMarker](/components/map-marker) | `[data-d3m="marker"]` |
+| [MapGraticule](/components/map-graticule) lines | `[data-d3m="graticule"]` |
+| [MapSphere](/components/map-sphere) | `[data-d3m="sphere"]` |
+| [MapLine](/components/map-line) | `[data-d3m="line"]` |
+| [MapAnnotation](/components/map-annotation) connector | `[data-d3m="annotation-line"]` |
+| [MapZoom](/components/map-zoom) | `[data-d3m="zoom"]` |
 
 See example (this site) [packages/docs/.vitepress/theme/custom.css](https://github.com/souljorje/d3-maps/blob/main/packages/docs/.vitepress/theme/custom.css)

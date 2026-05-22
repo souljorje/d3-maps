@@ -15,7 +15,7 @@ import { MapElement } from './MapElement'
 
 export interface MapLineProps
   extends CoreMapLineProps<CSSProperties>,
-  Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style'> {}
+  Omit<SVGProps<SVGPathElement>, 'children' | 'd'> {}
 
 export function MapLine({
   coordinates,
@@ -24,7 +24,6 @@ export function MapLine({
   curve,
   midpoint,
   styles,
-  name = 'line',
   fill = 'none',
   ...props
 }: MapLineProps): ReactElement {
@@ -49,11 +48,11 @@ export function MapLine({
 
   return (
     <MapElement
+      data-d3m="line"
       {...props}
       d={path}
       styles={styles}
       fill={fill}
-      name={name}
     />
   )
 }

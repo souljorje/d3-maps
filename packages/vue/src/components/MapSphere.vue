@@ -2,8 +2,8 @@
   <path
     :d="path"
     :fill="fill"
-    name="sphere"
     :stroke="stroke"
+    data-d3m="sphere"
     pointer-events="none"
   />
 </template>

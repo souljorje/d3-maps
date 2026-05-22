@@ -31,8 +31,8 @@ export function MapGraticule({
     <path
       {...props}
       d={graticulePath ?? undefined}
+      data-d3m="graticule"
       fill="none"
-      name="graticule"
     />
   )
 }

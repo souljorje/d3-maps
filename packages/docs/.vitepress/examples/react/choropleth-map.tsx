@@ -136,7 +136,7 @@ export default function ChoroplethMapExample(): JSX.Element {
               <MapObject
                 key={String(feature.id)}
                 d={feature.d}
-                name="feature"
+                data-d3m="feature"
                 styles={{
                   default: {
                     fill: String(feature.color),

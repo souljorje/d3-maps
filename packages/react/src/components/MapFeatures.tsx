@@ -67,7 +67,7 @@ export function MapFeatures<TFeature extends MapFeatureData = MapFeatureData>({
   return (
     <g
       {...groupProps}
-      name="features"
+      data-d3m="features"
     >
       {
         resolvedChildren

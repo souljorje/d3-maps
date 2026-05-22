@@ -1,8 +1,8 @@
 <template>
   <MapElement
     :d="d"
+    data-d3m="feature"
     :styles="styles"
-    name="feature"
   />
 </template>
 

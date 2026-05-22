@@ -12,17 +12,14 @@ import type {
 import { MapElement } from './MapElement'
 
 export interface MapFeatureProps
-  extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style'>,
+  extends Omit<SVGProps<SVGPathElement>, 'children' | 'd'>,
   CoreMapFeatureProps<CSSProperties> {}
 
-export function MapFeature({
-  name = 'feature',
-  ...props
-}: MapFeatureProps): ReactElement {
+export function MapFeature(props: MapFeatureProps): ReactElement {
   return (
     <MapElement
+      data-d3m="feature"
       {...props}
-      name={name}
     />
   )
 }

@@ -17,6 +17,7 @@ Use it directly when you already have a path string or when you want to take ful
 | `styles?` | [InteractionProps['styles']](/api/core/interaction#property-styles) | — | Interaction-state styles, see [styling guide](/guide/core-concepts/#styling) |
 
 Use native SVG attrs like `fill`, `stroke`, `role`, `aria-label`, and `tabindex` / `tabIndex` directly on `MapElement`.
+In React, inline `style` is merged with the resolved interaction-state style. Interaction-state styles win when both set the same property.
 
 ## Usage
 

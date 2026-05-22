@@ -33,10 +33,10 @@ export function MapMesh({
 
   return (
     <path
-      {...props}
       d={path}
+      data-d3m="mesh"
       fill={fill}
-      name="mesh"
+      {...props}
     />
   )
 }

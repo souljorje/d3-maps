@@ -24,7 +24,7 @@ describe('mapSphere', () => {
     expect(sphere?.getAttribute('fill')).toBe('none')
     expect(sphere?.getAttribute('stroke')).toBe('currentColor')
     expect(sphere?.getAttribute('pointer-events')).toBe('none')
-    expect(sphere?.getAttribute('name')).toBe('sphere')
+    expect(sphere?.getAttribute('data-d3m')).toBe('sphere')
     expect(container.querySelectorAll('path')).toHaveLength(1)
   })
 
@@ -66,9 +66,9 @@ describe('mapSphere', () => {
       </MapBase>,
     )
 
-    const zoomGroup = container.querySelector('[name="zoom"]')
-    const sphere = container.querySelector('[name="sphere"]')
-    const graticule = container.querySelector('[name="graticule"]')
+    const zoomGroup = container.querySelector('[data-d3m="zoom"]')
+    const sphere = container.querySelector('[data-d3m="sphere"]')
+    const graticule = container.querySelector('[data-d3m="graticule"]')
 
     expect(sphere?.parentElement).not.toBe(zoomGroup)
     expect(graticule?.parentElement).toBe(zoomGroup)

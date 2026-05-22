@@ -48,7 +48,7 @@ export function MapAnnotation({
   return (
     <MapMarker
       coordinates={coordinates}
-      name="annotation"
+      data-d3m="annotation"
     >
       <g transform={geometry.lineTransform}>
         <MapLine
@@ -59,12 +59,12 @@ export function MapAnnotation({
           midpoint={midpoint}
           styles={styles}
           fill="none"
-          name="annotation-line"
+          data-d3m="annotation-line"
         />
       </g>
       <g
+        data-d3m="annotation-content"
         transform={geometry.contentTransform}
-        name="annotation-content"
       >
         {children}
       </g>

@@ -31,7 +31,7 @@ describe('mapSphere', () => {
     expect(sphere.attributes('fill')).toBe('none')
     expect(sphere.attributes('stroke')).toBe('currentColor')
     expect(sphere.attributes('pointer-events')).toBe('none')
-    expect(sphere.attributes('name')).toBe('sphere')
+    expect(sphere.attributes('data-d3m')).toBe('sphere')
     expect(wrapper.findAll('path')).toHaveLength(1)
   })
 
@@ -77,9 +77,9 @@ describe('mapSphere', () => {
       },
     })
 
-    const zoomGroup = wrapper.get('[name="zoom"]')
-    const sphere = wrapper.get('[name="sphere"]')
-    const graticule = wrapper.get('[name="graticule"]')
+    const zoomGroup = wrapper.get('[data-d3m="zoom"]')
+    const sphere = wrapper.get('[data-d3m="sphere"]')
+    const graticule = wrapper.get('[data-d3m="graticule"]')
 
     expect(sphere.element.parentElement).not.toBe(zoomGroup.element)
     expect(graticule.element.parentElement).toBe(zoomGroup.element)

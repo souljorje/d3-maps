@@ -1,9 +1,8 @@
 <template>
   <path
-    :d="graticulePath"
+    :d="path"
+    data-d3m="graticule"
     fill="none"
-    name="graticule"
-    v-bind="attrs"
   />
 </template>
 
@@ -11,22 +10,14 @@
 import type { MapGraticuleProps } from '@d3-maps/core'
 
 import { renderGraticule } from '@d3-maps/core'
-import {
-  computed,
-  useAttrs,
-} from 'vue'
+import { computed } from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
 
-defineOptions({
-  inheritAttrs: false,
-})
-
 const props = defineProps<MapGraticuleProps>()
 const context = useMapContext()
-const attrs = useAttrs()
 
-const graticulePath = computed(() => {
+const path = computed(() => {
   return renderGraticule(context.value, props.config) ?? undefined
 })
 </script>

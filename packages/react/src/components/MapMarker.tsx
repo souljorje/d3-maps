@@ -15,15 +15,12 @@ import { MapElement } from './MapElement'
 
 export interface MapMarkerProps
   extends CoreMapMarkerProps<CSSProperties>,
-  Omit<SVGProps<SVGGElement>, 'style'> {
-  name?: string
-}
+  SVGProps<SVGGElement> {}
 
 export function MapMarker({
   coordinates,
   styles,
   children,
-  name = 'marker',
   ...props
 }: MapMarkerProps): ReactElement | null {
   const context = useMapContext()
@@ -42,10 +39,10 @@ export function MapMarker({
   return (
     <MapElement
       tag="g"
+      data-d3m="marker"
       {...props}
       transform={transform}
       styles={styles}
-      name={name}
     >
       {children}
     </MapElement>

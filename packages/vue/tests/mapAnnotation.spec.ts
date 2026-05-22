@@ -53,13 +53,13 @@ describe('mapAnnotation', () => {
       },
     })
 
-    expect(wrapper.get('[name="annotation"]').attributes('transform')).toMatch(/^translate/)
-    expect(wrapper.get('[data-testid="annotation-line"]').attributes('name')).toBe('annotation-line')
+    expect(wrapper.get('[data-d3m="annotation"]').attributes('transform')).toMatch(/^translate/)
+    expect(wrapper.get('[data-testid="annotation-line"]').attributes('data-d3m')).toBe('annotation-line')
     expect(wrapper.get('[data-testid="annotation-line"]').attributes('d')).toMatch(/^M/)
     expect(wrapper.get('[data-testid="annotation-line"]').attributes('stroke')).toBe('#ff6f26')
     expect(wrapper.text()).toContain('Paris')
-    expect(wrapper.find('[name="annotation-content"]').attributes('transform')).toMatch(/^translate/)
-    expect(wrapper.find('[name="annotation-content"]').attributes('transform')).not.toContain('rotate')
+    expect(wrapper.find('[data-d3m="annotation-content"]').attributes('transform')).toMatch(/^translate/)
+    expect(wrapper.find('[data-d3m="annotation-content"]').attributes('transform')).not.toContain('rotate')
   })
 
   it('throws outside map context', () => {

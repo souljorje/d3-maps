@@ -34,7 +34,7 @@ describe('mapFeatures', () => {
       },
     })
 
-    expect(wrapper.get('path[name="feature"]').attributes('d')).toBe('M0,0L10,0')
+    expect(wrapper.get('path[data-d3m="feature"]').attributes('d')).toBe('M0,0L10,0')
   })
 
   it('renders normalized features from explicit layer data', () => {
@@ -199,7 +199,7 @@ describe('mapFeatures', () => {
       },
     })
 
-    expect(wrapper.find('g[name="features"]').attributes('fill')).toBe('darkorange')
+    expect(wrapper.find('g[data-d3m="features"]').attributes('fill')).toBe('darkorange')
   })
 
   it('supports explicit layer objectKey overrides', () => {

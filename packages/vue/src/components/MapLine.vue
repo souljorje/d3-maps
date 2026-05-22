@@ -1,8 +1,8 @@
 <template>
   <MapElement
-    v-bind="pathAttrs"
     :d="path"
-    :fill="fill"
+    data-d3m="line"
+    fill="none"
     :styles="styles"
   />
 </template>
@@ -12,24 +12,15 @@ import type { MapLineProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
 import { getLinePath } from '@d3-maps/core'
-import {
-  computed,
-  useAttrs,
-} from 'vue'
+import { computed } from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
 import MapElement from './MapElement.vue'
-
-defineOptions({
-  inheritAttrs: false,
-})
 
 const props = withDefaults(defineProps<MapLineProps<StyleValue>>(), {
   cartesian: false,
   custom: false,
 })
-
-const attrs = useAttrs()
 
 const context = useMapContext()
 
@@ -45,11 +36,4 @@ const path = computed<string | undefined>(() => {
     },
   )
 })
-
-const pathName = computed(() => (attrs.name as string | undefined) ?? 'line')
-const fill = computed(() => (attrs.fill as string | undefined) ?? 'none')
-const pathAttrs = computed(() => ({
-  ...attrs,
-  name: pathName.value,
-}))
 </script>

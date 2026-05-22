@@ -57,6 +57,33 @@ describe('mapElement', () => {
     expect(path?.style.opacity).toBe('0.9')
   })
 
+  it('merges inline and interaction styles', () => {
+    render(
+      <MapBase fit={sampleGeoJson}>
+        <MapElement
+          data-testid="map-element-style"
+          d="M0,0L10,0"
+          style={{
+            fill: 'darkorange',
+            opacity: 0.95,
+          }}
+          styles={{
+            default: { opacity: 0.9 },
+            hover: { opacity: 0.8 },
+          }}
+        />
+      </MapBase>,
+    )
+
+    const path = screen.getByTestId('map-element-style')
+    expect(path.style.fill).toBe('darkorange')
+    expect(path.style.opacity).toBe('0.9')
+
+    fireEvent.mouseOver(path)
+    expect(path.style.fill).toBe('darkorange')
+    expect(path.style.opacity).toBe('0.8')
+  })
+
   it('resets active state on global mouseup when element mouseup is missed', () => {
     render(
       <MapZoomContextValue.Provider value={{

@@ -57,7 +57,7 @@ describe('mapMarker', () => {
     expect(nextTransform).not.toBe(initialTransform)
   })
 
-  it('allows overriding the outer group name', () => {
+  it('allows overriding the marker role hook', () => {
     const wrapper = mount(MapBase, {
       props: {
         fit: sampleGeoJson,
@@ -65,12 +65,12 @@ describe('mapMarker', () => {
       slots: {
         default: () => h(MapMarker, {
           coordinates: [10, 10],
-          name: 'annotation',
+          'data-d3m': 'annotation',
           'data-testid': 'map-marker',
         }),
       },
     })
 
-    expect(wrapper.get('[data-testid="map-marker"]').attributes('name')).toBe('annotation')
+    expect(wrapper.get('[data-testid="map-marker"]').attributes('data-d3m')).toBe('annotation')
   })
 })

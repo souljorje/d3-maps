@@ -26,6 +26,6 @@ describe('SSR', () => {
 
     expect(html).toContain('<svg')
     expect(html).toContain('d3-map-zoom')
-    expect(html).toContain('name="annotation"')
+    expect(html).toContain('data-d3m="annotation"')
   })
 })

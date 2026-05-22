@@ -1,29 +1,26 @@
-:root {
-  --d3m-stroke-w: 0.5;
-}
-
 .d3-map {
+  --d3m-border-width: 0.5;
   width: 100%;
   height: auto;
   * {
     outline-style: none;
   }
 
-  [name="graticule"],
-  [name="feature"],
-  [name="mesh"] {
+  [data-d3m="graticule"],
+  [data-d3m="feature"],
+  [data-d3m="mesh"] {
     &:not([stroke-width]) {
-      stroke-width: var(--d3m-stroke-w);
+      stroke-width: var(--d3m-border-width);
     }
   }
-  [name="sphere"],
-  [name="line"],
-  [name="annotation-line"] {
+  [data-d3m="sphere"],
+  [data-d3m="line"],
+  [data-d3m="annotation-line"] {
     &:not([stroke-width]) {
-      stroke-width: calc(var(--d3m-stroke-w) * 2);
+      stroke-width: calc(var(--d3m-border-width) * 2);
     }
   }
-  [name="zoom"] path {
+  [data-d3m="zoom"] path {
     vector-effect: non-scaling-stroke;
   }
 }

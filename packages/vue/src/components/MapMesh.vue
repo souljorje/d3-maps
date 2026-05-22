@@ -1,8 +1,8 @@
 <template>
   <path
     :d="path"
+    data-d3m="mesh"
     fill="none"
-    name="mesh"
   />
 </template>
 

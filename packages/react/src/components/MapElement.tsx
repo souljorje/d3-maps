@@ -10,19 +10,17 @@ import type {
 
 import { useInteraction } from '../hooks/useInteraction'
 
-interface MapElementBaseProps extends CoreMapElementProps<CSSProperties> {
-  name?: string
-}
+type MapElementBaseProps = CoreMapElementProps<CSSProperties>
 
 interface MapElementPathProps
-  extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style'>,
+  extends Omit<SVGProps<SVGPathElement>, 'children' | 'd'>,
   MapElementBaseProps {
   tag?: 'path'
   d?: string
 }
 
 interface MapElementGroupProps
-  extends Omit<SVGProps<SVGGElement>, 'style'>,
+  extends SVGProps<SVGGElement>,
   MapElementBaseProps {
   tag: 'g'
   children?: ReactNode
@@ -30,50 +28,36 @@ interface MapElementGroupProps
 
 export type MapElementProps = MapElementPathProps | MapElementGroupProps
 
-export function MapElement(props: MapElementProps): ReactElement | null {
-  if (props.tag === 'g') {
-    const {
-      tag: _tag,
-      styles,
-      children,
-      name,
-      ...groupProps
-    } = props
-    const { style, ...events } = useInteraction<SVGGElement>({
-      styles,
-      ...groupProps,
-    })
+export function MapElement(props: MapElementProps): ReactElement {
+  const {
+    tag = 'path',
+    styles,
+    style: baseStyle,
+    ...elementProps
+  } = props
+  const { style: interactionStyle, ...events } = useInteraction<Element>({
+    styles,
+    ...elementProps,
+  })
+  const style = {
+    ...baseStyle,
+    ...interactionStyle,
+  }
 
+  if (tag === 'g') {
     return (
       <g
-        {...groupProps}
+        {...elementProps as MapElementGroupProps}
         style={style}
-        name={name}
         {...events}
-      >
-        {children}
-      </g>
+      />
     )
   }
 
-  const {
-    tag: _tag,
-    d,
-    styles,
-    name,
-    ...pathProps
-  } = props
-  const { style, ...events } = useInteraction<SVGPathElement>({
-    styles,
-    ...pathProps,
-  })
-
   return (
     <path
-      {...pathProps}
-      d={d}
+      {...elementProps as MapElementPathProps}
       style={style}
-      name={name}
       {...events}
     />
   )

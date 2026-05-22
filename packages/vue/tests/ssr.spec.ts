@@ -33,7 +33,7 @@ describe('SSR', () => {
     const html = await renderToString(app)
 
     expect(html).toContain('<svg')
-    expect(html).toContain('name="zoom"')
-    expect(html).toContain('name="annotation"')
+    expect(html).toContain('data-d3m="zoom"')
+    expect(html).toContain('data-d3m="annotation"')
   })
 })

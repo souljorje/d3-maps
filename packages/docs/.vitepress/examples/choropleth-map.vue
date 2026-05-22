@@ -14,7 +14,7 @@
         <MapObject
           v-if="feature.type === 'Feature'"
           :d="feature.d"
-          name="feature"
+          data-d3m="feature"
           :style="{
             fill: getFeatureColor(feature),
             stroke: '#777',
