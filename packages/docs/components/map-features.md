@@ -4,10 +4,7 @@ description: Component for feature rendering on D3 SVG maps in React and Vue
 
 # MapFeatures
 
-Renders normalized map features from source data
-
-Fields added by `transformer` stay available in custom feature slots and render functions
-
+Renders normalized map features from source data: GeoJSON `Feature` objects and geometries.
 ## Props
 
 | Parameter | Type | Default | Description |

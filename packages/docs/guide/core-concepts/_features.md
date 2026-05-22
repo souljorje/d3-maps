@@ -1,6 +1,6 @@
 ## Features
 
-A feature is a geographic entity such as a country or state.
+A feature is any natural or human-made geographic object: country, road, land, river, etc.
 
 [MapFeatures](/components/map-features) renders the full collection, while [MapFeature](/components/map-feature) handles custom single-feature rendering. The slot or render-function form exposes per-feature rendering control.
 

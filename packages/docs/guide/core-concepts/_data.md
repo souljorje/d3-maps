@@ -1,6 +1,6 @@
 ## Data
 
-[MapFeatures](/components/map-features) accepts GeoJSON, TopoJSON then normalizes everything to renderable GeoJSON objects before render.
+[MapFeatures](/components/map-features) accepts GeoJSON and TopoJSON, then normalizes them to map features: GeoJSON `Feature` objects and geometries.
 
 :::tabs key:framework
 
