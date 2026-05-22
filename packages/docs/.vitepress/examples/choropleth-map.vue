@@ -1,24 +1,18 @@
 <template>
   <MapBase
-    v-if="mapData && choroplethData.length"
+    v-if="mapData && populations.length"
   >
     <MapFeatures
-      v-slot="{ features }"
       :data="mapData"
       :transformer="transformer"
     >
-      <template
-        v-for="feature in features"
-        :key="String(feature.key)"
-      >
-        <MapObject
-          v-if="feature.type === 'Feature'"
+      <template #default="{ features }">
+        <MapFeature
+          v-for="feature in features"
+          :key="feature.key"
           :d="feature.d"
-          data-d3m="feature"
-          :style="{
-            fill: getFeatureColor(feature),
-            stroke: '#777',
-          }"
+          :fill="feature.color"
+          stroke="#777"
           :styles="{
             hover: {
               opacity: 0.8,
@@ -34,79 +28,69 @@
 import type {
   MapData,
   MapFeatureData,
-  MapFeatureTransformer,
 } from '@d3-maps/vue'
 
+import { isFeature } from '@d3-maps/vue'
 import { extent } from 'd3-array'
-import { scaleLinear } from 'd3-scale'
-import { withBase } from 'vitepress'
+import { scaleSqrt } from 'd3-scale'
 import { computed, onMounted, ref } from 'vue'
 
-interface CountryStat {
-  id: string
-  value: number
+interface CountryPopulation {
+  cca3: string
+  population: number
+}
+
+type ChoroplethFeature = MapFeatureData & {
+  color: string
 }
 
 const mapData = ref<MapData>()
-const loading = ref(true)
-const error = ref(false)
-const choroplethData = ref<CountryStat[]>([])
+const populations = ref<CountryPopulation[]>([])
 
-const minAndMaxValues = computed(() => extent(choroplethData.value, (item) => item.value))
 const colorScale = computed(() => {
-  const domain = minAndMaxValues.value
-  const safeDomain: [number, number] = [
-    domain?.[0] ?? 0,
-    domain?.[1] ?? 1,
-  ]
-  return scaleLinear<string>()
-    .domain(safeDomain)
-    .range(['#e0460030', '#e04600'])
+  const [min = 0, max = 1] = extent(populations.value, (country) => country.population)
+
+  return scaleSqrt<string>()
+    .domain([min, max])
+    .range(['#ffefee', '#e04600'])
+})
+
+const populationByCode = computed(() => {
+  return new Map(populations.value.map((country) => [country.cca3, country.population]))
 })
 
 onMounted(async () => {
-  try {
-    await Promise.all([fetchData(), fetchMap()])
-  } catch {
-    error.value = true
-  } finally {
-    loading.value = false
-  }
+  const [loadedData, loadedMap] = await Promise.all([
+    fetchData(),
+    fetchMap(),
+  ])
+
+  populations.value = loadedData
+  mapData.value = loadedMap
 })
 
-async function fetchMap() {
+async function fetchMap(): Promise<MapData> {
   const { default: data } = await import('@d3-maps/atlas/world/countries')
-  mapData.value = data
+  return data
 }
 
-async function fetchData() {
-  const response = await fetch(withBase('/example-data/choropleth-data.json'))
-  const rawData = (await response.json()) as Array<Record<string, unknown>>
-  choroplethData.value = rawData.map((item) => {
-    const id = item['country-code']
-    if (typeof id !== 'string') {
-      return { id: '', value: 0 }
-    }
-    return {
-      ...item,
-      id,
-      value: Number(id),
-    }
-  })
+async function fetchData(): Promise<CountryPopulation[]> {
+  const response = await fetch('https://restcountries.com/v3.1/all?fields=cca3,population')
+  return response.json()
 }
 
-const transformer: MapFeatureTransformer = (features) => {
+function transformer(features: readonly MapFeatureData[]): ChoroplethFeature[] {
   return features.map((feature) => {
-    if (feature.type !== 'Feature') return feature
+    const population = isFeature(feature)
+      ? populationByCode.value.get(String(feature.properties?.id))
+      : undefined
 
-    const country = choroplethData.value.find((item) => item.id === String(feature.id))
-    const colorValue = country ? colorScale.value(country.value) : ''
-
-    return { ...feature, color: colorValue }
+    return {
+      ...feature,
+      color: population == null || (isFeature(feature) && feature.properties?.id === 'ATA')
+        ? '#eee'
+        : colorScale.value(population),
+    }
   })
-}
-
-function getFeatureColor(feature: MapFeatureData): string {
-  return String((feature as MapFeatureData & { color?: string }).color ?? '')
 }
 </script>

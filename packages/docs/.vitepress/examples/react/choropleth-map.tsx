@@ -1,36 +1,35 @@
 import type {
   MapData,
-  MapFeature,
-  MapFeatureTransformer,
+  MapFeature as MapFeatureData,
 } from '@d3-maps/react'
 
 import {
+  isFeature,
   MapBase,
+  MapFeature,
   MapFeatures,
-  MapObject,
 } from '@d3-maps/react'
 import { extent } from 'd3-array'
-import { scaleLinear } from 'd3-scale'
+import { scaleSqrt } from 'd3-scale'
 import {
   useCallback,
   useEffect,
   useMemo,
   useState,
 } from 'react'
-import { withBase } from 'vitepress'
 
-interface CountryStat {
-  id: string
-  value: number
+interface CountryPopulation {
+  cca3: string
+  population: number
 }
 
-type ChoroplethFeature = Extract<MapFeature, { type: 'Feature' }> & { color?: string }
+type ChoroplethFeature = MapFeatureData & { color: string }
 
 export default function ChoroplethMapExample(): JSX.Element {
   const [mapData, setMapData] = useState<MapData>()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const [data, setData] = useState<CountryStat[]>([])
+  const [populations, setPopulations] = useState<CountryPopulation[]>([])
 
   useEffect(() => {
     let isCancelled = false
@@ -40,22 +39,9 @@ export default function ChoroplethMapExample(): JSX.Element {
       return mapData
     }
 
-    async function fetchData(): Promise<CountryStat[]> {
-      const response = await fetch(withBase('/example-data/choropleth-data.json'))
-      const rawData = await response.json()
-
-      return rawData.map((item: Record<string, unknown>) => {
-        const id = item['country-code']
-        if (typeof id !== 'string') {
-          return { id: '', value: 0 }
-        }
-
-        return {
-          ...item,
-          id,
-          value: Number(id),
-        }
-      })
+    async function fetchData(): Promise<CountryPopulation[]> {
+      const response = await fetch('https://restcountries.com/v3.1/all?fields=cca3,population')
+      return response.json()
     }
 
     Promise.all([fetchMap(), fetchData()])
@@ -65,7 +51,7 @@ export default function ChoroplethMapExample(): JSX.Element {
         }
 
         setMapData(loadedMap)
-        setData(loadedData)
+        setPopulations(loadedData)
       })
       .catch(() => {
         if (!isCancelled) {
@@ -84,8 +70,8 @@ export default function ChoroplethMapExample(): JSX.Element {
   }, [])
 
   const minAndMaxValues = useMemo(() => {
-    return extent(data, (item) => item.value)
-  }, [data])
+    return extent(populations, (country) => country.population)
+  }, [populations])
 
   const colorScale = useMemo(() => {
     const safeDomain: [number, number] = [
@@ -93,26 +79,34 @@ export default function ChoroplethMapExample(): JSX.Element {
       minAndMaxValues[1] ?? 1,
     ]
 
-    return scaleLinear<string>()
+    return scaleSqrt<string>()
       .domain(safeDomain)
-      .range(['#e0460030', '#e04600'])
+      .range(['#ffefee', '#e04600'])
   }, [
     minAndMaxValues[0],
     minAndMaxValues[1],
   ])
 
-  const transformer = useCallback<MapFeatureTransformer>((features) => {
+  const populationByCode = useMemo(() => {
+    return new Map(populations.map((country) => [country.cca3, country.population]))
+  }, [populations])
+
+  const transformer = useCallback((features: readonly MapFeatureData[]): ChoroplethFeature[] => {
     return features.map((feature) => {
-      if (feature.type !== 'Feature') return feature
+      const population = isFeature(feature)
+        ? populationByCode.get(String(feature.properties?.id))
+        : undefined
 
-      const country = data.find((item) => item.id === String(feature.id))
-      const colorValue = country ? colorScale(country.value) : ''
-
-      return { ...feature, color: colorValue }
+      return {
+        ...feature,
+        color: population == null || (isFeature(feature) && feature.properties?.id === 'ATA')
+          ? '#eee'
+          : colorScale(population),
+      }
     })
   }, [
-    data,
     colorScale,
+    populationByCode,
   ])
 
   if (loading) {
@@ -130,26 +124,19 @@ export default function ChoroplethMapExample(): JSX.Element {
         transformer={transformer}
       >
         {({ features }) => (
-          features
-            .filter((feature): feature is ChoroplethFeature => feature.type === 'Feature')
-            .map((feature) => (
-              <MapObject
-                key={String(feature.id)}
-                d={feature.d}
-                data-d3m="feature"
-                styles={{
-                  default: {
-                    fill: String(feature.color),
-                    stroke: '#777',
-                  },
-                  hover: {
-                    fill: String(feature.color),
-                    stroke: '#777',
-                    opacity: 0.8,
-                  },
-                }}
-              />
-            ))
+          features.map((feature) => (
+            <MapFeature
+              key={feature.key}
+              d={feature.d}
+              fill={feature.color}
+              stroke="#777"
+              styles={{
+                hover: {
+                  opacity: 0.8,
+                },
+              }}
+            />
+          ))
         )}
       </MapFeatures>
     </MapBase>
