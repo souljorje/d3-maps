@@ -4,7 +4,6 @@
 | Area | Path |
 | --- | --- |
 | Examples landing page | [Examples Home](index.md) |
-| Generated wrappers example | [Basic Map Example](basic-map.md) |
 
 ## Commands
 | Command | Purpose |
