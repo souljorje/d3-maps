@@ -2,10 +2,8 @@
   <MapBase
     v-if="data"
   >
-    <MapGraticule
-      background
-      border
-    />
+    <MapSphere />
+    <MapGraticule />
     <MapFeatures :data="data" />
     <MapMesh :data="data" />
   </MapBase>

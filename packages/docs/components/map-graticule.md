@@ -11,6 +11,7 @@ Renders graticule lines as an SVG `<path>` layer
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `config?` | [GraticuleConfig](/api/core/graticule#graticuleconfig) | — | See [usage](#config) below |
+
 Use native SVG presentation attrs like `stroke` directly on `MapGraticule` lines.
 
 ### Config
@@ -63,4 +64,4 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
 
 ## Examples
 
-- [Graticule](/examples/graticule)
+- [Sphere And Graticule](/examples/sphere-and-graticule)

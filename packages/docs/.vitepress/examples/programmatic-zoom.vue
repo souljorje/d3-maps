@@ -6,6 +6,7 @@
   >
     <div class="relative aspect-2/1">
       <MapBase :context="mapContext">
+        <MapSphere />
         <MapZoom
           :center="center"
           :zoom="zoom"
@@ -14,16 +15,13 @@
           :transition="{ duration: isTransitionOn ? 600 : 0 }"
           :config="{ filter: isDragOnlyFilter }"
         >
-          <MapGraticule
-            border
-            pointer-events="none"
-          />
+          <MapGraticule pointer-events="none" />
           <MapFeatures
             :data="data"
             fill="var(--vp-c-neutral-inverse)"
           >
             <template #default="{ features }">
-              <MapObject
+              <MapFeature
                 v-for="feature in features"
                 :key="feature.key"
                 :d="feature.d"
@@ -120,9 +118,7 @@ const zoom = ref(initialZoom)
 const activeCountryLabel = ref('World')
 const mapRoot = ref<HTMLElement | null>(null)
 
-const mapContext = useCreateMapContext(computed(() => ({
-  fit: data.value,
-})))
+const mapContext = useCreateMapContext()
 
 const renderedFeatures = computed(() => {
   if (!data.value || !mapContext.value) return []
@@ -132,8 +128,8 @@ const renderedFeatures = computed(() => {
   })
 })
 
-type RenderedMapObject = typeof renderedFeatures.value[number]
-type MapGeoFeature = Extract<RenderedMapObject, { type: 'Feature' }>
+type RenderedMapFeature = typeof renderedFeatures.value[number]
+type MapGeoFeature = Extract<RenderedMapFeature, { type: 'Feature' }>
 
 onMounted(async () => {
   const { default: mapData } = await import('@d3-maps/atlas/world/countries')

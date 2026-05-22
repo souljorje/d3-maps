@@ -5,8 +5,9 @@
       :projection="geoEquirectangular"
       :aspect-ratio="2 / 1"
     >
+      <MapSphere />
       <MapZoom>
-        <MapGraticule border />
+        <MapGraticule />
         <MapFeatures
           :data="data"
           :transformer="transformer"

@@ -4,8 +4,9 @@
 
     :projection="projection"
   >
+    <MapSphere />
     <MapZoom @zoom="updateMarkerScale">
-      <MapGraticule border />
+      <MapGraticule />
       <MapFeatures :data="data" />
       <MapMesh :data="data" />
       <MapMarker

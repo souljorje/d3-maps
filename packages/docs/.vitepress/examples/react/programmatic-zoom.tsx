@@ -1,6 +1,6 @@
 import type {
   MapDataSource,
-  MapFeature,
+  MapFeature as MapFeatureData,
 } from '@d3-maps/react'
 import type {
   JSX,
@@ -11,10 +11,11 @@ import { makeMapFeatures } from '@d3-maps/core'
 import {
   getObjectZoomView,
   MapBase,
+  MapFeature,
   MapFeatures,
   MapGraticule,
   MapMesh,
-  MapObject,
+  MapSphere,
   MapZoom,
   useCreateMapContext,
 } from '@d3-maps/react'
@@ -29,7 +30,7 @@ const initialZoom = 1
 const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
-type MapGeoFeature = Extract<MapFeature, { type: 'Feature' }>
+type MapGeoFeature = Extract<MapFeatureData, { type: 'Feature' }>
 
 export default function ProgrammaticZoomExample(): JSX.Element | null {
   const [mapData, setMapData] = useState<MapDataSource>()
@@ -39,13 +40,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   const [isTransitionOn, setIsTransitionOn] = useState(true)
   const mapRootRef = useRef<HTMLDivElement | null>(null)
 
-  const mapContext = useCreateMapContext(
-    mapData
-      ? {
-          fit: mapData,
-        }
-      : undefined,
-  )
+  const mapContext = useCreateMapContext()
 
   useEffect(() => {
     let isCancelled = false
@@ -151,6 +146,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
         <MapBase
           context={mapContext}
         >
+          <MapSphere />
           <MapZoom
             center={center}
             zoom={zoom}
@@ -161,16 +157,13 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
             }}
             config={{ filter: isDragOnlyFilter }}
           >
-            <MapGraticule
-              border
-              pointerEvents="none"
-            />
+            <MapGraticule pointerEvents="none" />
             <MapFeatures
               data={mapData}
               fill="var(--vp-c-neutral-inverse)"
             >
               {({ features }) => features.map((feature) => (
-                <MapObject
+                <MapFeature
                   key={feature.key}
                   d={feature.d}
                   data-feature-key={feature.key}

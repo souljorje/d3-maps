@@ -6,6 +6,7 @@ import {
   MapGraticule,
   MapMarker,
   MapMesh,
+  MapSphere,
   MapZoom,
 } from '@d3-maps/react'
 import { geoNaturalEarth1 } from 'd3-geo'
@@ -68,8 +69,9 @@ export default function ZoomExample(): JSX.Element | null {
         <MapBase
           projection={geoNaturalEarth1}
         >
+          <MapSphere />
           <MapZoom onZoom={updateMarkerScale}>
-            <MapGraticule border />
+            <MapGraticule />
             <MapFeatures data={mapData} />
             <MapMesh data={mapData} />
             {
