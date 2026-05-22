@@ -33,6 +33,18 @@ describe('map', () => {
     expect(screen.getByTestId('map-svg').getAttribute('viewBox')).toBe('0 0 600 300')
   })
 
+  it('creates context from map defaults', () => {
+    function Harness() {
+      const context = useCreateMapContext()
+
+      return <div data-testid="map-context-size">{`${context.width}x${context.height}`}</div>
+    }
+
+    render(<Harness />)
+
+    expect(screen.getByTestId('map-context-size').textContent).toBe('600x300')
+  })
+
   it('renders render-prop children with map context', () => {
     render(
       <MapBase
@@ -49,6 +61,26 @@ describe('map', () => {
     )
 
     expect(screen.getByTestId('map-size-group').getAttribute('data-size')).toBe('420x210')
+  })
+
+  it('updates projection when map padding changes', () => {
+    const renderScale = (padding: number) => (
+      <MapBase padding={padding}>
+        {(context) => (
+          <g
+            data-testid="map-projection"
+            data-scale={context.projection.scale()}
+          />
+        )}
+      </MapBase>
+    )
+
+    const { rerender } = render(renderScale(1))
+    const initialScale = Number(screen.getByTestId('map-projection').getAttribute('data-scale'))
+
+    rerender(renderScale(20))
+
+    expect(Number(screen.getByTestId('map-projection').getAttribute('data-scale'))).toBeLessThan(initialScale)
   })
 
   it('updates rendered objects when map data prop changes', () => {
@@ -119,7 +151,7 @@ describe('map', () => {
   })
 
   it('renders with an external context object shared with sibling UI', () => {
-    function Toolbar({ context }: { context: NonNullable<ReturnType<typeof useCreateMapContext>> }) {
+    function Toolbar({ context }: { context: ReturnType<typeof useCreateMapContext> }) {
       return <div data-testid="toolbar-width">{context.width}</div>
     }
 
@@ -128,8 +160,6 @@ describe('map', () => {
         fit: sampleGeoJson,
         width: 420,
       })
-
-      if (!context) return null
 
       return (
         <>

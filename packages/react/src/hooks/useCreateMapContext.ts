@@ -11,10 +11,9 @@ import { useMemo } from 'react'
 export function useCreateMapContext(
   config?: Partial<MapProps>,
   context?: MapContext,
-): MapContext | undefined {
+): MapContext {
   return useMemo(() => {
     if (context) return context
-    if (!config) return undefined
 
     return makeMapContext(config)
   }, [
@@ -26,5 +25,6 @@ export function useCreateMapContext(
     config?.projectionConfig,
     config?.fit,
     config?.fitObjectKey,
+    config?.padding,
   ])
 }

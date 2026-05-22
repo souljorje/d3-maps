@@ -71,7 +71,7 @@ describe('mapAnnotation', () => {
           <text>Paris</text>
         </MapAnnotation>
       </svg>,
-    )).toThrowError('useMapContext must be used inside Map')
+    )).toThrow('useMapContext must be used inside MapBase')
   })
 
   it('uses the provided D3 curve for the connector path', () => {

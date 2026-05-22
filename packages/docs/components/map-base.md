@@ -157,8 +157,6 @@ export function Example({ data }: { data: MapData }) {
     aspectRatio: 2 / 1,
   })
 
-  if (!context) return null
-
   return (
     <>
       <Toolbar context={context} />

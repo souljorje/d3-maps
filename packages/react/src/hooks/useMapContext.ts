@@ -13,7 +13,7 @@ export function useMapContext(): MapContext {
   const context = useContext(MapContextValue)
 
   if (!context) {
-    throw new Error('useMapContext must be used inside Map')
+    throw new Error('useMapContext must be used inside MapBase')
   }
 
   return context

@@ -15,7 +15,6 @@ import type {
 } from '@d3-maps/core'
 
 import {
-  computed,
   provide,
   toRef,
 } from 'vue'
@@ -37,14 +36,7 @@ defineSlots<{
   default?: (props: MapContext) => unknown
 }>()
 
-const unresolvedContext = useCreateMapContext(props, toRef(props, 'context'))
-const context = computed(() => {
-  if (!unresolvedContext.value) {
-    throw new Error('MapBase requires props or context')
-  }
-
-  return unresolvedContext.value
-})
+const context = useCreateMapContext(props, toRef(props, 'context'))
 
 provide(mapContextKey, context)
 </script>

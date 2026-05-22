@@ -12,8 +12,8 @@ Use it when `MapBase` and sibling UI should share the same resolved map state
 
 | Adapter | Type |
 | --- | --- |
-| `@d3-maps/vue` | `ComputedRef<`[MapContext](/api/core/map#mapcontext)` \| undefined>` |
-| `@d3-maps/react` | [MapContext](/api/core/map#mapcontext) `\| undefined` |
+| `@d3-maps/vue` | `ComputedRef<`[MapContext](/api/core/map#mapcontext)`>` |
+| `@d3-maps/react` | [MapContext](/api/core/map#mapcontext) |
 
 See [MapContext API](/api/core/map#mapcontext)
 
@@ -74,8 +74,6 @@ export function Example({ data }: { data: MapData }) {
     width: 420,
   })
 
-  if (!context) return null
-
   return (
     <>
       <Toolbar context={context} />
@@ -89,7 +87,7 @@ export function Example({ data }: { data: MapData }) {
 
 :::
 
-If neither `config` nor `context` is available yet, the helper returns `undefined`
+If neither `config` nor `context` is provided, the helper creates a context from map defaults
 
 ## Best Practice
 

@@ -47,10 +47,6 @@ export function MapBase(props: MapBaseProps): ReactElement {
 
   const resolvedContext = useCreateMapContext(props, providedContext)
 
-  if (!resolvedContext) {
-    throw new Error('MapBase requires props or context')
-  }
-
   const resolvedChildren = isRenderProp(children)
     ? children(resolvedContext)
     : children
