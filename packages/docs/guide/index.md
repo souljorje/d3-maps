@@ -135,4 +135,4 @@ export function MapView({ data }: { data: MapData }) {
 
 ## Result
 
-<Demo component-name="basic"/>
+<Demo component-name="basic-map"/>
