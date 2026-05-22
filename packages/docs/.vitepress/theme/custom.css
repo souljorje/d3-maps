@@ -145,6 +145,13 @@ body {
   }
 }
 
+#app {
+  .VPSidebarItem.level-0 {
+    padding-bottom: 12px;
+  }
+}
+
+
 .vp-doc {
   h2 {
     margin: 32px 0 16px;

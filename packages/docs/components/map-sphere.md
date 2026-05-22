@@ -60,3 +60,7 @@ The default `fill` is `none` and the default `stroke` is `currentColor`
 ```
 
 :::
+
+## Examples
+
+- [Sphere And Graticule](/examples/sphere-and-graticule)
