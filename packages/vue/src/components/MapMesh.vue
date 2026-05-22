@@ -18,6 +18,6 @@ const props = defineProps<MapMeshProps>()
 const context = useMapContext()
 
 const path = computed<string | undefined>(
-  () => renderMesh(context.value, props.data, props.objectKey) ?? undefined,
+  () => renderMesh(context.value, props.data, props.objectKey, props.filter) ?? undefined,
 )
 </script>

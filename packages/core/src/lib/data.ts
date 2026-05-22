@@ -28,7 +28,7 @@ export function resolveMapData(
 
 function topologyToGeoJson(
   topology: Topology,
-  objectKey: string = Object.keys(topology.objects)[0] ?? '',
+  objectKey: string = Object.keys(topology.objects)[0],
 ): GeoJSON.Feature | GeoJSON.FeatureCollection {
   return feature(topology, objectKey)
 }

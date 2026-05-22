@@ -14,20 +14,21 @@ import { useMemo } from 'react'
 import { useMapContext } from '../hooks/useMapContext'
 
 export interface MapMeshProps
-  extends Omit<SVGProps<SVGPathElement>, 'children' | 'd'>,
+  extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'filter'>,
   CoreMapMeshProps {}
 
 export function MapMesh({
   data,
   objectKey,
+  filter,
   fill = 'none',
   ...props
 }: MapMeshProps): ReactElement | null {
   const context = useMapContext()
 
   const path = useMemo(
-    () => renderMesh(context, data, objectKey) ?? undefined,
-    [context, data, objectKey],
+    () => renderMesh(context, data, objectKey, filter) ?? undefined,
+    [context, data, objectKey, filter],
   )
 
   return (

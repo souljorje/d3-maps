@@ -32,13 +32,16 @@ describe('mapMesh', () => {
     expect(wrapper.get('[data-testid="map-mesh"]').attributes('fill')).toBe('none')
   })
 
-  it('renders mesh path without topology data', () => {
+  it('renders an empty path for a missing topology object', () => {
     const wrapper = mount(MapBase, {
       props: {
         fit: sampleGeoJson,
       },
       slots: {
-        default: () => h(MapMesh),
+        default: () => h(MapMesh, {
+          data: sampleTopologyTwoObjects,
+          objectKey: 'missing',
+        }),
       },
     })
 

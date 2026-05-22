@@ -32,10 +32,13 @@ describe('mapMesh', () => {
     expect(mesh?.getAttribute('fill')).toBe('none')
   })
 
-  it('renders mesh path without topology data', () => {
+  it('renders an empty path for a missing topology object', () => {
     const { container } = render(
       <MapBase fit={sampleGeoJson}>
-        <MapMesh />
+        <MapMesh
+          data={sampleTopologyTwoObjects}
+          objectKey="missing"
+        />
       </MapBase>,
     )
 

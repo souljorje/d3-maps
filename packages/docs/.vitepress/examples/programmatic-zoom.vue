@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="mapContext"
+    v-if="mapContext && data"
     ref="mapRoot"
     class="grid gap-3"
   >

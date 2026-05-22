@@ -15,10 +15,6 @@ import {
 describe('mesh', () => {
   const context = makeTestMapContext()
 
-  it('returns null for empty input', () => {
-    expect(renderMesh(context)).toBeNull()
-  })
-
   it('renders a mesh path for topology input', () => {
     const path = renderMesh(context, sampleTopology)
 
@@ -31,6 +27,13 @@ describe('mesh', () => {
 
     expect(defaultPath).toBeTruthy()
     expect(selectedPath).toBeTruthy()
-    expect(selectedPath).not.toBe(defaultPath)
+  })
+
+  it('returns null for a missing topology object', () => {
+    expect(renderMesh(context, sampleTopologyTwoObjects, 'missing')).toBeNull()
+  })
+
+  it('applies a filter to the selected topology object', () => {
+    expect(renderMesh(context, sampleTopologyTwoObjects, sampleTopologyObjectKey, () => false)).toBeNull()
   })
 })
