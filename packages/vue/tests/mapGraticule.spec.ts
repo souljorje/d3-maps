@@ -79,6 +79,6 @@ describe('mapGraticule', () => {
   })
 
   it('throws without map context', () => {
-    expect(() => mount(MapGraticule)).toThrowError('useMapContext must be used inside Map')
+    expect(() => mount(MapGraticule)).toThrow('useMapContext must be used inside MapBase')
   })
 })

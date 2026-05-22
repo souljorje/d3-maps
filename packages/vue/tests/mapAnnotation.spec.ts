@@ -73,7 +73,7 @@ describe('mapAnnotation', () => {
       slots: {
         default: () => h('text', 'Paris'),
       },
-    })).toThrowError('useMapContext must be used inside Map')
+    })).toThrow('useMapContext must be used inside MapBase')
   })
 
   it('uses the provided D3 curve for the connector path', () => {

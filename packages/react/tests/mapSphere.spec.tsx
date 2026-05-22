@@ -79,6 +79,6 @@ describe('mapSphere', () => {
       <svg>
         <MapSphere />
       </svg>,
-    )).toThrowError('useMapContext must be used inside Map')
+    )).toThrow('useMapContext must be used inside MapBase')
   })
 })

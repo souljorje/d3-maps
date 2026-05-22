@@ -86,6 +86,6 @@ describe('mapSphere', () => {
   })
 
   it('throws without map context', () => {
-    expect(() => mount(MapSphere)).toThrowError('useMapContext must be used inside Map')
+    expect(() => mount(MapSphere)).toThrow('useMapContext must be used inside MapBase')
   })
 })

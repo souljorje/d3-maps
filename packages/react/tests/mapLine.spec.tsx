@@ -81,7 +81,7 @@ describe('mapLine', () => {
           coordinates={LINE_COORDINATES}
         />
       </svg>,
-    )).toThrowError('useMapContext must be used inside Map')
+    )).toThrow('useMapContext must be used inside MapBase')
   })
 
   it('renders cartesian paths inside map context', () => {

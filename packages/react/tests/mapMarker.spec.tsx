@@ -38,7 +38,7 @@ describe('mapMarker', () => {
           coordinates={[10, 10]}
         />
       </svg>,
-    )).toThrowError('useMapContext must be used inside Map')
+    )).toThrow('useMapContext must be used inside MapBase')
   })
 
   it('recomputes marker transform when map context changes', () => {
