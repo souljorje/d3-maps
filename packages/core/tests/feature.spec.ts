@@ -1,7 +1,7 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 
 import type {
-  MapFeatureData,
+  MapFeatureExtension,
   MapFeatureRendered,
 } from '../src'
 
@@ -76,9 +76,9 @@ describe('makeMapFeatures', () => {
   })
 
   it('keeps transformer enrichment in rendered feature types', () => {
-    type NamedFeature = MapFeatureData & {
+    type NamedFeature = MapFeatureExtension<{
       color: string
-    }
+    }>
 
     const projection = makeProjectionFromBase()
     const objects = makeMapFeatures({

@@ -27,7 +27,8 @@
 <script setup lang="ts">
 import type {
   MapData,
-  MapFeatureData,
+  MapFeatureExtension,
+  MapFeatureTransformer,
 } from '@d3-maps/vue'
 
 import { isFeature } from '@d3-maps/vue'
@@ -40,9 +41,9 @@ interface CountryPopulation {
   population: number
 }
 
-type ChoroplethFeature = MapFeatureData & {
+type ChoroplethFeature = MapFeatureExtension<{
   color: string
-}
+}>
 
 const mapData = ref<MapData>()
 const populations = ref<CountryPopulation[]>([])
@@ -79,7 +80,7 @@ async function fetchData(): Promise<CountryPopulation[]> {
   return response.json()
 }
 
-function transformer(features: readonly MapFeatureData[]): ChoroplethFeature[] {
+const transformer: MapFeatureTransformer<ChoroplethFeature> = (features) => {
   return features.map((feature) => {
     const population = isFeature(feature)
       ? populationByCode.value.get(String(feature.properties?.id))

@@ -1,7 +1,7 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 
 import type {
-  MapFeatureData,
+  MapFeatureExtension,
   MapFeatureRendered,
 } from '@d3-maps/core'
 
@@ -130,9 +130,9 @@ describe('mapFeatures', () => {
   })
 
   it('exposes transformer enrichment to render props', () => {
-    type ColoredFeature = MapFeatureData & {
+    type ColoredFeature = MapFeatureExtension<{
       color: string
-    }
+    }>
 
     const { container } = render(
       <MapBase fit={sampleGeoJson}>

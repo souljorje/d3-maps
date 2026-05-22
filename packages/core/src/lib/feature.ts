@@ -7,6 +7,8 @@ import { isStringOrNumber } from './utils'
 
 export type MapFeatureKey = string | number
 
+export type MapFeatureExtension<T> = MapFeatureData & T
+
 export type MapFeatureRendered<T extends MapFeatureData = MapFeatureData> = T & {
   key: MapFeatureKey
   d?: string
