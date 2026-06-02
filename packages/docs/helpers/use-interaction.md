@@ -2,11 +2,11 @@
 description: Helper for interaction state and resolved styles on custom D3 SVG map objects with React and Vue
 ---
 
-# useMapObject
+# useInteraction
 
 Provides interaction-state transitions and resolved styles for custom map SVG elements.
 
-Used internally by [MapFeature](/components/map-feature), [MapLine](/components/map-line), [MapAnnotation](/components/map-annotation), [MapMarker](/components/map-marker), and [MapMesh](/components/map-mesh)
+Used internally by [MapElement](/components/map-element), [MapFeature](/components/map-feature), [MapLine](/components/map-line), [MapAnnotation](/components/map-annotation), and [MapMarker](/components/map-marker)
 
 ## Usage
 
@@ -18,7 +18,7 @@ Used internally by [MapFeature](/components/map-feature), [MapLine](/components/
 <script setup lang="ts">
 import type { StyleValue } from 'vue'
 
-import { useMapObject, type MapObjectProps } from '@d3-maps/vue'
+import { useInteraction, type InteractionProps } from '@d3-maps/vue'
 
 interface Props {
   d: string
@@ -26,7 +26,7 @@ interface Props {
 
 defineProps<Props>()
 
-const styles: MapObjectProps<StyleValue>['styles'] = {
+const styles: InteractionProps<StyleValue>['styles'] = {
   default: {
     opacity: 0.9,
   },
@@ -41,7 +41,7 @@ const styles: MapObjectProps<StyleValue>['styles'] = {
   },
 }
 
-const { style, ...events } = useMapObject(styles)
+const { style, ...events } = useInteraction(styles)
 </script>
 
 <template>
@@ -59,10 +59,10 @@ const { style, ...events } = useMapObject(styles)
 ```tsx
 import type { CSSProperties } from 'react'
 
-import { useMapObject, type MapObjectProps } from '@d3-maps/react'
+import { useInteraction, type InteractionProps } from '@d3-maps/react'
 
 export function CustomFeaturePath({ d }: { d: string }) {
-  const styles: MapObjectProps<CSSProperties>['styles'] = {
+  const styles: InteractionProps<CSSProperties>['styles'] = {
     default: {
       opacity: 0.9,
     },
@@ -77,7 +77,7 @@ export function CustomFeaturePath({ d }: { d: string }) {
     },
   }
 
-  const { style, ...events } = useMapObject<SVGPathElement>({
+  const { style, ...events } = useInteraction<SVGPathElement>({
     styles,
   })
 

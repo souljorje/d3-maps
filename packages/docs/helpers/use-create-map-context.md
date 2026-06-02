@@ -12,8 +12,8 @@ Use it when `MapBase` and sibling UI should share the same resolved map state
 
 | Adapter | Type |
 | --- | --- |
-| `@d3-maps/vue` | `ComputedRef<MapContext \| undefined>` |
-| `@d3-maps/react` | `MapContext \| undefined` |
+| `@d3-maps/vue` | `ComputedRef<`[MapContext](/api/core/map#mapcontext)`>` |
+| `@d3-maps/react` | [MapContext](/api/core/map#mapcontext) |
 
 See [MapContext API](/api/core/map#mapcontext)
 
@@ -21,8 +21,8 @@ See [MapContext API](/api/core/map#mapcontext)
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `config?` | `MapProps` | `—` | When `context` is not provided, has same props as [MapBase](/components/map-base) |
-| `context?` | `MapContext` | `—` | Optional existing context to reuse instead of creating a new one |
+| `config?` | [MapProps](/api/core/map#mapprops) | `—` | When `context` is not provided, has same props as [MapBase](/components/map-base) |
+| `context?` | [MapContext](/api/core/map#mapcontext) | `—` | Optional existing context to reuse instead of creating a new one |
 
 ## Usage
 
@@ -45,7 +45,7 @@ const props = defineProps<{
 }>()
 
 const context = useCreateMapContext(computed(() => ({
-  data: props.data,
+  fit: props.data,
   width: 420,
 })))
 </script>
@@ -53,7 +53,7 @@ const context = useCreateMapContext(computed(() => ({
 <template>
   <Toolbar :context="context" />
   <MapBase :context="context">
-    <MapFeatures />
+    <MapFeatures :data="props.data" />
   </MapBase>
 </template>
 ```
@@ -70,17 +70,15 @@ import {
 
 export function Example({ data }: { data: MapData }) {
   const context = useCreateMapContext({
-    data,
+    fit: data,
     width: 420,
   })
-
-  if (!context) return null
 
   return (
     <>
       <Toolbar context={context} />
       <MapBase context={context}>
-        <MapFeatures />
+        <MapFeatures data={data} />
       </MapBase>
     </>
   )
@@ -89,7 +87,7 @@ export function Example({ data }: { data: MapData }) {
 
 :::
 
-If neither `config.data` nor `context` is available yet, the helper returns `undefined`
+If neither `config` nor `context` is provided, the helper creates a context from map defaults
 
 ## Best Practice
 

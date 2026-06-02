@@ -8,44 +8,41 @@ import {
 
 import {
   MapBase,
-  MapFeature,
+  MapElement,
 } from '../src'
 import { mapZoomKey } from '../src/hooks/useMapZoom'
 import { sampleGeoJson } from './fixtures'
 
-describe('mapFeature', () => {
-  it('throws without map context', () => {
-    expect(() => mount(MapFeature, {
-      props: {
-        data: sampleGeoJson.features[0],
-      },
-    })).toThrowError('useMapContext must be used inside Map')
-  })
+const MapElementComponent = MapElement as unknown as Parameters<typeof h>[0]
 
+describe('mapElement', () => {
   it('resolves styles across interaction states', async () => {
     const onMouseup = vi.fn()
 
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
-        default: () => h(MapFeature, {
-          'data-testid': 'map-feature',
-          data: sampleGeoJson.features[0],
-          tabindex: 0,
-          styles: {
-            default: { opacity: 0.9 },
-            focus: { opacity: 0.85 },
-            hover: { opacity: 0.8 },
-            active: { opacity: 0.7 },
+        default: () => h(
+          MapElementComponent,
+          {
+            'data-testid': 'map-element',
+            d: 'M0,0L10,0',
+            tabindex: 0,
+            styles: {
+              default: { opacity: 0.9 },
+              focus: { opacity: 0.85 },
+              hover: { opacity: 0.8 },
+              active: { opacity: 0.7 },
+            },
+            onMouseup,
           },
-          onMouseup,
-        }),
+        ),
       },
     })
 
-    const path = wrapper.get('[data-testid="map-feature"]')
+    const path = wrapper.get('[data-testid="map-element"]')
     expect((path.element as SVGPathElement).style.opacity).toBe('0.9')
 
     await path.trigger('focus')
@@ -86,21 +83,24 @@ describe('mapFeature', () => {
         },
       },
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
-        default: () => h(MapFeature, {
-          'data-testid': 'map-feature',
-          data: sampleGeoJson.features[0],
-          styles: {
-            default: { opacity: 0.9 },
-            active: { opacity: 0.7 },
+        default: () => h(
+          MapElementComponent,
+          {
+            'data-testid': 'map-element',
+            d: 'M0,0L10,0',
+            styles: {
+              default: { opacity: 0.9 },
+              active: { opacity: 0.7 },
+            },
           },
-        }),
+        ),
       },
     })
 
-    const path = wrapper.get('[data-testid="map-feature"]')
+    const path = wrapper.get('[data-testid="map-element"]')
     expect((path.element as SVGPathElement).style.opacity).toBe('0.9')
 
     await path.trigger('mousedown')

@@ -53,8 +53,8 @@ export default function AnnotationExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <MapBase data={mapData}>
-          <MapFeatures />
+        <MapBase>
+          <MapFeatures data={mapData} />
           {cities.map((city) => (
             <MapAnnotation
               key={city.name}

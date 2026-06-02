@@ -1,36 +1,42 @@
-## Graticule
+## Sphere and Graticule 
 
-[MapGraticule](/components/map-graticule) renders latitude and longitude grid lines and can also draw the map outline and background
+[MapSphere](/components/map-sphere) renders map outline and background. [MapGraticule](/components/map-graticule) renders latitude and longitude grid lines.
 
 :::tabs key:framework
 
 == Vue
 
-```vue{7} [vue]
+```vue{5-6,12} [vue]
 <template>
   <MapBase
-    :data="data"
     :projection="geoEquirectangular"
-    :data-transformer="dataTransformer"
   >
-    <MapGraticule border />
-    <MapFeatures />
-    <MapMesh stroke="#fff" />
+    <MapSphere fill="var(--vp-c-bg-alt)" />
+    <MapGraticule />
+    <MapFeatures
+      :data="data"
+      :transformer="transformer"
+    />
+    <MapMesh :data="data" stroke="#fff" />
+    <MapSphere stroke="var(--vp-c-border)" />
   </MapBase>
 </template>
 ```
 
 == React
 
-```tsx{6} [react]
+```tsx{4-5,11} [react]
 <MapBase
-  data={data}
   projection={geoEquirectangular}
-  dataTransformer={dataTransformer}
 >
-  <MapGraticule border />
-  <MapFeatures />
-  <MapMesh stroke="#fff" />
+  <MapSphere fill="var(--vp-c-bg-alt)" />
+  <MapGraticule />
+  <MapFeatures
+    data={data}
+    transformer={transformer}
+  />
+  <MapMesh data={data} stroke="#fff" />
+  <MapSphere stroke="var(--vp-c-border)" />
 </MapBase>
 ```
 

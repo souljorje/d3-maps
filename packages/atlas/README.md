@@ -36,8 +36,8 @@ import Countries from '@d3-maps/atlas/world/countries'
 
 export function App() {
   return (
-    <MapBase data={Countries}>
-      <MapFeatures />
+    <MapBase>
+      <MapFeatures data={Countries} />
     </MapBase>
   )
 }
@@ -52,8 +52,9 @@ import Coastline from '@d3-maps/atlas/world/coastline'
 
 export function App() {
   return (
-    <MapBase data={[Ocean, Coastline]}>
-      <MapFeatures />
+    <MapBase>
+      <MapFeatures data={Ocean} />
+      <MapFeatures data={Coastline} />
     </MapBase>
   )
 }
@@ -67,8 +68,10 @@ import { Georgia, Germany, Russia } from '@d3-maps/atlas/countries'
 
 export function App() {
   return (
-    <MapBase data={[Georgia, Germany, Russia]}>
-      <MapFeatures />
+    <MapBase>
+      <MapFeatures data={Georgia} />
+      <MapFeatures data={Germany} />
+      <MapFeatures data={Russia} />
     </MapBase>
   )
 }

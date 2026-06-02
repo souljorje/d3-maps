@@ -4,9 +4,9 @@ description: Guide for building simple interactive SVG map with React, Vue, and 
 
 # Get started
 
-`d3-maps` is a set of components and helpers simplifying creating SVG maps with [D3](https://d3js.org/). Works with your favorite framework, batteries included.
+`d3-maps` is a set of components and helpers simplifying creating SVG maps with [D3](https://d3js.org/). Works with your favorite framework, batteries included
 
-Let's build your first map with `d3-maps` 👇
+Let's build your first map 👇
 
 ## Install
 
@@ -95,7 +95,7 @@ See [Atlas](/guide/atlas) for more maps
 
 ## Render the map
 
-Pass the data to `MapBase`
+Pass the data to `MapFeatures`
 
 :::tabs key:framework
 
@@ -110,8 +110,8 @@ defineProps<{
 </script>
 
 <template>
-  <MapBase :data="data">
-    <MapFeatures />
+  <MapBase>
+    <MapFeatures :data="data" />
   </MapBase>
 </template>
 ```
@@ -124,8 +124,8 @@ import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
 
 export function MapView({ data }: { data: MapData }) {
   return (
-    <MapBase data={data}>
-      <MapFeatures />
+    <MapBase>
+      <MapFeatures data={data} />
     </MapBase>
   )
 }
@@ -135,4 +135,4 @@ export function MapView({ data }: { data: MapData }) {
 
 ## Result
 
-<Demo component-name="basic"/>
+<Demo component-name="basic-map"/>

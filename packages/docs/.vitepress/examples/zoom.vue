@@ -1,13 +1,14 @@
 <template>
   <MapBase
     v-if="data"
-    :data="data"
+
     :projection="projection"
   >
+    <MapSphere fill="var(--vp-c-bg-alt)" />
     <MapZoom @zoom="updateMarkerScale">
-      <MapGraticule border />
-      <MapFeatures />
-      <MapMesh />
+      <MapGraticule />
+      <MapFeatures :data="data" />
+      <MapMesh :data="data" />
       <MapMarker
         v-for="(item, index) in cities"
         :key="index"
@@ -27,6 +28,7 @@
         </g>
       </MapMarker>
     </MapZoom>
+    <MapSphere stroke="var(--vp-c-border)" />
   </MapBase>
 </template>
 

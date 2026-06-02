@@ -1,5 +1,5 @@
+import type { MapElementProps } from './element'
 import type { MapLineCurve, MapLineMidpoint } from './line'
-import type { MapObjectProps } from './mapObject'
 
 import { makeTransform } from './utils'
 
@@ -11,7 +11,7 @@ export type MapAnnotationCoordinates = [number, number]
 /**
  * Public annotation props shared across adapters
  */
-export interface MapAnnotationProps<TStyle = unknown> extends MapObjectProps<TStyle> {
+export interface MapAnnotationProps<TStyle = unknown> extends MapElementProps<TStyle> {
   coordinates: MapAnnotationCoordinates
   length?: number
   angle?: number

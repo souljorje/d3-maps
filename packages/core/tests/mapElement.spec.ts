@@ -1,32 +1,11 @@
 import { describe, expect, it } from 'vitest'
 
 import {
-  getObjectStateUpdate,
-  resolveObjectStyle,
-  useMapObjectEvents,
+  resolveInteractionStyle,
+  useInteractionEvents,
 } from '../src'
 
-describe('getObjectStateUpdate', () => {
-  it('returns hover for enter and mouseup events', () => {
-    expect(getObjectStateUpdate('mouseenter')).toBe('hover')
-    expect(getObjectStateUpdate('mouseup')).toBe('hover')
-  })
-
-  it('returns focus for focus event', () => {
-    expect(getObjectStateUpdate('focus')).toBe('focus')
-  })
-
-  it('returns default for mouseleave and blur', () => {
-    expect(getObjectStateUpdate('mouseleave')).toBe('default')
-    expect(getObjectStateUpdate('blur')).toBe('default')
-  })
-
-  it('returns active on mousedown', () => {
-    expect(getObjectStateUpdate('mousedown')).toBe('active')
-  })
-})
-
-describe('resolveObjectStyle', () => {
+describe('resolveInteractionStyle', () => {
   it('resolves style by interactive state with fallback to default', () => {
     const styles = {
       default: { opacity: 0.6 },
@@ -35,26 +14,26 @@ describe('resolveObjectStyle', () => {
       focus: { opacity: 0.7 },
     }
 
-    expect(resolveObjectStyle('active', styles)).toEqual(styles.active)
-    expect(resolveObjectStyle('hover', styles)).toEqual(styles.hover)
-    expect(resolveObjectStyle('focus', styles)).toEqual(styles.focus)
-    expect(resolveObjectStyle('default', styles)).toEqual(styles.default)
+    expect(resolveInteractionStyle('active', styles)).toEqual(styles.active)
+    expect(resolveInteractionStyle('hover', styles)).toEqual(styles.hover)
+    expect(resolveInteractionStyle('focus', styles)).toEqual(styles.focus)
+    expect(resolveInteractionStyle('default', styles)).toEqual(styles.default)
   })
 
   it('falls back to default style when current state is missing', () => {
     const styles = { default: { opacity: 0.4 } }
-    expect(resolveObjectStyle('hover', styles)).toEqual(styles.default)
+    expect(resolveInteractionStyle('hover', styles)).toEqual(styles.default)
   })
 
   it('returns undefined when styles are not provided', () => {
-    expect(resolveObjectStyle('hover')).toBeUndefined()
+    expect(resolveInteractionStyle('hover')).toBeUndefined()
   })
 })
 
-describe('useMapObjectEvents', () => {
-  it('tracks state transitions from map-object mouse events', () => {
+describe('useInteractionEvents', () => {
+  it('tracks state transitions from mouse events', () => {
     let currentState = 'default'
-    const controller = useMapObjectEvents((state) => {
+    const controller = useInteractionEvents((state) => {
       currentState = state
     })
 
@@ -71,7 +50,7 @@ describe('useMapObjectEvents', () => {
 
   it('keeps focus style after hover ends until blur', () => {
     let currentState = 'default'
-    const controller = useMapObjectEvents((state) => {
+    const controller = useInteractionEvents((state) => {
       currentState = state
     })
 
@@ -87,7 +66,7 @@ describe('useMapObjectEvents', () => {
 
   it('returns to focus after mouseup when the element is focused', () => {
     let currentState = 'default'
-    const controller = useMapObjectEvents((state) => {
+    const controller = useInteractionEvents((state) => {
       currentState = state
     })
 
@@ -111,7 +90,7 @@ describe('useMapObjectEvents', () => {
       },
     }
     let currentState = 'default'
-    const controller = useMapObjectEvents((state) => {
+    const controller = useInteractionEvents((state) => {
       currentState = state
     }, true)
 
@@ -136,7 +115,7 @@ describe('useMapObjectEvents', () => {
       },
     }
 
-    const controller = useMapObjectEvents(undefined, true)
+    const controller = useInteractionEvents(undefined, true)
 
     controller.onMousedown({ id: 'feature' })
     controller.dispose()
@@ -157,7 +136,7 @@ describe('useMapObjectEvents', () => {
       },
     }
 
-    const controller = useMapObjectEvents()
+    const controller = useInteractionEvents()
     controller.onMousedown({ id: 'feature' })
 
     expect(listenerSet.size).toBe(0)

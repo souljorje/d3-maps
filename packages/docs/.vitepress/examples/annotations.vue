@@ -1,9 +1,8 @@
 <template>
   <MapBase
     v-if="data"
-    :data="data"
   >
-    <MapFeatures />
+    <MapFeatures :data="data" />
     <template
       v-for="city in cities"
       :key="city.name"

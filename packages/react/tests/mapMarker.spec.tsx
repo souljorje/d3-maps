@@ -16,7 +16,7 @@ describe('mapMarker', () => {
   it('uses projection transform from context', () => {
     render(
       <MapBase
-        data={sampleGeoJson}
+        fit={sampleGeoJson}
         width={400}
         height={300}
       >
@@ -38,13 +38,13 @@ describe('mapMarker', () => {
           coordinates={[10, 10]}
         />
       </svg>,
-    )).toThrowError('useMapContext must be used inside Map')
+    )).toThrow('useMapContext must be used inside MapBase')
   })
 
   it('recomputes marker transform when map context changes', () => {
     const { rerender } = render(
       <MapBase
-        data={sampleGeoJson}
+        fit={sampleGeoJson}
         width={300}
       >
         <MapMarker
@@ -58,7 +58,7 @@ describe('mapMarker', () => {
 
     rerender(
       <MapBase
-        data={sampleGeoJson}
+        fit={sampleGeoJson}
         width={700}
       >
         <MapMarker
@@ -72,18 +72,18 @@ describe('mapMarker', () => {
     expect(nextTransform).not.toBe(initialTransform)
   })
 
-  it('allows overriding the outer group name', () => {
+  it('allows overriding the marker role hook', () => {
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapMarker
           data-testid="map-marker"
           coordinates={[10, 10]}
-          name="annotation"
+          data-d3m="annotation"
         />
       </MapBase>,
     )
 
-    expect(screen.getByTestId('map-marker').getAttribute('name')).toBe('annotation')
+    expect(screen.getByTestId('map-marker').getAttribute('data-d3m')).toBe('annotation')
   })
 
   it('forwards focus and blur callbacks', () => {
@@ -91,7 +91,7 @@ describe('mapMarker', () => {
     const onBlur = vi.fn()
 
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapMarker
           data-testid="map-marker-focus"
           coordinates={[10, 10]}

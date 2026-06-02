@@ -44,8 +44,8 @@ import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
 
 export function App({ mapData }: { mapData: MapData }) {
   return (
-    <MapBase data={mapData}>
-      <MapFeatures />
+    <MapBase>
+      <MapFeatures data={mapData} />
     </MapBase>
   )
 }

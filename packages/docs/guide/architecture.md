@@ -20,7 +20,7 @@ description: Explanation of the d3-maps core architecture and adapter responsibi
 `@d3-maps/react` and `@d3-maps/vue`*  
 implement framework-specific integrations using `core`
 
-- Components and hooks/composables
+- Components and hooks
 - Reactivity for props, state, and events
 - Native SVG rendering
 

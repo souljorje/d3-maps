@@ -1,22 +1,27 @@
-import type { MapData, MapFeatureData } from '@d3-maps/react'
+import type {
+  MapData,
+  MapFeature as MapFeatureData,
+} from '@d3-maps/react'
 import type {
   JSX,
   KeyboardEvent as ReactKeyboardEvent,
 } from 'react'
 
+import { makeMapFeatures } from '@d3-maps/core'
 import {
-  getFeatureKey,
   getObjectZoomView,
   MapBase,
   MapFeature,
   MapFeatures,
   MapGraticule,
   MapMesh,
+  MapSphere,
   MapZoom,
   useCreateMapContext,
 } from '@d3-maps/react'
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -25,6 +30,7 @@ const initialZoom = 1
 const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
+type MapGeoFeature = Extract<MapFeatureData, { type: 'Feature' }>
 
 export default function ProgrammaticZoomExample(): JSX.Element | null {
   const [mapData, setMapData] = useState<MapData>()
@@ -34,13 +40,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   const [isTransitionOn, setIsTransitionOn] = useState(true)
   const mapRootRef = useRef<HTMLDivElement | null>(null)
 
-  const mapContext = useCreateMapContext(
-    mapData
-      ? {
-          data: mapData,
-        }
-      : undefined,
-  )
+  const mapContext = useCreateMapContext()
 
   useEffect(() => {
     let isCancelled = false
@@ -59,6 +59,12 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
       isCancelled = true
     }
   }, [])
+
+  const renderedFeatures = useMemo(() => {
+    return mapData && mapContext
+      ? makeMapFeatures(mapContext, { data: mapData })
+      : []
+  }, [mapContext, mapData])
 
   if (!mapData || !mapContext) return null
 
@@ -80,7 +86,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
     setActiveCountryLabel('World')
   }
 
-  function zoomToFeature(feature: MapFeatureData): void {
+  function zoomToFeature(feature: MapGeoFeature): void {
     const view = getObjectZoomView(mapContext, feature, {
       minZoom,
       maxZoom,
@@ -94,13 +100,13 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   }
 
   function onFeatureClick(
-    feature: MapFeatureData,
+    feature: MapGeoFeature,
   ): void {
     zoomToFeature(feature)
   }
 
   function onFeatureKeyDown(
-    feature: MapFeatureData,
+    feature: MapGeoFeature,
     event: ReactKeyboardEvent<SVGPathElement>,
   ): void {
     if (event.key !== 'Enter' && event.key !== ' ') return
@@ -111,18 +117,16 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   }
 
   async function zoomToRandomCountry(): Promise<void> {
-    const randomIndex = Math.floor(Math.random() * mapContext.features.length)
-    const feature = mapContext.features[randomIndex]
+    const features = renderedFeatures.filter((feature): feature is MapGeoFeature => feature.type === 'Feature')
+    const randomIndex = Math.floor(Math.random() * features.length)
+    const feature = features[randomIndex]
 
     if (!feature) return
 
     zoomToFeature(feature)
 
-    const featureKey = getFeatureKey(feature)
-    if (featureKey === undefined) return
-
     await Promise.resolve()
-    focusFeatureByKey(featureKey)
+    focusFeatureByKey(feature.key)
   }
 
   function focusFeatureByKey(featureKey: string | number): void {
@@ -142,6 +146,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
         <MapBase
           context={mapContext}
         >
+          <MapSphere fill="var(--vp-c-bg-alt)" />
           <MapZoom
             center={center}
             zoom={zoom}
@@ -152,17 +157,17 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
             }}
             config={{ filter: isDragOnlyFilter }}
           >
-            <MapGraticule
-              border
-              pointerEvents="none"
-            />
-            <MapFeatures fill="var(--vp-c-neutral-inverse)">
-              {({ features }) => features.map((feature, index) => (
+            <MapGraticule pointerEvents="none" />
+            <MapFeatures
+              data={mapData}
+              fill="var(--vp-c-neutral-inverse)"
+            >
+              {({ features }) => features.map((feature) => (
                 <MapFeature
-                  key={getFeatureKey(feature, 'id', index)}
-                  data={feature}
-                  data-feature-key={getFeatureKey(feature)}
-                  aria-label={getFeatureLabel(feature)}
+                  key={feature.key}
+                  d={feature.d}
+                  data-feature-key={feature.key}
+                  aria-label={feature.type === 'Feature' ? getFeatureLabel(feature) : undefined}
                   role="button"
                   tabIndex={0}
                   style={{ cursor: 'pointer' }}
@@ -171,13 +176,21 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
                       fill: 'lightskyblue',
                     },
                   }}
-                  onClick={() => onFeatureClick(feature)}
-                  onKeyDown={(event) => onFeatureKeyDown(feature, event)}
+                  onClick={() => {
+                    if (feature.type === 'Feature') onFeatureClick(feature)
+                  }}
+                  onKeyDown={(event) => {
+                    if (feature.type === 'Feature') onFeatureKeyDown(feature, event)
+                  }}
                 />
               ))}
             </MapFeatures>
-            <MapMesh pointerEvents="none" />
+            <MapMesh
+              data={mapData}
+              pointerEvents="none"
+            />
           </MapZoom>
+          <MapSphere stroke="var(--vp-c-border)" />
         </MapBase>
       </div>
 
@@ -237,7 +250,7 @@ function isDragOnlyFilter(event: Event): boolean {
   return event.type !== 'wheel' && event.type !== 'dblclick'
 }
 
-function getFeatureLabel(feature: MapFeatureData): string {
+function getFeatureLabel(feature: MapGeoFeature): string {
   return String(
     feature.properties?.name
     ?? 'Country',

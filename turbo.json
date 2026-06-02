@@ -20,13 +20,13 @@
       "env": ["VITEPRESS_BASE", "VITEPRESS_SITE_URL"]
     },
     "typecheck": {
-      "dependsOn": ["transit"],
+      "dependsOn": ["transit"]
     },
     "typecheck:test": {
-      "dependsOn": ["transit"],
+      "dependsOn": ["transit"]
     },
     "test": {
-      "dependsOn": ["transit"],
+      "dependsOn": ["transit"]
     }
   }
 }

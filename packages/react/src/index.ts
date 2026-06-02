@@ -2,7 +2,17 @@
 
 import './style.css'
 
-export * from './components'
+export { MapAnnotation } from './components/MapAnnotation'
+export { MapBase } from './components/MapBase'
+export { MapElement } from './components/MapElement'
+export { MapFeature } from './components/MapFeature'
+export { MapFeatures } from './components/MapFeatures'
+export { MapGraticule } from './components/MapGraticule'
+export { MapLine } from './components/MapLine'
+export { MapMarker } from './components/MapMarker'
+export { MapMesh } from './components/MapMesh'
+export { MapSphere } from './components/MapSphere'
+export { MapZoom } from './components/MapZoom'
 export * from './hooks'
 
 export {

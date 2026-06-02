@@ -1,29 +1,23 @@
 <template>
   <path
     :d="path"
+    data-d3m="mesh"
     fill="none"
-    :style="style"
-    v-bind="events"
-    name="mesh"
   />
 </template>
 
 <script setup lang="ts">
-import type { MapObjectProps } from '@d3-maps/core'
-import type { StyleValue } from 'vue'
+import type { MapMeshProps } from '@d3-maps/core'
 
-import {
-  computed,
-  toRef,
-} from 'vue'
+import { renderMesh } from '@d3-maps/core'
+import { computed } from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
-import { useMapObject } from '../hooks/useMapObject'
 
-const props = defineProps<MapObjectProps<StyleValue>>()
+const props = defineProps<MapMeshProps>()
 const context = useMapContext()
 
-const path = computed<string | undefined>(() => context.value.renderMesh() ?? undefined)
-
-const { style, ...events } = useMapObject(toRef(props, 'styles'))
+const path = computed<string | undefined>(
+  () => renderMesh(context.value, props.data, props.objectKey, props.filter) ?? undefined,
+)
 </script>

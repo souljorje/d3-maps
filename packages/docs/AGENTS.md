@@ -38,6 +38,7 @@
 | No hidden edits | Do not reorder, delete, or rewrite unchanged lines in the next step unless that edit belongs to the current concept and is explicitly highlighted. |
 | Highlight completeness | VitePress highlight ranges MUST cover all changed lines for the current step in snippets for all supported adapters. |
 | Adapter parity | Progressive snippets for supported adapters MUST represent the same conceptual delta at each step. |
+| Adapter snippet rules | Follow the relevant [React Guide](../react/AGENTS.md) or [Vue Guide](../vue/AGENTS.md) when writing snippets for that adapter. |
 | Tone | Use a friendly, concise, instructional developer-doc tone. |
 | Sentence style | Prefer short declarative sentences with light imperative phrasing and minimal context. |
 | Approachability | Keep writing approachable but not chatty. |

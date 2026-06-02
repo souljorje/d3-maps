@@ -2,21 +2,25 @@
   <div style="aspect-ratio: 2 / 1">
     <MapBase
       v-if="data"
-      :data="data"
-      :data-transformer="dataTransformer"
       :projection="geoEquirectangular"
       :aspect-ratio="2 / 1"
     >
+      <MapSphere fill="var(--vp-c-bg-alt)" />
       <MapZoom>
-        <MapGraticule border />
+        <MapGraticule />
         <MapFeatures
+          :data="data"
+          :transformer="transformer"
           :styles="{
             default: { fill: 'lightblue' },
             hover: { fill: 'skyblue' },
             active: { fill: 'lightskyblue' },
           }"
         />
-        <MapMesh stroke="#fff" />
+        <MapMesh
+          :data="data"
+          stroke="#fff"
+        />
         <MapMarker
           :coordinates="[-83.0457538, 42.331427]"
         >
@@ -30,14 +34,15 @@
           <circle r="3" />
         </MapMarker>
       </MapZoom>
+      <MapSphere stroke="var(--vp-c-border)" />
     </MapBase>
   </div>
 </template>
 
 <script setup lang="ts">
 import type {
-  DataTransformer,
   MapData,
+  MapFeatureTransformer,
 } from '@d3-maps/vue'
 
 import { geoEquirectangular } from 'd3-geo'
@@ -49,8 +54,8 @@ import {
 
 const data = ref<MapData>()
 
-const dataTransformer: DataTransformer = (features) => (
-  features.filter((feature) => feature.properties?.name !== 'Antarctica')
+const transformer: MapFeatureTransformer = (features) => (
+  features.filter((feature) => feature.type !== 'Feature' || feature.properties?.name !== 'Antarctica')
 )
 
 onMounted(async () => {

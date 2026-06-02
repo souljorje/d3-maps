@@ -16,7 +16,7 @@ Returns `undefined` if used outside `MapZoom`
 | `zoom` | `number` |
 | `minZoom` | `number` |
 | `maxZoom` | `number` |
-| `zoomToObject(object, callback)` | `(object: ZoomObject, callback: (view: ObjectZoomView) => void) => void` |
+| `zoomToObject(object, callback)` | `(object: ` [ZoomObject](/api/core/zoom#zoomobject) `, callback: (view: ` [ObjectZoomView](/api/core/zoom#objectzoomview) `) => void) => void` |
 
 ## `zoomToObject`
 

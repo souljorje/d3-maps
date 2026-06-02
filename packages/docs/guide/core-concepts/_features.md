@@ -1,26 +1,27 @@
 ## Features
 
-A feature is a geographic entity such as a country or state.  
+A feature is any natural or human-made geographic object: country, road, land, river, etc.
 
-[MapFeatures](/components/map-features) renders the full collection, while [MapFeature](/components/map-feature) renders a single one. The slot or render-function form exposes per-feature rendering control.
+[MapFeatures](/components/map-features) renders the full collection, while [MapFeature](/components/map-feature) handles custom single-feature rendering. The slot or render-function form exposes per-feature rendering control.
 
 :::tabs key:framework
 
 == Vue
 
-```vue{7-15} [vue]
+```vue{5-16} [vue]
 <template>
   <MapBase
-    :data="data"
-    :data-transformer="dataTransformer"
     :projection="geoEquirectangular"
   >
-    <MapFeatures>
+    <MapFeatures
+      :data="data"
+      :transformer="transformer"
+    >
       <template #default="{ features }">
         <MapFeature
           v-for="feature in features"
-          :key="feature.id"
-          :data="feature"
+          :key="feature.key"
+          :d="feature.d"
         />
       </template>
     </MapFeatures>
@@ -30,23 +31,22 @@ A feature is a geographic entity such as a country or state.
 
 == React
 
-```tsx{6-17} [react]
+```tsx{4-16} [react]
 <MapBase
-  data={data}
-  dataTransformer={dataTransformer}
   projection={geoEquirectangular}
 >
-  <MapFeatures>
-    {({ features }) => (
-      <>
-        {features.map((feature) => (
-          <MapFeature
-            key={String(feature.id)}
-            data={feature}
-          />
-        ))}
-      </>
-    )}
+  <MapFeatures
+    data={data}
+    transformer={transformer}
+  >
+    {({ features }) =>
+      features.map((feature) => (
+        <MapFeature
+          key={feature.key}
+          d={feature.d}
+        />
+      ))
+    }
   </MapFeatures>
 </MapBase>
 ```

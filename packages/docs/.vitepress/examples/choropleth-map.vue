@@ -1,93 +1,94 @@
 <template>
   <MapBase
-    v-if="mapData && choroplethData.length"
-    :data-transformer="dataTransformer"
-    :data="mapData"
+    v-if="mapData && populations.length"
   >
-    <template #default="{ features }">
-      <MapFeature
-        v-for="feature in features"
-        :key="String(feature.id)"
-        :data="feature"
-        :style="{
-          fill: feature.color,
-          stroke: '#777',
-        }"
-        :styles="{
-          hover: {
-            opacity: 0.8,
-          },
-        }"
-      />
-    </template>
+    <MapFeatures
+      :data="mapData"
+      :transformer="transformer"
+    >
+      <template #default="{ features }">
+        <MapFeature
+          v-for="feature in features"
+          :key="feature.key"
+          :d="feature.d"
+          :fill="feature.color"
+          stroke="#777"
+          :styles="{
+            hover: {
+              opacity: 0.8,
+            },
+          }"
+        />
+      </template>
+    </MapFeatures>
   </MapBase>
 </template>
 
 <script setup lang="ts">
+import type {
+  MapData,
+  MapFeatureTransformer,
+} from '@d3-maps/vue'
+
 import { extent } from 'd3-array'
-import { scaleLinear } from 'd3-scale'
-import { withBase } from 'vitepress'
+import { scaleSqrt } from 'd3-scale'
 import { computed, onMounted, ref } from 'vue'
 
-interface CountryStat {
-  id: string
-  value: number
+interface CountryPopulation {
+  cca3: string
+  population: number
 }
 
-const mapData = ref<unknown>()
-const loading = ref(true)
-const error = ref(false)
-const choroplethData = ref<CountryStat[]>([])
+interface ChoroplethFeatureExtra {
+  color: string
+}
 
-const minAndMaxValues = computed(() => extent(choroplethData.value, (item) => item.value))
+const mapData = ref<MapData>()
+const populations = ref<CountryPopulation[]>([])
+
 const colorScale = computed(() => {
-  const domain = minAndMaxValues.value
-  const safeDomain: [number, number] = [
-    domain?.[0] ?? 0,
-    domain?.[1] ?? 1,
-  ]
-  return scaleLinear<string>()
-    .domain(safeDomain)
-    .range(['#e0460030', '#e04600'])
+  const [min = 0, max = 1] = extent(populations.value, (country) => country.population)
+
+  return scaleSqrt<string>()
+    .domain([min, max])
+    .range(['#ffefee', '#e04600'])
+})
+
+const populationByCode = computed(() => {
+  return new Map(populations.value.map((country) => [country.cca3, country.population]))
 })
 
 onMounted(async () => {
-  try {
-    await Promise.all([fetchData(), fetchMap()])
-  } catch {
-    error.value = true
-  } finally {
-    loading.value = false
-  }
+  const [loadedData, loadedMap] = await Promise.all([
+    fetchData(),
+    fetchMap(),
+  ])
+
+  populations.value = loadedData
+  mapData.value = loadedMap
 })
 
-async function fetchMap() {
+async function fetchMap(): Promise<MapData> {
   const { default: data } = await import('@d3-maps/atlas/world/countries')
-  mapData.value = data
+  return data
 }
 
-async function fetchData() {
-  const response = await fetch(withBase('/example-data/choropleth-data.json'))
-  const rawData = (await response.json()) as Array<Record<string, unknown>>
-  choroplethData.value = rawData.map((item) => {
-    const id = item['country-code']
-    if (typeof id !== 'string') {
-      return { id: '', value: 0 }
-    }
-    return {
-      ...item,
-      id,
-      value: Number(id),
-    }
-  })
+async function fetchData(): Promise<CountryPopulation[]> {
+  const response = await fetch('https://restcountries.com/v3.1/all?fields=cca3,population')
+  return response.json()
 }
 
-function dataTransformer(features: any[]) {
+const transformer: MapFeatureTransformer<ChoroplethFeatureExtra> = (features) => {
   return features.map((feature) => {
-    const country = choroplethData.value.find((item) => item.id === feature.id)
-    const colorValue = country ? colorScale.value(country.value) : ''
+    const code = String(feature.properties.id)
+    const population = populationByCode.value.get(code)
 
-    return { ...feature, color: colorValue }
+    return {
+      ...feature,
+      color: population == null || code === 'ATA'
+        ? '#eee'
+        : colorScale.value(population),
+    }
   })
 }
 </script>

@@ -1,50 +1,102 @@
-import type { ExtendedFeature } from 'd3-geo'
+import type * as GeoJSON from 'geojson'
 
-import type {
-  MapObjectProps,
-} from './mapObject'
+import type { MapData, MapFeatureData } from './data'
+import type { MapElementProps } from './element'
+import type { MapContext } from './map'
 
+import { isFeature, resolveMapData } from './data'
 import { isStringOrNumber } from './utils'
 
-/**
- * A GeoJSON Feature used by d3-maps.
- *
- * This type allows extra top-level fields to be attached in `dataTransformer` (e.g. choropleth colors).
- */
-export type MapFeatureData = (ExtendedFeature & Record<string, unknown>) | ExtendedFeature
+export type MapFeatureKey = string | number
 
-/**
- * Shared props contract for a single rendered feature.
- */
-export interface MapFeatureProps<TStyle = unknown> extends MapObjectProps<TStyle> {
-  data: MapFeatureData
+export type MapFeatureNormalized = GeoJSON.Feature<
+  GeoJSON.Geometry | null,
+  Record<string, unknown>
+>
+
+export type MapFeatureRendered<TExtra extends object = object> = MapFeatureNormalized & TExtra & {
+  key: MapFeatureKey
+  d?: string
 }
 
-/**
- * Shared props contract for feature collections rendered from the current map context.
- */
-export interface MapFeaturesProps<TStyle = unknown> extends Omit<MapFeatureProps<TStyle>, 'data'> {
-  idKey?: string
+export type MapFeatureTransformer<TExtra extends object = object> = (
+  features: readonly MapFeatureNormalized[],
+) => readonly (MapFeatureNormalized & TExtra)[]
+
+export type MapFeatureKeyAccessor<TExtra extends object = object> = (
+  item: MapFeatureNormalized & TExtra,
+  fallback: string | number,
+) => MapFeatureKey | undefined
+
+export interface MapFeatureProps<TStyle = unknown> extends MapElementProps<TStyle> {
+  d?: string
 }
 
-/**
- * Resolves a stable key for a feature.
- *
- * Checks:
- * 1) `feature[idKey]`
- * 2) `feature.properties[idKey]`
- * 3) optional fallback value
- */
+export interface MapFeaturesProps<
+  TExtra extends object = object,
+  TStyle = unknown,
+> extends MapElementProps<TStyle> {
+  data?: MapData
+  transformer?: MapFeatureTransformer<TExtra>
+  getKey?: MapFeatureKeyAccessor<NoInfer<TExtra>>
+  objectKey?: string
+}
+
 export function getFeatureKey(
-  feature: MapFeatureData,
-  idKey: string = 'id',
-  fallback?: number | string,
-): string | number | undefined {
-  const directValue = feature[idKey as keyof MapFeatureData]
-  if (isStringOrNumber(directValue)) return directValue
+  item: MapFeatureData,
+  fallback: string | number,
+): MapFeatureKey {
+  if ('id' in item && isStringOrNumber(item.id)) return item.id
 
-  const propertyValue = feature.properties?.[idKey]
-  if (isStringOrNumber(propertyValue)) return propertyValue
+  if (isFeature(item)) {
+    const id = item.properties?.id
+    if (isStringOrNumber(id)) return id
+
+    const name = item.properties?.name
+    if (isStringOrNumber(name)) return name
+  }
 
   return fallback
+}
+
+export function makeMapFeatures<TExtra extends object = object>(
+  context: Pick<MapContext, 'path'>,
+  {
+    data,
+    objectKey,
+    transformer,
+    getKey,
+  }: {
+    data?: MapData
+    objectKey?: string
+    transformer?: MapFeatureTransformer<TExtra>
+    getKey?: MapFeatureKeyAccessor<TExtra>
+  },
+): MapFeatureRendered<TExtra>[] {
+  if (data == null) return []
+
+  const features = resolveMapData(data, objectKey).map(normalizeMapFeature)
+  const items = (transformer
+    ? transformer(features)
+    : features) as readonly (MapFeatureNormalized & TExtra)[]
+
+  return items.map((item, index) => ({
+    ...item,
+    key: getKey?.(item, index) ?? getFeatureKey(item, index),
+    d: context.path(item) ?? undefined,
+  }))
+}
+
+function normalizeMapFeature(item: MapFeatureData): MapFeatureNormalized {
+  if (isFeature(item)) {
+    return {
+      ...item,
+      properties: item.properties ?? {},
+    }
+  }
+  return {
+    type: 'Feature',
+    geometry: item,
+    properties: {},
+  }
 }

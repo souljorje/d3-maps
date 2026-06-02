@@ -5,13 +5,14 @@ import {
   MapFeatures,
   MapGraticule,
   MapMesh,
+  MapSphere,
 } from '@d3-maps/react'
 import {
   useEffect,
   useState,
 } from 'react'
 
-export default function GraticuleExample(): JSX.Element | null {
+export default function SphereAndGraticuleExample(): JSX.Element | null {
   const [mapData, setMapData] = useState<MapData>()
 
   useEffect(() => {
@@ -34,13 +35,12 @@ export default function GraticuleExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <MapBase data={mapData}>
-          <MapGraticule
-            background
-            border
-          />
-          <MapFeatures />
-          <MapMesh />
+        <MapBase>
+          <MapSphere fill="var(--vp-c-bg-alt)" />
+          <MapGraticule />
+          <MapFeatures data={mapData} />
+          <MapMesh data={mapData} />
+          <MapSphere stroke="var(--vp-c-border)" />
         </MapBase>
       )
     : null

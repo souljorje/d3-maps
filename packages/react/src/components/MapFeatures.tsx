@@ -2,7 +2,7 @@
 
 import type {
   MapFeaturesProps as CoreMapFeaturesProps,
-  MapFeatureData,
+  MapFeatureRendered,
 } from '@d3-maps/core'
 import type {
   CSSProperties,
@@ -11,37 +11,53 @@ import type {
   SVGProps,
 } from 'react'
 
-import { getFeatureKey } from '@d3-maps/core'
+import {
+  makeMapFeatures,
+} from '@d3-maps/core'
+import { useMemo } from 'react'
 
 import { useMapContext } from '../hooks/useMapContext'
 import { MapFeature } from './MapFeature'
 
-interface MapFeaturesRenderProps {
-  features: MapFeatureData[]
+interface MapFeaturesRenderProps<TExtra extends object = object> {
+  features: MapFeatureRendered<TExtra>[]
 }
 
-type MapFeaturesChildren = ReactNode | ((props: MapFeaturesRenderProps) => ReactNode)
-
+type MapFeaturesChildren<TExtra extends object = object> =
+  ReactNode | ((props: MapFeaturesRenderProps<TExtra>) => ReactNode)
 type MapFeaturesElementProps = Omit<SVGProps<SVGGElement>, 'children'>
 
-export interface MapFeaturesProps
+export interface MapFeaturesProps<TExtra extends object = object>
   extends MapFeaturesElementProps,
-  CoreMapFeaturesProps<CSSProperties> {
-  children?: MapFeaturesChildren
+  CoreMapFeaturesProps<TExtra, CSSProperties> {
+  children?: MapFeaturesChildren<TExtra>
 }
 
-function isRenderProp(children: MapFeaturesChildren | undefined): children is (props: MapFeaturesRenderProps) => ReactNode {
+function isRenderProp<TExtra extends object>(
+  children: MapFeaturesChildren<TExtra> | undefined,
+): children is (props: MapFeaturesRenderProps<TExtra>) => ReactNode {
   return typeof children === 'function'
 }
 
-export function MapFeatures({
-  idKey = 'id',
+export function MapFeatures<TExtra extends object = object>({
+  data,
+  objectKey,
+  transformer,
+  getKey,
   styles,
   children,
   ...groupProps
-}: MapFeaturesProps): ReactElement {
+}: MapFeaturesProps<TExtra>): ReactElement {
   const context = useMapContext()
-  const features = context.features
+
+  const features = useMemo(() => {
+    return makeMapFeatures<TExtra>(context, {
+      data,
+      objectKey,
+      transformer,
+      getKey,
+    })
+  }, [context, data, objectKey, transformer, getKey])
 
   const resolvedChildren = isRenderProp(children)
     ? children({ features })
@@ -50,14 +66,14 @@ export function MapFeatures({
   return (
     <g
       {...groupProps}
-      name="features"
+      data-d3m="features"
     >
       {
         resolvedChildren
-        ?? features.map((feature, index) => (
+        ?? features.map(({ key, d }) => (
           <MapFeature
-            key={getFeatureKey(feature, idKey, index)}
-            data={feature}
+            key={key}
+            d={d}
             styles={styles}
           />
         ))

@@ -30,9 +30,9 @@ export default function BasicExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <MapBase data={mapData}>
-          <MapFeatures />
-          <MapMesh />
+        <MapBase>
+          <MapFeatures data={mapData} />
+          <MapMesh data={mapData} />
         </MapBase>
       )
     : null

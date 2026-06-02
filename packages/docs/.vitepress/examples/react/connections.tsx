@@ -62,8 +62,8 @@ export default function ConnectionsExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <MapBase data={mapData}>
-          <MapFeatures />
+        <MapBase>
+          <MapFeatures data={mapData} />
 
           {
             cities.map((city) => (

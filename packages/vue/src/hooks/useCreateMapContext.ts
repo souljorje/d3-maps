@@ -16,14 +16,11 @@ import {
 export function useCreateMapContext(
   config?: MaybeRef<Partial<MapProps> | undefined>,
   context?: MaybeRef<MapContext | undefined>,
-): ComputedRef<MapContext | undefined> {
+): ComputedRef<MapContext> {
   return computed(() => {
     const resolvedContext = unref(context)
     if (resolvedContext) return resolvedContext
 
-    const resolvedConfig = unref(config)
-    if (!resolvedConfig?.data) return undefined
-
-    return makeMapContext(resolvedConfig as MapProps)
+    return makeMapContext(unref(config))
   })
 }

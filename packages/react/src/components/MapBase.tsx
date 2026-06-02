@@ -36,21 +36,16 @@ export function MapBase(props: MapBaseProps): ReactElement {
     children,
     className,
     context: providedContext,
-    data,
-    dataTransformer,
+    fit,
+    fitObjectKey,
     height,
     projection,
     projectionConfig,
-    topologyObjectKey,
     width,
     ...svgProps
   } = props
 
   const resolvedContext = useCreateMapContext(props, providedContext)
-
-  if (!resolvedContext) {
-    throw new Error('MapBase requires data or context')
-  }
 
   const resolvedChildren = isRenderProp(children)
     ? children(resolvedContext)

@@ -6,6 +6,7 @@ import {
   MapGraticule,
   MapMarker,
   MapMesh,
+  MapSphere,
 } from '@d3-maps/react'
 import { useEffect, useState } from 'react'
 
@@ -48,10 +49,12 @@ export default function MarkersExample(): JSX.Element | null {
 
   return mapData
     ? (
-        <MapBase data={mapData}>
-          <MapGraticule border />
-          <MapFeatures />
-          <MapMesh />
+        <MapBase>
+          <MapSphere fill="var(--vp-c-bg-alt)" />
+          <MapGraticule />
+          <MapFeatures data={mapData} />
+          <MapMesh data={mapData} />
+          <MapSphere stroke="var(--vp-c-border)" />
           {
             cities.map((item) => (
               <MapMarker

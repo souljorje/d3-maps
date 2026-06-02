@@ -11,12 +11,11 @@ import { useMemo } from 'react'
 export function useCreateMapContext(
   config?: Partial<MapProps>,
   context?: MapContext,
-): MapContext | undefined {
+): MapContext {
   return useMemo(() => {
     if (context) return context
-    if (!config?.data) return undefined
 
-    return makeMapContext(config as MapProps)
+    return makeMapContext(config)
   }, [
     context,
     config?.width,
@@ -24,8 +23,8 @@ export function useCreateMapContext(
     config?.aspectRatio,
     config?.projection,
     config?.projectionConfig,
-    config?.data,
-    config?.topologyObjectKey,
-    config?.dataTransformer,
+    config?.fit,
+    config?.fitObjectKey,
+    config?.padding,
   ])
 }

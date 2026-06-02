@@ -1,12 +1,8 @@
-import type {
-  MapDataItem,
-  MapFeatureData,
-} from '@d3-maps/core'
+import type { MapData } from '@d3-maps/core'
 
-type GeoJsonMapData = Exclude<MapDataItem, { type: 'Topology' }>
-type TopologyMapData = Extract<MapDataItem, { type: 'Topology' }>
+type Topology = Extract<MapData, { type: 'Topology' }>
 
-const sampleFeature: MapFeatureData = {
+const sampleFeature: GeoJSON.Feature = {
   type: 'Feature',
   id: 'demo',
   properties: { id: 'demo' },
@@ -24,12 +20,12 @@ const sampleFeature: MapFeatureData = {
   },
 }
 
-export const sampleGeoJson: GeoJsonMapData = {
+export const sampleGeoJson: GeoJSON.FeatureCollection = {
   type: 'FeatureCollection',
   features: [sampleFeature],
 }
 
-export const sampleGeoJsonTwoFeatures: GeoJsonMapData = {
+export const sampleGeoJsonTwoFeatures: GeoJSON.FeatureCollection = {
   type: 'FeatureCollection',
   features: [
     ...sampleGeoJson.features,
@@ -49,11 +45,45 @@ export const sampleGeoJsonTwoFeatures: GeoJsonMapData = {
           ],
         ],
       },
-    } satisfies MapFeatureData,
+    } satisfies GeoJSON.Feature,
   ],
 }
 
-export const sampleTopology: TopologyMapData = {
+export const samplePolygon: GeoJSON.Polygon = {
+  type: 'Polygon',
+  coordinates: [
+    [
+      [0, 0],
+      [0, 10],
+      [10, 10],
+      [10, 0],
+      [0, 0],
+    ],
+  ],
+}
+
+export const sampleGeometryCollection: GeoJSON.GeometryCollection = {
+  type: 'GeometryCollection',
+  geometries: [
+    samplePolygon,
+    {
+      type: 'LineString',
+      coordinates: [
+        [0, 0],
+        [10, 10],
+      ],
+    },
+  ],
+}
+
+export const sampleGeometryCollectionFeature: GeoJSON.Feature = {
+  type: 'Feature',
+  id: 'geometry-collection-feature',
+  properties: { id: 'geometry-collection-feature' },
+  geometry: sampleGeometryCollection,
+}
+
+export const sampleTopology: Topology = {
   type: 'Topology',
   transform: { scale: [1, 1], translate: [0, 0] },
   objects: {
@@ -74,7 +104,7 @@ export const sampleTopology: TopologyMapData = {
   ],
 }
 
-export const sampleTopologyTwoObjects: TopologyMapData = {
+export const sampleTopologyTwoObjects: Topology = {
   type: 'Topology',
   transform: { scale: [1, 1], translate: [0, 0] },
   objects: {
@@ -116,3 +146,5 @@ export const sampleTopologyTwoObjects: TopologyMapData = {
     ],
   ],
 }
+
+export const sampleTopologyObjectKey = 'pair' as const

@@ -1,10 +1,9 @@
 <template>
   <MapBase
     v-if="data"
-    :data="data"
   >
-    <MapFeatures />
-    <MapMesh />
+    <MapFeatures :data="data" />
+    <MapMesh :data="data" />
   </MapBase>
 </template>
 

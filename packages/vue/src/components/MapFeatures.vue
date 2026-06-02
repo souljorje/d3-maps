@@ -1,30 +1,42 @@
 <template>
-  <g name="features">
+  <g data-d3m="features">
     <slot :features="features">
       <MapFeature
-        v-for="(feature, index) in features"
-        :key="getFeatureKey(feature, idKey, index)"
-        :data="feature"
+        v-for="{ key, d } in features"
+        :key="key"
+        :d="d"
         :styles="styles"
       />
     </slot>
   </g>
 </template>
 
-<script setup lang="ts">
-import type { MapFeaturesProps } from '@d3-maps/core'
+<script setup lang="ts" generic="TExtra extends object = object">
+import type {
+  MapFeatureRendered,
+  MapFeaturesProps,
+} from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
-import { getFeatureKey } from '@d3-maps/core'
+import { makeMapFeatures } from '@d3-maps/core'
 import { computed } from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
 import MapFeature from './MapFeature.vue'
 
-withDefaults(defineProps<MapFeaturesProps<StyleValue>>(), {
-  idKey: 'id',
-})
+const props = defineProps<MapFeaturesProps<TExtra, StyleValue>>()
+
+defineSlots<{
+  default?: (props: { features: MapFeatureRendered<TExtra>[] }) => unknown
+}>()
 
 const context = useMapContext()
-const features = computed(() => context.value.features)
+const features = computed<MapFeatureRendered<TExtra>[]>(() => {
+  return makeMapFeatures<TExtra>(context.value, {
+    data: props.data,
+    objectKey: props.objectKey,
+    transformer: props.transformer,
+    getKey: props.getKey,
+  })
+})
 </script>

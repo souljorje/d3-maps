@@ -15,7 +15,7 @@ Renders a path between map locations
 | `custom?` | `boolean` | `false` | Render using [d3-shape line](https://d3js.org/d3-shape/line) instead of default |
 | `curve?` | `CurveFactory \| CurveFactoryLineOnly` | `curveNatural` | Any [d3-shape curve](https://d3js.org/d3-shape/curve). Works only with `custom` or `cartesian` |
 | `midpoint?` | `[lengthwise: number, crosswise: number]` | — | Adds a point between each coordinate pair. Value sets position relative to the line center in % from its length. |
-| `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
+| `styles?` | [InteractionProps['styles']](/api/core/interaction#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapLine
 
@@ -54,8 +54,8 @@ Use native attributes [marker-start](https://developer.mozilla.org/en-US/docs/We
 
 ```vue
 <template>
-  <MapBase :data="mapData">
-    <MapFeatures />
+  <MapBase>
+    <MapFeatures :data="mapData" />
     <MapLine
       :coordinates="[
         [-122.4194, 37.7749],
@@ -78,8 +78,8 @@ import { curveBasis } from 'd3-shape'
 ```tsx
 import { curveBasis } from 'd3-shape'
 
-<MapBase data={mapData}>
-  <MapFeatures />
+<MapBase>
+  <MapFeatures data={mapData} />
   <MapLine
     coordinates={[
       [-122.4194, 37.7749],

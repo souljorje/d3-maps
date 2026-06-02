@@ -45,8 +45,8 @@ import Countries from '@d3-maps/atlas/world/countries'
 </script>
 
 <template>
-  <MapBase :data="Countries">
-    <MapFeatures />
+  <MapBase :fit="Countries">
+    <MapFeatures :data="Countries" />
   </MapBase>
 </template>
 ```
@@ -59,8 +59,8 @@ import Countries from '@d3-maps/atlas/world/countries'
 
 export function App() {
   return (
-    <MapBase data={Countries}>
-      <MapFeatures />
+    <MapBase fit={Countries}>
+      <MapFeatures data={Countries} />
     </MapBase>
   )
 }
@@ -82,8 +82,9 @@ import Coastline from '@d3-maps/atlas/world/coastline'
 </script>
 
 <template>
-  <MapBase :data="[Land, Coastline]">
-    <MapFeatures />
+  <MapBase>
+    <MapFeatures :data="Land" />
+    <MapFeatures :data="Coastline" />
   </MapBase>
 </template>
 ```
@@ -97,8 +98,9 @@ import Coastline from '@d3-maps/atlas/world/coastline'
 
 export function App() {
   return (
-    <MapBase data={[Land, Coastline]}>
-      <MapFeatures />
+    <MapBase>
+      <MapFeatures data={Land} />
+      <MapFeatures data={Coastline} />
     </MapBase>
   )
 }
@@ -119,8 +121,8 @@ import Africa from '@d3-maps/atlas/continents/africa'
 </script>
 
 <template>
-  <MapBase :data="Africa">
-    <MapFeatures />
+  <MapBase :fit="Africa">
+    <MapFeatures :data="Africa" />
   </MapBase>
 </template>
 ```
@@ -133,8 +135,8 @@ import Africa from '@d3-maps/atlas/continents/africa'
 
 export function App() {
   return (
-    <MapBase data={Africa}>
-      <MapFeatures />
+    <MapBase fit={Africa}>
+      <MapFeatures data={Africa} />
     </MapBase>
   )
 }
@@ -155,8 +157,8 @@ import Japan from '@d3-maps/atlas/countries/japan'
 </script>
 
 <template>
-  <MapBase :data="Japan">
-    <MapFeatures />
+  <MapBase :fit="Japan">
+    <MapFeatures :data="Japan" />
   </MapBase>
 </template>
 ```
@@ -169,8 +171,8 @@ import Japan from '@d3-maps/atlas/countries/japan'
 
 export function App() {
   return (
-    <MapBase data={Japan}>
-      <MapFeatures />
+    <MapBase fit={Japan}>
+      <MapFeatures data={Japan} />
     </MapBase>
   )
 }
@@ -191,8 +193,10 @@ import { Georgia, Germany, Russia } from '@d3-maps/atlas/countries'
 </script>
 
 <template>
-  <MapBase :data="[Georgia, Germany, Russia]">
-    <MapFeatures />
+  <MapBase>
+    <MapFeatures :data="Georgia" />
+    <MapFeatures :data="Germany" />
+    <MapFeatures :data="Russia" />
   </MapBase>
 </template>
 ```
@@ -205,8 +209,10 @@ import { Georgia, Germany, Russia } from '@d3-maps/atlas/countries'
 
 export function App() {
   return (
-    <MapBase data={[Georgia, Germany, Russia]}>
-      <MapFeatures />
+    <MapBase>
+      <MapFeatures data={Georgia} />
+      <MapFeatures data={Germany} />
+      <MapFeatures data={Russia} />
     </MapBase>
   )
 }
@@ -222,7 +228,7 @@ export function App() {
 | `50m` | Regional maps or closer zoom where `110m` looks too coarse |
 | `10m` | Country detail views where coastline and border detail matter |
 
-Default country imports use the coarsest available scale. In most cases that is `110m`.
+Default country imports use the coarsest available scale. In most cases that is `110m`
 
 ```ts
 import Japan from '@d3-maps/atlas/countries/japan' // japan-110m
@@ -246,7 +252,7 @@ import Japan110m from '@d3-maps/atlas/countries/japan/japan-110m'
 
 ## Metadata
 
-Use metadata when you need richer country or continent information.
+Use metadata when you need richer country or continent information
 
 ```ts
 import countries from '@d3-maps/atlas/metadata/countries'
@@ -255,20 +261,5 @@ import continents from '@d3-maps/atlas/metadata/continents'
 
 ## Data types
 
-Types can be imported from `@d3-maps/atlas/types`.
+Types can be imported from `@d3-maps/atlas/types`  
 Country, continent, and world-countries properties are by default typed as `AtlasFeatureProperties`
-
-<<< @/../atlas/src/types.ts#types
-
-## Keep bundle size down
-
-Choose the narrowest import that matches the map you render
-
-- Use `@d3-maps/atlas/countries/japan` instead of `@d3-maps/atlas/countries` for one country
-- Use `@d3-maps/atlas/world/countries` before higher-scale world variants
-- Use `50m` before `10m` when you need more detail
-- Avoid loading world data and many country datasets together unless the UI needs both
-
-## Source
-
-Generated from [Natural Earth](https://www.naturalearthdata.com/)

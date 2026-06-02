@@ -49,8 +49,8 @@ defineProps<{
 </script>
 
 <template>
-  <MapBase :data="data">
-    <MapFeatures />
+  <MapBase>
+    <MapFeatures :data="data" />
   </MapBase>
 </template>
 ```

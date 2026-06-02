@@ -6,17 +6,19 @@
 
 == Vue
 
-```vue{11-18} [vue]
+```vue{13-20} [vue]
 <template>
   <MapBase
-    :data="data"
     :projection="geoEquirectangular"
-    :data-transformer="dataTransformer"
   >
+    <MapSphere fill="var(--vp-c-bg-alt)" />
     <MapZoom>
-      <MapGraticule border />
-      <MapFeatures />
-      <MapMesh stroke="#fff" />
+      <MapGraticule />
+      <MapFeatures
+        :data="data"
+        :transformer="transformer"
+      />
+      <MapMesh :data="data" stroke="#fff" />
       <MapMarker :coordinates="[-83.0457538, 42.331427]">
         <text
           font-size="14"
@@ -26,22 +28,25 @@
         <circle r="3" />
       </MapMarker>
     </MapZoom>
+    <MapSphere stroke="var(--vp-c-border)" />
   </MapBase>
 </template>
 ```
 
 == React
 
-```tsx{10-17} [react]
+```tsx{12-19} [react]
 <MapBase
-  data={data}
   projection={geoEquirectangular}
-  dataTransformer={dataTransformer}
 >
+  <MapSphere fill="var(--vp-c-bg-alt)" />
   <MapZoom>
-    <MapGraticule border />
-    <MapFeatures />
-    <MapMesh stroke="#fff" />
+    <MapGraticule />
+    <MapFeatures
+      data={data}
+      transformer={transformer}
+    />
+    <MapMesh data={data} stroke="#fff" />
     <MapMarker coordinates={[-83.0457538, 42.331427]}>
       <text
         fontSize={14}
@@ -51,7 +56,10 @@
       <circle r="3" />
     </MapMarker>
   </MapZoom>
+  <MapSphere stroke="var(--vp-c-border)" />
 </MapBase>
 ```
 
 :::
+
+> See a [simple example](/examples/markers) and an example of [markers with zoom](/examples/zoom)

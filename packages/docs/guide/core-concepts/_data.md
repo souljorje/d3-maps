@@ -1,6 +1,6 @@
 ## Data
 
-[MapBase](/components/map-base) accepts GeoJSON, TopoJSON, or an array of either and normalizes everything to GeoJSON features before render. TopoJSON is compact, GeoJSON is rich.
+[MapFeatures](/components/map-features) accepts GeoJSON and TopoJSON, then normalizes them to map features: GeoJSON `Feature` objects and geometries.
 
 :::tabs key:framework
 
@@ -8,8 +8,8 @@
 
 ```vue [vue]
 <template>
-  <MapBase :data="data">
-    <MapFeatures />
+  <MapBase>
+    <MapFeatures :data="data" />
   </MapBase>
 </template>
 ```
@@ -17,8 +17,8 @@
 == React
 
 ```tsx [react]
-<MapBase data={data}>
-  <MapFeatures />
+<MapBase>
+  <MapFeatures data={data} />
 </MapBase>
 ```
 

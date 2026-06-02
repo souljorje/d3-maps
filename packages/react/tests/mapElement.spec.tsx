@@ -8,28 +8,20 @@ import {
 
 import {
   MapBase,
-  MapFeature,
+  MapElement,
 } from '../src'
 import { MapZoomContextValue } from '../src/hooks/useMapZoom'
 import { sampleGeoJson } from './fixtures'
 
-describe('mapFeature', () => {
-  it('throws without map context', () => {
-    expect(() => render(
-      <svg>
-        <MapFeature data={sampleGeoJson.features[0]} />
-      </svg>,
-    )).toThrowError('useMapContext must be used inside Map')
-  })
-
+describe('mapElement', () => {
   it('resolves styles across interaction states', () => {
     const onMouseUp = vi.fn()
 
     render(
-      <MapBase data={sampleGeoJson}>
-        <MapFeature
-          data-testid="map-feature"
-          data={sampleGeoJson.features[0]}
+      <MapBase fit={sampleGeoJson}>
+        <MapElement
+          data-testid="map-element"
+          d="M0,0L10,0"
           tabIndex={0}
           styles={{
             default: { opacity: 0.9 },
@@ -42,7 +34,7 @@ describe('mapFeature', () => {
       </MapBase>,
     )
 
-    const path = screen.getByTestId('map-feature')
+    const path = screen.getByTestId('map-element')
     expect(path?.style.opacity).toBe('0.9')
 
     fireEvent.focus(path)
@@ -65,6 +57,33 @@ describe('mapFeature', () => {
     expect(path?.style.opacity).toBe('0.9')
   })
 
+  it('merges inline and interaction styles', () => {
+    render(
+      <MapBase fit={sampleGeoJson}>
+        <MapElement
+          data-testid="map-element-style"
+          d="M0,0L10,0"
+          style={{
+            fill: 'darkorange',
+            opacity: 0.95,
+          }}
+          styles={{
+            default: { opacity: 0.9 },
+            hover: { opacity: 0.8 },
+          }}
+        />
+      </MapBase>,
+    )
+
+    const path = screen.getByTestId('map-element-style')
+    expect(path.style.fill).toBe('darkorange')
+    expect(path.style.opacity).toBe('0.9')
+
+    fireEvent.mouseOver(path)
+    expect(path.style.fill).toBe('darkorange')
+    expect(path.style.opacity).toBe('0.8')
+  })
+
   it('resets active state on global mouseup when element mouseup is missed', () => {
     render(
       <MapZoomContextValue.Provider value={{
@@ -74,10 +93,10 @@ describe('mapFeature', () => {
         maxZoom: 8,
       }}
       >
-        <MapBase data={sampleGeoJson}>
-          <MapFeature
-            data-testid="map-feature"
-            data={sampleGeoJson.features[0]}
+        <MapBase fit={sampleGeoJson}>
+          <MapElement
+            data-testid="map-element"
+            d="M0,0L10,0"
             styles={{
               default: { opacity: 0.9 },
               active: { opacity: 0.7 },
@@ -87,7 +106,7 @@ describe('mapFeature', () => {
       </MapZoomContextValue.Provider>,
     )
 
-    const path = screen.getByTestId('map-feature')
+    const path = screen.getByTestId('map-element')
     expect(path?.style.opacity).toBe('0.9')
 
     fireEvent.mouseDown(path)

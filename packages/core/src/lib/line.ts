@@ -3,8 +3,8 @@ import type {
   CurveFactoryLineOnly,
 } from 'd3-shape'
 
+import type { MapElementProps } from './element'
 import type { MapContext } from './map'
-import type { MapObjectProps } from './mapObject'
 
 import {
   curveNatural,
@@ -41,9 +41,9 @@ export interface MapLineOptions {
 }
 
 /**
- * Public map line props including map object styling and interaction support
+ * Public map line props including map element styling and interaction support
  */
-export interface MapLineProps<TStyle = unknown> extends MapObjectProps<TStyle>, MapLineOptions {}
+export interface MapLineProps<TStyle = unknown> extends MapElementProps<TStyle>, MapLineOptions {}
 
 /**
  * Returns an SVG path string for a line in one of three modes:

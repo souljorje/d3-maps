@@ -60,7 +60,7 @@ describe('mapZoom', () => {
     }
 
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <Probe />
       </MapBase>,
     )
@@ -76,7 +76,7 @@ describe('mapZoom', () => {
     const transition = { duration: 250 }
 
     const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom
           data-testid="map-zoom-group"
           center={[11, 12]}
@@ -117,7 +117,7 @@ describe('mapZoom', () => {
     expect(zoomGroup?.getAttribute('transform')).toContain('translate')
 
     rerender(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom
           data-testid="map-zoom-group"
           center={[99, 100]}
@@ -147,7 +147,7 @@ describe('mapZoom', () => {
   it('recreates zoom behavior without a redundant apply', () => {
     const transition = { duration: 250 }
     const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom
           center={[11, 12]}
           zoom={2}
@@ -163,7 +163,7 @@ describe('mapZoom', () => {
     expect(applyZoomSpy).toHaveBeenCalledTimes(1)
 
     rerender(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom
           center={[11, 12]}
           zoom={2}
@@ -189,7 +189,7 @@ describe('mapZoom', () => {
   it('does not reapply zoom when center values are unchanged', () => {
     const transition = { duration: 250 }
     const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom
           center={[11, 12]}
           zoom={2}
@@ -202,7 +202,7 @@ describe('mapZoom', () => {
     expect(applyZoomSpy).toHaveBeenCalledTimes(1)
 
     rerender(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom
           center={[11, 12]}
           zoom={2}
@@ -225,7 +225,7 @@ describe('mapZoom', () => {
     const nextOnZoomEnd = vi.fn()
 
     const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom
           center={center}
           zoom={2}
@@ -244,7 +244,7 @@ describe('mapZoom', () => {
     firstOnZoomEnd.mockClear()
 
     rerender(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom
           center={center}
           zoom={2}
@@ -285,7 +285,7 @@ describe('mapZoom', () => {
     }
 
     const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom center={[20, 30]} zoom={2}>
           <Probe />
         </MapZoom>
@@ -307,7 +307,7 @@ describe('mapZoom', () => {
     }))
 
     rerender(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom center={[40, 50]} zoom={3}>
           <Probe />
         </MapZoom>

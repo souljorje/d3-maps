@@ -7,7 +7,7 @@ export function isDefined<T>(value: T | undefined): value is T {
 }
 
 export const isNullish = (value: unknown): value is null | undefined => value == null
-export const isObject = (value: unknown): value is object => value != null && typeof value === 'object'
+export const isObject = (value: unknown): value is Record<any, unknown> => value != null && typeof value === 'object'
 export function isElement(value: unknown): value is Element {
   return typeof Element !== 'undefined' && value instanceof Element
 }

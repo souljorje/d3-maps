@@ -41,7 +41,7 @@ function midpointCurve(context: {
 describe('mapAnnotation', () => {
   it('renders connector and content inside map context', () => {
     const { container } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"
@@ -52,13 +52,13 @@ describe('mapAnnotation', () => {
       </MapBase>,
     )
 
-    expect(container.querySelector('[name="annotation"]')?.getAttribute('transform')).toMatch(/^translate/)
-    expect(screen.getByTestId('annotation-line').getAttribute('name')).toBe('annotation-line')
+    expect(container.querySelector('[data-d3m="annotation"]')?.getAttribute('transform')).toMatch(/^translate/)
+    expect(screen.getByTestId('annotation-line').getAttribute('data-d3m')).toBe('annotation-line')
     expect(screen.getByTestId('annotation-line').getAttribute('d')).toMatch(/^M/)
     expect(screen.getByTestId('annotation-line').getAttribute('stroke')).toBe('#ff6f26')
     expect(screen.getByText('Paris')).toBeTruthy()
-    expect(container.querySelector('[name="annotation-content"]')?.getAttribute('transform')).toMatch(/^translate/)
-    expect(container.querySelector('[name="annotation-content"]')?.getAttribute('transform')).not.toContain('rotate')
+    expect(container.querySelector('[data-d3m="annotation-content"]')?.getAttribute('transform')).toMatch(/^translate/)
+    expect(container.querySelector('[data-d3m="annotation-content"]')?.getAttribute('transform')).not.toContain('rotate')
   })
 
   it('throws outside map context', () => {
@@ -71,12 +71,12 @@ describe('mapAnnotation', () => {
           <text>Paris</text>
         </MapAnnotation>
       </svg>,
-    )).toThrowError('useMapContext must be used inside Map')
+    )).toThrow('useMapContext must be used inside MapBase')
   })
 
   it('uses the provided D3 curve for the connector path', () => {
     const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"
@@ -90,7 +90,7 @@ describe('mapAnnotation', () => {
     const linearPath = screen.getByTestId('annotation-line').getAttribute('d')
 
     rerender(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapAnnotation
           coordinates={[2.3522, 48.8566]}
           data-testid="annotation-line"
