@@ -1,5 +1,20 @@
 # @d3-maps/vue
 
+## 0.12.0
+
+### Minor Changes
+
+- [#40](https://github.com/souljorje/d3-maps/pull/40) [`5d93205`](https://github.com/souljorje/d3-maps/commit/5d93205583c933ebc86b05368f7a56c5ccff17af) Thanks [@souljorje](https://github.com/souljorje)! - - Move data prop from MapBase to MapFeatures
+  - Normalized MapFeatures inputs and transformer output around GeoJSON feature data
+  - Changed styling prop from `name` to `data-d3m`
+  - Split sphere rendering from graticule rendering with dedicated MapSphere support
+  - Replaced MapObject-facing APIs with MapElement and interaction naming
+
+### Patch Changes
+
+- Updated dependencies [[`5d93205`](https://github.com/souljorje/d3-maps/commit/5d93205583c933ebc86b05368f7a56c5ccff17af)]:
+  - @d3-maps/core@0.13.0
+
 ## 0.11.1
 
 ### Patch Changes
