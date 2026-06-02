@@ -1,6 +1,6 @@
 {
   "name": "@d3-maps/atlas",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Ready-to-use TopoJSON atlas data",
   "type": "module",
   "private": false,
