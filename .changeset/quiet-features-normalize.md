@@ -1,7 +1,7 @@
 ---
-'@d3-maps/core': major
-'@d3-maps/react': major
-'@d3-maps/vue': major
+'@d3-maps/core': minor
+'@d3-maps/react': minor
+'@d3-maps/vue': minor
 ---
 
 - Replaced MapObject-facing APIs with MapElement and interaction naming
