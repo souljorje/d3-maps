@@ -1,9 +1,6 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 
-import type {
-  MapFeatureExtension,
-  MapFeatureRendered,
-} from '../src'
+import type { MapFeatureRendered } from '../src'
 
 import {
   geoNaturalEarth1,
@@ -12,7 +9,6 @@ import {
 
 import {
   getFeatureKey,
-  isFeature,
   makeMapFeatures,
   makeProjection,
 } from '../src'
@@ -54,9 +50,7 @@ describe('makeMapFeatures', () => {
       path: geoPath().projection(projection),
     }, {
       data: sampleGeoJsonTwoFeatures,
-      getKey: (item, index) => isFeature(item)
-        ? item.properties?.id ?? `custom-${index}`
-        : undefined,
+      getKey: (item, index) => String(item.properties.id ?? `custom-${index}`),
     })
 
     expect(objects.map(({ key }) => key)).toEqual(['demo', 'demo-2'])
@@ -76,24 +70,55 @@ describe('makeMapFeatures', () => {
   })
 
   it('keeps transformer enrichment in rendered feature types', () => {
-    type NamedFeature = MapFeatureExtension<{
+    interface NamedFeatureExtra {
       color: string
-    }>
+    }
 
     const projection = makeProjectionFromBase()
     const objects = makeMapFeatures({
       path: geoPath().projection(projection),
     }, {
       data: sampleGeoJsonTwoFeatures,
-      transformer: (features): NamedFeature[] => features.map((feature) => ({
+      transformer: (features) => features.map((feature) => ({
         ...feature,
         color: 'darkorange',
       })),
       getKey: (feature) => feature.color,
     })
 
-    expectTypeOf(objects).toEqualTypeOf<MapFeatureRendered<NamedFeature>[]>()
+    expectTypeOf(objects).toEqualTypeOf<MapFeatureRendered<NamedFeatureExtra>[]>()
     expect(objects[0]?.color).toBe('darkorange')
+  })
+
+  it('supports filtering in feature transformers', () => {
+    const projection = makeProjectionFromBase()
+    const objects = makeMapFeatures({
+      path: geoPath().projection(projection),
+    }, {
+      data: sampleGeoJsonTwoFeatures,
+      transformer: (features) => features.filter((feature) => feature.properties.id !== 'demo-2'),
+    })
+
+    expect(objects).toHaveLength(1)
+    expect(objects[0]?.properties.id).toBe('demo')
+  })
+
+  it('preserves null-geometry features without path data', () => {
+    const projection = makeProjectionFromBase()
+    const objects = makeMapFeatures({
+      path: geoPath().projection(projection),
+    }, {
+      data: {
+        type: 'Feature',
+        geometry: null,
+        properties: { id: 'empty' },
+      },
+    })
+
+    expect(objects).toHaveLength(1)
+    expect(objects[0]?.geometry).toBeNull()
+    expect(objects[0]?.key).toBe('empty')
+    expect(objects[0]?.d).toBeUndefined()
   })
 })
 

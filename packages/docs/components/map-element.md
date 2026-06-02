@@ -27,38 +27,32 @@ Use native SVG attrs like `fill`, `stroke`, `role`, `aria-label`, and `tabindex`
 ```vue
 <template>
   <MapBase>
-    <MapFeatures 
-      :data="mapData" 
+    <MapFeatures
+      :data="mapData"
       #default="{ features }"
     >
       <MapElement
         v-for="feature in features"
         :key="feature.key"
         :d="feature.d"
-        :fill="isFeature(feature) ? 'darkorange' : 'none'"
+        fill="darkorange"
         :styles="{
           default: { opacity: 0.9 },
           focus: { stroke: 'darkgreen' },
           hover: { opacity: 0.8 },
         }"
         role="button"
-        :aria-label="isFeature(feature) ? feature.properties?.name : undefined"
+        :aria-label="String(feature.properties.name ?? 'Object')"
         tabindex="0"
       />
     </MapFeatures>
   </MapBase>
 </template>
-
-<script setup lang="ts">
-import { isFeature } from '@d3-maps/vue'
-</script>
 ```
 
 == React
 
 ```tsx
-import { isFeature } from '@d3-maps/react'
-
 <MapBase>
   <MapFeatures data={mapData}>
     {({ features }) =>
@@ -66,14 +60,14 @@ import { isFeature } from '@d3-maps/react'
         <MapElement
           key={feature.key}
           d={feature.d}
-          fill={isFeature(feature) ? 'darkorange' : 'none'}
+          fill="darkorange"
           styles={{
             default: { opacity: 0.9 },
             focus: { stroke: 'darkgreen' },
             hover: { opacity: 0.8 },
           }}
           role="button"
-          aria-label={isFeature(feature) ? String(feature.properties?.name ?? 'Object') : undefined}
+          aria-label={String(feature.properties.name ?? 'Object')}
           tabIndex={0}
         />
       ))

@@ -46,7 +46,7 @@ export function WorldMap() {
     <MapBase>
       <MapFeatures
         data={data}
-        transformer={(objects) => objects.filter((object) => object.type !== 'Feature' || object.properties?.name !== 'Antarctica')}
+        transformer={(features) => features.filter((feature) => feature.properties.name !== 'Antarctica')}
       />
     </MapBase>
   )

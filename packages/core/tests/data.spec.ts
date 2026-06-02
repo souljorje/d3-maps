@@ -17,7 +17,7 @@ import {
 } from './fixtures'
 
 describe('map data', () => {
-  it('normalizes features and geometries into feature units', () => {
+  it('resolves features and geometries into renderable units', () => {
     expect(resolveMapData(sampleGeoJsonTwoFeatures)).toHaveLength(2)
     expect(resolveMapData(sampleTopology)).toHaveLength(1)
     expect(resolveMapData(sampleTopologyTwoObjects, sampleTopologyObjectKey)).toHaveLength(2)
@@ -30,9 +30,11 @@ describe('map data', () => {
     expect(resolveMapData(sampleGeometryCollectionFeature)).toEqual([sampleGeometryCollectionFeature])
   })
 
-  it('keeps topology-derived geometry collections as features after topojson normalization', () => {
+  it('keeps raw geometry inputs as geometries', () => {
+    const [geometry] = resolveMapData(samplePolygon)
     const data = resolveMapData(sampleTopologyTwoObjects, sampleTopologyObjectKey)
 
+    expect(geometry).toBe(samplePolygon)
     expect(data).toHaveLength(2)
     expect(data.every((object) => isFeature(object))).toBe(true)
   })

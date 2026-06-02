@@ -20,6 +20,5 @@ export {
   getInverseZoomScale,
   getObjectZoomView,
   getZoomViewportCenter,
-  isFeature,
 } from '@d3-maps/core'
 export type * from '@d3-maps/core'

@@ -6,10 +6,10 @@ import { feature } from 'topojson-client'
 import { isObject } from './utils'
 
 export type MapData = GeoJSON.GeoJSON | Topology
-export type MapFeatureData = GeoJSON.Feature | GeoJSON.Geometry
+export type MapFeatureData = GeoJSON.Feature<GeoJSON.Geometry | null> | GeoJSON.Geometry
 
-export function isFeature(data: MapFeatureData): data is GeoJSON.Feature {
-  return data.type === 'Feature'
+export function isFeature(data: unknown): data is GeoJSON.Feature<GeoJSON.Geometry | null> {
+  return isObject(data) && data.type === 'Feature'
 }
 
 export function isTopology(data: unknown): data is Topology {

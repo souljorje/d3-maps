@@ -1,3 +1,5 @@
+import type * as GeoJSON from 'geojson'
+
 import type { MapData, MapFeatureData } from './data'
 import type { MapElementProps } from './element'
 import type { MapContext } from './map'
@@ -7,20 +9,23 @@ import { isStringOrNumber } from './utils'
 
 export type MapFeatureKey = string | number
 
-export type MapFeatureExtension<T> = MapFeatureData & T
+export type MapFeatureNormalized = GeoJSON.Feature<
+  GeoJSON.Geometry | null,
+  Record<string, unknown>
+>
 
-export type MapFeatureRendered<T extends MapFeatureData = MapFeatureData> = T & {
+export type MapFeatureRendered<TExtra extends object = object> = MapFeatureNormalized & TExtra & {
   key: MapFeatureKey
   d?: string
 }
 
-export type MapFeatureTransformer<T extends MapFeatureData = MapFeatureData> = (
-  features: readonly MapFeatureData[],
-) => readonly T[]
+export type MapFeatureTransformer<TExtra extends object = object> = (
+  features: readonly MapFeatureNormalized[],
+) => readonly (MapFeatureNormalized & TExtra)[]
 
-export type MapFeatureKeyAccessor<T extends MapFeatureData = MapFeatureData> = (
-  item: T,
-  index: number,
+export type MapFeatureKeyAccessor<TExtra extends object = object> = (
+  item: MapFeatureNormalized & TExtra,
+  fallback: string | number,
 ) => MapFeatureKey | undefined
 
 export interface MapFeatureProps<TStyle = unknown> extends MapElementProps<TStyle> {
@@ -28,18 +33,18 @@ export interface MapFeatureProps<TStyle = unknown> extends MapElementProps<TStyl
 }
 
 export interface MapFeaturesProps<
-  TFeature extends MapFeatureData = MapFeatureData,
+  TExtra extends object = object,
   TStyle = unknown,
 > extends MapElementProps<TStyle> {
   data?: MapData
-  transformer?: MapFeatureTransformer<TFeature>
-  getKey?: MapFeatureKeyAccessor<NoInfer<TFeature>>
+  transformer?: MapFeatureTransformer<TExtra>
+  getKey?: MapFeatureKeyAccessor<NoInfer<TExtra>>
   objectKey?: string
 }
 
 export function getFeatureKey(
   item: MapFeatureData,
-  index: number,
+  fallback: string | number,
 ): MapFeatureKey {
   if ('id' in item && isStringOrNumber(item.id)) return item.id
 
@@ -51,10 +56,10 @@ export function getFeatureKey(
     if (isStringOrNumber(name)) return name
   }
 
-  return index
+  return fallback
 }
 
-export function makeMapFeatures<TFeature extends MapFeatureData = MapFeatureData>(
+export function makeMapFeatures<TExtra extends object = object>(
   context: Pick<MapContext, 'path'>,
   {
     data,
@@ -64,20 +69,34 @@ export function makeMapFeatures<TFeature extends MapFeatureData = MapFeatureData
   }: {
     data?: MapData
     objectKey?: string
-    transformer?: MapFeatureTransformer<TFeature>
-    getKey?: MapFeatureKeyAccessor<TFeature>
+    transformer?: MapFeatureTransformer<TExtra>
+    getKey?: MapFeatureKeyAccessor<TExtra>
   },
-): MapFeatureRendered<TFeature>[] {
+): MapFeatureRendered<TExtra>[] {
   if (data == null) return []
 
-  const features = resolveMapData(data, objectKey)
-  const items = transformer
+  const features = resolveMapData(data, objectKey).map(normalizeMapFeature)
+  const items = (transformer
     ? transformer(features)
-    : features as readonly TFeature[]
+    : features) as readonly (MapFeatureNormalized & TExtra)[]
 
   return items.map((item, index) => ({
     ...item,
     key: getKey?.(item, index) ?? getFeatureKey(item, index),
     d: context.path(item) ?? undefined,
   }))
+}
+
+function normalizeMapFeature(item: MapFeatureData): MapFeatureNormalized {
+  if (isFeature(item)) {
+    return {
+      ...item,
+      properties: item.properties ?? {},
+    }
+  }
+  return {
+    type: 'Feature',
+    geometry: item,
+    properties: {},
+  }
 }

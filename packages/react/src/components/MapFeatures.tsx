@@ -2,7 +2,6 @@
 
 import type {
   MapFeaturesProps as CoreMapFeaturesProps,
-  MapFeatureData,
   MapFeatureRendered,
 } from '@d3-maps/core'
 import type {
@@ -20,27 +19,27 @@ import { useMemo } from 'react'
 import { useMapContext } from '../hooks/useMapContext'
 import { MapFeature } from './MapFeature'
 
-interface MapFeaturesRenderProps<TFeature extends MapFeatureData = MapFeatureData> {
-  features: MapFeatureRendered<TFeature>[]
+interface MapFeaturesRenderProps<TExtra extends object = object> {
+  features: MapFeatureRendered<TExtra>[]
 }
 
-type MapFeaturesChildren<TFeature extends MapFeatureData = MapFeatureData> =
-  ReactNode | ((props: MapFeaturesRenderProps<TFeature>) => ReactNode)
+type MapFeaturesChildren<TExtra extends object = object> =
+  ReactNode | ((props: MapFeaturesRenderProps<TExtra>) => ReactNode)
 type MapFeaturesElementProps = Omit<SVGProps<SVGGElement>, 'children'>
 
-export interface MapFeaturesProps<TFeature extends MapFeatureData = MapFeatureData>
+export interface MapFeaturesProps<TExtra extends object = object>
   extends MapFeaturesElementProps,
-  CoreMapFeaturesProps<TFeature, CSSProperties> {
-  children?: MapFeaturesChildren<TFeature>
+  CoreMapFeaturesProps<TExtra, CSSProperties> {
+  children?: MapFeaturesChildren<TExtra>
 }
 
-function isRenderProp<TFeature extends MapFeatureData>(
-  children: MapFeaturesChildren<TFeature> | undefined,
-): children is (props: MapFeaturesRenderProps<TFeature>) => ReactNode {
+function isRenderProp<TExtra extends object>(
+  children: MapFeaturesChildren<TExtra> | undefined,
+): children is (props: MapFeaturesRenderProps<TExtra>) => ReactNode {
   return typeof children === 'function'
 }
 
-export function MapFeatures<TFeature extends MapFeatureData = MapFeatureData>({
+export function MapFeatures<TExtra extends object = object>({
   data,
   objectKey,
   transformer,
@@ -48,11 +47,11 @@ export function MapFeatures<TFeature extends MapFeatureData = MapFeatureData>({
   styles,
   children,
   ...groupProps
-}: MapFeaturesProps<TFeature>): ReactElement {
+}: MapFeaturesProps<TExtra>): ReactElement {
   const context = useMapContext()
 
   const features = useMemo(() => {
-    return makeMapFeatures<TFeature>(context, {
+    return makeMapFeatures<TExtra>(context, {
       data,
       objectKey,
       transformer,

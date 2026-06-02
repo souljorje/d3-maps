@@ -6,7 +6,7 @@
 // e.g. don't render Antarctica 🇦🇶
 function transformer(features) {
   return features.filter((feature) => (
-    feature.properties?.name !== 'Antarctica'
+    feature.properties.name !== 'Antarctica'
   ))
 }
 ```

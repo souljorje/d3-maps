@@ -18,7 +18,6 @@
 
 <script setup lang="ts">
 import type {
-  MapFeatureExtension,
   MapFeatureTransformer,
 } from '@d3-maps/core'
 
@@ -29,11 +28,11 @@ import {
 } from '../src'
 import { sampleGeoJson } from './fixtures'
 
-type ColoredFeature = MapFeatureExtension<{
+interface ColoredFeatureExtra {
   color: string
-}>
+}
 
-const transformer: MapFeatureTransformer<ColoredFeature> = (features) => {
+const transformer: MapFeatureTransformer<ColoredFeatureExtra> = (features) => {
   return features.map((feature) => ({
     ...feature,
     color: 'darkorange',

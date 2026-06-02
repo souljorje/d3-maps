@@ -6,7 +6,6 @@ import { mount } from '@vue/test-utils'
 import { h } from 'vue'
 
 import {
-  isFeature,
   MapBase,
   MapFeature,
   MapFeatures,
@@ -143,6 +142,22 @@ describe('mapFeatures', () => {
     expect(wrapper.findAll('path')).toHaveLength(1)
   })
 
+  it('supports filtering in layer-level data transformers', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        fit: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapFeatures, {
+          data: sampleGeoJson,
+          transformer: (features) => features.filter((feature) => feature.properties.id !== 'demo'),
+        }),
+      },
+    })
+
+    expect(wrapper.findAll('path')).toHaveLength(0)
+  })
+
   it('supports custom object keys', () => {
     const wrapper = mount(MapBase, {
       props: {
@@ -153,9 +168,7 @@ describe('mapFeatures', () => {
           MapFeatures,
           {
             data: sampleGeoJson,
-            getKey: (item, index) => isFeature(item)
-              ? item.properties?.id ?? `custom-${index}`
-              : undefined,
+            getKey: (item, index) => String(item.properties.id ?? `custom-${index}`),
           },
           {
             default: ({ features }: { features: MapFeatureRendered[] }) =>

@@ -1,9 +1,6 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 
-import type {
-  MapFeatureExtension,
-  MapFeatureRendered,
-} from '@d3-maps/core'
+import type { MapFeatureRendered } from '@d3-maps/core'
 
 import {
   fireEvent,
@@ -12,7 +9,6 @@ import {
 } from '@testing-library/react'
 
 import {
-  isFeature,
   MapBase,
   MapFeature,
   MapFeatures,
@@ -130,21 +126,21 @@ describe('mapFeatures', () => {
   })
 
   it('exposes transformer enrichment to render props', () => {
-    type ColoredFeature = MapFeatureExtension<{
+    interface ColoredFeatureExtra {
       color: string
-    }>
+    }
 
     const { container } = render(
       <MapBase fit={sampleGeoJson}>
-        <MapFeatures
+        <MapFeatures<ColoredFeatureExtra>
           data={sampleGeoJson}
-          transformer={(features): ColoredFeature[] => features.map((feature) => ({
+          transformer={(features) => features.map((feature) => ({
             ...feature,
             color: 'darkorange',
           }))}
         >
           {({ features }) => {
-            expectTypeOf(features).toEqualTypeOf<MapFeatureRendered<ColoredFeature>[]>()
+            expectTypeOf(features).toEqualTypeOf<MapFeatureRendered<ColoredFeatureExtra>[]>()
 
             return features.map((feature) => (
               <MapFeature
@@ -161,14 +157,25 @@ describe('mapFeatures', () => {
     expect(container.querySelector('path')?.getAttribute('fill')).toBe('darkorange')
   })
 
+  it('supports filtering in layer-level data transformers', () => {
+    const { container } = render(
+      <MapBase fit={sampleGeoJson}>
+        <MapFeatures
+          data={sampleGeoJson}
+          transformer={(features) => features.filter((feature) => feature.properties.id !== 'demo')}
+        />
+      </MapBase>,
+    )
+
+    expect(container.querySelectorAll('path')).toHaveLength(0)
+  })
+
   it('supports custom object keys', () => {
     render(
       <MapBase fit={sampleGeoJson}>
         <MapFeatures
           data={sampleGeoJson}
-          getKey={(item, index) => isFeature(item)
-            ? item.properties?.id ?? `custom-${index}`
-            : undefined}
+          getKey={(item, index) => String(item.properties.id ?? `custom-${index}`)}
         >
           {({ features }) => (
             <g data-testid="map-feature-keys">

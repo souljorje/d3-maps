@@ -5,6 +5,9 @@ description: Component for feature rendering on D3 SVG maps in React and Vue
 # MapFeatures
 
 Renders normalized map features from source data: GeoJSON `Feature` objects and geometries.
+
+Features with `geometry: null` are preserved and receive no path data.
+
 ## Props
 
 | Parameter | Type | Default | Description |
@@ -72,29 +75,25 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
         v-for="feature in features"
         :key="feature.key"
         :d="feature.d"
-        :fill="isFeature(feature) ? 'darkorange' : 'none'"
+        :aria-label="String(feature.properties.name ?? 'Feature')"
+        fill="darkorange"
       />
     </template>
   </MapFeatures>
 </template>
-
-<script setup lang="ts">
-import { isFeature } from '@d3-maps/vue'
-</script>
 ```
 
 == React
 
 ```tsx
-import { isFeature } from '@d3-maps/react'
-
 <MapFeatures data={mapData}>
   {({ features }) => (
     features.map((feature) => (
       <MapFeature
         key={feature.key}
         d={feature.d}
-        fill={isFeature(feature) ? 'darkorange' : 'none'}
+        aria-label={String(feature.properties.name ?? 'Feature')}
+        fill="darkorange"
       />
     ))
   )}

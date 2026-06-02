@@ -1,11 +1,9 @@
 import type {
   MapData,
-  MapFeatureExtension,
   MapFeatureTransformer,
 } from '@d3-maps/react'
 
 import {
-  isFeature,
   MapBase,
   MapFeature,
   MapFeatures,
@@ -24,7 +22,9 @@ interface CountryPopulation {
   population: number
 }
 
-type ChoroplethFeature = MapFeatureExtension<{ color: string }>
+interface ChoroplethFeatureExtra {
+  color: string
+}
 
 export default function ChoroplethMapExample(): JSX.Element {
   const [mapData, setMapData] = useState<MapData>()
@@ -92,15 +92,14 @@ export default function ChoroplethMapExample(): JSX.Element {
     return new Map(populations.map((country) => [country.cca3, country.population]))
   }, [populations])
 
-  const transformer = useCallback<MapFeatureTransformer<ChoroplethFeature>>((features) => {
+  const transformer = useCallback<MapFeatureTransformer<ChoroplethFeatureExtra>>((features) => {
     return features.map((feature) => {
-      const population = isFeature(feature)
-        ? populationByCode.get(String(feature.properties?.id))
-        : undefined
+      const code = String(feature.properties.id)
+      const population = populationByCode.get(code)
 
       return {
         ...feature,
-        color: population == null || (isFeature(feature) && feature.properties?.id === 'ATA')
+        color: population == null || code === 'ATA'
           ? '#eee'
           : colorScale(population),
       }

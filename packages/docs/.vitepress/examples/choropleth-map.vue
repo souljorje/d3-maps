@@ -27,11 +27,9 @@
 <script setup lang="ts">
 import type {
   MapData,
-  MapFeatureExtension,
   MapFeatureTransformer,
 } from '@d3-maps/vue'
 
-import { isFeature } from '@d3-maps/vue'
 import { extent } from 'd3-array'
 import { scaleSqrt } from 'd3-scale'
 import { computed, onMounted, ref } from 'vue'
@@ -41,9 +39,9 @@ interface CountryPopulation {
   population: number
 }
 
-type ChoroplethFeature = MapFeatureExtension<{
+interface ChoroplethFeatureExtra {
   color: string
-}>
+}
 
 const mapData = ref<MapData>()
 const populations = ref<CountryPopulation[]>([])
@@ -80,15 +78,14 @@ async function fetchData(): Promise<CountryPopulation[]> {
   return response.json()
 }
 
-const transformer: MapFeatureTransformer<ChoroplethFeature> = (features) => {
+const transformer: MapFeatureTransformer<ChoroplethFeatureExtra> = (features) => {
   return features.map((feature) => {
-    const population = isFeature(feature)
-      ? populationByCode.value.get(String(feature.properties?.id))
-      : undefined
+    const code = String(feature.properties.id)
+    const population = populationByCode.value.get(code)
 
     return {
       ...feature,
-      color: population == null || (isFeature(feature) && feature.properties?.id === 'ATA')
+      color: population == null || code === 'ATA'
         ? '#eee'
         : colorScale.value(population),
     }

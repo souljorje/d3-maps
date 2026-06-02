@@ -202,6 +202,6 @@ function clampZoom(value: number) {
 }
 
 function getFeatureLabel(feature: MapGeoFeature) {
-  return feature.properties?.name ?? 'Country'
+  return String(feature.properties.name ?? 'Country')
 }
 </script>
