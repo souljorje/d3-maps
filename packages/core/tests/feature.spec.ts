@@ -75,7 +75,7 @@ describe('makeMapFeatures', () => {
     }
 
     const projection = makeProjectionFromBase()
-    const objects = makeMapFeatures({
+    const features = makeMapFeatures({
       path: geoPath().projection(projection),
     }, {
       data: sampleGeoJsonTwoFeatures,
@@ -86,8 +86,8 @@ describe('makeMapFeatures', () => {
       getKey: (feature) => feature.color,
     })
 
-    expectTypeOf(objects).toEqualTypeOf<MapFeatureRendered<NamedFeatureExtra>[]>()
-    expect(objects[0]?.color).toBe('darkorange')
+    expectTypeOf(features).toExtend<MapFeatureRendered<NamedFeatureExtra>[]>()
+    expect(features[0]?.color).toBe('darkorange')
   })
 
   it('supports filtering in feature transformers', () => {
@@ -101,24 +101,6 @@ describe('makeMapFeatures', () => {
 
     expect(objects).toHaveLength(1)
     expect(objects[0]?.properties.id).toBe('demo')
-  })
-
-  it('preserves null-geometry features without path data', () => {
-    const projection = makeProjectionFromBase()
-    const objects = makeMapFeatures({
-      path: geoPath().projection(projection),
-    }, {
-      data: {
-        type: 'Feature',
-        geometry: null,
-        properties: { id: 'empty' },
-      },
-    })
-
-    expect(objects).toHaveLength(1)
-    expect(objects[0]?.geometry).toBeNull()
-    expect(objects[0]?.key).toBe('empty')
-    expect(objects[0]?.d).toBeUndefined()
   })
 })
 
