@@ -12,16 +12,19 @@
     "build:full": "turbo run build",
     "build:docs": "turbo run build --filter=@d3-maps/docs",
     "docs:preview": "pnpm --filter docs preview",
+
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "typecheck:test": "turbo run typecheck:test",
+    "lint": "eslint ./packages --max-warnings 0 --cache",
+    "lintfix": "pnpm run lint --fix",
+    "verify": "pnpm lint && turbo run typecheck typecheck:test test",
+
     "changeset": "changeset",
     "version": "changeset version",
     "release": "changeset publish",
     "prepare": "simple-git-hooks",
-    "lint-staged": "lint-staged",
-    "lint": "eslint ./packages --max-warnings 0 --cache",
-    "lintfix": "pnpm run lint --fix"
+    "lint-staged": "lint-staged"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
@@ -36,7 +39,7 @@
     "turbo": "catalog:"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm exec lint-staged && pnpm test"
+    "pre-commit": "pnpm exec lint-staged && turbo run typecheck typecheck:test test"
   },
   "lint-staged": {
     "*.{ts,tsx,vue}": [
