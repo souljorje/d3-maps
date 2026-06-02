@@ -1,4 +1,4 @@
-import type { MapDataSource } from '@d3-maps/react'
+import type { MapData } from '@d3-maps/react'
 
 import {
   MapBase,
@@ -40,7 +40,7 @@ const returnFlight = [
 ]
 
 export default function ConnectionsExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapDataSource>()
+  const [mapData, setMapData] = useState<MapData>()
 
   useEffect(() => {
     let isCancelled = false

@@ -1,4 +1,4 @@
-import type { MapDataSource, ZoomEvent } from '@d3-maps/react'
+import type { MapData, ZoomEvent } from '@d3-maps/react'
 
 import {
   getInverseZoomScale,
@@ -26,7 +26,7 @@ interface City {
 }
 
 export default function BubbleMapExample(): JSX.Element {
-  const [mapData, setMapData] = useState<MapDataSource>()
+  const [mapData, setMapData] = useState<MapData>()
   const [cities, setCities] = useState<City[]>([])
   const [markerScale, setMarkerScale] = useState(1)
   const [loading, setLoading] = useState(true)
@@ -35,7 +35,7 @@ export default function BubbleMapExample(): JSX.Element {
   useEffect(() => {
     let isCancelled = false
 
-    async function fetchMap(): Promise<MapDataSource> {
+    async function fetchMap(): Promise<MapData> {
       const response = await fetch(withBase('/example-data/states-10m.json'))
       return response.json()
     }

@@ -1,4 +1,4 @@
-import type { MapDataSource } from '@d3-maps/react'
+import type { MapData } from '@d3-maps/react'
 
 import {
   MapBase,
@@ -13,7 +13,7 @@ import {
 } from 'react'
 
 export default function SphereAndGraticuleExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapDataSource>()
+  const [mapData, setMapData] = useState<MapData>()
 
   useEffect(() => {
     let isCancelled = false

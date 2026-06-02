@@ -1,5 +1,5 @@
 import type {
-  MapDataSource,
+  MapData,
   MapFeature as MapFeatureData,
 } from '@d3-maps/react'
 import type {
@@ -33,7 +33,7 @@ const zoomStep = 0.5
 type MapGeoFeature = Extract<MapFeatureData, { type: 'Feature' }>
 
 export default function ProgrammaticZoomExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapDataSource>()
+  const [mapData, setMapData] = useState<MapData>()
   const [center, setCenter] = useState<[number, number]>()
   const [zoom, setZoom] = useState(initialZoom)
   const [activeCountryLabel, setActiveCountryLabel] = useState('World')

@@ -1,4 +1,4 @@
-import type { MapDataSource, ZoomEvent } from '@d3-maps/react'
+import type { MapData, ZoomEvent } from '@d3-maps/react'
 
 import {
   MapBase,
@@ -33,7 +33,7 @@ const initialCities: City[] = [
 ]
 
 export default function ZoomExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapDataSource>()
+  const [mapData, setMapData] = useState<MapData>()
   const [markerScale, setMarkerScale] = useState(1)
   const currentZoomRef = useRef(1)
 
