@@ -146,7 +146,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
         <MapBase
           context={mapContext}
         >
-          <MapSphere />
+          <MapSphere fill="var(--vp-c-bg-alt)" />
           <MapZoom
             center={center}
             zoom={zoom}
@@ -190,6 +190,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
               pointerEvents="none"
             />
           </MapZoom>
+          <MapSphere stroke="var(--vp-c-border)" />
         </MapBase>
       </div>
 

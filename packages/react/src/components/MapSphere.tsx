@@ -17,7 +17,7 @@ export interface MapSphereProps
 
 export function MapSphere({
   fill = 'none',
-  stroke = 'currentColor',
+  stroke = 'none',
   ...props
 }: MapSphereProps): ReactElement {
   const context = useMapContext()

@@ -50,10 +50,11 @@ export default function MarkersExample(): JSX.Element | null {
   return mapData
     ? (
         <MapBase>
-          <MapSphere />
+          <MapSphere fill="var(--vp-c-bg-alt)" />
           <MapGraticule />
           <MapFeatures data={mapData} />
           <MapMesh data={mapData} />
+          <MapSphere stroke="var(--vp-c-border)" />
           {
             cities.map((item) => (
               <MapMarker

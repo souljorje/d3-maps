@@ -11,7 +11,7 @@
   <MapBase
     :projection="geoEquirectangular"
   >
-    <MapSphere />
+    <MapSphere fill="var(--vp-c-bg-alt)" />
     <MapZoom>
       <MapGraticule />
       <MapFeatures
@@ -28,6 +28,7 @@
         <circle r="3" />
       </MapMarker>
     </MapZoom>
+    <MapSphere stroke="var(--vp-c-border)" />
   </MapBase>
 </template>
 ```
@@ -38,7 +39,7 @@
 <MapBase
   projection={geoEquirectangular}
 >
-  <MapSphere />
+  <MapSphere fill="var(--vp-c-bg-alt)" />
   <MapZoom>
     <MapGraticule />
     <MapFeatures
@@ -55,6 +56,7 @@
       <circle r="3" />
     </MapMarker>
   </MapZoom>
+  <MapSphere stroke="var(--vp-c-border)" />
 </MapBase>
 ```
 

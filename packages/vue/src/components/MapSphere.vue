@@ -20,7 +20,7 @@ withDefaults(
   defineProps<MapSphereProps>(),
   {
     fill: 'none',
-    stroke: 'currentColor',
+    stroke: 'none',
   },
 )
 const context = useMapContext()

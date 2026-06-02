@@ -6,7 +6,7 @@
   >
     <div class="relative aspect-2/1">
       <MapBase :context="mapContext">
-        <MapSphere />
+        <MapSphere fill="var(--vp-c-bg-alt)" />
         <MapZoom
           :center="center"
           :zoom="zoom"
@@ -45,6 +45,7 @@
             pointer-events="none"
           />
         </MapZoom>
+        <MapSphere stroke="var(--vp-c-border)" />
       </MapBase>
     </div>
     <div class="flex flex-col justify-center items-center gap-2">

@@ -21,7 +21,7 @@ const styles = {
   <MapBase
     :projection="geoEquirectangular"
   >
-    <MapSphere />
+    <MapSphere fill="var(--vp-c-bg-alt)" />
     <MapZoom>
       <MapGraticule />
       <MapFeatures
@@ -39,6 +39,7 @@ const styles = {
         <circle r="3" />
       </MapMarker>
     </MapZoom>
+    <MapSphere stroke="var(--vp-c-border)" />
   </MapBase>
 </template>
 ```
@@ -49,7 +50,7 @@ const styles = {
 <MapBase
   projection={geoEquirectangular}
 >
-  <MapSphere />
+  <MapSphere fill="var(--vp-c-bg-alt)" />
   <MapZoom>
     <MapGraticule />
     <MapFeatures
@@ -67,6 +68,7 @@ const styles = {
       <circle r="3" />
     </MapMarker>
   </MapZoom>
+  <MapSphere stroke="var(--vp-c-border)" />
 </MapBase>
 ```
 

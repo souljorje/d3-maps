@@ -6,35 +6,37 @@
 
 == Vue
 
-```vue{5-6} [vue]
+```vue{5-6,12} [vue]
 <template>
   <MapBase
     :projection="geoEquirectangular"
   >
-    <MapSphere />
+    <MapSphere fill="var(--vp-c-bg-alt)" />
     <MapGraticule />
     <MapFeatures
       :data="data"
       :transformer="transformer"
     />
     <MapMesh :data="data" stroke="#fff" />
+    <MapSphere stroke="var(--vp-c-border)" />
   </MapBase>
 </template>
 ```
 
 == React
 
-```tsx{4-5} [react]
+```tsx{4-5,11} [react]
 <MapBase
   projection={geoEquirectangular}
 >
-  <MapSphere />
+  <MapSphere fill="var(--vp-c-bg-alt)" />
   <MapGraticule />
   <MapFeatures
     data={data}
     transformer={transformer}
   />
   <MapMesh data={data} stroke="#fff" />
+  <MapSphere stroke="var(--vp-c-border)" />
 </MapBase>
 ```
 

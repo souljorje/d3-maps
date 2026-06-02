@@ -8,14 +8,16 @@ Renders the map sphere as a single SVG `<path>`
 
 Use `MapSphere` outside `MapZoom` to keep the outline visually stable while zooming map content
 
-The default `fill` is `none` and the default `stroke` is `currentColor`
+The default `fill` is `none` and the default `stroke` is `none`
+
+Render a filled sphere before content and an outline sphere after content when graticule lines should stay below the border.
 
 ## Props
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | `fill?` | `string` | `none` | SVG fill for the sphere path |
-| `stroke?` | `string` | `currentColor` | SVG stroke for the sphere path |
+| `stroke?` | `string` | `none` | SVG stroke for the sphere path |
 
 ## Usage
 
@@ -37,6 +39,7 @@ The default `fill` is `none` and the default `stroke` is `currentColor`
         }"
       />
     </MapZoom>
+    <MapSphere stroke="#cbd5e1" />
   </MapBase>
 </template>
 ```
@@ -56,6 +59,7 @@ The default `fill` is `none` and the default `stroke` is `currentColor`
       }}
     />
   </MapZoom>
+  <MapSphere stroke="#cbd5e1" />
 </MapBase>
 ```
 

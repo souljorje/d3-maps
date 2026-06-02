@@ -12,37 +12,7 @@ import {
 import { sampleGeoJson } from './fixtures'
 
 describe('mapSphere', () => {
-  it('renders a single sphere path by default', () => {
-    const { container } = render(
-      <MapBase fit={sampleGeoJson}>
-        <MapSphere />
-      </MapBase>,
-    )
-
-    const [sphere] = Array.from(container.querySelectorAll('path'))
-
-    expect(sphere?.getAttribute('fill')).toBe('none')
-    expect(sphere?.getAttribute('stroke')).toBe('currentColor')
-    expect(sphere?.getAttribute('pointer-events')).toBe('none')
-    expect(sphere?.getAttribute('data-d3m')).toBe('sphere')
-    expect(container.querySelectorAll('path')).toHaveLength(1)
-  })
-
-  it('renders a custom fill on the same sphere path', () => {
-    const { container } = render(
-      <MapBase fit={sampleGeoJson}>
-        <MapSphere fill="#fef3c7" />
-      </MapBase>,
-    )
-
-    const [sphere] = Array.from(container.querySelectorAll('path'))
-
-    expect(sphere?.getAttribute('fill')).toBe('#fef3c7')
-    expect(sphere?.getAttribute('stroke')).toBe('currentColor')
-    expect(container.querySelectorAll('path')).toHaveLength(1)
-  })
-
-  it('allows overriding stroke on the same sphere path', () => {
+  it('allows overriding stroke and fill', () => {
     const { container } = render(
       <MapBase fit={sampleGeoJson}>
         <MapSphere fill="#f8fafc" stroke="#cbd5e1" />

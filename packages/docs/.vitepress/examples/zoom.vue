@@ -4,7 +4,7 @@
 
     :projection="projection"
   >
-    <MapSphere />
+    <MapSphere fill="var(--vp-c-bg-alt)" />
     <MapZoom @zoom="updateMarkerScale">
       <MapGraticule />
       <MapFeatures :data="data" />
@@ -28,6 +28,7 @@
         </g>
       </MapMarker>
     </MapZoom>
+    <MapSphere stroke="var(--vp-c-border)" />
   </MapBase>
 </template>
 

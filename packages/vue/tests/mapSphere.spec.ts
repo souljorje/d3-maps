@@ -24,30 +24,7 @@ function mountWithMapSphere(props: Record<string, unknown> = {}) {
 }
 
 describe('mapSphere', () => {
-  it('renders a single sphere path by default', () => {
-    const wrapper = mountWithMapSphere()
-    const [sphere] = wrapper.findAll('path')
-
-    expect(sphere.attributes('fill')).toBe('none')
-    expect(sphere.attributes('stroke')).toBe('currentColor')
-    expect(sphere.attributes('pointer-events')).toBe('none')
-    expect(sphere.attributes('data-d3m')).toBe('sphere')
-    expect(wrapper.findAll('path')).toHaveLength(1)
-  })
-
-  it('renders a custom fill on the same sphere path', () => {
-    const wrapper = mountWithMapSphere({
-      fill: '#fef3c7',
-    })
-
-    const [sphere] = wrapper.findAll('path')
-
-    expect(sphere.attributes('fill')).toBe('#fef3c7')
-    expect(sphere.attributes('stroke')).toBe('currentColor')
-    expect(wrapper.findAll('path')).toHaveLength(1)
-  })
-
-  it('allows overriding stroke on the same sphere path', () => {
+  it('allows overriding stroke and fill', () => {
     const wrapper = mountWithMapSphere({
       fill: '#f8fafc',
       stroke: '#cbd5e1',

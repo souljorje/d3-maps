@@ -69,7 +69,7 @@ export default function ZoomExample(): JSX.Element | null {
         <MapBase
           projection={geoNaturalEarth1}
         >
-          <MapSphere />
+          <MapSphere fill="var(--vp-c-bg-alt)" />
           <MapZoom onZoom={updateMarkerScale}>
             <MapGraticule />
             <MapFeatures data={mapData} />
@@ -96,6 +96,7 @@ export default function ZoomExample(): JSX.Element | null {
               ))
             }
           </MapZoom>
+          <MapSphere stroke="var(--vp-c-border)" />
         </MapBase>
       )
     : null

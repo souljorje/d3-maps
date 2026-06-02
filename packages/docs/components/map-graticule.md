@@ -14,6 +14,8 @@ Renders graticule lines as an SVG `<path>` layer
 
 Use native SVG presentation attrs like `stroke` directly on `MapGraticule` lines.
 
+SVG layer order matters. If graticule lines cover the sphere border, render the sphere background first and a second sphere outline last.
+
 ### Config
 
 Use `config` to call graticule generator methods before rendering
@@ -31,7 +33,7 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
 ```vue
 <template>
   <MapBase>
-    <MapSphere fill="#fff" stroke="#cbd5e1" />
+    <MapSphere fill="#fff" />
     <MapFeatures :data="mapData" fill="#f1f5f9" />
     <MapGraticule
       stroke="#94a3b8"
@@ -40,6 +42,7 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
         precision: 2.5,
       }"
     />
+    <MapSphere stroke="#cbd5e1" />
   </MapBase>
 </template>
 ```
@@ -48,7 +51,7 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
 
 ```tsx
 <MapBase>
-  <MapSphere fill="#fff" stroke="#cbd5e1" />
+  <MapSphere fill="#fff" />
   <MapFeatures data={mapData} fill="#f1f5f9" />
   <MapGraticule
     stroke="#94a3b8"
@@ -57,6 +60,7 @@ See available methods in [d3-geo graticule docs](https://d3js.org/d3-geo/shape#g
       precision: 2.5,
     }}
   />
+  <MapSphere stroke="#cbd5e1" />
 </MapBase>
 ```
 
