@@ -10,6 +10,11 @@
     "access": "public"
   },
   "homepage": "https://d3-maps.netlify.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/souljorje/d3-maps.git",
+    "directory": "packages/core"
+  },
   "bugs": {
     "url": "https://github.com/souljorje/d3-maps/issues"
   },
@@ -22,11 +27,6 @@
     "geojson",
     "topojson"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/souljorje/d3-maps.git",
-    "directory": "packages/core"
-  },
   "exports": {
     ".": "./dist/index.js",
     "./package.json": "./package.json",
