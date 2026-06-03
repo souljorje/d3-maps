@@ -4,7 +4,7 @@ title: Interactive SVG maps for React and Vue
 description: Choropleths, markers, lines, zoom and more. Powered by D3. GeoJSON & TopoJSON suppport.
 hero:
   name: d3-maps
-  text: Interactive SVG maps <br>in <span class="react">React</span> & <span class="vue">Vue</span>
+  text: Interactive SVG maps <br>for <span class="react">React</span> & <span class="vue">Vue</span>
   tagline: Geographic dataviz for modern apps
   image:
     src: /d3-maps-logo.svg
