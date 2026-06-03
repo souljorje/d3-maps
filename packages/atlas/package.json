@@ -1,7 +1,7 @@
 {
   "name": "@d3-maps/atlas",
   "version": "1.0.0",
-  "description": "Ready-to-use TopoJSON atlas data",
+  "description": "Ready-to-use TopoJSON world, continents, countries and more",
   "type": "module",
   "private": false,
   "author": "Georgii Bukharov <souljorje@gmail.com>",
@@ -23,7 +23,10 @@
     "topojson",
     "geojson",
     "atlas",
-    "map"
+    "map",
+    "world-map",
+    "country-map",
+    "choropleth"
   ],
   "sideEffects": false,
   "types": "./dist/index.d.ts",

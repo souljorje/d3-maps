@@ -96,7 +96,7 @@ import '@d3-maps/react/style.css'
 
 :::
 
-Plain CSS can also target the generated SVG elements directly
+Use plain CSS to style components globally
 
 | Component | CSS selector |
 | --- | --- |
@@ -104,10 +104,10 @@ Plain CSS can also target the generated SVG elements directly
 | [MapFeatures](/components/map-features) | `[data-d3m="feature"]` |
 | [MapMesh](/components/map-mesh) | `[data-d3m="mesh"]` |
 | [MapMarker](/components/map-marker) | `[data-d3m="marker"]` |
-| [MapGraticule](/components/map-graticule) lines | `[data-d3m="graticule"]` |
+| [MapGraticule](/components/map-graticule) | `[data-d3m="graticule"]` |
 | [MapSphere](/components/map-sphere) | `[data-d3m="sphere"]` |
 | [MapLine](/components/map-line) | `[data-d3m="line"]` |
-| [MapAnnotation](/components/map-annotation) connector | `[data-d3m="annotation-line"]` |
+| [MapAnnotation](/components/map-annotation) | `[data-d3m="annotation-line"]` |
 | [MapZoom](/components/map-zoom) | `[data-d3m="zoom"]` |
 
 See example (this site) [packages/docs/.vitepress/theme/custom.css](https://github.com/souljorje/d3-maps/blob/main/packages/docs/.vitepress/theme/custom.css)
