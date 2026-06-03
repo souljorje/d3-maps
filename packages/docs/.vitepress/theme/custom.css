@@ -51,6 +51,9 @@
   }
 }
 
+html {
+  scrollbar-gutter: stable;
+}
 
 .text-brand {
   color: var(--vp-c-brand-3);

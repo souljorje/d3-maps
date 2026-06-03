@@ -4,7 +4,7 @@ description: TopoJSON world layers, continent, and country maps usage
 
 # Atlas
 
-`@d3-maps/atlas` is a TopoJSON collection of world layers, continent, and country maps
+`@d3-maps/atlas` is a collection of TopoJSON world layers, continents, and countries
 
 ## Install
 

@@ -1,5 +1,5 @@
 ---
-description: Example gallery for D3 SVG maps in React and Vue, including choropleth maps, markers, annotations, and pan and zoom
+description: "Interactive SVG maps for React and Vue: choropleth map, bubble map, zoom, and more"
 ---
 
 # Examples

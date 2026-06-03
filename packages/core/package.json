@@ -3,12 +3,25 @@
   "type": "module",
   "version": "0.13.0",
   "private": false,
-  "description": "Framework-agnostic core utilities for building reactive D3 maps",
+  "description": "Framework-agnostic utilities for building interactive SVG maps with D3",
   "author": "Georgii Bukharov <souljorje@gmail.com>",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "homepage": "https://d3-maps.netlify.app",
+  "bugs": {
+    "url": "https://github.com/souljorje/d3-maps/issues"
+  },
+  "keywords": [
+    "d3",
+    "d3-geo",
+    "svg",
+    "map",
+    "dataviz",
+    "geojson",
+    "topojson"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/souljorje/d3-maps.git",

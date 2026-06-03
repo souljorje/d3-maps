@@ -45,23 +45,6 @@ export function resolveInteractionStyle<TStyle>(
   return styles?.[state] ?? styles?.default
 }
 
-export function getInteractionStateUpdate(event: InteractionEventType): InteractionState {
-  switch (event) {
-    case 'mouseenter':
-    case 'mouseup':
-      return 'hover'
-    case 'mouseleave':
-    case 'blur':
-      return 'default'
-    case 'mousedown':
-      return 'active'
-    case 'focus':
-      return 'focus'
-    default:
-      return 'default'
-  }
-}
-
 export function useInteractionEvents<TTarget = unknown>(
   onStateChange?: (state: InteractionState) => void,
   recoverOnGlobalMouseup = false,

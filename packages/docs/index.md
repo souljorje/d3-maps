@@ -1,11 +1,11 @@
 ---
 layout: home
-title: d3-maps · Interactive SVG maps
-description: Interactive SVG maps for React and Vue. Reactive components for features, markers, pan and zoom. Powered by D3.
+title: Interactive SVG maps for React and Vue
+description: Choropleths, markers, lines, zoom and more. Powered by D3. GeoJSON & TopoJSON suppport.
 hero:
   name: d3-maps
-  text: Interactive SVG maps <br>for <span class="vue">Vue</span> & <span class="react">React</span>
-  tagline: <span class="svelte">Svelte</span> and <span class="solid">Solid</span> coming soon
+  text: Interactive SVG maps <br>in <span class="react">React</span> & <span class="vue">Vue</span>
+  tagline: Geographic dataviz for modern apps
   image:
     src: /d3-maps-logo.svg
     alt: d3-maps logo
@@ -21,10 +21,10 @@ features:
     details: Drop-in components, powerful defaults
     icon: ✨
   - title: Feature rich
-    details: Zoom, drag, lines, markers, and more
+    details: Zoom, pan, markers, lines, and more
     icon: 💪
   - title: Reactive
-    details: Props change triggers render
+    details: Props change triggers rendering
     icon: ⚛️
   - title: Responsive
     details: By default, without rerenders

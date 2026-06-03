@@ -1,6 +1,6 @@
 # @d3-maps/vue [![@d3-maps/vue bundle size](https://deno.bundlejs.com/badge?q=@d3-maps/vue&config={%22esbuild%22:{%22external%22:[%22vue%22]}})](https://bundlejs.com/?q=@d3-maps/vue&config={%22esbuild%22:{%22external%22:[%22vue%22]}})
 
-Interactive SVG maps with Vue and D3.  
+Interactive SVG maps for Vue, powered by D3.  
 
 [**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples)
 
@@ -15,26 +15,30 @@ Interactive SVG maps with Vue and D3.
 🗄️ SSR friendly  
 🗺️ Supports TopoJSON and GeoJSON
 
-## Installation
+## Install
 
 ```bash
 npm install @d3-maps/vue
 ```
 
-```bash
-pnpm add @d3-maps/vue
-```
+<details>
+  <summary>pnpm, bun, CDN</summary>
+  
+  ```bash
+  pnpm add @d3-maps/vue
+  ```
 
-```bash
-bun add @d3-maps/vue
-```
+  ```bash
+  bun add @d3-maps/vue
+  ```
 
-```html
-<script type="module">
-  import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/vue'
-  import 'https://esm.sh/@d3-maps/vue/style.css'
-</script>
-```
+  ```html
+  <script type="module">
+    import { MapBase, MapFeatures } from 'https://esm.sh/@d3-maps/vue'
+    import 'https://esm.sh/@d3-maps/vue/style.css'
+  </script>
+  ```
+</details>
 
 ## Usage
 

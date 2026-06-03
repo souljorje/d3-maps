@@ -1,6 +1,6 @@
 # @d3-maps/atlas
 
-Ready-to-use TopoJSON maps: world layers, continents, countries
+Ready-to-use TopoJSON maps: world, continents, countries and more
 
 [**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples)
 
@@ -8,23 +8,33 @@ Ready-to-use TopoJSON maps: world layers, continents, countries
 
 🗺️ Ready-to-use world layers, country, and continent maps  
 🌍 Built from Natural Earth data  
-📦 TopoJSON by default  
 🧑‍💻 Fully typed  
 🪶 Tree-shakable exports  
+⚛️ Works with React and Vue
 
-## Installation
+## Install
 
 ```bash
 npm install @d3-maps/atlas
 ```
 
-```bash
-pnpm add @d3-maps/atlas
-```
+<details>
+  <summary>pnpm, bun, CDN</summary>
+  
+  ```bash
+  pnpm add @d3-maps/atlas
+  ```
 
-```bash
-bun add @d3-maps/atlas
-```
+  ```bash
+  bun add @d3-maps/atlas
+  ```
+
+  ```html
+  <script type="module">
+    import Countries from 'https://esm.sh/@d3-maps/atlas/world/countries'
+  </script>
+  ```
+</details>
 
 ## Usage
 
