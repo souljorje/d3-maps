@@ -30,10 +30,63 @@ describe('mapSphere', () => {
       stroke: '#cbd5e1',
     })
 
-    const [sphere] = wrapper.findAll('path')
+    const background = wrapper.get('[data-d3m="sphere-background"]')
+    const border = wrapper.get('[data-d3m="sphere-border"]')
 
-    expect(sphere.attributes('fill')).toBe('#f8fafc')
-    expect(sphere.attributes('stroke')).toBe('#cbd5e1')
+    expect(background.attributes('fill')).toBe('#f8fafc')
+    expect(background.attributes('stroke')).toBe('none')
+    expect(border.attributes('fill')).toBe('none')
+    expect(border.attributes('stroke')).toBe('#cbd5e1')
+  })
+
+  it('wraps children between background and border paths', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        fit: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapSphere, {
+          fill: '#f8fafc',
+          stroke: '#cbd5e1',
+        }, {
+          default: () => h(MapGraticule, { 'data-testid': 'map-graticule-lines' }),
+        }),
+      },
+    })
+
+    const sphereChildren = Array.from(wrapper.get('[data-d3m="sphere"]').element.children)
+      .map((child) => child.getAttribute('data-d3m'))
+      .filter(Boolean)
+    const content = wrapper.get('[data-d3m="sphere-content"]')
+    const clipPath = wrapper.get('clipPath')
+
+    expect(sphereChildren).toEqual([
+      'sphere-background',
+      'sphere-content',
+      'sphere-border',
+    ])
+    expect(content.attributes('clip-path')).toBe(`url(#${clipPath.attributes('id')})`)
+    expect(content.find('[data-d3m="graticule"]').exists()).toBe(true)
+  })
+
+  it('allows disabling child clipping', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        fit: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapSphere, {
+          noClip: true,
+        }, {
+          default: () => h(MapGraticule),
+        }),
+      },
+    })
+
+    const content = wrapper.get('[data-d3m="sphere-content"]')
+
+    expect(wrapper.find('clipPath').exists()).toBe(false)
+    expect(content.attributes('clip-path')).toBeUndefined()
   })
 
   it('allows users to keep sphere outside zoomed content', () => {
