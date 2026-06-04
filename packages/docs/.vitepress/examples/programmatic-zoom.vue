@@ -6,51 +6,54 @@
   >
     <div class="relative aspect-2/1">
       <MapBase :context="mapContext">
-        <MapSphere fill="var(--vp-c-bg-alt)" />
-        <MapZoom
-          :center="center"
-          :zoom="zoom"
-          :min-zoom="minZoom"
-          :max-zoom="maxZoom"
-          :transition="{ duration: isTransitionOn ? 600 : 0 }"
-          :config="{ filter: isDragOnlyFilter }"
+        <MapSphere
+          fill="var(--vp-c-bg-alt)"
+          stroke="var(--vp-c-border)"
         >
-          <MapGraticule pointer-events="none" />
-          <MapFeatures
-            :data="data"
-            fill="var(--vp-c-neutral-inverse)"
+          <MapZoom
+            :center="center"
+            :zoom="zoom"
+            :min-zoom="minZoom"
+            :max-zoom="maxZoom"
+            :transition="{ duration: isTransitionOn ? 600 : 0 }"
+            :config="{ filter: isDragOnlyFilter }"
           >
-            <template #default="{ features }">
-              <MapFeature
-                v-for="feature in features"
-                :key="feature.key"
-                :d="feature.d"
-                :data-feature-key="feature.key"
-                :aria-label="feature.type === 'Feature' ? getFeatureLabel(feature) : undefined"
-                :styles="{
-                  focus: {
-                    fill: 'lightskyblue',
-                  },
-                }"
-                class="cursor-pointer"
-                role="button"
-                tabindex="0"
-                @click="feature.type === 'Feature' && zoomToFeature(feature)"
-                @keydown.enter.space.prevent="feature.type === 'Feature' && zoomToFeature(feature)"
-              />
-            </template>
-          </MapFeatures>
-          <MapMesh
-            :data="data"
-            pointer-events="none"
-          />
-        </MapZoom>
-        <MapSphere stroke="var(--vp-c-border)" />
+            <MapGraticule pointer-events="none" />
+            <MapFeatures
+              :data="data"
+              fill="var(--vp-c-neutral-inverse)"
+            >
+              <template #default="{ features }">
+                <MapFeature
+                  v-for="feature in features"
+                  :key="feature.key"
+                  :d="feature.d"
+                  :data-feature-key="feature.key"
+                  :aria-label="feature.type === 'Feature' ? getFeatureLabel(feature) : undefined"
+                  :styles="{
+                    focus: {
+                      fill: 'lightskyblue',
+                    },
+                  }"
+                  class="cursor-pointer"
+                  role="button"
+                  tabindex="0"
+                  @click="feature.type === 'Feature' && zoomToFeature(feature)"
+                  @keydown.enter.space.prevent="feature.type === 'Feature' && zoomToFeature(feature)"
+                />
+              </template>
+            </MapFeatures>
+            <MapMesh
+              :data="data"
+              pointer-events="none"
+            />
+          </MapZoom>
+        </MapSphere>
       </MapBase>
     </div>
     <div class="flex flex-col justify-center items-center gap-2">
       <div>
-        Focus: {{ activeCountryLabel }}
+        {{ activeCountryLabel }}
       </div>
       <div class="flex gap-2 flex-wrap justify-center">
         <button

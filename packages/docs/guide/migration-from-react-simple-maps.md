@@ -116,14 +116,14 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 `Sphere` -> [MapSphere](/components/map-sphere)
 
 ```tsx
-<MapSphere fill="#eee" />
+<MapSphere fill="#eee" stroke="#999">
+  <MapFeatures data={mapData} />
+</MapSphere>
 ```
 
 ## 7. Rename line component
 
 `Line` -> [MapLine](/components/map-line)
-
-`react-simple-maps` line props map directly to `MapLine.coordinates`
 
 ```tsx
 <MapLine

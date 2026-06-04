@@ -25,7 +25,7 @@
     &[data-d3m='graticule'] {
       stroke: var(--vp-c-divider);
     }
-    &[data-d3m='sphere'] {
+    &[data-d3m='sphere-border'] {
       stroke: var(--vp-c-border);
     }
     &[data-d3m='mesh'] {
@@ -39,7 +39,7 @@
     text& {
       fill: var(--vp-c-brand-3);
     }
-    &[data-d3m='sphere'] {
+    &[data-d3m='sphere-background'] {
       fill: var(--vp-c-bg-alt);
     }
     &[data-d3m='feature'] {

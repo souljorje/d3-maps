@@ -6,57 +6,63 @@
 
 == Vue
 
-```vue{13-20} [vue]
+```vue{16-23} [vue]
 <template>
   <MapBase
     :projection="geoEquirectangular"
   >
-    <MapSphere fill="var(--vp-c-bg-alt)" />
-    <MapZoom>
-      <MapGraticule />
-      <MapFeatures
-        :data="data"
-        :transformer="transformer"
-      />
-      <MapMesh :data="data" stroke="#fff" />
-      <MapMarker :coordinates="[-83.0457538, 42.331427]">
-        <text
-          font-size="14"
-          y="-6"
-          text-anchor="middle"
-        >Sweet home 🧡</text>
-        <circle r="3" />
-      </MapMarker>
-    </MapZoom>
-    <MapSphere stroke="var(--vp-c-border)" />
+    <MapSphere
+      fill="var(--vp-c-bg-alt)"
+      stroke="var(--vp-c-border)"
+    >
+      <MapZoom>
+        <MapGraticule />
+        <MapFeatures
+          :data="data"
+          :transformer="transformer"
+        />
+        <MapMesh :data="data" stroke="#fff" />
+        <MapMarker :coordinates="[-83.0457538, 42.331427]">
+          <text
+            font-size="14"
+            y="-6"
+            text-anchor="middle"
+          >Sweet home 🧡</text>
+          <circle r="3" />
+        </MapMarker>
+      </MapZoom>
+    </MapSphere>
   </MapBase>
 </template>
 ```
 
 == React
 
-```tsx{12-19} [react]
+```tsx{15-22} [react]
 <MapBase
   projection={geoEquirectangular}
 >
-  <MapSphere fill="var(--vp-c-bg-alt)" />
-  <MapZoom>
-    <MapGraticule />
-    <MapFeatures
-      data={data}
-      transformer={transformer}
-    />
-    <MapMesh data={data} stroke="#fff" />
-    <MapMarker coordinates={[-83.0457538, 42.331427]}>
-      <text
-        fontSize={14}
-        y={-6}
-        textAnchor={"middle"}
-      >Sweet home 🧡</text>
-      <circle r="3" />
-    </MapMarker>
-  </MapZoom>
-  <MapSphere stroke="var(--vp-c-border)" />
+  <MapSphere
+    fill="var(--vp-c-bg-alt)"
+    stroke="var(--vp-c-border)"
+  >
+    <MapZoom>
+      <MapGraticule />
+      <MapFeatures
+        data={data}
+        transformer={transformer}
+      />
+      <MapMesh data={data} stroke="#fff" />
+      <MapMarker coordinates={[-83.0457538, 42.331427]}>
+        <text
+          fontSize={14}
+          y={-6}
+          textAnchor={"middle"}
+        >Sweet home 🧡</text>
+        <circle r="3" />
+      </MapMarker>
+    </MapZoom>
+  </MapSphere>
 </MapBase>
 ```
 

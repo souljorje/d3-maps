@@ -146,58 +146,59 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
         <MapBase
           context={mapContext}
         >
-          <MapSphere fill="var(--vp-c-bg-alt)" />
-          <MapZoom
-            center={center}
-            zoom={zoom}
-            minZoom={minZoom}
-            maxZoom={maxZoom}
-            transition={{
-              duration: isTransitionOn ? 600 : 0,
-            }}
-            config={{ filter: isDragOnlyFilter }}
+          <MapSphere
+            fill="var(--vp-c-bg-alt)"
+            stroke="var(--vp-c-border)"
           >
-            <MapGraticule pointerEvents="none" />
-            <MapFeatures
-              data={mapData}
-              fill="var(--vp-c-neutral-inverse)"
+            <MapZoom
+              center={center}
+              zoom={zoom}
+              minZoom={minZoom}
+              maxZoom={maxZoom}
+              transition={{
+                duration: isTransitionOn ? 600 : 0,
+              }}
+              config={{ filter: isDragOnlyFilter }}
             >
-              {({ features }) => features.map((feature) => (
-                <MapFeature
-                  key={feature.key}
-                  d={feature.d}
-                  data-feature-key={feature.key}
-                  aria-label={feature.type === 'Feature' ? getFeatureLabel(feature) : undefined}
-                  role="button"
-                  tabIndex={0}
-                  style={{ cursor: 'pointer' }}
-                  styles={{
-                    focus: {
-                      fill: 'lightskyblue',
-                    },
-                  }}
-                  onClick={() => {
-                    if (feature.type === 'Feature') onFeatureClick(feature)
-                  }}
-                  onKeyDown={(event) => {
-                    if (feature.type === 'Feature') onFeatureKeyDown(feature, event)
-                  }}
-                />
-              ))}
-            </MapFeatures>
-            <MapMesh
-              data={mapData}
-              pointerEvents="none"
-            />
-          </MapZoom>
-          <MapSphere stroke="var(--vp-c-border)" />
+              <MapGraticule pointerEvents="none" />
+              <MapFeatures
+                data={mapData}
+                fill="var(--vp-c-neutral-inverse)"
+              >
+                {({ features }) => features.map((feature) => (
+                  <MapFeature
+                    key={feature.key}
+                    d={feature.d}
+                    data-feature-key={feature.key}
+                    aria-label={feature.type === 'Feature' ? getFeatureLabel(feature) : undefined}
+                    role="button"
+                    tabIndex={0}
+                    style={{ cursor: 'pointer' }}
+                    styles={{
+                      focus: {
+                        fill: 'lightskyblue',
+                      },
+                    }}
+                    onClick={() => {
+                      if (feature.type === 'Feature') onFeatureClick(feature)
+                    }}
+                    onKeyDown={(event) => {
+                      if (feature.type === 'Feature') onFeatureKeyDown(feature, event)
+                    }}
+                  />
+                ))}
+              </MapFeatures>
+              <MapMesh
+                data={mapData}
+                pointerEvents="none"
+              />
+            </MapZoom>
+          </MapSphere>
         </MapBase>
       </div>
 
       <div className="flex flex-col items-center justify-center gap-2">
         <div>
-          Focus:
-          {' '}
           {activeCountryLabel}
         </div>
         <div className="flex flex-wrap justify-center gap-2">

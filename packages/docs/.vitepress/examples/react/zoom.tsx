@@ -69,34 +69,37 @@ export default function ZoomExample(): JSX.Element | null {
         <MapBase
           projection={geoNaturalEarth1}
         >
-          <MapSphere fill="var(--vp-c-bg-alt)" />
-          <MapZoom onZoom={updateMarkerScale}>
-            <MapGraticule />
-            <MapFeatures data={mapData} />
-            <MapMesh data={mapData} />
-            {
-              initialCities.map((item) => (
-                <MapMarker
-                  key={item.city}
-                  coordinates={[item.lon, item.lat]}
-                >
-                  <g transform={`scale(${markerScale})`}>
-                    <text
-                      fontSize="14"
-                      y={-8}
-                      textAnchor="middle"
-                    >
-                      {item.city}
-                    </text>
-                    <circle
-                      r={3}
-                    />
-                  </g>
-                </MapMarker>
-              ))
-            }
-          </MapZoom>
-          <MapSphere stroke="var(--vp-c-border)" />
+          <MapSphere
+            fill="var(--vp-c-bg-alt)"
+            stroke="var(--vp-c-border)"
+          >
+            <MapZoom onZoom={updateMarkerScale}>
+              <MapGraticule />
+              <MapFeatures data={mapData} />
+              <MapMesh data={mapData} />
+              {
+                initialCities.map((item) => (
+                  <MapMarker
+                    key={item.city}
+                    coordinates={[item.lon, item.lat]}
+                  >
+                    <g transform={`scale(${markerScale})`}>
+                      <text
+                        fontSize="14"
+                        y={-8}
+                        textAnchor="middle"
+                      >
+                        {item.city}
+                      </text>
+                      <circle
+                        r={3}
+                      />
+                    </g>
+                  </MapMarker>
+                ))
+              }
+            </MapZoom>
+          </MapSphere>
         </MapBase>
       )
     : null

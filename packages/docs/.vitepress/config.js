@@ -133,7 +133,7 @@ const docsSidebar = [
           { text: 'Projection', link: '/guide/core-concepts#projection' },
           { text: 'Features', link: '/guide/core-concepts#features' },
           { text: 'Mesh', link: '/guide/core-concepts#mesh' },
-          { text: 'Graticule', link: '/guide/core-concepts#graticule' },
+          { text: 'Sphere and Graticule', link: '/guide/core-concepts#sphere-and-graticule' },
           { text: 'Zoom', link: '/guide/core-concepts#zoom' },
           { text: 'Markers', link: '/guide/core-concepts#markers' },
           { text: 'Styling', link: '/guide/core-concepts#styling' },

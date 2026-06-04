@@ -5,36 +5,39 @@
       :projection="geoEquirectangular"
       :aspect-ratio="2 / 1"
     >
-      <MapSphere fill="var(--vp-c-bg-alt)" />
-      <MapZoom>
-        <MapGraticule />
-        <MapFeatures
-          :data="data"
-          :transformer="transformer"
-          :styles="{
-            default: { fill: 'lightblue' },
-            hover: { fill: 'skyblue' },
-            active: { fill: 'lightskyblue' },
-          }"
-        />
-        <MapMesh
-          :data="data"
-          stroke="#fff"
-        />
-        <MapMarker
-          :coordinates="[-83.0457538, 42.331427]"
-        >
-          <text
-            font-size="14"
-            y="-6"
-            text-anchor="middle"
+      <MapSphere
+        fill="var(--vp-c-bg-alt)"
+        stroke="var(--vp-c-border)"
+      >
+        <MapZoom>
+          <MapGraticule />
+          <MapFeatures
+            :data="data"
+            :transformer="transformer"
+            :styles="{
+              default: { fill: 'lightblue' },
+              hover: { fill: 'skyblue' },
+              active: { fill: 'lightskyblue' },
+            }"
+          />
+          <MapMesh
+            :data="data"
+            stroke="#fff"
+          />
+          <MapMarker
+            :coordinates="[-83.0457538, 42.331427]"
           >
-            Sweet home 🧡
-          </text>
-          <circle r="3" />
-        </MapMarker>
-      </MapZoom>
-      <MapSphere stroke="var(--vp-c-border)" />
+            <text
+              font-size="14"
+              y="-6"
+              text-anchor="middle"
+            >
+              Sweet home 🧡
+            </text>
+            <circle r="3" />
+          </MapMarker>
+        </MapZoom>
+      </MapSphere>
     </MapBase>
   </div>
 </template>
