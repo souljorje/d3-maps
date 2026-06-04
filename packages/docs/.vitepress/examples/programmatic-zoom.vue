@@ -6,17 +6,17 @@
   >
     <div class="relative aspect-2/1">
       <MapBase :context="mapContext">
-        <MapSphere
-          fill="var(--vp-c-bg-alt)"
-          stroke="var(--vp-c-border)"
+        <MapZoom
+          :center="center"
+          :zoom="zoom"
+          :min-zoom="minZoom"
+          :max-zoom="maxZoom"
+          :transition="{ duration: isTransitionOn ? 600 : 0 }"
+          :config="{ filter: isDragOnlyFilter }"
         >
-          <MapZoom
-            :center="center"
-            :zoom="zoom"
-            :min-zoom="minZoom"
-            :max-zoom="maxZoom"
-            :transition="{ duration: isTransitionOn ? 600 : 0 }"
-            :config="{ filter: isDragOnlyFilter }"
+          <MapSphere
+            fill="var(--vp-c-bg-alt)"
+            stroke="var(--vp-c-border)"
           >
             <MapGraticule pointer-events="none" />
             <MapFeatures
@@ -47,8 +47,8 @@
               :data="data"
               pointer-events="none"
             />
-          </MapZoom>
-        </MapSphere>
+          </MapSphere>
+        </MapZoom>
       </MapBase>
     </div>
     <div class="flex flex-col justify-center items-center gap-2">

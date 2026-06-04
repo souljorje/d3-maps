@@ -13,11 +13,11 @@
       :projection="geoEquirectangular"
       :aspect-ratio="2 / 1"
     >
-      <MapSphere
-        fill="var(--vp-c-bg-alt)"
-        stroke="var(--vp-c-border)"
-      >
-        <MapZoom>
+      <MapZoom>
+        <MapSphere
+          fill="var(--vp-c-bg-alt)"
+          stroke="var(--vp-c-border)"
+        >
           <MapGraticule />
           <MapFeatures
             :data="data"
@@ -33,8 +33,8 @@
             >Sweet home 🧡</text>
             <circle r="3" />
           </MapMarker>
-        </MapZoom>
-      </MapSphere>
+        </MapSphere>
+      </MapZoom>
     </MapBase>
   </div>
 </template>
@@ -48,11 +48,11 @@
     projection={geoEquirectangular}
     aspectRatio={2 / 1}
   >
-    <MapSphere
-      fill="var(--vp-c-bg-alt)"
-      stroke="var(--vp-c-border)"
-    >
-      <MapZoom>
+    <MapZoom>
+      <MapSphere
+        fill="var(--vp-c-bg-alt)"
+        stroke="var(--vp-c-border)"
+      >
         <MapGraticule />
         <MapFeatures
           data={data}
@@ -68,8 +68,8 @@
           >Sweet home 🧡</text>
           <circle r="3" />
         </MapMarker>
-      </MapZoom>
-    </MapSphere>
+      </MapSphere>
+    </MapZoom>
   </MapBase>
 </div>
 ```

@@ -146,19 +146,19 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
         <MapBase
           context={mapContext}
         >
-          <MapSphere
-            fill="var(--vp-c-bg-alt)"
-            stroke="var(--vp-c-border)"
+          <MapZoom
+            center={center}
+            zoom={zoom}
+            minZoom={minZoom}
+            maxZoom={maxZoom}
+            transition={{
+              duration: isTransitionOn ? 600 : 0,
+            }}
+            config={{ filter: isDragOnlyFilter }}
           >
-            <MapZoom
-              center={center}
-              zoom={zoom}
-              minZoom={minZoom}
-              maxZoom={maxZoom}
-              transition={{
-                duration: isTransitionOn ? 600 : 0,
-              }}
-              config={{ filter: isDragOnlyFilter }}
+            <MapSphere
+              fill="var(--vp-c-bg-alt)"
+              stroke="var(--vp-c-border)"
             >
               <MapGraticule pointerEvents="none" />
               <MapFeatures
@@ -192,8 +192,8 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
                 data={mapData}
                 pointerEvents="none"
               />
-            </MapZoom>
-          </MapSphere>
+            </MapSphere>
+          </MapZoom>
         </MapBase>
       </div>
 

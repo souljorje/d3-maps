@@ -25,8 +25,8 @@ Place map content inside `MapSphere` to render it between the background path an
 ```vue
 <template>
   <MapBase>
-    <MapSphere fill="#f8fafc" stroke="#cbd5e1">
-      <MapZoom>
+    <MapZoom>
+      <MapSphere fill="#f8fafc" stroke="#cbd5e1">
         <MapFeatures :data="mapData" fill="#f1f5f9" />
         <MapGraticule
           stroke="#94a3b8"
@@ -35,8 +35,8 @@ Place map content inside `MapSphere` to render it between the background path an
             precision: 2.5,
           }"
         />
-      </MapZoom>
-    </MapSphere>
+      </MapSphere>
+    </MapZoom>
   </MapBase>
 </template>
 ```
@@ -45,8 +45,8 @@ Place map content inside `MapSphere` to render it between the background path an
 
 ```tsx
 <MapBase>
-  <MapSphere fill="#f8fafc" stroke="#cbd5e1">
-    <MapZoom>
+  <MapZoom>
+    <MapSphere fill="#f8fafc" stroke="#cbd5e1">
       <MapFeatures data={mapData} fill="#f1f5f9" />
       <MapGraticule
         stroke="#94a3b8"
@@ -55,8 +55,8 @@ Place map content inside `MapSphere` to render it between the background path an
           precision: 2.5,
         }}
       />
-    </MapZoom>
-  </MapSphere>
+    </MapSphere>
+  </MapZoom>
 </MapBase>
 ```
 

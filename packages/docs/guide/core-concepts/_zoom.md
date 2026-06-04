@@ -1,52 +1,52 @@
 ## Zoom
 
-[MapZoom](/components/map-zoom) adds pan and zoom behavior. Wrap `MapZoom` inside `MapSphere` so the sphere border stays visually stable while map content zooms.
+[MapZoom](/components/map-zoom) adds pan and zoom behavior.
 
 :::tabs key:framework
 
 == Vue
 
-```vue{9-16} [vue]
+```vue{5,17} [vue]
 <template>
   <MapBase
     :projection="geoEquirectangular"
   >
-    <MapSphere
-      fill="var(--vp-c-bg-alt)"
-      stroke="var(--vp-c-border)"
-    >
-      <MapZoom>
+    <MapZoom>
+      <MapSphere
+        fill="var(--vp-c-bg-alt)"
+        stroke="var(--vp-c-border)"
+      >
         <MapGraticule />
         <MapFeatures
           :data="data"
           :transformer="transformer"
         />
         <MapMesh :data="data" stroke="#fff" />
-      </MapZoom>
-    </MapSphere>
+      </MapSphere>
+    </MapZoom>
   </MapBase>
 </template>
 ```
 
 == React
 
-```tsx{8-15} [react]
+```tsx{4,16} [react]
 <MapBase
   projection={geoEquirectangular}
 >
-  <MapSphere
-    fill="var(--vp-c-bg-alt)"
-    stroke="var(--vp-c-border)"
-  >
-    <MapZoom>
+  <MapZoom>
+    <MapSphere
+      fill="var(--vp-c-bg-alt)"
+      stroke="var(--vp-c-border)"
+    >
       <MapGraticule />
       <MapFeatures
         data={data}
         transformer={transformer}
       />
       <MapMesh data={data} stroke="#fff" />
-    </MapZoom>
-  </MapSphere>
+    </MapSphere>
+  </MapZoom>
 </MapBase>
 ```
 
