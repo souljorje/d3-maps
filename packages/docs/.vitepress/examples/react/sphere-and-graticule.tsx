@@ -36,11 +36,14 @@ export default function SphereAndGraticuleExample(): JSX.Element | null {
   return mapData
     ? (
         <MapBase>
-          <MapSphere fill="var(--vp-c-bg-alt)" />
-          <MapGraticule />
-          <MapFeatures data={mapData} />
-          <MapMesh data={mapData} />
-          <MapSphere stroke="var(--vp-c-border)" />
+          <MapSphere
+            fill="var(--vp-c-bg-alt)"
+            stroke="var(--vp-c-border)"
+          >
+            <MapGraticule />
+            <MapFeatures data={mapData} />
+            <MapMesh data={mapData} />
+          </MapSphere>
         </MapBase>
       )
     : null

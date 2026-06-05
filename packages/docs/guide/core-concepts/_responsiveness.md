@@ -13,25 +13,28 @@
       :projection="geoEquirectangular"
       :aspect-ratio="2 / 1"
     >
-      <MapSphere fill="var(--vp-c-bg-alt)" />
       <MapZoom>
-        <MapGraticule />
-        <MapFeatures
-          :data="data"
-          :transformer="transformer"
-          :styles="styles"
-        />
-        <MapMesh :data="data" stroke="#fff" />
-        <MapMarker :coordinates="[-83.0457538, 42.331427]">
-          <text
-            font-size="14"
-            y="-6"
-            text-anchor="middle"
-          >Sweet home 🧡</text>
-          <circle r="3" />
-        </MapMarker>
+        <MapSphere
+          fill="var(--vp-c-bg-alt)"
+          stroke="var(--vp-c-border)"
+        >
+          <MapGraticule />
+          <MapFeatures
+            :data="data"
+            :transformer="transformer"
+            :styles="styles"
+          />
+          <MapMesh :data="data" stroke="#fff" />
+          <MapMarker :coordinates="[-83.0457538, 42.331427]">
+            <text
+              font-size="14"
+              y="-6"
+              text-anchor="middle"
+            >Sweet home 🧡</text>
+            <circle r="3" />
+          </MapMarker>
+        </MapSphere>
       </MapZoom>
-      <MapSphere stroke="var(--vp-c-border)" />
     </MapBase>
   </div>
 </template>
@@ -45,25 +48,28 @@
     projection={geoEquirectangular}
     aspectRatio={2 / 1}
   >
-    <MapSphere fill="var(--vp-c-bg-alt)" />
     <MapZoom>
-      <MapGraticule />
-      <MapFeatures
-        data={data}
-        transformer={transformer}
-        styles={styles}
-      />
-      <MapMesh data={data} stroke="#fff" />
-      <MapMarker coordinates={[-83.0457538, 42.331427]}>
-        <text
-          fontSize={14}
-          y={-6}
-          textAnchor={"middle"}
-        >Sweet home 🧡</text>
-        <circle r="3" />
-      </MapMarker>
+      <MapSphere
+        fill="var(--vp-c-bg-alt)"
+        stroke="var(--vp-c-border)"
+      >
+        <MapGraticule />
+        <MapFeatures
+          data={data}
+          transformer={transformer}
+          styles={styles}
+        />
+        <MapMesh data={data} stroke="#fff" />
+        <MapMarker coordinates={[-83.0457538, 42.331427]}>
+          <text
+            fontSize={14}
+            y={-6}
+            textAnchor={"middle"}
+          >Sweet home 🧡</text>
+          <circle r="3" />
+        </MapMarker>
+      </MapSphere>
     </MapZoom>
-    <MapSphere stroke="var(--vp-c-border)" />
   </MapBase>
 </div>
 ```

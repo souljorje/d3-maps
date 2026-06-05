@@ -4,20 +4,17 @@ description: Component for D3 SVG map sphere path styling in React and Vue
 
 # MapSphere
 
-Renders the map sphere as a single SVG `<path>`
+Renders the map sphere as an SVG `<g>` wrapper with background and border paths
 
-Use `MapSphere` outside `MapZoom` to keep the outline visually stable while zooming map content
-
-The default `fill` is `none` and the default `stroke` is `none`
-
-Render a filled sphere before content and an outline sphere after content when graticule lines should stay below the border.
+Place map content inside `MapSphere` to render it between the background path and border path. Child content is clipped to the sphere by default.
 
 ## Props
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `fill?` | `string` | `none` | SVG fill for the sphere path |
-| `stroke?` | `string` | `none` | SVG stroke for the sphere path |
+| `fill?` | `string` | `none` | SVG fill for the background sphere path |
+| `stroke?` | `string` | `none` | SVG stroke for the border sphere path |
+| `noClip?` | `boolean` | `false` | Disable clipping child content to the sphere path |
 
 ## Usage
 
@@ -28,18 +25,18 @@ Render a filled sphere before content and an outline sphere after content when g
 ```vue
 <template>
   <MapBase>
-    <MapSphere fill="#f8fafc" />
     <MapZoom>
-      <MapFeatures :data="mapData" fill="#f1f5f9" />
-      <MapGraticule
-        stroke="#94a3b8"
-        :config="{
-          step: [[15, 15]],
-          precision: 2.5,
-        }"
-      />
+      <MapSphere fill="#f8fafc" stroke="#cbd5e1">
+        <MapFeatures :data="mapData" fill="#f1f5f9" />
+        <MapGraticule
+          stroke="#94a3b8"
+          :config="{
+            step: [[15, 15]],
+            precision: 2.5,
+          }"
+        />
+      </MapSphere>
     </MapZoom>
-    <MapSphere stroke="#cbd5e1" />
   </MapBase>
 </template>
 ```
@@ -48,18 +45,18 @@ Render a filled sphere before content and an outline sphere after content when g
 
 ```tsx
 <MapBase>
-  <MapSphere fill="#f8fafc" />
   <MapZoom>
-    <MapFeatures data={mapData} fill="#f1f5f9" />
-    <MapGraticule
-      stroke="#94a3b8"
-      config={{
-        step: [[15, 15]],
-        precision: 2.5,
-      }}
-    />
+    <MapSphere fill="#f8fafc" stroke="#cbd5e1">
+      <MapFeatures data={mapData} fill="#f1f5f9" />
+      <MapGraticule
+        stroke="#94a3b8"
+        config={{
+          step: [[15, 15]],
+          precision: 2.5,
+        }}
+      />
+    </MapSphere>
   </MapZoom>
-  <MapSphere stroke="#cbd5e1" />
 </MapBase>
 ```
 

@@ -2,11 +2,14 @@
   <MapBase
     v-if="data"
   >
-    <MapSphere fill="var(--vp-c-bg-alt)" />
-    <MapGraticule />
-    <MapFeatures :data="data" />
-    <MapMesh :data="data" />
-    <MapSphere stroke="var(--vp-c-border)" />
+    <MapSphere
+      fill="var(--vp-c-bg-alt)"
+      stroke="var(--vp-c-border)"
+    >
+      <MapGraticule />
+      <MapFeatures :data="data" />
+      <MapMesh :data="data" />
+    </MapSphere>
   </MapBase>
 </template>
 

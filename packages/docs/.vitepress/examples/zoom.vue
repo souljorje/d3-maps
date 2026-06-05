@@ -4,31 +4,34 @@
 
     :projection="projection"
   >
-    <MapSphere fill="var(--vp-c-bg-alt)" />
     <MapZoom @zoom="updateMarkerScale">
-      <MapGraticule />
-      <MapFeatures :data="data" />
-      <MapMesh :data="data" />
-      <MapMarker
-        v-for="(item, index) in cities"
-        :key="index"
-        :coordinates="[item.lon, item.lat]"
+      <MapSphere
+        fill="var(--vp-c-bg-alt)"
+        stroke="var(--vp-c-border)"
       >
-        <g :transform="`scale(${markerScale})`">
-          <text
-            font-size="14"
-            y="-8"
-            text-anchor="middle"
-          >
-            {{ item.city }}
-          </text>
-          <circle
-            r="3"
-          />
-        </g>
-      </MapMarker>
+        <MapGraticule />
+        <MapFeatures :data="data" />
+        <MapMesh :data="data" />
+        <MapMarker
+          v-for="(item, index) in cities"
+          :key="index"
+          :coordinates="[item.lon, item.lat]"
+        >
+          <g :transform="`scale(${markerScale})`">
+            <text
+              font-size="14"
+              y="-8"
+              text-anchor="middle"
+            >
+              {{ item.city }}
+            </text>
+            <circle
+              r="3"
+            />
+          </g>
+        </MapMarker>
+      </MapSphere>
     </MapZoom>
-    <MapSphere stroke="var(--vp-c-border)" />
   </MapBase>
 </template>
 

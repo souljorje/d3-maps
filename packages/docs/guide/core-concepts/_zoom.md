@@ -1,46 +1,52 @@
 ## Zoom
 
-[MapZoom](/components/map-zoom) adds pan and zoom behavior. Note: wrap only elements you want to zoom, e.g. `MapSphere` here doesn't need zoom.  
+[MapZoom](/components/map-zoom) adds pan and zoom behavior.
 
 :::tabs key:framework
 
 == Vue
 
-```vue{6-13} [vue]
+```vue{5,17} [vue]
 <template>
   <MapBase
     :projection="geoEquirectangular"
   >
-    <MapSphere fill="var(--vp-c-bg-alt)" />
     <MapZoom>
-      <MapGraticule />
-      <MapFeatures
-        :data="data"
-        :transformer="transformer"
-      />
-      <MapMesh :data="data" stroke="#fff" />
+      <MapSphere
+        fill="var(--vp-c-bg-alt)"
+        stroke="var(--vp-c-border)"
+      >
+        <MapGraticule />
+        <MapFeatures
+          :data="data"
+          :transformer="transformer"
+        />
+        <MapMesh :data="data" stroke="#fff" />
+      </MapSphere>
     </MapZoom>
-    <MapSphere stroke="var(--vp-c-border)" />
   </MapBase>
 </template>
 ```
 
 == React
 
-```tsx{5-12} [react]
+```tsx{4,16} [react]
 <MapBase
   projection={geoEquirectangular}
 >
-  <MapSphere fill="var(--vp-c-bg-alt)" />
   <MapZoom>
-    <MapGraticule />
-    <MapFeatures
-      data={data}
-      transformer={transformer}
-    />
-    <MapMesh data={data} stroke="#fff" />
+    <MapSphere
+      fill="var(--vp-c-bg-alt)"
+      stroke="var(--vp-c-border)"
+    >
+      <MapGraticule />
+      <MapFeatures
+        data={data}
+        transformer={transformer}
+      />
+      <MapMesh data={data} stroke="#fff" />
+    </MapSphere>
   </MapZoom>
-  <MapSphere stroke="var(--vp-c-border)" />
 </MapBase>
 ```
 
