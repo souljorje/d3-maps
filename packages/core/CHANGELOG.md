@@ -1,5 +1,12 @@
 # @d3-maps/core
 
+## 0.14.0
+
+### Minor Changes
+
+- [#43](https://github.com/souljorje/d3-maps/pull/43) [`1ccc793`](https://github.com/souljorje/d3-maps/commit/1ccc793140103f075a4782b6f4356a607a026b20) Thanks [@souljorje](https://github.com/souljorje)! - - Turned `MapSphere` into a wrapper that renders separate background, content, and border layers.
+  - Added `noClip` to opt out of sphere clipping.
+
 ## 0.13.0
 
 ### Minor Changes
