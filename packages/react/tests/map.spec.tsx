@@ -1,4 +1,10 @@
-import { describe, expect, it } from 'vitest'
+import {
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest'
 
 import {
   render,
@@ -16,7 +22,25 @@ import {
   sampleTopologyTwoObjects,
 } from './fixtures'
 
+const makeMapContextSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@d3-maps/core', async () => {
+  const actual = await vi.importActual<typeof import('@d3-maps/core')>('@d3-maps/core')
+
+  return {
+    ...actual,
+    makeMapContext: (...args: Parameters<typeof actual.makeMapContext>) => {
+      makeMapContextSpy(...args)
+      return actual.makeMapContext(...args)
+    },
+  }
+})
+
 describe('map', () => {
+  beforeEach(() => {
+    makeMapContextSpy.mockClear()
+  })
+
   it('renders default viewBox from map defaults', () => {
     render(
       <MapBase
@@ -117,5 +141,31 @@ describe('map', () => {
     expect(screen.getByTestId('toolbar-count').textContent).toBe('1')
     expect(screen.getByTestId('map-svg').getAttribute('viewBox')).toBe('0 0 420 210')
     expect(container.querySelectorAll('path')).toHaveLength(1)
+  })
+
+  it('does not recreate map context on parent rerender with stable props', () => {
+    const stableTransformer = (features: typeof sampleGeoJson.features) => features
+
+    function Harness({ tick }: { tick: number }) {
+      return (
+        <div data-tick={String(tick)}>
+          <MapBase
+            data={sampleGeoJson}
+            width={420}
+            dataTransformer={stableTransformer}
+          >
+            <MapFeatures />
+          </MapBase>
+        </div>
+      )
+    }
+
+    const { rerender } = render(<Harness tick={0} />)
+
+    expect(makeMapContextSpy).toHaveBeenCalledTimes(1)
+
+    rerender(<Harness tick={1} />)
+
+    expect(makeMapContextSpy).toHaveBeenCalledTimes(1)
   })
 })

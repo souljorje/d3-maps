@@ -44,10 +44,11 @@ const props = defineProps<{
   data: MapData
 }>()
 
-const context = useCreateMapContext(computed(() => ({
+const contextConfig = computed(() => ({
   data: props.data,
   width: 420,
-})))
+}))
+const context = useCreateMapContext(contextConfig)
 </script>
 
 <template>
@@ -67,12 +68,17 @@ import {
   useCreateMapContext,
   type MapData,
 } from '@d3-maps/react'
+import { useMemo } from 'react'
 
 export function Example({ data }: { data: MapData }) {
-  const context = useCreateMapContext({
-    data,
-    width: 420,
-  })
+  const contextConfig = useMemo(
+    () => ({
+      data,
+      width: 420,
+    }),
+    [data],
+  )
+  const context = useCreateMapContext(contextConfig)
 
   if (!context) return null
 

@@ -73,15 +73,8 @@ describe('mapFeature', () => {
       global: {
         provide: {
           [mapZoomKey as symbol]: {
-            center: { value: undefined },
-            zoom: { value: 1 },
             minZoom: { value: 1 },
             maxZoom: { value: 8 },
-            setCenter: vi.fn(),
-            setZoom: vi.fn(),
-            zoomTo: vi.fn(),
-            zoomToObject: vi.fn(),
-            reset: vi.fn(),
           },
         },
       },

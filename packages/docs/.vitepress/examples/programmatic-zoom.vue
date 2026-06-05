@@ -9,12 +9,12 @@
         :context="mapContext"
       >
         <MapZoom
-          :center="center"
-          :zoom="zoom"
+          ref="zoom"
           :min-zoom="minZoom"
           :max-zoom="maxZoom"
-          :transition="{ duration: isTransitionOn ? 600 : 0 }"
-          :config="{ filter: isDragOnlyFilter }"
+          :transition="zoomTransition"
+          :config="zoomConfig"
+          @zoom="onZoom"
         >
           <MapGraticule
             border
@@ -28,11 +28,7 @@
                 :data="feature"
                 :data-feature-key="getFeatureKey(feature)"
                 :aria-label="getFeatureLabel(feature)"
-                :styles="{
-                  focus: {
-                    fill: 'lightskyblue',
-                  },
-                }"
+                :styles="featureInteractionStyles"
                 class="cursor-pointer"
                 role="button"
                 tabindex="0"
@@ -58,7 +54,7 @@
           -
         </button>
         <div>
-          {{ zoom.toFixed(1) }}x
+          {{ zoomLevel.toFixed(1) }}x
         </div>
         <button
           type="button"
@@ -93,106 +89,105 @@
 import type {
   MapData,
   MapFeatureData,
+  MapZoomCommands,
+  ZoomEvent,
 } from '@d3-maps/vue'
+import type { ComponentPublicInstance } from 'vue'
 
 import {
   getFeatureKey,
-  getObjectZoomView,
   useCreateMapContext,
 } from '@d3-maps/vue'
 import {
   computed,
-  nextTick,
   onMounted,
-  ref,
+  shallowRef,
+  useTemplateRef,
 } from 'vue'
 
 const initialZoom = 1
 const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
-const data = ref<MapData>()
-const center = ref<[number, number]>()
-const zoom = ref(initialZoom)
-const activeCountryLabel = ref('World')
-const mapRoot = ref<HTMLElement | null>(null)
+const data = shallowRef<MapData>()
+const zoomLevel = shallowRef(initialZoom)
+const activeCountryLabel = shallowRef('World')
+const mapRoot = useTemplateRef<HTMLElement>('mapRoot')
+const zoom = useTemplateRef<ComponentPublicInstance & MapZoomCommands>('zoom')
 
-const mapContext = useCreateMapContext(computed(() => {
+const mapContextConfig = computed(() => {
+  if (!data.value) return undefined
+
   return {
     data: data.value,
   }
-}))
+})
+const mapContext = useCreateMapContext(mapContextConfig)
+const zoomTransition = computed(() => ({ duration: 600 }))
+const zoomConfig = { filter: isDragOnlyFilter }
+const featureInteractionStyles = {
+  focus: {
+    fill: 'lightskyblue',
+  },
+}
 
 onMounted(async () => {
   const { default: mapData } = await import('world-atlas/countries-110m.json')
   data.value = mapData
 })
 
-const isTransitionOn = ref(true)
-
-async function zoomIn() {
-  isTransitionOn.value = false
-  setZoom(zoom.value + zoomStep)
-  await nextTick()
-  isTransitionOn.value = true
+function zoomIn() {
+  zoom.value?.zoomBy(zoomStep)
 }
 
-async function zoomOut() {
-  isTransitionOn.value = false
-  setZoom(zoom.value - zoomStep)
-  await nextTick()
-  isTransitionOn.value = true
+function zoomOut() {
+  zoom.value?.zoomBy(-zoomStep)
 }
 
 function resetView() {
-  center.value = undefined
-  setZoom(initialZoom)
+  zoom.value?.reset()
   activeCountryLabel.value = 'World'
 }
 
-function setZoom(nextZoom: number) {
-  zoom.value = clampZoom(nextZoom)
-}
-
-async function zoomToRandomCountry() {
+function zoomToRandomCountry() {
   if (!mapContext.value) return
 
   const randomIndex = Math.floor(Math.random() * mapContext.value.features.length)
   const feature = mapContext.value.features[randomIndex]
+  if (!feature) return
 
-  const featureElement = mapRoot.value?.querySelector<SVGPathElement>(
-    `[data-feature-key="${getFeatureKey(feature)}"]`,
-  )
-  if (featureElement) {
-    zoomToFeature(feature)
-    featureElement.focus({ preventScroll: true })
-  }
+  zoomToFeature(feature)
+  focusFeatureByKey(getFeatureKey(feature))
 }
 
 function zoomToFeature(feature: MapFeatureData) {
-  if (!mapContext.value) return
-
-  const view = getObjectZoomView(mapContext.value, feature, {
+  const didFit = zoom.value?.zoomToFeature(feature, {
     minZoom,
     maxZoom,
-  })
+  }) ?? false
+  if (!didFit) return
 
-  if (!view) return
-
-  zoom.value = view.zoom
-  center.value = view.center
   activeCountryLabel.value = getFeatureLabel(feature)
+}
+
+function onZoom(event: ZoomEvent) {
+  zoomLevel.value = event.transform.k
 }
 
 function isDragOnlyFilter(event: Event) {
   return event.type !== 'wheel' && event.type !== 'dblclick'
 }
 
-function clampZoom(value: number) {
-  return Math.min(maxZoom, Math.max(minZoom, value))
-}
-
 function getFeatureLabel(feature: MapFeatureData) {
   return feature.properties?.name ?? 'Country'
+}
+
+function focusFeatureByKey(featureKey: string | number | undefined) {
+  if (featureKey === undefined) return
+
+  const featureElement = mapRoot.value?.querySelector<SVGPathElement>(
+    `[data-feature-key="${String(featureKey)}"]`,
+  )
+  featureElement?.focus({ preventScroll: true })
 }
 </script>

@@ -4,34 +4,42 @@ description: Component for D3 SVG map pan and zoom in React and Vue
 
 # MapZoom
 
-Enables zoom and drag behavior using `d3-zoom`.
+Enables pan and zoom behavior using `d3-zoom`.
 
-Wrap layers that should be zoomed inside [MapZoom](/components/map-zoom).
-
-Use [useMapZoom](/helpers/use-map-zoom) inside `MapZoom` when controls or overlays need zoom state
-
-Keep `center` and `zoom` controlled in the parent and update them from the zoom callbacks
+Wrap layers that should move together inside [MapZoom](/components/map-zoom).
 
 ## Props
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `center?` | `[number, number]` | viewport center | Point to be centered in the viewport |
-| `zoom?` | `number` | `1` | Controlled zoom level |
 | `minZoom?` | `number` | `1` | Minimum zoom scale |
 | `maxZoom?` | `number` | `8` | Maximum zoom scale |
-| `transition?` | [ZoomTransition](/api/core/zoom#zoomtransition) | — | Animate zoom with [d3-transition](https://d3js.org/d3-transition) and [d3-ease](https://d3js.org/d3-ease) |
+| `transition?` | [ZoomTransition](/api/core/zoom#zoomtransition) | — | Animate programmatic zoom with [d3-transition](https://d3js.org/d3-transition) |
 | `config?` | [ZoomModifiers](/api/core/zoom#zoommodifiers) | — | See the [guide](#config) below |
 
-### Config
+## Controls
 
-Use `config` to call zoom methods before rendering
+Use the `MapZoom` component ref for programmatic zoom commands.
+
+| Method | Description |
+| --- | --- |
+| `zoomTo(transform, options?)` | Apply a native D3 `ZoomTransform` |
+| `zoomToScale(scale, options?)` | Apply an absolute scale using D3 `scaleTo` |
+| `zoomBy(delta, options?)` | Add or subtract from the current zoom scale |
+| `zoomToFeature(feature, options?)` | Zoom to a GeoJSON feature |
+| `reset(options?)` | Reset to `zoomIdentity` |
+
+## Config
+
+Use `config` to call native `d3-zoom` methods before rendering.
 
 <!--@include: ./_modifiers-args-shape.md-->
 
-See available methods in [d3-zoom docs](https://d3js.org/d3-zoom) and usage example below
+See available methods in [d3-zoom docs](https://d3js.org/d3-zoom).
 
 ## Events
+
+Lifecycle events forward the native D3 zoom event.
 
 :::tabs key:framework
 
@@ -39,19 +47,17 @@ See available methods in [d3-zoom docs](https://d3js.org/d3-zoom) and usage exam
 
 Emits:
 
-- `zoomStart`
-- `zoom`
-- `zoomEnd`
-- `update:center`
-- `update:zoom`
+- `zoomStart(event: ZoomEvent)`
+- `zoom(event: ZoomEvent)`
+- `zoomEnd(event: ZoomEvent)`
 
 == React
 
 Callbacks:
 
-- `onZoomStart`
-- `onZoom`
-- `onZoomEnd`
+- `onZoomStart(event: ZoomEvent)`
+- `onZoom(event: ZoomEvent)`
+- `onZoomEnd(event: ZoomEvent)`
 
 :::
 
@@ -62,17 +68,22 @@ Callbacks:
 == Vue
 
 ```vue
+<script setup lang="ts">
+import type { MapZoomCommands } from '@d3-maps/vue'
+import { type ComponentPublicInstance, useTemplateRef } from 'vue'
+
+const zoom = useTemplateRef<ComponentPublicInstance & MapZoomCommands>('zoom')
+
+function zoomIn() {
+  zoom.value?.zoomBy(0.5)
+}
+</script>
+
 <template>
   <MapZoom
-    v-model:center="center"
-    v-model:zoom="zoom"
+    ref="zoom"
     :min-zoom="1"
     :max-zoom="6"
-    :config="{
-      translateExtent: [[[0, 0], [1200, 800]]], // array wrapper required
-      duration: 250, // single argument can be passed as it is
-      clickDistance: [8], // also can be array-wrapped
-    }"
   >
     <MapFeatures />
   </MapZoom>
@@ -82,25 +93,29 @@ Callbacks:
 == React
 
 ```tsx
-<MapZoom
-  minZoom={1}
-  maxZoom={6}
-  config={{
-    translateExtent: [[[0, 0], [1200, 800]]], // array wrapper required
-    duration: 250, // single argument can be passed as it is
-    clickDistance: [8], // also can be array-wrapped
-  }}
->
-  <MapFeatures />
-</MapZoom>
+import { MapZoom, type MapZoomHandle } from '@d3-maps/react'
+import { useRef } from 'react'
+
+export function Example() {
+  const zoomRef = useRef<MapZoomHandle | null>(null)
+
+  function zoomIn() {
+    zoomRef.current?.zoomBy(0.5)
+  }
+
+  return (
+    <MapZoom
+      ref={zoomRef}
+      minZoom={1}
+      maxZoom={6}
+    >
+      <MapFeatures />
+    </MapZoom>
+  )
+}
 ```
 
 :::
-
-## Helpers
-
-- [useMapZoom](/helpers/use-map-zoom)
-- [getZoomView](/helpers/get-object-zoom-view)
 
 ## Examples
 

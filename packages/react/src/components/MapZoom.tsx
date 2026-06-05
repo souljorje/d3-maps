@@ -1,6 +1,7 @@
 'use client'
 
 import type {
+  DefaultZoomBehavior,
   ZoomEvent,
   ZoomProps,
 } from '@d3-maps/core'
@@ -10,9 +11,13 @@ import type {
   SVGProps,
 } from 'react'
 
+import type { MapZoomCommands } from '../hooks/useCreateMapZoom'
+
 import {
-} from '@d3-maps/core'
-import { useRef } from 'react'
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from 'react'
 
 import {
   MapZoomContextValue,
@@ -20,7 +25,12 @@ import {
 } from '../hooks/internal/mapZoomContext'
 import {
   useCreateMapZoom,
-} from '../hooks/useMapZoom'
+} from '../hooks/useCreateMapZoom'
+
+export interface MapZoomHandle extends MapZoomCommands {
+  container: SVGGElement | null
+  zoomBehavior: DefaultZoomBehavior
+}
 
 export interface MapZoomProps
   extends ZoomProps,
@@ -31,10 +41,11 @@ export interface MapZoomProps
   onZoomEnd?: (event: ZoomEvent) => void
 }
 
-export function MapZoom(props: MapZoomProps): ReactElement {
+export const MapZoom = forwardRef<MapZoomHandle, MapZoomProps>((
+  props,
+  ref,
+): ReactElement => {
   const {
-    center,
-    zoom,
     minZoom,
     maxZoom,
     transition,
@@ -48,11 +59,17 @@ export function MapZoom(props: MapZoomProps): ReactElement {
   } = props
   const containerRef = useRef<SVGGElement | null>(null)
 
-  const { zoomContext } = useCreateMapZoom(
+  const {
+    reset,
+    zoomContext,
+    zoomBehavior,
+    zoomBy,
+    zoomTo,
+    zoomToFeature,
+    zoomToScale,
+  } = useCreateMapZoom(
     containerRef,
     {
-      center,
-      zoom: zoom ?? 1,
       minZoom: minZoom ?? 1,
       maxZoom: maxZoom ?? 8,
       transition,
@@ -64,6 +81,23 @@ export function MapZoom(props: MapZoomProps): ReactElement {
       onZoomEnd,
     },
   )
+
+  useImperativeHandle(ref, () => ({
+    container: containerRef.current,
+    reset,
+    zoomBehavior,
+    zoomBy,
+    zoomTo,
+    zoomToFeature,
+    zoomToScale,
+  }), [
+    reset,
+    zoomBehavior,
+    zoomBy,
+    zoomTo,
+    zoomToFeature,
+    zoomToScale,
+  ])
 
   const mergedClassName = className
     ? `d3-map-zoom ${className}`
@@ -83,4 +117,4 @@ export function MapZoom(props: MapZoomProps): ReactElement {
       </MapZoomContextValue.Provider>
     </MapZoomPresenceContextValue.Provider>
   )
-}
+})

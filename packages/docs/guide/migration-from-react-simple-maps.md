@@ -29,11 +29,14 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 - `Geographies.parseGeographies` -> `MapBase.dataTransformer`  
 
 ```tsx
-import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
-import { useEffect, useState } from 'react'
+import { MapBase, MapFeatures, type MapData, type MapFeatureData } from '@d3-maps/react'
+import { useCallback, useEffect, useState } from 'react'
 
 export function WorldMap() {
   const [data, setData] = useState<MapData | null>(null)
+  const filterAntarctica = useCallback((features: MapFeatureData[]) => {
+    return features.filter((f) => f.properties?.name !== 'Antarctica')
+  }, [])
 
   useEffect(() => {
     import('world-atlas/countries-110m.json')
@@ -45,7 +48,7 @@ export function WorldMap() {
   return (
     <MapBase
       data={data}
-      dataTransformer={(features) => features.filter((f) => f.properties?.name !== 'Antarctica')}
+      dataTransformer={filterAntarctica}
     >
       <MapFeatures />
     </MapBase>
@@ -82,7 +85,6 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 ```tsx
 <MapBase data={data}>
   <MapZoom
-    zoom={1}
     minZoom={1}
     maxZoom={8}
     onZoomStart={() => {}}

@@ -17,14 +17,15 @@ import {
 } from '@d3-maps/core'
 import {
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react'
 
+import { MapZoomPresenceContextValue } from './internal/mapZoomContext'
 import { useLatest } from './useLatest'
-import { useInsideMapZoom } from './useMapZoom'
 
 interface MapObjectEventHandlers<T extends Element> {
   onMouseEnter: MouseEventHandler<T>
@@ -49,7 +50,7 @@ export function useMapObject<TElement extends Element>(
 ): UseMapObjectResult<TElement> {
   const [state, setState] = useState<MapObjectState>('default')
   const stateRef = useRef(state)
-  const insideZoom = useInsideMapZoom()
+  const insideZoom = useContext(MapZoomPresenceContextValue)
 
   // Keep stable DOM handlers while still calling the latest user callbacks
   const onMouseEnterRef = useLatest(options.onMouseEnter)

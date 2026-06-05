@@ -7,7 +7,10 @@ import type {
   SVGProps,
 } from 'react'
 
-import { useMemo } from 'react'
+import {
+  memo,
+  useMemo,
+} from 'react'
 
 import { useMapContext } from '../hooks/useMapContext'
 import { useMapObject } from '../hooks/useMapObject'
@@ -16,7 +19,7 @@ export interface MapFeatureProps
   extends CoreMapFeatureProps<CSSProperties>,
   Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style'> {}
 
-export function MapFeature({
+function MapFeatureComponent({
   data,
   styles,
   ...props
@@ -42,3 +45,5 @@ export function MapFeature({
     />
   )
 }
+
+export const MapFeature = memo(MapFeatureComponent)

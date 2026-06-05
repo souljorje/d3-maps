@@ -1,4 +1,9 @@
-import type { MapData, MapFeatureData } from '@d3-maps/react'
+import type {
+  MapData,
+  MapFeatureData,
+  MapZoomHandle,
+  ZoomEvent,
+} from '@d3-maps/react'
 import type {
   JSX,
   KeyboardEvent as ReactKeyboardEvent,
@@ -6,7 +11,6 @@ import type {
 
 import {
   getFeatureKey,
-  getObjectZoomView,
   MapBase,
   MapFeature,
   MapFeatures,
@@ -17,6 +21,7 @@ import {
 } from '@d3-maps/react'
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -25,21 +30,31 @@ const initialZoom = 1
 const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
+const dragOnlyZoomConfig = { filter: isDragOnlyFilter }
+const featureButtonStyle = { cursor: 'pointer' }
+const featureInteractionStyles = {
+  focus: {
+    fill: 'lightskyblue',
+  },
+}
 
 export default function ProgrammaticZoomExample(): JSX.Element | null {
   const [mapData, setMapData] = useState<MapData>()
-  const [center, setCenter] = useState<[number, number]>()
-  const [zoom, setZoom] = useState(initialZoom)
+  const [zoomLevel, setZoomLevel] = useState(initialZoom)
   const [activeCountryLabel, setActiveCountryLabel] = useState('World')
-  const [isTransitionOn, setIsTransitionOn] = useState(true)
   const mapRootRef = useRef<HTMLDivElement | null>(null)
+  const zoomRef = useRef<MapZoomHandle | null>(null)
 
-  const mapContext = useCreateMapContext(
-    mapData
-      ? {
-          data: mapData,
-        }
-      : undefined,
+  const mapContextConfig = useMemo(
+    () => (mapData ? { data: mapData } : undefined),
+    [mapData],
+  )
+  const mapContext = useCreateMapContext(mapContextConfig)
+  const zoomTransition = useMemo(
+    () => ({
+      duration: 600,
+    }),
+    [],
   )
 
   useEffect(() => {
@@ -63,34 +78,31 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   if (!mapData || !mapContext) return null
 
   function zoomIn(): void {
-    setIsTransitionOn(false)
-    setZoom(clampZoom(zoom + zoomStep))
-    queueMicrotask(() => setIsTransitionOn(true))
+    zoomRef.current?.zoomBy(zoomStep)
   }
 
   function zoomOut(): void {
-    setIsTransitionOn(false)
-    setZoom(clampZoom(zoom - zoomStep))
-    queueMicrotask(() => setIsTransitionOn(true))
+    zoomRef.current?.zoomBy(-zoomStep)
   }
 
   function resetView(): void {
-    setCenter(undefined)
-    setZoom(initialZoom)
+    zoomRef.current?.reset()
     setActiveCountryLabel('World')
   }
 
   function zoomToFeature(feature: MapFeatureData): void {
-    const view = getObjectZoomView(mapContext, feature, {
+    const didFit = zoomRef.current?.zoomToFeature(feature, {
       minZoom,
       maxZoom,
-    })
+    }) ?? false
 
-    if (!view) return
+    if (!didFit) return
 
-    setCenter(view.center)
-    setZoom(view.zoom)
     setActiveCountryLabel(getFeatureLabel(feature))
+  }
+
+  function onZoom(event: ZoomEvent): void {
+    setZoomLevel(event.transform.k)
   }
 
   function onFeatureClick(
@@ -143,14 +155,12 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
           context={mapContext}
         >
           <MapZoom
-            center={center}
-            zoom={zoom}
+            ref={zoomRef}
             minZoom={minZoom}
             maxZoom={maxZoom}
-            transition={{
-              duration: isTransitionOn ? 600 : 0,
-            }}
-            config={{ filter: isDragOnlyFilter }}
+            transition={zoomTransition}
+            config={dragOnlyZoomConfig}
+            onZoom={onZoom}
           >
             <MapGraticule
               border
@@ -165,12 +175,8 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
                   aria-label={getFeatureLabel(feature)}
                   role="button"
                   tabIndex={0}
-                  style={{ cursor: 'pointer' }}
-                  styles={{
-                    focus: {
-                      fill: 'lightskyblue',
-                    },
-                  }}
+                  style={featureButtonStyle}
+                  styles={featureInteractionStyles}
                   onClick={() => onFeatureClick(feature)}
                   onKeyDown={(event) => onFeatureKeyDown(feature, event)}
                 />
@@ -196,7 +202,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
             -
           </button>
           <div>
-            {zoom.toFixed(1)}
+            {zoomLevel.toFixed(1)}
             x
           </div>
           <button
@@ -227,10 +233,6 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
       </div>
     </div>
   )
-}
-
-function clampZoom(value: number): number {
-  return Math.min(maxZoom, Math.max(minZoom, value))
 }
 
 function isDragOnlyFilter(event: Event): boolean {

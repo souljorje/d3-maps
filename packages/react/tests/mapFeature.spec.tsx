@@ -1,22 +1,16 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import {
-  act,
   fireEvent,
   render,
   screen,
 } from '@testing-library/react'
-import {
-  memo,
-  useState,
-} from 'react'
 
 import {
   MapBase,
   MapFeature,
   MapZoom,
 } from '../src'
-import { useMapObject } from '../src/hooks/useMapObject'
 import { sampleGeoJson } from './fixtures'
 
 vi.mock('@d3-maps/core', async () => {
@@ -106,39 +100,5 @@ describe('mapFeature', () => {
 
     fireEvent.mouseUp(window)
     expect(path?.style.opacity).toBe('0.9')
-  })
-
-  it('does not rerender map object hook consumers when only zoom state changes', () => {
-    const renderSpy = vi.fn()
-    let setZoom: ((zoom: number) => void) | undefined
-
-    const Probe = memo(() => {
-      renderSpy()
-      useMapObject<SVGGElement>({})
-      return <g data-testid="map-object-probe" />
-    })
-
-    function Harness() {
-      const [zoom, updateZoom] = useState(1)
-      setZoom = updateZoom
-
-      return (
-        <MapBase data={sampleGeoJson}>
-          <MapZoom zoom={zoom}>
-            <Probe />
-          </MapZoom>
-        </MapBase>
-      )
-    }
-
-    render(<Harness />)
-
-    expect(renderSpy).toHaveBeenCalledTimes(1)
-
-    act(() => {
-      setZoom?.(2)
-    })
-
-    expect(renderSpy).toHaveBeenCalledTimes(1)
   })
 })

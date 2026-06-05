@@ -3,14 +3,21 @@ import { describe, expect, it } from 'vitest'
 import type { MapFeatureData as D3MapFeatureData } from '@d3-maps/core'
 
 import { mount } from '@vue/test-utils'
-import { h } from 'vue'
+import {
+  defineComponent,
+  h,
+  onUpdated,
+} from 'vue'
 
 import {
   MapBase,
   MapFeature,
   MapFeatures,
 } from '../src'
-import { sampleGeoJson } from './fixtures'
+import {
+  sampleGeoJson,
+  sampleGeoJsonTwoFeatures,
+} from './fixtures'
 
 describe('mapFeatures', () => {
   it('renders features by default', () => {
@@ -86,5 +93,74 @@ describe('mapFeatures', () => {
     })
 
     expect(wrapper.find('g[name="features"]').attributes('fill')).toBe('darkorange')
+  })
+
+  it('rerenders default feature items only when feature or style deps change', async () => {
+    let featureRenderCount = 0
+    let featureUpdateCount = 0
+
+    const MapFeatureStub = defineComponent({
+      name: 'MapFeature',
+      setup() {
+        onUpdated(() => {
+          featureUpdateCount += 1
+        })
+
+        return () => {
+          featureRenderCount += 1
+          return h('path', { 'data-testid': 'stub-feature' })
+        }
+      },
+    })
+
+    const Harness = defineComponent({
+      data() {
+        return {
+          tick: 0,
+          styles: {
+            default: { opacity: 0.9 },
+          },
+        }
+      },
+      render() {
+        return h('div', { 'data-tick': String(this.tick) }, [
+          h(MapBase, {
+            data: sampleGeoJsonTwoFeatures,
+          }, {
+            default: () => h(MapFeatures, {
+              styles: this.styles,
+            }),
+          }),
+        ])
+      },
+    })
+
+    const wrapper = mount(Harness, {
+      global: {
+        stubs: {
+          MapFeature: MapFeatureStub,
+        },
+      },
+    })
+
+    expect(wrapper.findAll('[data-testid="stub-feature"]')).toHaveLength(2)
+    expect(featureRenderCount).toBe(2)
+    expect(featureUpdateCount).toBe(0)
+
+    await wrapper.setData({
+      tick: 1,
+    })
+
+    expect(featureRenderCount).toBe(2)
+    expect(featureUpdateCount).toBe(0)
+
+    await wrapper.setData({
+      styles: {
+        default: { opacity: 0.7 },
+      },
+    })
+
+    expect(featureRenderCount).toBe(4)
+    expect(featureUpdateCount).toBe(2)
   })
 })

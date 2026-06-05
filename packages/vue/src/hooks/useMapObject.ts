@@ -14,12 +14,13 @@ import {
 } from '@d3-maps/core'
 import {
   computed,
+  inject,
   onBeforeUnmount,
   ref,
   unref,
 } from 'vue'
 
-import { useMapZoom } from './useMapZoom'
+import { mapZoomKey } from './useCreateMapZoom'
 
 export interface UseMapObjectResult {
   style: ComputedRef<StyleValue | undefined>
@@ -35,7 +36,7 @@ export function useMapObject(
   styles: MaybeRef<Partial<Record<MapObjectState, StyleValue>> | undefined>,
 ): UseMapObjectResult {
   const state = ref<MapObjectState>('default')
-  const insideZoom = Boolean(useMapZoom())
+  const insideZoom = Boolean(inject(mapZoomKey, undefined))
 
   const {
     onMouseenter,

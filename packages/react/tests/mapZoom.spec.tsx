@@ -6,21 +6,49 @@ import {
   vi,
 } from 'vitest'
 
-import type { ZoomTransform } from '@d3-maps/core'
+import type {
+  ZoomBehaviorOptions,
+  ZoomTransform,
+} from '@d3-maps/core'
+import type { RefObject } from 'react'
+
+import type { MapZoomHandle } from '../src/components/MapZoom'
 
 import {
   render,
   screen,
 } from '@testing-library/react'
+import {
+  useContext,
+  useRef,
+} from 'react'
 
 import { MapBase } from '../src/components/MapBase'
+import { MapFeature } from '../src/components/MapFeature'
 import { MapZoom } from '../src/components/MapZoom'
-import { useMapZoom } from '../src/hooks/useMapZoom'
+import { MapZoomContextValue } from '../src/hooks/internal/mapZoomContext'
 import { sampleGeoJson } from './fixtures'
 
-const setupZoomSpy = vi.fn()
-const applyZoomSpy = vi.fn()
-let zoomBehaviorOptions: any
+const setupZoomSpy = vi.hoisted(() => vi.fn())
+const applyZoomTransformSpy = vi.hoisted(() => vi.fn(() => true))
+const getFeatureZoomTransformSpy = vi.hoisted(() => vi.fn())
+const scaleToSpy = vi.hoisted(() => vi.fn(() => true))
+let zoomBehaviorOptions: ZoomBehaviorOptions | undefined
+const useMapObjectSpy = vi.hoisted(() => vi.fn())
+
+interface ApplyZoomTransformOptions {
+  element: SVGElement | null | undefined
+  behavior: unknown
+  transform: ZoomTransform
+  transition?: false | unknown
+}
+
+interface ScaleToOptions {
+  element: SVGElement | null | undefined
+  behavior: unknown
+  scale: number
+  transition?: false | unknown
+}
 
 vi.mock('@d3-maps/core', async () => {
   const actual = await vi.importActual<typeof import('@d3-maps/core')>('@d3-maps/core')
@@ -30,13 +58,17 @@ vi.mock('@d3-maps/core', async () => {
     setupZoom: (...args: Parameters<typeof actual.setupZoom>) => {
       setupZoomSpy(...args)
     },
-    applyZoom: (...args: Parameters<typeof actual.applyZoom>) => {
-      applyZoomSpy(...args)
-      const transform = createTransform(args[0].center, args[0].zoom)
-      zoomBehaviorOptions?.onZoomStart?.({ transform })
-      zoomBehaviorOptions?.onZoom?.({ transform })
-      zoomBehaviorOptions?.onZoomEnd?.({ transform })
+    applyZoomTransform: (options: ApplyZoomTransformOptions) => {
+      return applyZoomTransformSpy(options)
     },
+    scaleTo: (options: ScaleToOptions) => {
+      return scaleToSpy(options)
+    },
+    getFeatureZoomTransform: (
+      context: unknown,
+      feature: unknown,
+      options: unknown,
+    ) => getFeatureZoomTransformSpy(context, feature, options),
     createZoomBehavior: (
       _context: Parameters<typeof actual.createZoomBehavior>[0],
       options: Parameters<typeof actual.createZoomBehavior>[1],
@@ -47,16 +79,34 @@ vi.mock('@d3-maps/core', async () => {
   }
 })
 
+vi.mock('../src/hooks/useMapObject', async () => {
+  const actual = await vi.importActual<typeof import('../src/hooks/useMapObject')>('../src/hooks/useMapObject')
+
+  return {
+    ...actual,
+    useMapObject: (...args: Parameters<typeof actual.useMapObject>) => {
+      useMapObjectSpy(...args)
+      return actual.useMapObject(...args)
+    },
+  }
+})
+
 describe('mapZoom', () => {
   beforeEach(() => {
     setupZoomSpy.mockClear()
-    applyZoomSpy.mockClear()
+    applyZoomTransformSpy.mockClear()
+    applyZoomTransformSpy.mockReturnValue(true)
+    getFeatureZoomTransformSpy.mockClear()
+    getFeatureZoomTransformSpy.mockReturnValue(undefined)
+    scaleToSpy.mockClear()
+    scaleToSpy.mockReturnValue(true)
+    useMapObjectSpy.mockClear()
     zoomBehaviorOptions = undefined
   })
 
-  it('returns undefined outside MapZoom', () => {
+  it('does not provide zoom context outside MapZoom', () => {
     function Probe() {
-      return <text data-testid="zoom-value">{String(useMapZoom())}</text>
+      return <text data-testid="zoom-value">{String(useContext(MapZoomContextValue))}</text>
     }
 
     render(
@@ -68,22 +118,18 @@ describe('mapZoom', () => {
     expect(screen.getByTestId('zoom-value').textContent).toBe('undefined')
   })
 
-  it('wires zoom setup and transform updates', () => {
+  it('wires zoom setup and forwards native D3 zoom events', () => {
     const onZoomStart = vi.fn()
     const onZoom = vi.fn()
     const onZoomEnd = vi.fn()
     const config = { scaleExtent: [[1, 6]] as [[number, number]] }
-    const transition = { duration: 250 }
 
-    const { rerender } = render(
+    render(
       <MapBase data={sampleGeoJson}>
         <MapZoom
           data-testid="map-zoom-group"
-          center={[11, 12]}
-          zoom={2}
           minZoom={1}
           maxZoom={6}
-          transition={transition}
           config={config}
           onZoomStart={onZoomStart}
           onZoom={onZoom}
@@ -94,242 +140,259 @@ describe('mapZoom', () => {
       </MapBase>,
     )
 
-    expect(setupZoomSpy).toHaveBeenCalled()
     expect(setupZoomSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         behavior: expect.any(Object),
         element: expect.any(SVGElement),
       }),
     )
-    expect(applyZoomSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        center: [11, 12],
-        transition,
-        zoom: 2,
-      }),
-    )
-    expect(onZoomStart).toHaveBeenCalled()
-    expect(onZoom).toHaveBeenCalled()
-    expect(onZoomEnd).toHaveBeenCalled()
     expect(zoomBehaviorOptions?.config).toEqual({ scaleExtent: [[1, 6]] })
 
-    const zoomGroup = screen.getByTestId('map-zoom-group')
-    expect(zoomGroup?.getAttribute('transform')).toContain('translate')
+    const event = { transform: createTransform(2) } as any
+    zoomBehaviorOptions?.onZoomStart?.(event)
+    zoomBehaviorOptions?.onZoom?.(event)
+    zoomBehaviorOptions?.onZoomEnd?.(event)
+
+    expect(onZoomStart).toHaveBeenCalledWith(event)
+    expect(onZoom).toHaveBeenCalledWith(event)
+    expect(onZoomEnd).toHaveBeenCalledWith(event)
+    expect(screen.getByTestId('map-zoom-group').getAttribute('transform')).toContain('translate')
+  })
+
+  it('keeps the same zoom behavior when only callbacks change and uses the latest handlers', () => {
+    const firstOnZoom = vi.fn()
+    const nextOnZoom = vi.fn()
+
+    const { rerender } = render(
+      <MapBase data={sampleGeoJson}>
+        <MapZoom onZoom={firstOnZoom} />
+      </MapBase>,
+    )
+
+    expect(setupZoomSpy).toHaveBeenCalledTimes(1)
 
     rerender(
       <MapBase data={sampleGeoJson}>
-        <MapZoom
-          data-testid="map-zoom-group"
-          center={[99, 100]}
-          zoom={3}
-          minZoom={1}
-          maxZoom={6}
-          transition={transition}
-          config={config}
-          onZoomStart={onZoomStart}
-          onZoom={onZoom}
-          onZoomEnd={onZoomEnd}
-        >
-          <g data-testid="zoom-content" />
+        <MapZoom onZoom={nextOnZoom} />
+      </MapBase>,
+    )
+
+    expect(setupZoomSpy).toHaveBeenCalledTimes(1)
+
+    const event = { transform: createTransform(2) } as any
+    zoomBehaviorOptions?.onZoom?.(event)
+
+    expect(firstOnZoom).not.toHaveBeenCalled()
+    expect(nextOnZoom).toHaveBeenCalledWith(event)
+  })
+
+  it('exposes zoomTo and applies a native D3 zoom transform', () => {
+    let zoomRef: RefObject<MapZoomHandle | null> | undefined
+
+    function Probe() {
+      zoomRef = useRef<MapZoomHandle | null>(null)
+      return (
+        <MapZoom ref={zoomRef} />
+      )
+    }
+
+    render(
+      <MapBase data={sampleGeoJson}>
+        <Probe />
+      </MapBase>,
+    )
+
+    const transform = createTransform(3)
+
+    expect(zoomRef?.current?.zoomTo(transform, { transition: false })).toBe(true)
+    expect(applyZoomTransformSpy).toHaveBeenCalledWith(expect.objectContaining({
+      element: expect.any(SVGElement),
+      transform,
+      transition: false,
+    }))
+  })
+
+  it('exposes zoomBy and zoomToScale through D3 scale helpers', () => {
+    let zoomRef: RefObject<MapZoomHandle | null> | undefined
+
+    function Probe() {
+      zoomRef = useRef<MapZoomHandle | null>(null)
+      return (
+        <MapZoom ref={zoomRef} />
+      )
+    }
+
+    render(
+      <MapBase data={sampleGeoJson}>
+        <Probe />
+      </MapBase>,
+    )
+
+    expect(zoomRef?.current?.zoomBy(0.5, { transition: false })).toBe(true)
+    expect(zoomRef?.current?.zoomToScale(3, { transition: false })).toBe(true)
+    expect(scaleToSpy).toHaveBeenCalledWith(expect.objectContaining({
+      element: expect.any(SVGElement),
+      scale: 1.5,
+      transition: false,
+    }))
+    expect(scaleToSpy).toHaveBeenCalledWith(expect.objectContaining({
+      scale: 3,
+      transition: false,
+    }))
+  })
+
+  it('exposes zoomToFeature and resolves the feature transform through core', () => {
+    let zoomRef: RefObject<MapZoomHandle | null> | undefined
+
+    function Probe() {
+      zoomRef = useRef<MapZoomHandle | null>(null)
+      return (
+        <MapZoom ref={zoomRef} />
+      )
+    }
+
+    render(
+      <MapBase data={sampleGeoJson}>
+        <Probe />
+      </MapBase>,
+    )
+
+    const feature = sampleGeoJson.features[0]
+    const transform = createTransform(4)
+    getFeatureZoomTransformSpy.mockReturnValue(transform)
+
+    expect(zoomRef?.current?.zoomToFeature(feature, {
+      minZoom: 2,
+      padding: 12,
+      transition: false,
+    })).toBe(true)
+
+    expect(getFeatureZoomTransformSpy).toHaveBeenCalledWith(
+      expect.any(Object),
+      feature,
+      expect.objectContaining({
+        maxZoom: 8,
+        minZoom: 2,
+        padding: 12,
+      }),
+    )
+    expect(applyZoomTransformSpy).toHaveBeenCalledWith(expect.objectContaining({
+      transform,
+      transition: false,
+    }))
+  })
+
+  it('returns false when zoomToFeature cannot resolve a transform', () => {
+    let zoomRef: RefObject<MapZoomHandle | null> | undefined
+
+    function Probe() {
+      zoomRef = useRef<MapZoomHandle | null>(null)
+      return (
+        <MapZoom ref={zoomRef} />
+      )
+    }
+
+    render(
+      <MapBase data={sampleGeoJson}>
+        <Probe />
+      </MapBase>,
+    )
+
+    expect(zoomRef?.current?.zoomToFeature(sampleGeoJson.features[0])).toBe(false)
+    expect(applyZoomTransformSpy).not.toHaveBeenCalled()
+  })
+
+  it('exposes reset and applies the identity transform', () => {
+    let zoomRef: RefObject<MapZoomHandle | null> | undefined
+
+    function Probe() {
+      zoomRef = useRef<MapZoomHandle | null>(null)
+      return (
+        <MapZoom ref={zoomRef} />
+      )
+    }
+
+    render(
+      <MapBase data={sampleGeoJson}>
+        <Probe />
+      </MapBase>,
+    )
+
+    expect(zoomRef?.current?.reset({ transition: false })).toBe(true)
+    expect(applyZoomTransformSpy).toHaveBeenCalledWith(expect.objectContaining({
+      transform: expect.objectContaining({
+        k: 1,
+        x: 0,
+        y: 0,
+      }),
+      transition: false,
+    }))
+  })
+
+  it('changing zoom props does not rerender stable feature children that only need zoom presence', () => {
+    const { rerender } = render(
+      <MapBase data={sampleGeoJson}>
+        <MapZoom minZoom={1}>
+          <MapFeature data={sampleGeoJson.features[0]} />
         </MapZoom>
       </MapBase>,
     )
 
-    expect(applyZoomSpy).toHaveBeenLastCalledWith(
-      expect.objectContaining({
-        center: [99, 100],
-        transition,
-        zoom: 3,
-      }),
-    )
-  })
-
-  it('recreates zoom behavior without a redundant apply', () => {
-    const transition = { duration: 250 }
-    const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
-        <MapZoom
-          center={[11, 12]}
-          zoom={2}
-          minZoom={1}
-          maxZoom={6}
-          transition={transition}
-          config={{ scaleExtent: [[1, 6]] }}
-        />
-      </MapBase>,
-    )
-
-    expect(setupZoomSpy).toHaveBeenCalledTimes(1)
-    expect(applyZoomSpy).toHaveBeenCalledTimes(1)
+    expect(useMapObjectSpy).toHaveBeenCalledTimes(1)
 
     rerender(
       <MapBase data={sampleGeoJson}>
-        <MapZoom
-          center={[11, 12]}
-          zoom={2}
-          minZoom={1}
-          maxZoom={6}
-          transition={transition}
-          config={{ scaleExtent: [[1, 8]] }}
-        />
+        <MapZoom minZoom={2}>
+          <MapFeature data={sampleGeoJson.features[0]} />
+        </MapZoom>
       </MapBase>,
     )
 
-    expect(setupZoomSpy).toHaveBeenCalledTimes(2)
-    expect(applyZoomSpy).toHaveBeenCalledTimes(2)
-    expect(applyZoomSpy).toHaveBeenLastCalledWith(
-      expect.objectContaining({
-        center: [11, 12],
-        transition,
-        zoom: 2,
-      }),
-    )
+    expect(useMapObjectSpy).toHaveBeenCalledTimes(1)
   })
 
-  it('does not reapply zoom when center values are unchanged', () => {
-    const transition = { duration: 250 }
-    const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
-        <MapZoom
-          center={[11, 12]}
-          zoom={2}
-          transition={transition}
-        />
-      </MapBase>,
-    )
-
-    expect(setupZoomSpy).toHaveBeenCalledTimes(1)
-    expect(applyZoomSpy).toHaveBeenCalledTimes(1)
-
-    rerender(
-      <MapBase data={sampleGeoJson}>
-        <MapZoom
-          center={[11, 12]}
-          zoom={2}
-          transition={transition}
-        />
-      </MapBase>,
-    )
-
-    expect(setupZoomSpy).toHaveBeenCalledTimes(1)
-    expect(applyZoomSpy).toHaveBeenCalledTimes(1)
-  })
-
-  it('keeps the same zoom behavior when only callbacks change and uses the latest handlers', () => {
-    const center: [number, number] = [11, 12]
-    const firstOnZoomStart = vi.fn()
-    const firstOnZoom = vi.fn()
-    const firstOnZoomEnd = vi.fn()
-    const nextOnZoomStart = vi.fn()
-    const nextOnZoom = vi.fn()
-    const nextOnZoomEnd = vi.fn()
-
-    const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
-        <MapZoom
-          center={center}
-          zoom={2}
-          onZoomStart={firstOnZoomStart}
-          onZoom={firstOnZoom}
-          onZoomEnd={firstOnZoomEnd}
-        />
-      </MapBase>,
-    )
-
-    expect(setupZoomSpy).toHaveBeenCalledTimes(1)
-    expect(applyZoomSpy).toHaveBeenCalledTimes(1)
-
-    firstOnZoomStart.mockClear()
-    firstOnZoom.mockClear()
-    firstOnZoomEnd.mockClear()
-
-    rerender(
-      <MapBase data={sampleGeoJson}>
-        <MapZoom
-          center={center}
-          zoom={2}
-          onZoomStart={nextOnZoomStart}
-          onZoom={nextOnZoom}
-          onZoomEnd={nextOnZoomEnd}
-        />
-      </MapBase>,
-    )
-
-    expect(setupZoomSpy).toHaveBeenCalledTimes(1)
-    expect(applyZoomSpy).toHaveBeenCalledTimes(1)
-
-    const transform = createTransform([11, 12], 2)
-    zoomBehaviorOptions?.onZoomStart?.({ transform })
-    zoomBehaviorOptions?.onZoom?.({ transform })
-    zoomBehaviorOptions?.onZoomEnd?.({ transform })
-
-    expect(firstOnZoomStart).not.toHaveBeenCalled()
-    expect(firstOnZoom).not.toHaveBeenCalled()
-    expect(firstOnZoomEnd).not.toHaveBeenCalled()
-    expect(nextOnZoomStart).toHaveBeenCalledTimes(1)
-    expect(nextOnZoom).toHaveBeenCalledTimes(1)
-    expect(nextOnZoomEnd).toHaveBeenCalledTimes(1)
-  })
-
-  it('exposes zoom state', () => {
-    let zoomApi: ReturnType<typeof useMapZoom> | undefined
-    const onZoomToObject = vi.fn()
+  it('provides zoom context to descendants', () => {
+    let zoomContext:
+      | {
+        maxZoom: number
+        minZoom: number
+      }
+      | undefined
 
     function Probe() {
-      zoomApi = useMapZoom()
+      zoomContext = useContext(MapZoomContextValue)
       return (
         <text data-testid="zoom-value">
-          {`${zoomApi?.zoom ?? 'none'}:${zoomApi?.center?.[0] ?? 'none'}`}
+          {`${zoomContext?.minZoom ?? 'none'}:${zoomContext?.maxZoom ?? 'none'}`}
         </text>
       )
     }
 
-    const { rerender } = render(
+    render(
       <MapBase data={sampleGeoJson}>
-        <MapZoom center={[20, 30]} zoom={2}>
+        <MapZoom
+          minZoom={2}
+          maxZoom={9}
+        >
           <Probe />
         </MapZoom>
       </MapBase>,
     )
 
-    expect(screen.getByTestId('zoom-value').textContent).toBe('2:20')
-    expect(zoomApi).toMatchObject({
-      maxZoom: 8,
-      minZoom: 1,
-      zoom: 2,
+    expect(screen.getByTestId('zoom-value').textContent).toBe('2:9')
+    expect(zoomContext).toMatchObject({
+      maxZoom: 9,
+      minZoom: 2,
     })
-
-    zoomApi?.zoomToObject(sampleGeoJson.features[0], onZoomToObject)
-
-    expect(onZoomToObject).toHaveBeenCalledWith(expect.objectContaining({
-      center: expect.any(Array),
-      zoom: expect.any(Number),
-    }))
-
-    rerender(
-      <MapBase data={sampleGeoJson}>
-        <MapZoom center={[40, 50]} zoom={3}>
-          <Probe />
-        </MapZoom>
-      </MapBase>,
-    )
-
-    expect(screen.getByTestId('zoom-value').textContent).toBe('3:40')
   })
 })
 
-function createTransform(
-  center: [number, number] | undefined,
-  zoom: number | undefined,
-): ZoomTransform {
-  const resolvedCenter = center ?? [300, 150]
-  const resolvedZoom = zoom ?? 1
-
+function createTransform(zoom: number): ZoomTransform {
   return {
-    k: resolvedZoom,
+    k: zoom,
     x: 0,
     y: 0,
-    invert: () => resolvedCenter,
-    toString: () => `translate(0,0) scale(${resolvedZoom})`,
+    invert: () => [200, 150],
+    toString: () => `translate(0,0) scale(${zoom})`,
   } as unknown as ZoomTransform
 }

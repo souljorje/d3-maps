@@ -1,6 +1,6 @@
 'use client'
 
-import type { MapZoomState } from '../useMapZoom'
+import type { MapZoomState } from '../useCreateMapZoom'
 
 import { createContext } from 'react'
 
