@@ -35,7 +35,7 @@
                   class="cursor-pointer"
                   role="button"
                   tabindex="0"
-                  @focus="zoomToFeature(feature)"
+                  @click="zoomToFeature(feature)"
                   @keydown.enter.space.prevent="zoomToFeature(feature)"
                 />
               </template>
