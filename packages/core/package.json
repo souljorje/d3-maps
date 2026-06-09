@@ -1,7 +1,7 @@
 {
   "name": "@d3-maps/core",
   "type": "module",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "private": false,
   "description": "Framework-agnostic utilities for building interactive SVG maps with D3",
   "author": "Georgii Bukharov <souljorje@gmail.com>",
