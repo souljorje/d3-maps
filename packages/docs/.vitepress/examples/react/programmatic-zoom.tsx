@@ -1,5 +1,4 @@
 import type {
-  MapData,
   MapFeatureData,
   MapZoomRef,
   ZoomEvent,
@@ -21,7 +20,7 @@ import {
   useMapZoom,
 } from '@d3-maps/react'
 import {
-  useEffect,
+  use,
   useMemo,
   useRef,
   useState,
@@ -40,8 +39,10 @@ const featureInteractionStyles = {
   },
 }
 
+const mapDataPromise = import('world-atlas/countries-110m.json').then((m) => m.default)
+
 export default function ProgrammaticZoomExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapData>()
+  const mapData = use(mapDataPromise)
   const [zoomLevel, setZoomLevel] = useState(initialZoom)
   const [activeCountryLabel, setActiveCountryLabel] = useState('World')
   const mapRootRef = useRef<HTMLDivElement | null>(null)
@@ -54,25 +55,7 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   )
   const mapContext = useCreateMapContext(mapContextConfig)
 
-  useEffect(() => {
-    let isCancelled = false
-
-    async function loadMap(): Promise<void> {
-      const { default: payload } = await import('world-atlas/countries-110m.json')
-
-      if (!isCancelled) {
-        setMapData(payload)
-      }
-    }
-
-    loadMap()
-
-    return () => {
-      isCancelled = true
-    }
-  }, [])
-
-  if (!mapData || !mapContext) return null
+  if (!mapContext) return null
 
   function zoomIn(): void {
     zoom.scaleWith(zoomStep)

@@ -1,5 +1,3 @@
-import type { MapData } from '@d3-maps/react'
-
 import {
   MapBase,
   MapFeatures,
@@ -7,10 +5,7 @@ import {
   MapMarker,
 } from '@d3-maps/react'
 import { curveBasis } from 'd3-shape'
-import {
-  useEffect,
-  useState,
-} from 'react'
+import { use } from 'react'
 
 const cities = [
   { name: 'San Francisco', coordinates: [-122.4194, 37.7749] },
@@ -39,100 +34,77 @@ const returnFlight = [
   cities[0].coordinates,
 ]
 
-export default function ConnectionsExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapData>()
+const mapDataPromise = import('world-atlas/countries-110m.json').then((m) => m.default)
 
-  useEffect(() => {
-    let isCancelled = false
+export default function ConnectionsExample(): JSX.Element {
+  const mapData = use(mapDataPromise)
 
-    async function loadMap(): Promise<void> {
-      const { default: payload } = await import('world-atlas/countries-110m.json')
+  return (
+    <MapBase data={mapData}>
+      <MapFeatures />
 
-      if (!isCancelled) {
-        setMapData(payload)
-      }
-    }
-
-    loadMap()
-
-    return () => {
-      isCancelled = true
-    }
-  }, [])
-
-  return mapData
-    ? (
-        <MapBase data={mapData}>
-          <MapFeatures />
-
-          {
-            cities.map((city) => (
-              <MapMarker
-                key={city.name}
-                coordinates={city.coordinates}
-              >
-                <circle r={3} />
-                <text
-                  y={city.name === 'Tbilisi' ? -8 : 14}
-                  fontSize={12}
-                  textAnchor="middle"
-                >
-                  {city.name}
-                </text>
-              </MapMarker>
-            ))
-          }
-
-          {/* Path per each connection */}
-          {
-            directFlights.map(([flightFrom, flightTo]) => (
-              <MapLine
-                key={`${flightFrom.name}-${flightTo.name}`}
-                coordinates={[flightFrom.coordinates, flightTo.coordinates]}
-                strokeWidth={1.5}
-                markerEnd="url(#connections-arrow)"
-              />
-            ))
-          }
-
-          {/* Single path for all connections */}
-          <MapLine
-            coordinates={transitFlight}
-            strokeWidth={1.5}
-            strokeDasharray="4 4"
-            markerEnd="url(#connections-arrow)"
-          />
-
-          {/* Custom curved path for manual display control,
-          instead of native render */}
-          <MapLine
-            coordinates={returnFlight}
-            custom
-            curve={curveBasis}
-            midpoint={[0, 25]}
-            strokeWidth={1.5}
-            strokeDasharray="2 2"
-            markerEnd="url(#connections-arrow)"
-          />
-
-          {/* Custom line end */}
-          <defs>
-            <marker
-              id="connections-arrow"
-              viewBox="0 0 10 10"
-              refX={14}
-              refY={5}
-              markerWidth={5}
-              markerHeight={5}
-              orient="auto-start-reverse"
+      {
+        cities.map((city) => (
+          <MapMarker
+            key={city.name}
+            coordinates={city.coordinates}
+          >
+            <circle r={3} />
+            <text
+              y={city.name === 'Tbilisi' ? -8 : 14}
+              fontSize={12}
+              textAnchor="middle"
             >
-              <path
-                d="M 0 0 L 10 5 L 0 10 z"
-                fill="var(--vp-c-brand-3)"
-              />
-            </marker>
-          </defs>
-        </MapBase>
-      )
-    : null
+              {city.name}
+            </text>
+          </MapMarker>
+        ))
+      }
+
+      {
+        directFlights.map(([flightFrom, flightTo]) => (
+          <MapLine
+            key={`${flightFrom.name}-${flightTo.name}`}
+            coordinates={[flightFrom.coordinates, flightTo.coordinates]}
+            strokeWidth={1.5}
+            markerEnd="url(#connections-arrow)"
+          />
+        ))
+      }
+
+      <MapLine
+        coordinates={transitFlight}
+        strokeWidth={1.5}
+        strokeDasharray="4 4"
+        markerEnd="url(#connections-arrow)"
+      />
+
+      <MapLine
+        coordinates={returnFlight}
+        custom
+        curve={curveBasis}
+        midpoint={[0, 25]}
+        strokeWidth={1.5}
+        strokeDasharray="2 2"
+        markerEnd="url(#connections-arrow)"
+      />
+
+      <defs>
+        <marker
+          id="connections-arrow"
+          viewBox="0 0 10 10"
+          refX={14}
+          refY={5}
+          markerWidth={5}
+          markerHeight={5}
+          orient="auto-start-reverse"
+        >
+          <path
+            d="M 0 0 L 10 5 L 0 10 z"
+            fill="var(--vp-c-brand-3)"
+          />
+        </marker>
+      </defs>
+    </MapBase>
+  )
 }

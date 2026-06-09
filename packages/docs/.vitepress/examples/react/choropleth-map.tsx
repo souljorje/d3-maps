@@ -1,4 +1,4 @@
-import type { MapData, MapFeatureData } from '@d3-maps/react'
+import type { MapFeatureData } from '@d3-maps/react'
 
 import {
   MapBase,
@@ -7,12 +7,7 @@ import {
 } from '@d3-maps/react'
 import { extent } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { use, useCallback, useMemo } from 'react'
 import { withBase } from 'vitepress'
 
 interface CountryStat {
@@ -21,61 +16,23 @@ interface CountryStat {
 }
 
 export default function ChoroplethMapExample(): JSX.Element {
-  const [mapData, setMapData] = useState<MapData>()
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
-  const [data, setData] = useState<CountryStat[]>([])
+  const mapData = use(import('world-atlas/countries-110m.json').then((m) => m.default))
+  const rawData = use(fetch(withBase('/example-data/choropleth-data.json')).then((r) => r.json()))
 
-  useEffect(() => {
-    let isCancelled = false
+  const data: CountryStat[] = useMemo(() => {
+    return (rawData as Record<string, unknown>[]).map((item: Record<string, unknown>) => {
+      const id = item['country-code']
+      if (typeof id !== 'string') {
+        return { id: '', value: 0 }
+      }
 
-    async function fetchMap(): Promise<MapData> {
-      const { default: mapData } = await import('world-atlas/countries-110m.json')
-      return mapData
-    }
-
-    async function fetchData(): Promise<CountryStat[]> {
-      const response = await fetch(withBase('/example-data/choropleth-data.json'))
-      const rawData = await response.json()
-
-      return rawData.map((item: Record<string, unknown>) => {
-        const id = item['country-code']
-        if (typeof id !== 'string') {
-          return { id: '', value: 0 }
-        }
-
-        return {
-          ...item,
-          id,
-          value: Number(id),
-        }
-      })
-    }
-
-    Promise.all([fetchMap(), fetchData()])
-      .then(([loadedMap, loadedData]) => {
-        if (isCancelled) {
-          return
-        }
-
-        setMapData(loadedMap)
-        setData(loadedData)
-      })
-      .catch(() => {
-        if (!isCancelled) {
-          setError(true)
-        }
-      })
-      .finally(() => {
-        if (!isCancelled) {
-          setLoading(false)
-        }
-      })
-
-    return () => {
-      isCancelled = true
-    }
-  }, [])
+      return {
+        ...item,
+        id,
+        value: Number(id),
+      }
+    })
+  }, [rawData])
 
   const minAndMaxValues = useMemo(() => {
     return extent(data, (item) => item.value)
@@ -106,14 +63,6 @@ export default function ChoroplethMapExample(): JSX.Element {
     data,
     colorScale,
   ])
-
-  if (loading) {
-    return <div>Loading...</div>
-  }
-
-  if (error || !mapData) {
-    return <div>An error occurred</div>
-  }
 
   return (
     <MapBase

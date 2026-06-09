@@ -30,20 +30,15 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 
 ```tsx
 import { MapBase, MapFeatures, type MapData, type MapFeatureData } from '@d3-maps/react'
-import { useCallback, useEffect, useState } from 'react'
+import { use, useCallback } from 'react'
+
+const mapDataPromise = import('world-atlas/countries-110m.json').then((m) => m.default)
 
 export function WorldMap() {
-  const [data, setData] = useState<MapData | null>(null)
+  const data = use(mapDataPromise)
   const filterAntarctica = useCallback((features: MapFeatureData[]) => {
     return features.filter((f) => f.properties?.name !== 'Antarctica')
   }, [])
-
-  useEffect(() => {
-    import('world-atlas/countries-110m.json')
-      .then(({ default: json }) => setData(json))
-  }, [])
-
-  if (!data) return null
 
   return (
     <MapBase

@@ -1,5 +1,3 @@
-import type { MapData } from '@d3-maps/react'
-
 import {
   MapBase,
   MapFeatures,
@@ -7,7 +5,7 @@ import {
   MapMarker,
   MapMesh,
 } from '@d3-maps/react'
-import { useEffect, useState } from 'react'
+import { use } from 'react'
 
 interface City {
   city: string
@@ -25,53 +23,35 @@ const cities: City[] = [
   { city: 'Georgetown', lon: -58.1, lat: 6.48 },
 ]
 
-export default function MarkersExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapData>()
+const mapDataPromise = import('world-atlas/countries-110m.json').then((m) => m.default)
 
-  useEffect(() => {
-    let isCancelled = false
+export default function MarkersExample(): JSX.Element {
+  const mapData = use(mapDataPromise)
 
-    async function loadMap(): Promise<void> {
-      const { default: payload } = await import('world-atlas/countries-110m.json')
-
-      if (!isCancelled) {
-        setMapData(payload)
+  return (
+    <MapBase data={mapData}>
+      <MapGraticule border />
+      <MapFeatures />
+      <MapMesh />
+      {
+        cities.map((item) => (
+          <MapMarker
+            key={item.city}
+            coordinates={[item.lon, item.lat]}
+          >
+            <text
+              fontSize="14"
+              y={-6}
+              textAnchor="middle"
+            >
+              {item.city}
+            </text>
+            <circle
+              r={3}
+            />
+          </MapMarker>
+        ))
       }
-    }
-
-    loadMap()
-
-    return () => {
-      isCancelled = true
-    }
-  }, [])
-
-  return mapData
-    ? (
-        <MapBase data={mapData}>
-          <MapGraticule border />
-          <MapFeatures />
-          <MapMesh />
-          {
-            cities.map((item) => (
-              <MapMarker
-                key={item.city}
-                coordinates={[item.lon, item.lat]}
-              >
-                <text
-                  fontSize="14"
-                  y={-6}
-                  textAnchor="middle"
-                >
-                  {item.city}
-                </text>
-                <circle
-                  r={3}
-                />
-              </MapMarker>
-            ))
-          }
-        </MapBase>
-      )
-    : null
+    </MapBase>
+  )
 }

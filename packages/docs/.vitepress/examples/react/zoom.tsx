@@ -1,4 +1,4 @@
-import type { MapData, ZoomEvent } from '@d3-maps/react'
+import type { ZoomEvent } from '@d3-maps/react'
 
 import {
   MapBase,
@@ -10,7 +10,7 @@ import {
 } from '@d3-maps/react'
 import { geoNaturalEarth1 } from 'd3-geo'
 import {
-  useEffect,
+  use,
   useRef,
   useState,
 } from 'react'
@@ -31,28 +31,12 @@ const initialCities: City[] = [
   { city: 'Georgetown', lon: -58.1, lat: 6.48 },
 ]
 
-export default function ZoomExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapData>()
+const mapDataPromise = import('world-atlas/countries-110m.json').then((m) => m.default)
+
+export default function ZoomExample(): JSX.Element {
+  const mapData = use(mapDataPromise)
   const [markerScale, setMarkerScale] = useState(1)
   const currentZoomRef = useRef(1)
-
-  useEffect(() => {
-    let isCancelled = false
-
-    async function loadMap(): Promise<void> {
-      const { default: payload } = await import('world-atlas/countries-110m.json')
-
-      if (!isCancelled) {
-        setMapData(payload)
-      }
-    }
-
-    loadMap()
-
-    return () => {
-      isCancelled = true
-    }
-  }, [])
 
   function updateMarkerScale(event: ZoomEvent): void {
     if (currentZoomRef.current === event.transform.k) {
@@ -63,39 +47,37 @@ export default function ZoomExample(): JSX.Element | null {
     setMarkerScale(1 / event.transform.k)
   }
 
-  return mapData
-    ? (
-        <MapBase
-          data={mapData}
-          projection={geoNaturalEarth1}
-        >
-          <MapZoom onZoom={updateMarkerScale}>
-            <MapGraticule border />
-            <MapFeatures />
-            <MapMesh />
-            {
-              initialCities.map((item) => (
-                <MapMarker
-                  key={item.city}
-                  coordinates={[item.lon, item.lat]}
+  return (
+    <MapBase
+      data={mapData}
+      projection={geoNaturalEarth1}
+    >
+      <MapZoom onZoom={updateMarkerScale}>
+        <MapGraticule border />
+        <MapFeatures />
+        <MapMesh />
+        {
+          initialCities.map((item) => (
+            <MapMarker
+              key={item.city}
+              coordinates={[item.lon, item.lat]}
+            >
+              <g transform={`scale(${markerScale})`}>
+                <text
+                  fontSize="14"
+                  y={-8}
+                  textAnchor="middle"
                 >
-                  <g transform={`scale(${markerScale})`}>
-                    <text
-                      fontSize="14"
-                      y={-8}
-                      textAnchor="middle"
-                    >
-                      {item.city}
-                    </text>
-                    <circle
-                      r={3}
-                    />
-                  </g>
-                </MapMarker>
-              ))
-            }
-          </MapZoom>
-        </MapBase>
-      )
-    : null
+                  {item.city}
+                </text>
+                <circle
+                  r={3}
+                />
+              </g>
+            </MapMarker>
+          ))
+        }
+      </MapZoom>
+    </MapBase>
+  )
 }

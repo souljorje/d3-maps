@@ -1,4 +1,4 @@
-import type { MapData, ZoomEvent } from '@d3-maps/react'
+import type { ZoomEvent } from '@d3-maps/react'
 
 import {
   getInverseZoomScale,
@@ -11,11 +11,7 @@ import {
 import { extent } from 'd3-array'
 import { geoAlbersUsa } from 'd3-geo'
 import { scaleLinear } from 'd3-scale'
-import {
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { use, useMemo, useState } from 'react'
 import { withBase } from 'vitepress'
 
 interface City {
@@ -26,49 +22,9 @@ interface City {
 }
 
 export default function BubbleMapExample(): JSX.Element {
-  const [mapData, setMapData] = useState<MapData>()
-  const [cities, setCities] = useState<City[]>([])
+  const mapData = use(fetch(withBase('/example-data/states-10m.json')).then((r) => r.json()))
+  const cities: City[] = use(fetch(withBase('/example-data/us-cities.json')).then((r) => r.json()))
   const [markerScale, setMarkerScale] = useState(1)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
-
-  useEffect(() => {
-    let isCancelled = false
-
-    async function fetchMap(): Promise<MapData> {
-      const response = await fetch(withBase('/example-data/states-10m.json'))
-      return response.json()
-    }
-
-    async function fetchData(): Promise<City[]> {
-      const response = await fetch(withBase('/example-data/us-cities.json'))
-      return response.json()
-    }
-
-    Promise.all([fetchMap(), fetchData()])
-      .then(([loadedMap, loadedCities]) => {
-        if (isCancelled) {
-          return
-        }
-
-        setMapData(loadedMap)
-        setCities(loadedCities)
-      })
-      .catch(() => {
-        if (!isCancelled) {
-          setError(true)
-        }
-      })
-      .finally(() => {
-        if (!isCancelled) {
-          setLoading(false)
-        }
-      })
-
-    return () => {
-      isCancelled = true
-    }
-  }, [])
 
   const minAndMaxValues = useMemo(() => {
     return extent(cities, (item) => Number(item.population))
@@ -90,14 +46,6 @@ export default function BubbleMapExample(): JSX.Element {
 
   function updateMarkerScale(event: ZoomEvent): void {
     setMarkerScale(getInverseZoomScale(event))
-  }
-
-  if (loading) {
-    return <div>Loading...</div>
-  }
-
-  if (error || !mapData) {
-    return <div>An error occurred</div>
   }
 
   return (

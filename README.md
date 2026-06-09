@@ -70,20 +70,12 @@ CDN
 ```
 
 ```tsx
-import { useEffect, useState } from 'react'
 import '@d3-maps/react/style.css'
 import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
+import { use } from 'react'
 
 export function MapView() {
-  const [data, setData] = useState<MapData | null>(null)
-
-  useEffect(() => {
-    import('world-atlas/countries-110m.json').then(({ default: world }) => {
-      setData(world as MapData)
-    })
-  }, [])
-
-  if (!data) return null
+  const data = use(import('world-atlas/countries-110m.json').then(({ default: world }) => world as MapData))
 
   return (
     <MapBase data={data}>

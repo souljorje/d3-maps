@@ -1,47 +1,24 @@
-import type { MapData } from '@d3-maps/react'
-
 import {
   MapBase,
   MapFeatures,
   MapGraticule,
   MapMesh,
 } from '@d3-maps/react'
-import {
-  useEffect,
-  useState,
-} from 'react'
+import { use } from 'react'
 
-export default function GraticuleExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapData>()
+const mapDataPromise = import('world-atlas/countries-110m.json').then((m) => m.default)
 
-  useEffect(() => {
-    let isCancelled = false
+export default function GraticuleExample(): JSX.Element {
+  const mapData = use(mapDataPromise)
 
-    async function loadMap(): Promise<void> {
-      const { default: payload } = await import('world-atlas/countries-110m.json')
-
-      if (!isCancelled) {
-        setMapData(payload)
-      }
-    }
-
-    loadMap()
-
-    return () => {
-      isCancelled = true
-    }
-  }, [])
-
-  return mapData
-    ? (
-        <MapBase data={mapData}>
-          <MapGraticule
-            background
-            border
-          />
-          <MapFeatures />
-          <MapMesh />
-        </MapBase>
-      )
-    : null
+  return (
+    <MapBase data={mapData}>
+      <MapGraticule
+        background
+        border
+      />
+      <MapFeatures />
+      <MapMesh />
+    </MapBase>
+  )
 }
