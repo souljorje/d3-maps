@@ -29,7 +29,7 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
 
 == React
 
-- `onFeatureUpdate(features: MapFeatureRendered[])`
+- `onFeaturesChange(features: MapFeatureRendered[])`
 
 :::
 
