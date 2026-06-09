@@ -58,7 +58,7 @@ import {
 const data = ref<MapData>()
 
 const transformer: MapFeatureTransformer = (features) => (
-  features.filter((feature) => feature.type !== 'Feature' || feature.properties?.name !== 'Antarctica')
+  features.filter((feature) => feature.properties?.name !== 'Antarctica')
 )
 
 onMounted(async () => {

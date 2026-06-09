@@ -1,9 +1,16 @@
 <template>
   <div class="my-4">
     <div class="flex flex-col aspect-2/1">
-      <component
-        :is="componentName"
-      />
+      <Suspense>
+        <component
+          :is="componentName"
+        />
+        <template #fallback>
+          <div class="h-full content-center text-center">
+            🌐
+          </div>
+        </template>
+      </Suspense>
     </div>
     <div
       v-if="$slots.default"

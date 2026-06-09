@@ -1,15 +1,10 @@
-import type { MapData } from '@d3-maps/react'
-
 import {
   MapAnnotation,
   MapBase,
   MapFeatures,
   MapMarker,
 } from '@d3-maps/react'
-import {
-  useEffect,
-  useState,
-} from 'react'
+import { use } from 'react'
 
 interface City {
   name: string
@@ -30,64 +25,46 @@ const cities: City[] = [
   },
 ]
 
-export default function AnnotationExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapData>()
+const mapDataPromise = import('@d3-maps/atlas/world/countries/countries-110m').then((m) => m.default)
 
-  useEffect(() => {
-    let isCancelled = false
+export default function AnnotationExample(): JSX.Element {
+  const mapData = use(mapDataPromise)
 
-    async function loadMap(): Promise<void> {
-      const { default: payload } = await import('@d3-maps/atlas/world/countries')
-
-      if (!isCancelled) {
-        setMapData(payload)
-      }
-    }
-
-    loadMap()
-
-    return () => {
-      isCancelled = true
-    }
-  }, [])
-
-  return mapData
-    ? (
-        <MapBase>
-          <MapFeatures data={mapData} />
-          {cities.map((city) => (
-            <MapAnnotation
-              key={city.name}
-              coordinates={city.coordinates}
-              stroke={city.color}
-              length={35}
-              angle={-165}
-              margin={2}
-              midpoint={[0, -50]}
-              strokeWidth={2}
-            >
-              <text
-                y={-6}
-                textAnchor="middle"
-                fontSize={12}
-                fill={city.color}
-              >
-                {city.name}
-              </text>
-            </MapAnnotation>
-          ))}
-          {cities.map((city) => (
-            <MapMarker
-              key={`${city.name}-marker`}
-              coordinates={city.coordinates}
-            >
-              <circle
-                fill={city.color}
-                r={3}
-              />
-            </MapMarker>
-          ))}
-        </MapBase>
-      )
-    : null
+  return (
+    <MapBase>
+      <MapFeatures data={mapData} />
+      {cities.map((city) => (
+        <MapAnnotation
+          key={city.name}
+          coordinates={city.coordinates}
+          stroke={city.color}
+          length={35}
+          angle={-165}
+          margin={2}
+          midpoint={[0, -50]}
+          strokeWidth={2}
+        >
+          <text
+            y={-6}
+            textAnchor="middle"
+            fontSize={12}
+            fill={city.color}
+          >
+            {city.name}
+          </text>
+        </MapAnnotation>
+      ))}
+      {cities.map((city) => (
+        <MapMarker
+          key={`${city.name}-marker`}
+          coordinates={city.coordinates}
+        >
+          <circle
+            fill={city.color}
+            r={3}
+          />
+        </MapMarker>
+      ))}
+    </MapBase>
+  )
 }

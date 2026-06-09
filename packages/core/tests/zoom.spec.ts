@@ -5,13 +5,14 @@ import type { ZoomBehaviorOptions, ZoomTransform } from '../src'
 import { zoomIdentity } from 'd3-zoom'
 
 import {
-  applyZoomGroupTransform,
+  applyZoomEventTransform,
   createZoomBehavior,
+  createZoomCommands,
+  getFeatureZoomTransform,
   getInverseZoomScale,
-  getObjectZoomView,
   getZoomScale,
   getZoomViewportCenter,
-  resolveMapData,
+  isProgrammaticZoomEvent,
   ZOOM_DEFAULTS,
 } from '../src'
 import {
@@ -46,46 +47,38 @@ describe('zoom helpers', () => {
   })
 
   it('creates zoom behavior with default options', () => {
-    const behavior = createBehavior()
-    expect(behavior.scaleExtent()).toEqual([
-      ZOOM_DEFAULTS.minZoom,
-      ZOOM_DEFAULTS.maxZoom,
-    ])
-    expect(behavior.translateExtent()).toEqual([[0, 0], [0, 0]])
+    class FakeSVGElement {
+      hasAttribute() {
+        return false
+      }
+
+      height = { baseVal: { value: 0 } }
+      width = { baseVal: { value: 0 } }
+    }
+
+    vi.stubGlobal('SVGElement', FakeSVGElement)
+
+    try {
+      const behavior = createBehavior()
+      expect(behavior.scaleExtent()).toEqual([
+        ZOOM_DEFAULTS.minZoom,
+        ZOOM_DEFAULTS.maxZoom,
+      ])
+      expect(behavior.extent().call(
+        new FakeSVGElement() as unknown as SVGSVGElement,
+        {} as any,
+      )).toEqual([[0, 0], [0, 0]])
+      expect(behavior.translateExtent()).toEqual([[-Infinity, -Infinity], [Infinity, Infinity]])
+    } finally {
+      vi.unstubAllGlobals()
+    }
   })
 
-  it('creates zoom behavior with default translate extent from context', () => {
+  it('creates zoom behavior with default viewport extents from context', () => {
     const context = makeTestMapContext()
     const behavior = createZoomBehavior(context)
+    expect(behavior.extent().call({} as SVGSVGElement, {} as any)).toEqual([[0, 0], [400, 300]])
     expect(behavior.translateExtent()).toEqual([[0, 0], [400, 300]])
-  })
-
-  it('gets zoom view for an object from its projected bounds', () => {
-    const context = makeTestMapContext()
-    const object = resolveMapData(sampleGeoJson)[0]
-    const [[x0, y0], [x1, y1]] = context.path.bounds(object)
-    const boundsWidth = x1 - x0
-    const boundsHeight = y1 - y0
-
-    const view = getObjectZoomView(context, object, {
-      minZoom: 1,
-      maxZoom: 8,
-      padding: 0.1,
-    })
-
-    expect(view).toEqual({
-      center: [
-        (x0 + x1) / 2,
-        (y0 + y1) / 2,
-      ],
-      zoom: Math.min(
-        8,
-        Math.max(
-          1,
-          0.9 / Math.max(boundsWidth / context.width, boundsHeight / context.height),
-        ),
-      ),
-    })
   })
 
   it('reads zoom scale from different inputs', () => {
@@ -104,6 +97,29 @@ describe('zoom helpers', () => {
     } as ZoomTransform)
 
     expect(center).toEqual([190, 155])
+  })
+
+  it('detects programmatic zoom events from native D3 event shape', () => {
+    expect(isProgrammaticZoomEvent({
+      sourceEvent: null,
+    } as any)).toBe(true)
+    expect(isProgrammaticZoomEvent({
+      sourceEvent: new Event('wheel'),
+    } as any)).toBe(false)
+  })
+
+  it('applies a zoom event transform to a group element', () => {
+    const setAttribute = vi.fn()
+
+    applyZoomEventTransform({
+      setAttribute,
+    } as unknown as Element, {
+      transform: {
+        toString: () => 'translate(7,8) scale(9)',
+      },
+    } as any)
+
+    expect(setAttribute).toHaveBeenCalledWith('transform', 'translate(7,8) scale(9)')
   })
 
   it('applies full zoom config', () => {
@@ -152,11 +168,13 @@ describe('zoom helpers', () => {
       minZoom: 1,
       maxZoom: 4,
       config: {
+        extent: [[[1, 2], [30, 40]]],
         scaleExtent: [[2, 9]],
         translateExtent: [[[0, 0], [10, 10]]],
       },
     })
 
+    expect(behavior.extent().call({} as SVGSVGElement, {} as any)).toEqual([[1, 2], [30, 40]])
     expect(behavior.scaleExtent()).toEqual([2, 9])
     expect(behavior.translateExtent()).toEqual([[0, 0], [10, 10]])
   })
@@ -168,15 +186,229 @@ describe('zoom helpers', () => {
     expect(getInverseZoomScale(0, 1)).toBe(1)
   })
 
-  it('applies zoom transform to a group element', () => {
-    const setAttribute = vi.fn()
+  it('ignores zoom commands when the target element is missing', () => {
+    const transformCall = vi.fn()
+    class FakeSVGElement {}
 
-    applyZoomGroupTransform({
-      setAttribute,
-    } as unknown as Element, {
-      toString: () => 'translate(4,5) scale(2)',
+    vi.stubGlobal('SVGSVGElement', FakeSVGElement)
+    const svgElement = new FakeSVGElement() as unknown as SVGSVGElement
+    const transform = zoomIdentity.translate(10, 20).scale(2)
+    const commands = createZoomCommands({
+      element: () => svgElement,
+      behavior: () => ({
+        transform: transformCall,
+      }) as any,
+      context: () => makeTestMapContext(),
+      minZoom: () => 1,
+      maxZoom: () => 8,
+    })
+    const missingElementCommands = createZoomCommands({
+      element: () => null,
+      behavior: () => ({
+        transform: transformCall,
+      }) as any,
+      context: () => makeTestMapContext(),
+      minZoom: () => 1,
+      maxZoom: () => 8,
     })
 
-    expect(setAttribute).toHaveBeenCalledWith('transform', 'translate(4,5) scale(2)')
+    missingElementCommands.transform(transform)
+    expect(transformCall).not.toHaveBeenCalled()
+
+    commands.transform(transform)
+    expect(transformCall).toHaveBeenCalledWith(expect.anything(), transform, undefined)
+
+    vi.unstubAllGlobals()
+  })
+
+  it('applies native zoom methods through D3 zoom', () => {
+    const transformSpy = vi.fn()
+    const translateBySpy = vi.fn()
+    const translateToSpy = vi.fn()
+    const scaleBySpy = vi.fn()
+    const scaleToSpy = vi.fn()
+    class FakeSVGElement {}
+
+    vi.stubGlobal('SVGSVGElement', FakeSVGElement)
+    const svgElement = new FakeSVGElement() as unknown as SVGSVGElement
+    const transform = zoomIdentity.translate(10, 20).scale(2)
+    const point: [number, number] = [40, 50]
+    const commands = createZoomCommands({
+      element: () => svgElement,
+      behavior: () => ({
+        scaleBy: scaleBySpy,
+        scaleTo: scaleToSpy,
+        transform: transformSpy,
+        translateBy: translateBySpy,
+        translateTo: translateToSpy,
+      }) as any,
+      context: () => makeTestMapContext(),
+      minZoom: () => 1,
+      maxZoom: () => 8,
+    })
+
+    commands.transform(transform, point)
+    expect(transformSpy).toHaveBeenCalledWith(expect.anything(), transform, point)
+
+    commands.translateBy(4, 5)
+    expect(translateBySpy).toHaveBeenCalledWith(expect.anything(), 4, 5)
+
+    commands.translateTo(4, 5, point)
+    expect(translateToSpy).toHaveBeenCalledWith(expect.anything(), 4, 5, point)
+
+    commands.scaleBy(1.5, point)
+    expect(scaleBySpy).toHaveBeenCalledWith(expect.anything(), 1.5, point)
+
+    commands.scaleTo(3, point)
+    expect(scaleToSpy).toHaveBeenCalledWith(expect.anything(), 3, point)
+
+    vi.unstubAllGlobals()
+  })
+
+  it('applies additive scale through scaleWith', () => {
+    const scaleToSpy = vi.fn()
+    class FakeSVGElement {}
+
+    vi.stubGlobal('SVGSVGElement', FakeSVGElement)
+    const svgElement = new FakeSVGElement() as unknown as SVGSVGElement
+    const commands = createZoomCommands({
+      element: () => svgElement,
+      behavior: () => ({
+        scaleTo: scaleToSpy,
+      }) as any,
+      context: () => makeTestMapContext(),
+      minZoom: () => 1,
+      maxZoom: () => 8,
+    })
+
+    commands.scaleWith(0.5)
+    expect(scaleToSpy).toHaveBeenCalledWith(expect.anything(), 1.5, undefined)
+
+    const pointFn = (): [number, number] => [40, 50]
+    commands.scaleWith(0.5, pointFn)
+    expect(scaleToSpy).toHaveBeenLastCalledWith(expect.anything(), 1.5, pointFn)
+
+    vi.unstubAllGlobals()
+  })
+
+  it('clamps additive scale through scaleWith', () => {
+    const scaleToSpy = vi.fn()
+    class FakeSVGElement {}
+
+    vi.stubGlobal('SVGSVGElement', FakeSVGElement)
+    const svgElement = new FakeSVGElement() as unknown as SVGSVGElement
+    const commands = createZoomCommands({
+      element: () => svgElement,
+      behavior: () => ({
+        scaleTo: scaleToSpy,
+      }) as any,
+      context: () => makeTestMapContext(),
+      minZoom: () => 1,
+      maxZoom: () => 1.25,
+    })
+
+    commands.scaleWith(0.5)
+    expect(scaleToSpy).toHaveBeenCalledWith(expect.anything(), 1.25, undefined)
+
+    commands.scaleWith(-0.5)
+    expect(scaleToSpy).toHaveBeenLastCalledWith(expect.anything(), 1, undefined)
+
+    vi.unstubAllGlobals()
+  })
+
+  it('creates zoom commands from lazy element and behavior accessors', () => {
+    const transformSpy = vi.fn()
+    const scaleToSpy = vi.fn()
+    class FakeSVGElement {}
+
+    vi.stubGlobal('SVGSVGElement', FakeSVGElement)
+    const svgElement = new FakeSVGElement() as unknown as SVGSVGElement
+    const commands = createZoomCommands({
+      element: () => svgElement,
+      behavior: () => ({
+        scaleTo: scaleToSpy,
+        transform: transformSpy,
+      }) as any,
+      context: () => makeTestMapContext(),
+      minZoom: () => 1,
+      maxZoom: () => 8,
+    })
+
+    commands.reset(false)
+    expect(transformSpy).toHaveBeenCalledWith(expect.anything(), zoomIdentity)
+    commands.scaleTo(3, undefined, false)
+    expect(scaleToSpy).toHaveBeenCalledWith(expect.anything(), 3, undefined)
+
+    vi.unstubAllGlobals()
+  })
+
+  it('computes a feature zoom transform', () => {
+    const context = makeTestMapContext()
+    const feature = sampleGeoJson.features[0]
+    const [[x0, y0], [x1, y1]] = context.path.bounds(feature)
+    const boundsWidth = x1 - x0
+    const boundsHeight = y1 - y0
+    const zoom = Math.min(
+      4,
+      Math.max(
+        2,
+        Math.min(
+          (context.width - 20) / boundsWidth,
+          (context.height - 20) / boundsHeight,
+        ),
+      ),
+    )
+
+    const transform = getFeatureZoomTransform(context, feature, {
+      minZoom: 2,
+      maxZoom: 4,
+      padding: 10,
+    })
+
+    expect(transform).toBeDefined()
+    expect(transform?.k).toBeCloseTo(zoom)
+    expect(transform?.x).toBeCloseTo(context.width / 2 - zoom * ((x0 + x1) / 2))
+    expect(transform?.y).toBeCloseTo(context.height / 2 - zoom * ((y0 + y1) / 2))
+  })
+
+  it('returns undefined for empty feature zoom bounds', () => {
+    const context = {
+      width: 400,
+      height: 300,
+      path: {
+        bounds: () => [[0, 0], [0, 0]],
+      },
+    }
+
+    expect(getFeatureZoomTransform(context as any, {} as any)).toBeUndefined()
+  })
+
+  it('applies a computed feature zoom transform through commands', () => {
+    const context = makeTestMapContext()
+    const svgElement = new (class FakeSVGElement {})() as unknown as SVGSVGElement
+    const transformCall = vi.fn()
+    const feature = sampleGeoJson.features[0]
+    const transform = getFeatureZoomTransform(context, feature, {
+      padding: 10,
+    })
+    const commands = createZoomCommands({
+      element: () => svgElement,
+      behavior: () => ({
+        transform: transformCall,
+      }) as any,
+      context: () => context,
+      minZoom: () => 1,
+      maxZoom: () => 8,
+    })
+
+    vi.stubGlobal('SVGSVGElement', svgElement.constructor as any)
+
+    expect(transform).toBeDefined()
+    expect(commands.zoomToFeature(feature, {
+      padding: 10,
+    })).toBe(true)
+    expect(transformCall).toHaveBeenCalledWith(expect.anything(), transform)
+
+    vi.unstubAllGlobals()
   })
 })

@@ -11,4 +11,3 @@ Helpers expose reusable low-level logic for advanced use cases and custom render
 - [useMapZoom](/helpers/use-map-zoom)
 - [useInteraction](/helpers/use-interaction)
 - [getFeatureKey](/helpers/get-feature-key)
-- [getObjectZoomView](/helpers/get-object-zoom-view)

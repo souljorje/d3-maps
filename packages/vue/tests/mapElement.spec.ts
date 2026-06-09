@@ -10,7 +10,7 @@ import {
   MapBase,
   MapElement,
 } from '../src'
-import { mapZoomKey } from '../src/hooks/useMapZoom'
+import { mapZoomKey } from '../src/hooks/useCreateMapZoom'
 import { sampleGeoJson } from './fixtures'
 
 const MapElementComponent = MapElement as unknown as Parameters<typeof h>[0]
@@ -69,17 +69,7 @@ describe('mapElement', () => {
     const wrapper = mount(MapBase, {
       global: {
         provide: {
-          [mapZoomKey as symbol]: {
-            center: { value: undefined },
-            zoom: { value: 1 },
-            minZoom: { value: 1 },
-            maxZoom: { value: 8 },
-            setCenter: vi.fn(),
-            setZoom: vi.fn(),
-            zoomTo: vi.fn(),
-            zoomToObject: vi.fn(),
-            reset: vi.fn(),
-          },
+          [mapZoomKey as symbol]: true,
         },
       },
       props: {

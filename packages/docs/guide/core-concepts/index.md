@@ -1,4 +1,5 @@
 ---
+prev: false
 next: false
 description: Core concepts for d3-maps in React and Vue. Projections, features, mesh, markers, zoom, and responsive rendering
 ---

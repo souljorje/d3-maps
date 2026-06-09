@@ -9,13 +9,15 @@ import type {
   SVGProps,
 } from 'react'
 
+import { memo } from 'react'
+
 import { MapElement } from './MapElement'
 
 export interface MapFeatureProps
   extends Omit<SVGProps<SVGPathElement>, 'children' | 'd'>,
   CoreMapFeatureProps<CSSProperties> {}
 
-export function MapFeature(props: MapFeatureProps): ReactElement {
+function MapFeatureComponent(props: MapFeatureProps): ReactElement {
   return (
     <MapElement
       data-d3m="feature"
@@ -23,3 +25,5 @@ export function MapFeature(props: MapFeatureProps): ReactElement {
     />
   )
 }
+
+export const MapFeature = memo(MapFeatureComponent)

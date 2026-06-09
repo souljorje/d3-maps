@@ -36,8 +36,8 @@ export default function ChoroplethMapExample(): JSX.Element {
     let isCancelled = false
 
     async function fetchMap(): Promise<MapData> {
-      const { default: mapData } = await import('@d3-maps/atlas/world/countries')
-      return mapData
+      const { default: payload } = await import('@d3-maps/atlas/world/countries/countries-110m')
+      return payload
     }
 
     async function fetchData(): Promise<CountryPopulation[]> {
@@ -47,22 +47,16 @@ export default function ChoroplethMapExample(): JSX.Element {
 
     Promise.all([fetchMap(), fetchData()])
       .then(([loadedMap, loadedData]) => {
-        if (isCancelled) {
-          return
-        }
+        if (isCancelled) return
 
         setMapData(loadedMap)
         setPopulations(loadedData)
       })
       .catch(() => {
-        if (!isCancelled) {
-          setError(true)
-        }
+        if (!isCancelled) setError(true)
       })
       .finally(() => {
-        if (!isCancelled) {
-          setLoading(false)
-        }
+        if (!isCancelled) setLoading(false)
       })
 
     return () => {
@@ -109,13 +103,8 @@ export default function ChoroplethMapExample(): JSX.Element {
     populationByCode,
   ])
 
-  if (loading) {
-    return <div>Loading...</div>
-  }
-
-  if (error || !mapData) {
-    return <div>An error occurred</div>
-  }
+  if (loading) return <></>
+  if (error || !mapData) return <></>
 
   return (
     <MapBase>

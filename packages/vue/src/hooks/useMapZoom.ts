@@ -1,169 +1,22 @@
-import type {
-  ObjectZoomView,
-  ZoomEvent,
-  ZoomObject,
-  ZoomProps,
-} from '@d3-maps/core'
-import type {
-  ComputedRef,
-  InjectionKey,
-  Ref,
-} from 'vue'
+import type { DefaultZoomBehavior, ZoomCommands } from '@d3-maps/core'
+import type { Ref } from 'vue'
 
-import {
-  applyZoom,
-  applyZoomGroupTransform,
-  createZoomBehavior,
-  getObjectZoomView,
-  setupZoom,
-} from '@d3-maps/core'
-import {
-  computed,
-  inject,
-  onMounted,
-  onUnmounted,
-  provide,
-  watch,
-} from 'vue'
+export type MapZoomRef = {
+  container: SVGGElement | null
+  zoomBehavior: DefaultZoomBehavior
+} & ZoomCommands
 
-import {
-  mapContextKey,
-  useMapContext,
-} from './useMapContext'
-
-export type ZoomToObjectCallback = (view: ObjectZoomView) => void
-
-export interface UseMapZoomResult {
-  center: ComputedRef<[number, number] | undefined>
-  zoom: ComputedRef<number>
-  minZoom: ComputedRef<number>
-  maxZoom: ComputedRef<number>
-  zoomToObject: (
-    object: ZoomObject,
-    callback: ZoomToObjectCallback,
-  ) => void
-}
-
-export const mapZoomKey: InjectionKey<UseMapZoomResult> = Symbol('MapZoom')
-
-export interface MapZoomEventCallbacks {
-  onZoomStart?: (event: ZoomEvent) => void
-  onZoom?: (event: ZoomEvent) => void
-  onZoomEnd?: (event: ZoomEvent) => void
-}
-
-export interface ZoomPropsWithDefaults extends ZoomProps {
-  zoom: number
-  minZoom: number
-  maxZoom: number
-}
-
-export interface CreateMapZoomResult {
-  zoomBehavior: ComputedRef<ReturnType<typeof createZoomBehavior>>
-  zoomContext: UseMapZoomResult
-}
-
-export function useCreateMapZoom(
-  container: Ref<SVGGElement | null>,
-  props: Readonly<ZoomPropsWithDefaults>,
-  eventCallbacks: MapZoomEventCallbacks,
-): CreateMapZoomResult {
-  const context = useMapContext()
-  const centerX = computed(() => props.center?.[0])
-  const centerY = computed(() => props.center?.[1])
-
-  const zoomBehavior = computed(() => {
-    return createZoomBehavior(context.value, {
-      minZoom: props.minZoom,
-      maxZoom: props.maxZoom,
-      config: props.config,
-      onZoomStart: (event) => eventCallbacks.onZoomStart?.(event),
-      onZoom: (event) => {
-        applyZoomGroupTransform(container.value, event.transform)
-        eventCallbacks.onZoom?.(event)
-      },
-      onZoomEnd: (event) => eventCallbacks.onZoomEnd?.(event),
-    })
-  })
-
-  const zoomContext: UseMapZoomResult = {
-    center: computed(() => props.center),
-    zoom: computed(() => props.zoom),
-    minZoom: computed(() => props.minZoom),
-    maxZoom: computed(() => props.maxZoom),
-    zoomToObject: (object, callback) => {
-      const view = getObjectZoomView(context.value, object, {
-        minZoom: props.minZoom,
-        maxZoom: props.maxZoom,
-      })
-
-      if (!view) return
-
-      callback(view)
-    },
-  }
-
-  provide<UseMapZoomResult>(mapZoomKey, zoomContext)
-
-  let stopBehaviorWatch: (() => void) | undefined
-  let stopViewWatch: (() => void) | undefined
-  onMounted(() => {
-    stopBehaviorWatch = watch(zoomBehavior, (behavior) => {
-      if (!container.value) return
-      setupZoom({
-        element: container.value,
-        behavior,
-      })
-    }, { immediate: true })
-
-    stopViewWatch = watch([
-      centerX,
-      centerY,
-      () => props.zoom,
-      () => props.transition,
-      zoomBehavior,
-    ], () => {
-      if (!container.value) return
-      applyZoom({
-        element: container.value,
-        behavior: zoomBehavior.value,
-        center: props.center,
-        zoom: props.zoom,
-        transition: props.transition,
-      })
-    }, { immediate: true })
-  })
-
-  onUnmounted(() => {
-    stopBehaviorWatch?.()
-    stopViewWatch?.()
-  })
-
+export function useMapZoom(
+  ref: Ref<MapZoomRef | null>,
+): ZoomCommands {
   return {
-    zoomBehavior,
-    zoomContext,
-  }
-}
-
-export function useMapZoom(): UseMapZoomResult | undefined {
-  const zoomContext = inject(mapZoomKey, undefined)
-  const mapContext = inject(mapContextKey, undefined)
-
-  if (!zoomContext) return undefined
-
-  return {
-    ...zoomContext,
-    zoomToObject: (object, callback) => {
-      if (!mapContext?.value) return
-
-      const view = getObjectZoomView(mapContext.value, object, {
-        minZoom: zoomContext.minZoom.value,
-        maxZoom: zoomContext.maxZoom.value,
-      })
-
-      if (!view) return
-
-      callback(view)
-    },
+    transform: (...args) => ref.value?.transform(...args),
+    translateBy: (...args) => ref.value?.translateBy(...args),
+    translateTo: (...args) => ref.value?.translateTo(...args),
+    scaleBy: (...args) => ref.value?.scaleBy(...args),
+    scaleTo: (...args) => ref.value?.scaleTo(...args),
+    scaleWith: (...args) => ref.value?.scaleWith(...args),
+    zoomToFeature: (...args) => ref.value?.zoomToFeature(...args) ?? false,
+    reset: (...args) => ref.value?.reset(...args),
   }
 }

@@ -1,4 +1,4 @@
-import { describe, expect, expectTypeOf, it } from 'vitest'
+import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 
 import type { MapFeatureRendered } from '@d3-maps/core'
 
@@ -73,6 +73,23 @@ describe('mapFeatures', () => {
 
     expect(screen.getByTestId('map-features-group').getAttribute('data-count')).toBe('2')
     expect(container.querySelectorAll('path')).toHaveLength(2)
+  })
+
+  it('reports rendered features to script-side handlers', () => {
+    const onFeaturesChange = vi.fn()
+
+    render(
+      <MapBase fit={sampleGeoJson}>
+        <MapFeatures
+          data={sampleGeoJson}
+          onFeaturesChange={onFeaturesChange}
+        />
+      </MapBase>,
+    )
+
+    expect(onFeaturesChange).toHaveBeenCalledTimes(1)
+    expect(onFeaturesChange.mock.calls[0]?.[0]).toHaveLength(1)
+    expect(onFeaturesChange.mock.calls[0]?.[0]?.[0]?.key).toBe('demo')
   })
 
   it('forwards styles to default-rendered objects', () => {

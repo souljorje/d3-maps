@@ -17,7 +17,7 @@ export * from './plugin'
 export {
   getFeatureKey,
   getInverseZoomScale,
-  getObjectZoomView,
   getZoomViewportCenter,
+  zoomIdentity,
 } from '@d3-maps/core'
 export type * from '@d3-maps/core'

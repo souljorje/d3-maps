@@ -1,7 +1,5 @@
 <template>
-  <MapBase
-    v-if="data"
-  >
+  <MapBase>
     <MapFeatures :data="data" />
     <MapMarker
       v-for="item in cities"
@@ -23,8 +21,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-
 interface City {
   city: string
   lon: number
@@ -41,10 +37,5 @@ const cities: City[] = [
   { city: 'Georgetown', lon: -58.1, lat: 6.48 },
 ]
 
-const data = ref<unknown>()
-
-onMounted(async () => {
-  const { default: mapData } = await import('@d3-maps/atlas/world/countries')
-  data.value = mapData
-})
+const { default: data } = await import('@d3-maps/atlas/world/countries/countries-110m')
 </script>

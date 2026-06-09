@@ -45,7 +45,6 @@ const props = defineProps<{
 }>()
 
 const context = useCreateMapContext(computed(() => ({
-  fit: props.data,
   width: 420,
 })))
 </script>
@@ -70,7 +69,6 @@ import {
 
 export function Example({ data }: { data: MapData }) {
   const context = useCreateMapContext({
-    fit: data,
     width: 420,
   })
 

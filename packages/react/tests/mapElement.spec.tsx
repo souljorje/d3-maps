@@ -86,13 +86,7 @@ describe('mapElement', () => {
 
   it('resets active state on global mouseup when element mouseup is missed', () => {
     render(
-      <MapZoomContextValue.Provider value={{
-        center: undefined,
-        zoom: 1,
-        minZoom: 1,
-        maxZoom: 8,
-      }}
-      >
+      <MapZoomContextValue.Provider value>
         <MapBase fit={sampleGeoJson}>
           <MapElement
             data-testid="map-element"

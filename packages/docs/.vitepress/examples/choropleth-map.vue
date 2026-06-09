@@ -69,7 +69,7 @@ onMounted(async () => {
 })
 
 async function fetchMap(): Promise<MapData> {
-  const { default: data } = await import('@d3-maps/atlas/world/countries')
+  const { default: data } = await import('@d3-maps/atlas/world/countries/countries-110m')
   return data
 }
 

@@ -51,13 +51,13 @@ npm install @d3-maps/vue
 <script setup lang="ts">
 import { MapBase, MapFeatures, type MapData } from '@d3-maps/vue'
 
-const { default: data } = await import('@d3-maps/atlas/world/countries')
+const { default: data } = await import('@d3-maps/atlas/world/countries/countries-110m')
 const mapData: MapData = data
 </script>
 
 <template>
-  <MapBase :data="mapData">
-    <MapFeatures />
+  <MapBase>
+    <MapFeatures :data="mapData" />
   </MapBase>
 </template>
 ```
@@ -88,24 +88,16 @@ npm install @d3-maps/react
 </details>
 
 ```tsx
-import { useEffect, useState } from 'react'
 import '@d3-maps/react/style.css'
 import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
+import { use } from 'react'
 
 export function MapView() {
-  const [data, setData] = useState<MapData | null>(null)
-
-  useEffect(() => {
-    import('@d3-maps/atlas/world/countries').then(({ default: world }) => {
-      setData(world as MapData)
-    })
-  }, [])
-
-  if (!data) return null
+  const data = use(import('@d3-maps/atlas/world/countries/countries-110m').then(({ default: world }) => world as MapData))
 
   return (
-    <MapBase data={data}>
-      <MapFeatures />
+    <MapBase>
+      <MapFeatures data={data} />
     </MapBase>
   )
 }

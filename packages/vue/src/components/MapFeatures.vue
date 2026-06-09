@@ -19,12 +19,18 @@ import type {
 import type { StyleValue } from 'vue'
 
 import { makeMapFeatures } from '@d3-maps/core'
-import { computed } from 'vue'
+import {
+  computed,
+  watch,
+} from 'vue'
 
 import { useMapContext } from '../hooks/useMapContext'
 import MapFeature from './MapFeature.vue'
 
 const props = defineProps<MapFeaturesProps<TExtra, StyleValue>>()
+const emit = defineEmits<{
+  'update:features': [features: MapFeatureRendered<TExtra>[]]
+}>()
 
 defineSlots<{
   default?: (props: { features: MapFeatureRendered<TExtra>[] }) => unknown
@@ -39,4 +45,8 @@ const features = computed<MapFeatureRendered<TExtra>[]>(() => {
     getKey: props.getKey,
   })
 })
+
+watch(features, (nextFeatures) => {
+  emit('update:features', nextFeatures)
+}, { immediate: true })
 </script>

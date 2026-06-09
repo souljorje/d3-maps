@@ -3,7 +3,11 @@ import { describe, expect, it } from 'vitest'
 import type { MapFeatureRendered } from '@d3-maps/core'
 
 import { mount } from '@vue/test-utils'
-import { h } from 'vue'
+import {
+  defineComponent,
+  h,
+  onUpdated,
+} from 'vue'
 
 import {
   MapBase,
@@ -12,6 +16,7 @@ import {
 } from '../src'
 import {
   sampleGeoJson,
+  sampleGeoJsonTwoFeatures,
   sampleGeometryCollection,
   sampleGeometryCollectionFeature,
   sampleTopologyObjectKey,
@@ -83,6 +88,26 @@ describe('mapFeatures', () => {
 
     expect(wrapper.get('[data-testid="map-features-group"]').attributes('data-count')).toBe('2')
     expect(wrapper.findAll('path')).toHaveLength(2)
+  })
+
+  it('reports rendered features to script-side listeners', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        fit: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapFeatures, {
+          data: sampleGeoJson,
+          'onUpdate:features': () => undefined,
+        }),
+      },
+    })
+
+    const mapFeatures = wrapper.getComponent(MapFeatures)
+    expect((mapFeatures as any).emitted('update:features')?.[0]?.[0]).toHaveLength(1)
+
+    const [feature] = (mapFeatures as any).emitted('update:features')?.[0]?.[0] as MapFeatureRendered[]
+    expect(feature.key).toBe('demo')
   })
 
   it('forwards styles to default-rendered objects', async () => {
@@ -229,5 +254,75 @@ describe('mapFeatures', () => {
     })
 
     expect(wrapper.findAll('path')).toHaveLength(2)
+  })
+
+  it('rerenders default feature items only when feature or style deps change', async () => {
+    let featureRenderCount = 0
+    let featureUpdateCount = 0
+
+    const MapFeatureStub = defineComponent({
+      name: 'MapFeature',
+      setup() {
+        onUpdated(() => {
+          featureUpdateCount += 1
+        })
+
+        return () => {
+          featureRenderCount += 1
+          return h('path', { 'data-testid': 'stub-feature' })
+        }
+      },
+    })
+
+    const Harness = defineComponent({
+      data() {
+        return {
+          tick: 0,
+          styles: {
+            default: { opacity: 0.9 },
+          },
+        }
+      },
+      render() {
+        return h('div', { 'data-tick': String(this.tick) }, [
+          h(MapBase, {
+            fit: sampleGeoJsonTwoFeatures,
+          }, {
+            default: () => h(MapFeatures, {
+              data: sampleGeoJsonTwoFeatures,
+              styles: this.styles,
+            }),
+          }),
+        ])
+      },
+    })
+
+    const wrapper = mount(Harness, {
+      global: {
+        stubs: {
+          MapFeature: MapFeatureStub,
+        },
+      },
+    })
+
+    expect(wrapper.findAll('[data-testid="stub-feature"]')).toHaveLength(2)
+    expect(featureRenderCount).toBe(2)
+    expect(featureUpdateCount).toBe(0)
+
+    await wrapper.setData({
+      tick: 1,
+    })
+
+    expect(featureRenderCount).toBe(2)
+    expect(featureUpdateCount).toBe(0)
+
+    await wrapper.setData({
+      styles: {
+        default: { opacity: 0.7 },
+      },
+    })
+
+    expect(featureRenderCount).toBe(4)
+    expect(featureUpdateCount).toBe(2)
   })
 })

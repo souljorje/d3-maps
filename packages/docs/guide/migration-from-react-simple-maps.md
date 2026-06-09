@@ -4,8 +4,9 @@ description: Migration guide from react-simple-maps to @d3-maps/react, covering 
 
 # Migrate from react-simple-maps
 
-[@d3-maps/react](/components/) is fully compatible with [react-simple-maps](https://www.react-simple-maps.io/)  
-But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/issues) or pull request
+[@d3-maps/react](/components/) is fully compatible with [react-simple-maps](https://www.react-simple-maps.io/), supports React 19 an has more features under the hood.  
+
+Feel free to open an [issue](https://github.com/souljorje/d3-maps/issues) or a pull request if something is missing.
 
 ## Migration checklist
 
@@ -29,24 +30,22 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 - `Geographies.parseGeographies` -> `MapFeatures.transformer`  
 
 ```tsx
-import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
-import { useEffect, useState } from 'react'
+import { MapBase, MapFeatures } from '@d3-maps/react'
+import { use, useCallback } from 'react'
+
+const mapDataPromise = import('@d3-maps/atlas/world/countries/countries-110m').then((m) => m.default as MapData)
 
 export function WorldMap() {
-  const [data, setData] = useState<MapData | null>(null)
-
-  useEffect(() => {
-    import('@d3-maps/atlas/world/countries')
-      .then(({ default: json }) => setData(json))
+  const data = use(mapDataPromise)
+  const filterAntarctica = useCallback((features) => {
+    return features.filter((f) => f.properties?.name !== 'Antarctica')
   }, [])
-
-  if (!data) return null
 
   return (
     <MapBase>
       <MapFeatures
         data={data}
-        transformer={(features) => features.filter((feature) => feature.properties.name !== 'Antarctica')}
+        transformer={filterAntarctica}
       />
     </MapBase>
   )
@@ -80,7 +79,6 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 ```tsx
 <MapBase>
   <MapZoom
-    zoom={1}
     minZoom={1}
     maxZoom={8}
     onZoomStart={() => {}}

@@ -1,9 +1,5 @@
 <template>
-  <MapBase
-    v-if="data"
-
-    :projection="projection"
-  >
+  <MapBase :projection="projection">
     <MapZoom @zoom="updateMarkerScale">
       <MapSphere
         fill="var(--vp-c-bg-alt)"
@@ -39,7 +35,7 @@
 import type { ZoomEvent } from '@d3-maps/vue'
 
 import { geoNaturalEarth1 } from 'd3-geo'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 
 interface City {
   city: string
@@ -57,16 +53,11 @@ const initialCities: City[] = [
   { city: 'Georgetown', lon: -58.1, lat: 6.48 },
 ]
 
-const data = ref<unknown>()
+const { default: data } = await import('@d3-maps/atlas/world/countries/countries-110m')
 const projection = geoNaturalEarth1
 const cities = ref<City[]>(initialCities)
 const markerScale = ref(1)
 const currentZoom = ref(1)
-
-onMounted(async () => {
-  const { default: mapData } = await import('@d3-maps/atlas/world/countries')
-  data.value = mapData
-})
 
 function updateMarkerScale(e: ZoomEvent) {
   if (currentZoom.value === e.transform.k) return

@@ -18,7 +18,7 @@ export * from './hooks'
 export {
   getFeatureKey,
   getInverseZoomScale,
-  getObjectZoomView,
   getZoomViewportCenter,
+  zoomIdentity,
 } from '@d3-maps/core'
 export type * from '@d3-maps/core'

@@ -4,7 +4,7 @@ description: Interactive SVG maps for React and Vue. Choropleth & bubble maps, m
 
 # Get started
 
-`d3-maps` helps to create interactive SVG maps in React and Vue. Reactive components, pure SVG and D3.js power without low-level wiring.
+`d3-maps` is a toolkit for interactive SVG maps in React and Vue. Reactive components, pure SVG and D3.js power without low-level wiring.
 
 Let's build your first map 👇
 
@@ -88,7 +88,7 @@ bun add @d3-maps/react
 Load a map data object first
 
 ```ts
-const { default: data } = await import('@d3-maps/atlas/world/countries')
+const { default: data } = await import('@d3-maps/atlas/world/countries/countries-110m')
 ```
 
 See [Atlas](/guide/atlas) for more maps

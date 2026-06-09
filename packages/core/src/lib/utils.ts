@@ -1,3 +1,5 @@
+export type MaybeArray<T> = T | readonly T[]
+
 export function isString(value: unknown): value is string {
   return typeof value === 'string'
 }
@@ -26,6 +28,14 @@ export function isPlainObject(value: unknown): value is Record<string, unknown> 
   if (Object.prototype.toString.call(value) !== '[object Object]') return false
   const prototype = Object.getPrototypeOf(value)
   return prototype === null || prototype === Object.prototype
+}
+
+export function ensureArray<T>(value: T): T extends readonly unknown[] ? T : readonly [T] {
+  return (Array.isArray(value) ? value : [value]) as T extends readonly unknown[] ? T : readonly [T]
+}
+
+export function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value))
 }
 
 export function makeTransform(x: number, y: number, k?: number): string {
@@ -105,9 +115,9 @@ export type OwnKeys<T> =
 export type ModifierArgs<P extends unknown[]> =
   P extends [infer Only]
     ? Only extends readonly unknown[]
-      ? [Only]
-      : Only | [Only]
-    : P
+      ? readonly [Only]
+      : Only | readonly [Only]
+    : Readonly<P>
 
 /**
  * Maps methods with args to modifiers
@@ -174,7 +184,7 @@ export function applyModifiers<T extends object>(
 
     const fn = target[methodName] as AnyFn
     if (!isFunction(fn)) continue
-    const normalizedArgs = Array.isArray(methodArgs) ? methodArgs : [methodArgs]
+    const normalizedArgs = ensureArray(methodArgs) as unknown[]
     fn.apply(target, normalizedArgs)
   }
 }

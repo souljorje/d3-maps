@@ -44,11 +44,25 @@ See available methods in [d3-geo projection docs](https://d3js.org/d3-geo/projec
 ```vue
 <script setup lang="ts">
 import { geoEquirectangular } from 'd3-geo'
-import { type MapData } from '@d3-maps/vue'
+import { markRaw } from 'vue'
+import {
+  type MapData,
+  type MapFeatureNormalized,
+} from '@d3-maps/vue'
 
 defineProps<{
   data: MapData
 }>()
+
+function dataTransformer(features: MapFeatureNormalized[]) {
+  return features.map(/* some logic */)
+}
+
+const projectionConfig = markRaw({
+  rotate: [[0, 12]], // array wrapper required
+  scale: 200, // single argument can be passed as it is
+  precision: [0.1], // also can be array-wrapped
+})
 </script>
 
 <template>
@@ -57,16 +71,12 @@ defineProps<{
     fit-object-key="countries"
     :aspect-ratio="2 / 1"
     :projection="geoEquirectangular"
-    :projection-config="{
-      padding: 8,
-      rotate: [[0, 12]], // array wrapper required
-      scale: 200, // single argument can be passed as it is
-      precision: [0.1], // also can be array-wrapped
-    }"
+    :projection-config="projectionConfig"
   >
     <MapFeatures
       :data="data"
       object-key="countries"
+      :transformer="dataTransformer"
     />
   </MapBase>
 </template>
@@ -76,24 +86,39 @@ defineProps<{
 
 ```tsx
 import { geoEquirectangular } from 'd3-geo'
-import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
+import {
+  MapBase,
+  MapFeatures,
+  type MapData,
+  type MapFeatureNormalized,
+} from '@d3-maps/react'
+import {
+  useCallback,
+  useMemo,
+} from 'react'
 
 export function Example({ data }: { data: MapData }) {
+  const dataTransformer = useCallback((features: MapFeatureNormalized[]) => {
+    return features.map(/* some logic */)
+  }, [])
+  const projectionConfig = useMemo(() => ({
+    rotate: [[0, 12]], // array wrapper required
+    scale: 200, // single argument can be passed as it is
+    precision: [0.1], // also can be array-wrapped
+  }), [])
+
   return (
     <MapBase
       fit={data}
       fitObjectKey="countries"
       aspectRatio={2 / 1}
       projection={geoEquirectangular}
-      projectionConfig={{
-        rotate: [[0, 12]], // array wrapper required
-        scale: 200, // single argument can be passed as it is
-        precision: [0.1], // also can be array-wrapped
-      }}
+      projectionConfig={projectionConfig}
     >
       <MapFeatures
         data={data}
         objectKey="countries"
+        transformer={dataTransformer}
       />
     </MapBase>
   )
@@ -130,6 +155,7 @@ const props = defineProps<{
 }>()
 
 const context = useCreateMapContext(computed(() => ({
+  fit: props.data,
   aspectRatio: 2 / 1,
 })))
 </script>
@@ -154,6 +180,7 @@ import {
 
 export function Example({ data }: { data: MapData }) {
   const context = useCreateMapContext({
+    fit: data,
     aspectRatio: 2 / 1,
   })
 

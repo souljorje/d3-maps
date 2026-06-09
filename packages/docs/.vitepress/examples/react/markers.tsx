@@ -1,5 +1,3 @@
-import type { MapData } from '@d3-maps/react'
-
 import {
   MapBase,
   MapFeatures,
@@ -8,7 +6,7 @@ import {
   MapMesh,
   MapSphere,
 } from '@d3-maps/react'
-import { useEffect, useState } from 'react'
+import { use } from 'react'
 
 interface City {
   city: string
@@ -26,58 +24,38 @@ const cities: City[] = [
   { city: 'Georgetown', lon: -58.1, lat: 6.48 },
 ]
 
-export default function MarkersExample(): JSX.Element | null {
-  const [mapData, setMapData] = useState<MapData>()
+const mapDataPromise = import('@d3-maps/atlas/world/countries/countries-110m').then((m) => m.default)
 
-  useEffect(() => {
-    let isCancelled = false
+export default function MarkersExample(): JSX.Element {
+  const mapData = use(mapDataPromise)
 
-    async function loadMap(): Promise<void> {
-      const { default: payload } = await import('@d3-maps/atlas/world/countries')
-
-      if (!isCancelled) {
-        setMapData(payload)
-      }
-    }
-
-    loadMap()
-
-    return () => {
-      isCancelled = true
-    }
-  }, [])
-
-  return mapData
-    ? (
-        <MapBase>
-          <MapSphere
-            fill="var(--vp-c-bg-alt)"
-            stroke="var(--vp-c-border)"
-          >
-            <MapGraticule />
-            <MapFeatures data={mapData} />
-            <MapMesh data={mapData} />
-            {
-              cities.map((item) => (
-                <MapMarker
-                  key={item.city}
-                  coordinates={[item.lon, item.lat]}
-                >
-                  <text
-                    fontSize="14"
-                    y={-6}
-                    textAnchor="middle"
-                  >
-                    {item.city}
-                  </text>
-                  <circle
-                    r={3}
-                  />
-                </MapMarker>
-              ))
-            }
-          </MapSphere>
-        </MapBase>
-      )
-    : null
+  return (
+    <MapBase>
+      <MapSphere
+        fill="var(--vp-c-bg-alt)"
+        stroke="var(--vp-c-border)"
+      >
+        <MapGraticule />
+        <MapFeatures data={mapData} />
+        <MapMesh data={mapData} />
+        {
+          cities.map((item) => (
+            <MapMarker
+              key={item.city}
+              coordinates={[item.lon, item.lat]}
+            >
+              <text
+                fontSize="14"
+                y={-6}
+                textAnchor="middle"
+              >
+                {item.city}
+              </text>
+              <circle r={3} />
+            </MapMarker>
+          ))
+        }
+      </MapSphere>
+    </MapBase>
+  )
 }

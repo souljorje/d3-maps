@@ -3,6 +3,7 @@
     <MapFeatures
       :data="sampleGeoJson"
       :transformer="transformer"
+      @update:features="onFeaturesChange"
     >
       <template #default="{ features }">
         <MapFeature
@@ -18,6 +19,7 @@
 
 <script setup lang="ts">
 import type {
+  MapFeatureRendered,
   MapFeatureTransformer,
 } from '@d3-maps/core'
 
@@ -37,5 +39,9 @@ const transformer: MapFeatureTransformer<ColoredFeatureExtra> = (features) => {
     ...feature,
     color: 'darkorange',
   }))
+}
+
+function onFeaturesChange(features: MapFeatureRendered<ColoredFeatureExtra>[]) {
+  features.map((feature) => feature.color)
 }
 </script>

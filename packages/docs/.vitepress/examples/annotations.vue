@@ -1,7 +1,5 @@
 <template>
-  <MapBase
-    v-if="data"
-  >
+  <MapBase>
     <MapFeatures :data="data" />
     <template
       v-for="city in cities"
@@ -34,15 +32,12 @@
 <script setup lang="ts">
 import type { MapData } from '@d3-maps/vue'
 
-import { onMounted, ref } from 'vue'
-
 interface City {
   name: string
   coordinates: [number, number]
   color: string
 }
 
-const data = ref<MapData>()
 const cities: City[] = [
   {
     name: 'Paris',
@@ -56,8 +51,5 @@ const cities: City[] = [
   },
 ]
 
-onMounted(async () => {
-  const { default: mapData } = await import('@d3-maps/atlas/world/countries')
-  data.value = mapData
-})
+const { default: data } = await import('@d3-maps/atlas/world/countries/countries-110m') as { default: MapData }
 </script>

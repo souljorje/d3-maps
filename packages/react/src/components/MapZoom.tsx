@@ -7,30 +7,41 @@ import type {
 import type {
   ReactElement,
   ReactNode,
+  Ref,
   SVGProps,
 } from 'react'
 
-import {
-} from '@d3-maps/core'
-import { useRef } from 'react'
+import type { MapZoomRef } from '../hooks/useMapZoom'
 
-import { MapZoomContextValue, useCreateMapZoom } from '../hooks/useMapZoom'
+import {
+  ZOOM_DEFAULTS,
+} from '@d3-maps/core'
+import {
+  useImperativeHandle,
+  useRef,
+} from 'react'
+
+import {
+  useCreateMapZoom,
+} from '../hooks/useCreateMapZoom'
+import {
+  MapZoomContextValue,
+} from '../hooks/useMapZoom'
 
 export interface MapZoomProps
   extends ZoomProps,
-  Omit<SVGProps<SVGGElement>, 'children' | 'onZoom'> {
+  Omit<SVGProps<SVGGElement>, 'children' | 'onZoom' | 'ref'> {
   children?: ReactNode
   onZoomStart?: (event: ZoomEvent) => void
   onZoom?: (event: ZoomEvent) => void
   onZoomEnd?: (event: ZoomEvent) => void
+  ref?: Ref<MapZoomRef>
 }
 
 export function MapZoom(props: MapZoomProps): ReactElement {
   const {
-    center,
-    zoom,
-    minZoom,
-    maxZoom,
+    minZoom = ZOOM_DEFAULTS.minZoom,
+    maxZoom = ZOOM_DEFAULTS.maxZoom,
     transition,
     config,
     onZoomStart,
@@ -38,17 +49,19 @@ export function MapZoom(props: MapZoomProps): ReactElement {
     onZoomEnd,
     children,
     className,
+    ref,
     ...groupProps
   } = props
   const containerRef = useRef<SVGGElement | null>(null)
 
-  const { zoomContext } = useCreateMapZoom(
+  const {
+    commands,
+    zoomBehavior,
+  } = useCreateMapZoom(
     containerRef,
     {
-      center,
-      zoom: zoom ?? 1,
-      minZoom: minZoom ?? 1,
-      maxZoom: maxZoom ?? 8,
+      minZoom,
+      maxZoom,
       transition,
       config,
     },
@@ -59,12 +72,21 @@ export function MapZoom(props: MapZoomProps): ReactElement {
     },
   )
 
+  useImperativeHandle(ref, () => ({
+    container: containerRef.current,
+    zoomBehavior,
+    ...commands,
+  }), [
+    commands,
+    zoomBehavior,
+  ])
+
   const mergedClassName = className
     ? `d3-map-zoom ${className}`
     : 'd3-map-zoom'
 
   return (
-    <MapZoomContextValue.Provider value={zoomContext}>
+    <MapZoomContextValue.Provider value>
       <g
         data-d3m="zoom"
         {...groupProps}

@@ -28,11 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import type { ZoomEvent } from '@d3-maps/vue'
+import type { MapData, ZoomEvent } from '@d3-maps/vue'
 
-import {
-  getInverseZoomScale,
-} from '@d3-maps/vue'
+import { getInverseZoomScale } from '@d3-maps/vue'
 import { extent } from 'd3-array'
 import { geoAlbersUsa } from 'd3-geo'
 import { scaleLinear } from 'd3-scale'
@@ -46,12 +44,20 @@ interface City {
   population: number
 }
 
-const data = ref<unknown>()
 const projection = geoAlbersUsa
-const cities = ref<City[]>([])
 const markerScale = ref(1)
-const loading = ref(true)
-const error = ref(false)
+const data = ref<MapData | null>(null)
+const cities = ref<City[]>([])
+
+onMounted(async () => {
+  const [mapData, citiesRaw] = await Promise.all([
+    fetch(withBase('/example-data/states-10m.json')).then((r) => r.json()),
+    fetch(withBase('/example-data/us-cities.json')).then((r) => r.json()),
+  ]) as [MapData, City[]]
+
+  data.value = mapData
+  cities.value = citiesRaw
+})
 
 const minAndMaxValues = computed(() => extent(cities.value, (item) => Number(item.population)))
 const scale = computed(() => {
@@ -65,29 +71,9 @@ const scale = computed(() => {
     .range([3, 35])
 })
 
-onMounted(async () => {
-  try {
-    await Promise.all([fetchMap(), fetchData()])
-  } catch {
-    error.value = true
-  } finally {
-    loading.value = false
-  }
-})
-
 function updateMarkerScale(e: ZoomEvent) {
   markerScale.value = getInverseZoomScale(e)
 }
 
 const setSize = (item: City) => scale.value(item.population)
-
-async function fetchMap() {
-  const response = await fetch(withBase('/example-data/states-10m.json'))
-  data.value = await response.json()
-}
-
-async function fetchData() {
-  const response = await fetch(withBase('/example-data/us-cities.json'))
-  cities.value = await response.json()
-}
 </script>
