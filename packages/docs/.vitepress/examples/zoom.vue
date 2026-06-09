@@ -1,9 +1,5 @@
 <template>
-  <MapBase
-    v-if="data"
-    :data="data"
-    :projection="projection"
-  >
+  <MapBase :data="data" :projection="projection">
     <MapZoom @zoom="updateMarkerScale">
       <MapGraticule border />
       <MapFeatures />
@@ -34,7 +30,7 @@
 import type { ZoomEvent } from '@d3-maps/vue'
 
 import { geoNaturalEarth1 } from 'd3-geo'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 
 interface City {
   city: string
@@ -52,16 +48,11 @@ const initialCities: City[] = [
   { city: 'Georgetown', lon: -58.1, lat: 6.48 },
 ]
 
-const data = ref<unknown>()
+const { default: data } = await import('world-atlas/countries-110m.json')
 const projection = geoNaturalEarth1
 const cities = ref<City[]>(initialCities)
 const markerScale = ref(1)
 const currentZoom = ref(1)
-
-onMounted(async () => {
-  const { default: mapData } = await import('world-atlas/countries-110m.json')
-  data.value = mapData
-})
 
 function updateMarkerScale(e: ZoomEvent) {
   if (currentZoom.value === e.transform.k) return

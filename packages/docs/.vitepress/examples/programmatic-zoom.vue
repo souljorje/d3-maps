@@ -1,13 +1,7 @@
 <template>
-  <div
-    v-if="mapContext"
-    ref="mapRoot"
-    class="grid gap-3"
-  >
+  <div ref="mapRoot" class="grid gap-3">
     <div class="relative aspect-2/1">
-      <MapBase
-        :context="mapContext"
-      >
+      <MapBase :context="mapContext">
         <MapZoom
           ref="zoom"
           :min-zoom="minZoom"
@@ -99,8 +93,6 @@ import {
   useMapZoom,
 } from '@d3-maps/vue'
 import {
-  computed,
-  onMounted,
   shallowRef,
   useTemplateRef,
 } from 'vue'
@@ -109,21 +101,17 @@ const initialZoom = 1
 const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
-const data = shallowRef<MapData>()
+
+const { default: mapData } = await import('world-atlas/countries-110m.json')
+const data = mapData as MapData
+const mapContext = useCreateMapContext({ data })
+
 const zoomLevel = shallowRef(initialZoom)
 const activeCountryLabel = shallowRef('World')
 const mapRoot = useTemplateRef<HTMLElement>('mapRoot')
 const zoomRef = useTemplateRef<MapZoomRef>('zoom')
 const zoom = useMapZoom(zoomRef)
 
-const mapContextConfig = computed(() => {
-  if (!data.value) return undefined
-
-  return {
-    data: data.value,
-  }
-})
-const mapContext = useCreateMapContext(mapContextConfig)
 const zoomTransition = { duration: 600 }
 const zoomConfig = { filter: isDragOnlyFilter }
 const featureInteractionStyles = {
@@ -131,11 +119,6 @@ const featureInteractionStyles = {
     fill: 'lightskyblue',
   },
 }
-
-onMounted(async () => {
-  const { default: mapData } = await import('world-atlas/countries-110m.json')
-  data.value = mapData
-})
 
 function zoomIn() {
   zoom.scaleWith(zoomStep, undefined, false)

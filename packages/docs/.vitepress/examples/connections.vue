@@ -1,8 +1,5 @@
 <template>
-  <MapBase
-    v-if="data"
-    :data="data"
-  >
+  <MapBase :data="data">
     <MapFeatures />
 
     <MapMarker
@@ -20,7 +17,6 @@
       </text>
     </MapMarker>
 
-    <!-- Path per each connection -->
     <MapLine
       v-for="[flightFrom, flightTo] in directFlights"
       :key="`${flightFrom.name}-${flightTo.name}`"
@@ -29,7 +25,6 @@
       marker-end="url(#connections-arrow)"
     />
 
-    <!-- Single path for all connections -->
     <MapLine
       :coordinates="transitFlight"
       :stroke-width="1.5"
@@ -37,8 +32,6 @@
       marker-end="url(#connections-arrow)"
     />
 
-    <!-- Custom curved path for manual display control,
-    instead of native render -->
     <MapLine
       :coordinates="returnFlight"
       custom
@@ -49,7 +42,6 @@
       marker-end="url(#connections-arrow)"
     />
 
-    <!-- Custom line end -->
     <defs>
       <marker
         id="connections-arrow"
@@ -70,10 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MapData } from '@d3-maps/vue'
-
 import { curveBasis } from 'd3-shape'
-import { onMounted, ref } from 'vue'
 
 const cities = [
   { name: 'San Francisco', coordinates: [-122.4194, 37.7749] },
@@ -102,10 +91,5 @@ const returnFlight = [
   cities[0].coordinates,
 ]
 
-const data = ref<MapData>()
-
-onMounted(async () => {
-  const { default: mapData } = await import('world-atlas/countries-110m.json')
-  data.value = mapData
-})
+const { default: data } = await import('world-atlas/countries-110m.json')
 </script>
