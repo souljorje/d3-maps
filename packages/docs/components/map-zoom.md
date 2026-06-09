@@ -14,20 +14,25 @@ Wrap layers that should move together inside [MapZoom](/components/map-zoom).
 | --- | --- | --- | --- |
 | `minZoom?` | `number` | `1` | Minimum zoom scale |
 | `maxZoom?` | `number` | `8` | Maximum zoom scale |
-| `transition?` | [ZoomTransition](/api/core/zoom#zoomtransition) | — | Animate programmatic zoom with [d3-transition](https://d3js.org/d3-transition) |
+| `transition?` | [ZoomTransition](/api/core/zoom#zoomtransition) | — | Transition step or ordered transition steps for programmatic zoom |
 | `config?` | [ZoomModifiers](/api/core/zoom#zoommodifiers) | — | See the [guide](#config) below |
 
 ## Controls
 
-Use the `MapZoom` component ref for programmatic zoom commands.
+Use `useMapZoom` with the `MapZoom` component ref for programmatic zoom commands.
 
 | Method | Description |
 | --- | --- |
-| `zoomTo(transform, options?)` | Apply a native D3 `ZoomTransform` |
-| `zoomToScale(scale, options?)` | Apply an absolute scale using D3 `scaleTo` |
-| `zoomBy(delta, options?)` | Add or subtract from the current zoom scale |
+| `transform(transform, point?, transition?)` | Apply a native D3 `ZoomTransform` |
+| `translateBy(x, y, transition?)` | Translate by x and y using D3 `translateBy` |
+| `translateTo(x, y, point?, transition?)` | Translate to x and y using D3 `translateTo` |
+| `scaleBy(scale, point?, transition?)` | Multiply scale using D3 `scaleBy` |
+| `scaleTo(scale, point?, transition?)` | Apply an absolute scale using D3 `scaleTo` |
+| `scaleWith(delta, point?, transition?)` | Add or subtract from the current zoom scale |
 | `zoomToFeature(feature, options?)` | Zoom to a GeoJSON feature |
-| `reset(options?)` | Reset to `zoomIdentity` |
+| `reset(transition?)` | Reset to `zoomIdentity` |
+
+Command transitions accept `false | ZoomTransition`. `zoomToFeature` keeps an options object for `padding` and `transition`.
 
 ## Config
 
@@ -69,13 +74,15 @@ Callbacks:
 
 ```vue
 <script setup lang="ts">
-import type { MapZoomCommands } from '@d3-maps/vue'
-import { type ComponentPublicInstance, useTemplateRef } from 'vue'
+import type { MapZoomRef } from '@d3-maps/vue'
+import { useMapZoom } from '@d3-maps/vue'
+import { useTemplateRef } from 'vue'
 
-const zoom = useTemplateRef<ComponentPublicInstance & MapZoomCommands>('zoom')
+const zoomRef = useTemplateRef<MapZoomRef>('zoom')
+const zoom = useMapZoom(zoomRef)
 
 function zoomIn() {
-  zoom.value?.zoomBy(0.5)
+  zoom.scaleWith(0.5)
 }
 </script>
 
@@ -93,14 +100,15 @@ function zoomIn() {
 == React
 
 ```tsx
-import { MapZoom, type MapZoomHandle } from '@d3-maps/react'
+import { MapZoom, type MapZoomRef, useMapZoom } from '@d3-maps/react'
 import { useRef } from 'react'
 
 export function Example() {
-  const zoomRef = useRef<MapZoomHandle | null>(null)
+  const zoomRef = useRef<MapZoomRef | null>(null)
+  const zoom = useMapZoom(zoomRef)
 
   function zoomIn() {
-    zoomRef.current?.zoomBy(0.5)
+    zoom.scaleWith(0.5)
   }
 
   return (

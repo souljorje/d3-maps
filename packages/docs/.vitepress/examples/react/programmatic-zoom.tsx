@@ -1,7 +1,7 @@
 import type {
   MapData,
   MapFeatureData,
-  MapZoomHandle,
+  MapZoomRef,
   ZoomEvent,
 } from '@d3-maps/react'
 import type {
@@ -18,6 +18,7 @@ import {
   MapMesh,
   MapZoom,
   useCreateMapContext,
+  useMapZoom,
 } from '@d3-maps/react'
 import {
   useEffect,
@@ -30,6 +31,7 @@ const initialZoom = 1
 const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
+const zoomTransition = [{ duration: 600 }] as const
 const dragOnlyZoomConfig = { filter: isDragOnlyFilter }
 const featureButtonStyle = { cursor: 'pointer' }
 const featureInteractionStyles = {
@@ -43,19 +45,14 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   const [zoomLevel, setZoomLevel] = useState(initialZoom)
   const [activeCountryLabel, setActiveCountryLabel] = useState('World')
   const mapRootRef = useRef<HTMLDivElement | null>(null)
-  const zoomRef = useRef<MapZoomHandle | null>(null)
+  const zoomRef = useRef<MapZoomRef | null>(null)
+  const zoom = useMapZoom(zoomRef)
 
   const mapContextConfig = useMemo(
     () => (mapData ? { data: mapData } : undefined),
     [mapData],
   )
   const mapContext = useCreateMapContext(mapContextConfig)
-  const zoomTransition = useMemo(
-    () => ({
-      duration: 600,
-    }),
-    [],
-  )
 
   useEffect(() => {
     let isCancelled = false
@@ -78,23 +75,20 @@ export default function ProgrammaticZoomExample(): JSX.Element | null {
   if (!mapData || !mapContext) return null
 
   function zoomIn(): void {
-    zoomRef.current?.zoomBy(zoomStep)
+    zoom.scaleWith(zoomStep)
   }
 
   function zoomOut(): void {
-    zoomRef.current?.zoomBy(-zoomStep)
+    zoom.scaleWith(-zoomStep)
   }
 
   function resetView(): void {
-    zoomRef.current?.reset()
+    zoom.reset()
     setActiveCountryLabel('World')
   }
 
   function zoomToFeature(feature: MapFeatureData): void {
-    const didFit = zoomRef.current?.zoomToFeature(feature, {
-      minZoom,
-      maxZoom,
-    }) ?? false
+    const didFit = zoom.zoomToFeature(feature)
 
     if (!didFit) return
 

@@ -7,7 +7,3 @@ export { MapLine } from './MapLine'
 export { MapMarker } from './MapMarker'
 export { MapMesh } from './MapMesh'
 export { MapZoom } from './MapZoom'
-export type {
-  MapZoomHandle,
-  MapZoomProps,
-} from './MapZoom'

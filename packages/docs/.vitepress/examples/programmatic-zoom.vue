@@ -89,14 +89,14 @@
 import type {
   MapData,
   MapFeatureData,
-  MapZoomCommands,
+  MapZoomRef,
   ZoomEvent,
 } from '@d3-maps/vue'
-import type { ComponentPublicInstance } from 'vue'
 
 import {
   getFeatureKey,
   useCreateMapContext,
+  useMapZoom,
 } from '@d3-maps/vue'
 import {
   computed,
@@ -113,7 +113,8 @@ const data = shallowRef<MapData>()
 const zoomLevel = shallowRef(initialZoom)
 const activeCountryLabel = shallowRef('World')
 const mapRoot = useTemplateRef<HTMLElement>('mapRoot')
-const zoom = useTemplateRef<ComponentPublicInstance & MapZoomCommands>('zoom')
+const zoomRef = useTemplateRef<MapZoomRef>('zoom')
+const zoom = useMapZoom(zoomRef)
 
 const mapContextConfig = computed(() => {
   if (!data.value) return undefined
@@ -123,7 +124,7 @@ const mapContextConfig = computed(() => {
   }
 })
 const mapContext = useCreateMapContext(mapContextConfig)
-const zoomTransition = computed(() => ({ duration: 600 }))
+const zoomTransition = { duration: 600 }
 const zoomConfig = { filter: isDragOnlyFilter }
 const featureInteractionStyles = {
   focus: {
@@ -137,15 +138,15 @@ onMounted(async () => {
 })
 
 function zoomIn() {
-  zoom.value?.zoomBy(zoomStep)
+  zoom.scaleWith(zoomStep, undefined, false)
 }
 
 function zoomOut() {
-  zoom.value?.zoomBy(-zoomStep)
+  zoom.scaleWith(-zoomStep, undefined, false)
 }
 
 function resetView() {
-  zoom.value?.reset()
+  zoom.reset()
   activeCountryLabel.value = 'World'
 }
 
@@ -161,10 +162,7 @@ function zoomToRandomCountry() {
 }
 
 function zoomToFeature(feature: MapFeatureData) {
-  const didFit = zoom.value?.zoomToFeature(feature, {
-    minZoom,
-    maxZoom,
-  }) ?? false
+  const didFit = zoom.zoomToFeature(feature)
   if (!didFit) return
 
   activeCountryLabel.value = getFeatureLabel(feature)

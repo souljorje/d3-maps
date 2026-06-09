@@ -10,7 +10,7 @@ import {
   MapBase,
   MapFeature,
 } from '../src'
-import { mapZoomKey } from '../src/hooks/useMapZoom'
+import { mapZoomKey } from '../src/hooks/useCreateMapZoom'
 import { sampleGeoJson } from './fixtures'
 
 describe('mapFeature', () => {
@@ -72,10 +72,7 @@ describe('mapFeature', () => {
     const wrapper = mount(MapBase, {
       global: {
         provide: {
-          [mapZoomKey as symbol]: {
-            minZoom: { value: 1 },
-            maxZoom: { value: 8 },
-          },
+          [mapZoomKey as symbol]: true,
         },
       },
       props: {

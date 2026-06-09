@@ -8,36 +8,44 @@ import {
 
 import type {
   ZoomBehaviorOptions,
+  ZoomCommands,
   ZoomEvent,
   ZoomTransform,
 } from '@d3-maps/core'
 
-import type { MapZoomCommands } from '../src/hooks/useMapZoom'
+import type {
+  MapZoomRef,
+} from '../src/hooks/useMapZoom'
 
 import { mount } from '@vue/test-utils'
 import {
   defineComponent,
   h,
   inject,
+  useTemplateRef,
 } from 'vue'
 
 import {
   MapBase,
   MapZoom,
 } from '../src'
-import { mapZoomKey } from '../src/hooks/useMapZoom'
+import { mapZoomKey } from '../src/hooks/useCreateMapZoom'
+import {
+  useMapZoom,
+} from '../src/hooks/useMapZoom'
 import { sampleGeoJson } from './fixtures'
 
 const setupZoomSpy = vi.hoisted(() => vi.fn())
-const applyZoomTransformSpy = vi.hoisted(() => vi.fn(() => true))
-const getFeatureZoomTransformSpy = vi.hoisted(() => vi.fn())
-const scaleToSpy = vi.hoisted(() => vi.fn(() => true))
+const applyZoomTransformSpy = vi.hoisted(() => vi.fn((_: ApplyZoomTransformOptions) => true))
+const getFeatureZoomTransformSpy = vi.hoisted(() => vi.fn((..._: unknown[]) => undefined as unknown))
+const scaleToSpy = vi.hoisted(() => vi.fn((_: ScaleToOptions) => true))
 let zoomBehaviorOptions: ZoomBehaviorOptions | undefined
 
 interface ApplyZoomTransformOptions {
   element: SVGElement | null | undefined
   behavior: unknown
-  transform: ZoomTransform
+  transform: ZoomTransform | unknown
+  point?: unknown
   transition?: false | unknown
 }
 
@@ -45,8 +53,11 @@ interface ScaleToOptions {
   element: SVGElement | null | undefined
   behavior: unknown
   scale: number
+  point?: unknown
   transition?: false | unknown
 }
+
+type TestCommandTransition = false | undefined
 
 function createZoomEvent(
   zoom: number,
@@ -66,12 +77,6 @@ vi.mock('@d3-maps/core', async () => {
     setupZoom: (...args: Parameters<typeof actual.setupZoom>) => {
       setupZoomSpy(...args)
     },
-    applyZoomTransform: (options: ApplyZoomTransformOptions) => {
-      return applyZoomTransformSpy(options)
-    },
-    scaleTo: (options: ScaleToOptions) => {
-      return scaleToSpy(options)
-    },
     getFeatureZoomTransform: (
       context: unknown,
       feature: unknown,
@@ -84,6 +89,73 @@ vi.mock('@d3-maps/core', async () => {
       zoomBehaviorOptions = options
       return {} as any
     },
+    createZoomCommands: (options: Parameters<typeof actual.createZoomCommands>[0]) => ({
+      transform: (
+        transform: ApplyZoomTransformOptions['transform'],
+        point?: ApplyZoomTransformOptions['point'],
+        transition?: TestCommandTransition,
+      ) => {
+        return applyZoomTransformSpy({
+          element: options.element(),
+          behavior: options.behavior(),
+          transform,
+          point,
+          transition: transition ?? options.transition?.(),
+        })
+      },
+      translateBy: vi.fn(() => true),
+      translateTo: vi.fn(() => true),
+      scaleBy: vi.fn(() => true),
+      scaleTo: (
+        scale: number,
+        point?: [number, number],
+        transition?: TestCommandTransition,
+      ) => {
+        return scaleToSpy({
+          element: options.element(),
+          behavior: options.behavior(),
+          scale,
+          point,
+          transition: transition ?? options.transition?.(),
+        })
+      },
+      scaleWith: (
+        delta: number,
+        point?: [number, number],
+        transition?: TestCommandTransition,
+      ) => {
+        return scaleToSpy({
+          element: options.element(),
+          behavior: options.behavior(),
+          scale: 1 + delta,
+          point,
+          transition: transition ?? options.transition?.(),
+        })
+      },
+      zoomToFeature: (
+        feature: unknown,
+        commandOptions: { padding?: number, transition?: false | unknown } = {},
+      ) => {
+        const transform = getFeatureZoomTransformSpy(options.context(), feature, {
+          minZoom: options.minZoom(),
+          maxZoom: options.maxZoom(),
+          padding: commandOptions.padding,
+        })
+        if (!transform) return false
+        return applyZoomTransformSpy({
+          element: options.element(),
+          behavior: options.behavior(),
+          transform,
+          transition: commandOptions.transition ?? options.transition?.(),
+        })
+      },
+      reset: (transition?: TestCommandTransition) => applyZoomTransformSpy({
+        element: options.element(),
+        behavior: options.behavior(),
+        transform: actual.zoomIdentity,
+        transition: transition ?? options.transition?.(),
+      }),
+    }),
   }
 })
 
@@ -132,7 +204,7 @@ describe('mapZoom', () => {
       },
     }))
 
-    expect(injectedZoom).toBeTruthy()
+    expect(injectedZoom).toBe(true)
   })
 
   it('wires zoom setup and forwards native D3 zoom events', async () => {
@@ -181,14 +253,14 @@ describe('mapZoom', () => {
     expect(wrapper.get('[data-testid="map-zoom-group"]').attributes('transform')).toContain('translate')
   })
 
-  it('exposes zoomTo and applies a native D3 zoom transform', async () => {
+  it('exposes transform and applies a native D3 zoom transform', async () => {
     const wrapper = mountZoom()
     await Promise.resolve()
 
     const commands = getZoomCommands(wrapper)
     const transform = createTransform(3)
 
-    expect(commands.zoomTo(transform, { transition: false })).toBe(true)
+    commands.transform(transform, undefined, false)
     expect(applyZoomTransformSpy).toHaveBeenCalledWith(expect.objectContaining({
       element: expect.any(SVGElement),
       transform,
@@ -196,14 +268,44 @@ describe('mapZoom', () => {
     }))
   })
 
-  it('exposes zoomBy and zoomToScale through D3 scale helpers', async () => {
+  it('exposes scaleWith and scaleTo through D3 scale helpers', async () => {
     const wrapper = mountZoom()
     await Promise.resolve()
 
     const commands = getZoomCommands(wrapper)
 
-    expect(commands.zoomBy(0.5, { transition: false })).toBe(true)
-    expect(commands.zoomToScale(3, { transition: false })).toBe(true)
+    commands.scaleWith(0.5, undefined, false)
+    commands.scaleTo(3, undefined, false)
+    expect(scaleToSpy).toHaveBeenCalledWith(expect.objectContaining({
+      element: expect.any(SVGElement),
+      scale: 1.5,
+      transition: false,
+    }))
+    expect(scaleToSpy).toHaveBeenCalledWith(expect.objectContaining({
+      scale: 3,
+      transition: false,
+    }))
+  })
+
+  it('proxies zoom commands through useMapZoom', async () => {
+    let commands: ZoomCommands | undefined
+
+    mount(defineComponent({
+      setup() {
+        const zoomRef = useTemplateRef<MapZoomRef>('zoom')
+        commands = useMapZoom(zoomRef)
+
+        return () => h(MapBase, {
+          data: sampleGeoJson,
+        }, {
+          default: () => h(MapZoom, { ref: 'zoom' }),
+        })
+      },
+    }))
+    await Promise.resolve()
+
+    commands?.scaleWith(0.5, undefined, false)
+    commands?.scaleTo(3, undefined, false)
     expect(scaleToSpy).toHaveBeenCalledWith(expect.objectContaining({
       element: expect.any(SVGElement),
       scale: 1.5,
@@ -225,7 +327,6 @@ describe('mapZoom', () => {
     getFeatureZoomTransformSpy.mockReturnValue(transform)
 
     expect(commands.zoomToFeature(feature, {
-      minZoom: 2,
       padding: 12,
       transition: false,
     })).toBe(true)
@@ -235,7 +336,7 @@ describe('mapZoom', () => {
       feature,
       expect.objectContaining({
         maxZoom: 8,
-        minZoom: 2,
+        minZoom: 1,
         padding: 12,
       }),
     )
@@ -261,7 +362,7 @@ describe('mapZoom', () => {
 
     const commands = getZoomCommands(wrapper)
 
-    expect(commands.reset({ transition: false })).toBe(true)
+    commands.reset(false)
     expect(applyZoomTransformSpy).toHaveBeenCalledWith(expect.objectContaining({
       transform: expect.objectContaining({
         k: 1,
@@ -279,14 +380,14 @@ function mountZoom() {
       return h(MapBase, {
         data: sampleGeoJson,
       }, {
-        default: () => h(MapZoom),
+        default: () => h(MapZoom, { ref: 'zoom' }),
       })
     },
   }))
 }
 
-function getZoomCommands(wrapper: ReturnType<typeof mountZoom>): MapZoomCommands {
-  return wrapper.findComponent(MapZoom).vm as unknown as MapZoomCommands
+function getZoomCommands(wrapper: ReturnType<typeof mountZoom>): ZoomCommands {
+  return wrapper.vm.$refs.zoom as unknown as ZoomCommands
 }
 
 function createTransform(zoom: number): ZoomTransform {

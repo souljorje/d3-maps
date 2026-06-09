@@ -8,18 +8,14 @@
 </template>
 
 <script setup lang="ts">
-import type { ZoomEvent } from '@d3-maps/core'
+import type { ZoomEvent, ZoomProps } from '@d3-maps/core'
 
-import type { MapZoomProps } from '../hooks/useCreateMapZoom'
-
-import { ref } from 'vue'
+import { ZOOM_DEFAULTS } from '@d3-maps/core'
+import { useTemplateRef } from 'vue'
 
 import { useCreateMapZoom } from '../hooks/useCreateMapZoom'
 
-const props = withDefaults(defineProps<MapZoomProps>(), {
-  minZoom: 1,
-  maxZoom: 8,
-})
+const props = withDefaults(defineProps<ZoomProps>(), ZOOM_DEFAULTS)
 
 const emit = defineEmits<{
   (event: 'zoomStart', payload: ZoomEvent): void
@@ -27,15 +23,11 @@ const emit = defineEmits<{
   (event: 'zoomEnd', payload: ZoomEvent): void
 }>()
 
-const container = ref<SVGGElement | null>(null)
+const container = useTemplateRef('container')
 
 const {
-  reset,
+  commands,
   zoomBehavior,
-  zoomBy,
-  zoomTo,
-  zoomToFeature,
-  zoomToScale,
 } = useCreateMapZoom(
   container,
   props,
@@ -48,11 +40,7 @@ const {
 
 defineExpose({
   container,
-  reset,
   zoomBehavior,
-  zoomBy,
-  zoomTo,
-  zoomToFeature,
-  zoomToScale,
+  ...commands,
 })
 </script>

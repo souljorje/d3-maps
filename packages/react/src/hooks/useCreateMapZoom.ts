@@ -1,26 +1,18 @@
 'use client'
 
 import type {
-  ApplyZoomTransformOptions,
   DefaultZoomBehavior,
-  ScaleToOptions,
+  ZoomCommands,
   ZoomEvent,
-  ZoomFitOptions,
-  ZoomObject,
   ZoomProps,
-  ZoomTransform,
 } from '@d3-maps/core'
 import type { RefObject } from 'react'
 
 import {
-  scaleTo as applyScaleTo,
   applyZoomEventTransform,
-  applyZoomTransform,
   createZoomBehavior,
-  getCurrentZoomTransform,
-  getFeatureZoomTransform,
+  createZoomCommands,
   setupZoom,
-  zoomIdentity,
 } from '@d3-maps/core'
 import {
   useCallback,
@@ -30,11 +22,6 @@ import {
 
 import { useLatest } from './useLatest'
 import { useMapContext } from './useMapContext'
-
-export interface MapZoomState {
-  minZoom: number
-  maxZoom: number
-}
 
 export interface MapZoomEventCallbacks {
   onZoomStart?: (event: ZoomEvent) => void
@@ -47,24 +34,9 @@ export interface ResolvedMapZoomProps extends ZoomProps {
   maxZoom: number
 }
 
-export type MapZoomCommandOptions = Pick<ApplyZoomTransformOptions, 'transition'>
-
-export interface MapZoomFeatureOptions extends ZoomFitOptions, MapZoomCommandOptions {}
-export type MapZoomByOptions = Pick<ScaleToOptions, 'transition'>
-export type MapZoomToScaleOptions = Pick<ScaleToOptions, 'transition'>
-
-export interface MapZoomCommands {
-  zoomTo: (transform: ZoomTransform, options?: MapZoomCommandOptions) => boolean
-  zoomBy: (delta: number, options?: MapZoomByOptions) => boolean
-  zoomToScale: (scale: number, options?: MapZoomToScaleOptions) => boolean
-  zoomToFeature: (feature: ZoomObject, options?: MapZoomFeatureOptions) => boolean
-  reset: (options?: MapZoomCommandOptions) => boolean
-}
-
-export interface CreateMapZoomResult extends MapZoomCommands {
-  containerRef: RefObject<SVGGElement | null>
+export interface CreateMapZoomResult {
+  commands: ZoomCommands
   zoomBehavior: DefaultZoomBehavior
-  zoomContext: MapZoomState
 }
 
 export function useCreateMapZoom(
@@ -122,86 +94,23 @@ export function useCreateMapZoom(
     })
   }, [zoomBehavior])
 
-  const zoomContext = useMemo<MapZoomState>(() => ({
-    minZoom,
-    maxZoom,
+  const commands = useMemo(() => createZoomCommands({
+    element: () => containerRef.current,
+    behavior: () => zoomBehavior,
+    context: () => context,
+    minZoom: () => minZoom,
+    maxZoom: () => maxZoom,
+    transition: () => transition,
   }), [
-    maxZoom,
-    minZoom,
-  ])
-
-  const zoomTo = useCallback((
-    transform: ZoomTransform,
-    options?: MapZoomCommandOptions,
-  ): boolean => {
-    return applyZoomTransform({
-      element: containerRef.current,
-      behavior: zoomBehavior,
-      transform,
-      transition: options?.transition ?? transition,
-    })
-  }, [
-    transition,
-    zoomBehavior,
-  ])
-
-  const zoomToScale = useCallback((
-    scale: number,
-    options?: MapZoomToScaleOptions,
-  ): boolean => {
-    return applyScaleTo({
-      element: containerRef.current,
-      behavior: zoomBehavior,
-      scale,
-      transition: options?.transition ?? transition,
-    })
-  }, [
-    transition,
-    zoomBehavior,
-  ])
-
-  const zoomBy = useCallback((
-    delta: number,
-    options?: MapZoomByOptions,
-  ): boolean => {
-    const currentTransform = getCurrentZoomTransform(containerRef.current)
-    return zoomToScale(currentTransform.k + delta, options)
-  }, [
-    zoomToScale,
-  ])
-
-  const zoomToFeature = useCallback((
-    feature: ZoomObject,
-    options: MapZoomFeatureOptions = {},
-  ): boolean => {
-    const transform = getFeatureZoomTransform(context, feature, {
-      minZoom: options.minZoom ?? minZoom,
-      maxZoom: options.maxZoom ?? maxZoom,
-      padding: options.padding,
-    })
-
-    return transform ? zoomTo(transform, options) : false
-  }, [
     context,
     maxZoom,
     minZoom,
-    zoomTo,
+    transition,
+    zoomBehavior,
   ])
 
-  const reset = useCallback((
-    options?: MapZoomCommandOptions,
-  ): boolean => {
-    return zoomTo(zoomIdentity, options)
-  }, [zoomTo])
-
   return {
-    containerRef,
-    reset,
-    zoomBy,
-    zoomTo,
-    zoomToFeature,
-    zoomToScale,
+    commands,
     zoomBehavior,
-    zoomContext,
   }
 }

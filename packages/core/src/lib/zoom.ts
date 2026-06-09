@@ -1,6 +1,11 @@
 import type { GeoPermissibleObjects } from 'd3-geo'
-import type { Selection } from 'd3-selection'
-import type { Transition } from 'd3-transition'
+import type {
+  Selection,
+} from 'd3-selection'
+import type {
+  SelectionOrTransition,
+  Transition,
+} from 'd3-transition'
 import type {
   D3ZoomEvent,
   ZoomBehavior,
@@ -8,7 +13,11 @@ import type {
 } from 'd3-zoom'
 
 import type { MapContext } from './map'
-import type { MethodsToModifiers } from './utils'
+import type {
+  MaybeArray,
+  MethodsToModifiers,
+  OverloadedArgs,
+} from './utils'
 
 import { select as d3Select } from 'd3-selection'
 import {
@@ -19,6 +28,8 @@ import {
 
 import {
   applyModifiers,
+  clamp,
+  ensureArray,
   getSvgElement,
   isNumber,
 } from './utils'
@@ -35,7 +46,63 @@ export {
   zoomIdentity,
 } from 'd3-zoom'
 
+/**
+ * Default D3 zoom behavior used by d3-maps.
+ */
 export interface DefaultZoomBehavior extends ZoomBehavior<SVGSVGElement, unknown> {}
+type ZoomSelection = Selection<SVGSVGElement, unknown, null, undefined>
+type DefaultZoomTransition = Transition<SVGSVGElement, unknown, null, undefined>
+type ZoomSelectionOrTransition = SelectionOrTransition<SVGSVGElement, unknown, null, undefined>
+
+type ZoomTransitionMethod =
+  | 'attr'
+  | 'attrTween'
+  | 'delay'
+  | 'duration'
+  | 'ease'
+  | 'easeVarying'
+  | 'on'
+  | 'style'
+  | 'styleTween'
+  | 'text'
+  | 'textTween'
+  | 'tween'
+
+/**
+ * Transition modifiers applied to one D3 transition step.
+ */
+export interface ZoomTransitionStep extends Pick<
+  MethodsToModifiers<DefaultZoomTransition>,
+  ZoomTransitionMethod
+> {}
+
+/**
+ * D3 transition step or ordered transition steps used by programmatic zoom commands.
+ */
+export type ZoomTransition = MaybeArray<ZoomTransitionStep>
+
+/**
+ * Per-command transition override; `false` disables the default transition.
+ */
+export type ZoomTransitionParameter = false | ZoomTransition
+
+type ZoomCommandMethod =
+  | 'scaleBy'
+  | 'scaleTo'
+  | 'transform'
+  | 'translateBy'
+  | 'translateTo'
+type Tail<Args extends readonly unknown[]> =
+  Args extends readonly [unknown, ...infer Rest] ? Rest : never
+type ZoomBehaviorCommandArgs<Method extends ZoomCommandMethod> =
+  Tail<OverloadedArgs<DefaultZoomBehavior[Method]>>
+type ZoomCommandArgs<Method extends ZoomCommandMethod> =
+  [...ZoomBehaviorCommandArgs<Method>, transition?: ZoomTransitionParameter]
+type ZoomScalePoint = ZoomBehaviorCommandArgs<'scaleBy'>[1]
+
+/**
+ * GeoJSON object that can be fitted by zoom commands.
+ */
 export type ZoomObject = GeoPermissibleObjects
 
 /**
@@ -48,8 +115,9 @@ export type ZoomObject = GeoPermissibleObjects
  */
 export interface ZoomModifiers extends MethodsToModifiers<DefaultZoomBehavior> {}
 
-// export interface TransitionModifiers extends MethodsToModifiers<Transition> {}
-
+/**
+ * Shared zoom configuration props.
+ */
 export interface ZoomProps {
   minZoom?: number
   maxZoom?: number
@@ -90,63 +158,71 @@ export type ZoomTargetElement = SVGSVGElement | SVGGElement
  * Default zoom prop values used by the core helpers.
  */
 export const ZOOM_DEFAULTS = {
-  zoom: 1,
   minZoom: 1,
   maxZoom: 8,
 }
 
-/**
- * Options for applying a native D3 zoom transform to an existing zoom behavior.
- */
-export interface ApplyZoomTransformOptions {
-  element: ZoomTargetElement | null | undefined
-  behavior: DefaultZoomBehavior
-  transform: ZoomTransform
-  transition?: false | ZoomTransition
-}
-
-/**
- * Options for applying a relative zoom scale.
- */
-export interface ScaleByOptions {
-  element: ZoomTargetElement | null | undefined
-  behavior: DefaultZoomBehavior
-  factor: number
-  transition?: false | ZoomTransition
-}
-
-/**
- * Options for applying an absolute zoom scale.
- */
-export interface ScaleToOptions {
-  element: ZoomTargetElement | null | undefined
-  behavior: DefaultZoomBehavior
-  scale: number
-  transition?: false | ZoomTransition
-}
-
-type ZoomCallTarget =
-  | Selection<SVGSVGElement, unknown, null, undefined>
-  | Transition<SVGSVGElement, unknown, null, undefined>
+type ZoomBehaviorMethod = (target: ZoomSelectionOrTransition, ...args: any[]) => void
 
 interface ZoomCallOptions {
   element: ZoomTargetElement | null | undefined
-  transition?: false | ZoomTransition
+  transition?: ZoomTransitionParameter
 }
 
 /**
- * Options for attaching a zoom behavior to an SVG element.
+ * Options for fitting a feature with a programmatic zoom command.
  */
-export interface SetupZoomOptions
-  extends Pick<ApplyZoomTransformOptions, 'behavior' | 'element'> {}
+export interface ZoomToFeatureOptions extends Pick<ZoomFitOptions, 'padding'> {
+  transition?: ZoomTransitionParameter
+}
 
 /**
- * Transition settings for programmatic zoom updates.
+ * Lazy inputs used to create programmatic zoom commands.
  */
-export interface ZoomTransition {
-  duration?: number
-  delay?: number
-  ease?: (normalizedTime: number) => number
+export interface CreateZoomCommandsOptions {
+  element: () => ZoomTargetElement | null | undefined
+  behavior: () => DefaultZoomBehavior
+  context: () => Pick<MapContext, 'path' | 'width' | 'height'>
+  minZoom: () => number
+  maxZoom: () => number
+  transition?: () => ZoomTransitionParameter | undefined
+}
+
+interface ZoomCommandState {
+  element: ZoomTargetElement | null | undefined
+  behavior: DefaultZoomBehavior
+  transition?: ZoomTransitionParameter
+}
+
+type NativeZoomCommands = {
+  [Method in ZoomCommandMethod]: (
+    ...args: ZoomCommandArgs<Method>
+  ) => void
+}
+
+/**
+ * Programmatic zoom commands exposed by adapters and hooks.
+ */
+export interface ZoomCommands extends NativeZoomCommands {
+  /**
+   * Adds a delta to the current zoom scale, clamped to zoom limits.
+   */
+  scaleWith: (
+    delta: number,
+    point?: ZoomScalePoint,
+    transition?: ZoomTransitionParameter,
+  ) => void
+  /**
+   * Fits a GeoJSON object in the viewport.
+   */
+  zoomToFeature: (
+    feature: ZoomObject,
+    options?: ZoomToFeatureOptions,
+  ) => boolean
+  /**
+   * Resets zoom to the identity transform.
+   */
+  reset: (transition?: ZoomTransitionParameter) => void
 }
 
 /**
@@ -169,57 +245,24 @@ export function createZoomBehavior(
   const minZoom = options.minZoom ?? ZOOM_DEFAULTS.minZoom
   const maxZoom = options.maxZoom ?? ZOOM_DEFAULTS.maxZoom
 
-  applyModifiers(behavior, {
-    extent: [[[0, 0], [context?.width ?? 0, context?.height ?? 0]]],
+  const config: ZoomModifiers = {
     scaleExtent: [[minZoom, maxZoom]],
-    translateExtent: [[[0, 0], [context?.width ?? 0, context?.height ?? 0]]],
     ...options.config,
-  })
+  }
 
-  if (options.onZoomStart) {
-    behavior.on('start', options.onZoomStart)
+  if (context && context.width && context.height) {
+    Object.assign(config, {
+      extent: [[[0, 0], [context.width, context.height]]],
+      translateExtent: [[[0, 0], [context.width, context.height]]],
+    })
   }
-  if (options.onZoom) {
-    behavior.on('zoom', options.onZoom)
-  }
-  if (options.onZoomEnd) {
-    behavior.on('end', options.onZoomEnd)
-  }
+  applyModifiers(behavior, config)
+
+  if (options.onZoomStart) behavior.on('start', options.onZoomStart)
+  if (options.onZoom) behavior.on('zoom', options.onZoom)
+  if (options.onZoomEnd) behavior.on('end', options.onZoomEnd)
 
   return behavior
-}
-
-// zoom.transform(selection, transform, point)
-// zoom.translateBy(selection, x, y)
-// zoom.translateTo(selection, x, y, p)
-// zoom.scaleBy(selection, k, p)
-// zoom.scaleTo(selection, k, p)
-
-/**
- * Applies a native D3 zoom transform to the target zoom behavior.
- */
-export function applyZoomTransform(options: ApplyZoomTransformOptions): void {
-  callZoom(options, (target) => {
-    target.call(options.behavior.transform, options.transform)
-  })
-}
-
-/**
- * Applies a relative zoom scale through D3 zoom's scaleBy.
- */
-export function scaleBy(options: ScaleByOptions): void {
-  callZoom(options, (target) => {
-    target.call(options.behavior.scaleBy, options.factor)
-  })
-}
-
-/**
- * Applies an absolute zoom scale through D3 zoom's scaleTo.
- */
-export function scaleTo(options: ScaleToOptions): void {
-  callZoom(options, (target) => {
-    target.call(options.behavior.scaleTo, options.scale)
-  })
 }
 
 /**
@@ -236,7 +279,10 @@ export function applyZoomEventTransform(
 /**
  * Attaches a zoom behavior to the SVG element.
  */
-export function setupZoom(options: SetupZoomOptions): void {
+export function setupZoom(options: {
+  element: ZoomTargetElement | null | undefined
+  behavior: DefaultZoomBehavior
+}): void {
   withSelection(options.element, (selection) => {
     selection.call(options.behavior)
   })
@@ -313,6 +359,95 @@ export function getFeatureZoomTransform(
 }
 
 /**
+ * Creates framework-agnostic programmatic zoom commands.
+ */
+export function createZoomCommands(options: CreateZoomCommandsOptions): ZoomCommands {
+  const getCommandState = (transition?: ZoomTransitionParameter): ZoomCommandState => ({
+    element: options.element(),
+    behavior: options.behavior(),
+    transition: transition ?? options.transition?.(),
+  })
+  const callCommand = (
+    methodName: ZoomCommandMethod,
+    args: readonly unknown[],
+    transition?: ZoomTransitionParameter,
+  ): void => {
+    const command = getCommandState(transition)
+
+    return callZoomMethod(
+      command.element,
+      command.transition,
+      command.behavior[methodName] as ZoomBehaviorMethod,
+      args,
+    )
+  }
+  return {
+    transform: (
+      transform,
+      point,
+      transition,
+    ) => callCommand('transform', [transform, point], transition),
+    translateBy: (
+      x,
+      y,
+      transition,
+    ) => callCommand('translateBy', [x, y], transition),
+    translateTo: (
+      x,
+      y,
+      point,
+      transition,
+    ) => callCommand('translateTo', [x, y, point], transition),
+    scaleBy: (
+      scale,
+      point,
+      transition,
+    ) => callCommand('scaleBy', [scale, point], transition),
+    scaleTo: (
+      scale,
+      point,
+      transition,
+    ) => callCommand('scaleTo', [scale, point], transition),
+    scaleWith: (
+      delta,
+      point,
+      transition,
+    ) => {
+      const command = getCommandState(transition)
+      const currentTransform = getCurrentZoomTransform(command.element)
+      const nextScale = clamp(
+        currentTransform.k + delta,
+        options.minZoom(),
+        options.maxZoom(),
+      )
+
+      return callZoomMethod(
+        command.element,
+        command.transition,
+        command.behavior.scaleTo as ZoomBehaviorMethod,
+        [nextScale, point],
+      )
+    },
+    zoomToFeature: (
+      feature,
+      commandOptions = {},
+    ) => {
+      const transform = getFeatureZoomTransform(options.context(), feature, {
+        minZoom: options.minZoom(),
+        maxZoom: options.maxZoom(),
+        padding: commandOptions.padding,
+      })
+
+      if (!transform) return false
+
+      callCommand('transform', [transform], commandOptions.transition)
+      return true
+    },
+    reset: (transition) => callCommand('transform', [zoomIdentity], transition),
+  }
+}
+
+/**
  * Returns whether D3 emitted the zoom event from a programmatic zoom call.
  */
 export function isProgrammaticZoomEvent(event: Pick<ZoomEvent, 'sourceEvent'>): boolean {
@@ -349,31 +484,42 @@ function isZoomTransform(value: unknown): value is ZoomTransform {
   )
 }
 
-export function callZoom(
-  options: ZoomCallOptions,
-  callback: (target: ZoomCallTarget) => void,
+function callZoomMethod(
+  element: ZoomCallOptions['element'],
+  transition: ZoomCallOptions['transition'],
+  method: ZoomBehaviorMethod,
+  args: readonly unknown[],
 ): void {
-  return withSelection(options.element, (selection) => {
-    callback(withTransition(selection, options.transition))
+  withSelection(element, (selection) => {
+    withTransition(selection, transition).call(method, ...args)
   })
 }
 
 function withTransition(
-  selection: Selection<SVGSVGElement, unknown, null, undefined>,
-  transition?: false | ZoomTransition,
-): Selection<SVGSVGElement, unknown, null, undefined> | Transition<SVGSVGElement, unknown, null, undefined> {
+  selection: ZoomSelection,
+  transition?: ZoomTransitionParameter,
+): ZoomSelectionOrTransition {
   if (!transition) return selection
 
-  const target = selection.transition()
-  if (isNumber(transition.duration)) target.duration(transition.duration)
-  if (isNumber(transition.delay)) target.delay(transition.delay)
-  if (transition.ease) target.ease(transition.ease)
+  return applyZoomTransition(selection.transition(), transition)
+}
+
+function applyZoomTransition(
+  initialTarget: DefaultZoomTransition,
+  transition: ZoomTransition,
+): DefaultZoomTransition {
+  let target = initialTarget
+  const steps = ensureArray(transition)
+  steps.forEach((step, index) => {
+    if (index > 0) target = target.transition()
+    applyModifiers(target, step)
+  })
   return target
 }
 
 function withSelection<T>(
   element: ZoomTargetElement | null | undefined,
-  callback: (selection: Selection<SVGSVGElement, unknown, null, undefined>) => T,
+  callback: (selection: ZoomSelection) => T,
 ): T | undefined {
   const svgElement = getSvgElement(element)
   if (!svgElement) return undefined

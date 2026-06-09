@@ -1,11 +1,7 @@
 import type {
-  ApplyZoomTransformOptions,
-  ScaleToOptions,
+  ZoomCommands,
   ZoomEvent,
-  ZoomFitOptions,
-  ZoomObject,
   ZoomProps,
-  ZoomTransform,
 } from '@d3-maps/core'
 import type {
   ComputedRef,
@@ -14,14 +10,10 @@ import type {
 } from 'vue'
 
 import {
-  scaleTo as applyScaleTo,
   applyZoomEventTransform,
-  applyZoomTransform,
   createZoomBehavior,
-  getCurrentZoomTransform,
-  getFeatureZoomTransform,
+  createZoomCommands,
   setupZoom,
-  zoomIdentity,
 } from '@d3-maps/core'
 import {
   computed,
@@ -33,14 +25,7 @@ import {
 
 import { useMapContext } from './useMapContext'
 
-export interface MapZoomProps extends ZoomProps {}
-
-export interface UseMapZoomResult {
-  minZoom: ComputedRef<number>
-  maxZoom: ComputedRef<number>
-}
-
-export const mapZoomKey: InjectionKey<UseMapZoomResult> = Symbol('MapZoom')
+export const mapZoomKey: InjectionKey<boolean> = Symbol('MapZoom')
 
 export interface MapZoomEventCallbacks {
   onZoomStart?: (event: ZoomEvent) => void
@@ -48,128 +33,47 @@ export interface MapZoomEventCallbacks {
   onZoomEnd?: (event: ZoomEvent) => void
 }
 
-export interface ResolvedMapZoomProps extends MapZoomProps {
+export interface ResolvedZoomProps extends ZoomProps {
   minZoom: number
   maxZoom: number
 }
 
-export type MapZoomCommandOptions = Pick<ApplyZoomTransformOptions, 'transition'>
-
-export interface MapZoomFeatureOptions extends ZoomFitOptions, MapZoomCommandOptions {}
-export type MapZoomByOptions = Pick<ScaleToOptions, 'transition'>
-export type MapZoomToScaleOptions = Pick<ScaleToOptions, 'transition'>
-
-export interface MapZoomCommands {
-  zoomTo: (transform: ZoomTransform, options?: MapZoomCommandOptions) => void
-  zoomBy: (delta: number, options?: MapZoomByOptions) => void
-  zoomToScale: (scale: number, options?: MapZoomToScaleOptions) => void
-  zoomToFeature: (feature: ZoomObject, options?: MapZoomFeatureOptions) => boolean
-  reset: (options?: MapZoomCommandOptions) => void
-}
-
-export interface CreateMapZoomResult extends MapZoomCommands {
+export interface CreateMapZoomResult {
+  commands: ZoomCommands
   zoomBehavior: ComputedRef<ReturnType<typeof createZoomBehavior>>
-  zoomContext: UseMapZoomResult
 }
 
 export function useCreateMapZoom(
   container: Ref<SVGGElement | null>,
-  props: Readonly<ResolvedMapZoomProps>,
+  props: Readonly<ResolvedZoomProps>,
   eventCallbacks: MapZoomEventCallbacks,
 ): CreateMapZoomResult {
   const context = useMapContext()
-
-  function handleEvent(
-    callback: ((event: ZoomEvent) => void) | undefined,
-    event: ZoomEvent,
-  ): void {
-    applyZoomEventTransform(container.value, event)
-    if (!callback) return
-    callback(event)
-  }
 
   const zoomBehavior = computed(() => {
     return createZoomBehavior(context.value, {
       minZoom: props.minZoom,
       maxZoom: props.maxZoom,
       config: props.config,
-      onZoomStart: (event) => {
-        handleEvent(eventCallbacks.onZoomStart, event)
-      },
+      onZoomStart: (event) => eventCallbacks.onZoomStart?.(event),
       onZoom: (event) => {
-        handleEvent(eventCallbacks.onZoom, event)
+        applyZoomEventTransform(container.value, event)
+        eventCallbacks.onZoom?.(event)
       },
-      onZoomEnd: (event) => {
-        handleEvent(eventCallbacks.onZoomEnd, event)
-      },
+      onZoomEnd: (event) => eventCallbacks.onZoomEnd?.(event),
     })
   })
 
-  const zoomContext: UseMapZoomResult = {
-    minZoom: computed(() => props.minZoom),
-    maxZoom: computed(() => props.maxZoom),
-  }
+  const commands = createZoomCommands({
+    element: () => container.value,
+    behavior: () => zoomBehavior.value,
+    context: () => context.value,
+    minZoom: () => props.minZoom,
+    maxZoom: () => props.maxZoom,
+    transition: () => props.transition,
+  })
 
-  // function callZoom(cb, opts) {
-  //   return callZoomMethod({
-  //     element: container.value,
-  //     transition: opts?.transition ?? props.transition
-  //   }, (target) => {
-  //     cb()
-  //   })
-  // }
-
-  function zoomTo(
-    transform: ZoomTransform,
-    options?: MapZoomCommandOptions,
-  ): void {
-    applyZoomTransform({
-      element: container.value,
-      behavior: zoomBehavior.value,
-      transform,
-      transition: options?.transition ?? props.transition,
-    })
-  }
-
-  function zoomBy(
-    delta: number,
-    options?: MapZoomByOptions,
-  ): void {
-    const currentTransform = getCurrentZoomTransform(container.value)
-    zoomToScale(currentTransform.k + delta, options)
-  }
-
-  function zoomToScale(
-    scale: number,
-    options?: MapZoomToScaleOptions,
-  ): void {
-    applyScaleTo({
-      element: container.value,
-      behavior: zoomBehavior.value,
-      scale,
-      transition: options?.transition ?? props.transition,
-    })
-  }
-
-  function zoomToFeature(
-    feature: ZoomObject,
-    options: MapZoomFeatureOptions = {},
-  ): boolean {
-    const transform = getFeatureZoomTransform(context.value, feature, {
-      minZoom: options.minZoom ?? props.minZoom,
-      maxZoom: options.maxZoom ?? props.maxZoom,
-      padding: options.padding,
-    })
-    if (!transform) return false
-    zoomTo(transform, options)
-    return true
-  }
-
-  function reset(options?: MapZoomCommandOptions): void {
-    zoomTo(zoomIdentity, options)
-  }
-
-  provide<UseMapZoomResult>(mapZoomKey, zoomContext)
+  provide(mapZoomKey, true)
 
   let stopBehaviorWatch: (() => void) | undefined
   onMounted(() => {
@@ -187,12 +91,7 @@ export function useCreateMapZoom(
   })
 
   return {
-    reset,
-    zoomBy,
-    zoomTo,
-    zoomToFeature,
-    zoomToScale,
+    commands,
     zoomBehavior,
-    zoomContext,
   }
 }

@@ -36,7 +36,7 @@ export function useMapObject(
   styles: MaybeRef<Partial<Record<MapObjectState, StyleValue>> | undefined>,
 ): UseMapObjectResult {
   const state = ref<MapObjectState>('default')
-  const insideZoom = Boolean(inject(mapZoomKey, undefined))
+  const insideZoom = inject(mapZoomKey, false)
 
   const {
     onMouseenter,

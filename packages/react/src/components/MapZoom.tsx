@@ -1,53 +1,47 @@
 'use client'
 
 import type {
-  DefaultZoomBehavior,
   ZoomEvent,
   ZoomProps,
 } from '@d3-maps/core'
 import type {
   ReactElement,
   ReactNode,
+  Ref,
   SVGProps,
 } from 'react'
 
-import type { MapZoomCommands } from '../hooks/useCreateMapZoom'
+import type { MapZoomRef } from '../hooks/useMapZoom'
 
 import {
-  forwardRef,
+  ZOOM_DEFAULTS,
+} from '@d3-maps/core'
+import {
   useImperativeHandle,
   useRef,
 } from 'react'
 
 import {
-  MapZoomContextValue,
   MapZoomPresenceContextValue,
 } from '../hooks/internal/mapZoomContext'
 import {
   useCreateMapZoom,
 } from '../hooks/useCreateMapZoom'
 
-export interface MapZoomHandle extends MapZoomCommands {
-  container: SVGGElement | null
-  zoomBehavior: DefaultZoomBehavior
-}
-
 export interface MapZoomProps
   extends ZoomProps,
-  Omit<SVGProps<SVGGElement>, 'children' | 'onZoom'> {
+  Omit<SVGProps<SVGGElement>, 'children' | 'onZoom' | 'ref'> {
   children?: ReactNode
   onZoomStart?: (event: ZoomEvent) => void
   onZoom?: (event: ZoomEvent) => void
   onZoomEnd?: (event: ZoomEvent) => void
+  ref?: Ref<MapZoomRef>
 }
 
-export const MapZoom = forwardRef<MapZoomHandle, MapZoomProps>((
-  props,
-  ref,
-): ReactElement => {
+export function MapZoom(props: MapZoomProps): ReactElement {
   const {
-    minZoom,
-    maxZoom,
+    minZoom = ZOOM_DEFAULTS.minZoom,
+    maxZoom = ZOOM_DEFAULTS.maxZoom,
     transition,
     config,
     onZoomStart,
@@ -55,23 +49,19 @@ export const MapZoom = forwardRef<MapZoomHandle, MapZoomProps>((
     onZoomEnd,
     children,
     className,
+    ref,
     ...groupProps
   } = props
   const containerRef = useRef<SVGGElement | null>(null)
 
   const {
-    reset,
-    zoomContext,
+    commands,
     zoomBehavior,
-    zoomBy,
-    zoomTo,
-    zoomToFeature,
-    zoomToScale,
   } = useCreateMapZoom(
     containerRef,
     {
-      minZoom: minZoom ?? 1,
-      maxZoom: maxZoom ?? 8,
+      minZoom,
+      maxZoom,
       transition,
       config,
     },
@@ -84,19 +74,11 @@ export const MapZoom = forwardRef<MapZoomHandle, MapZoomProps>((
 
   useImperativeHandle(ref, () => ({
     container: containerRef.current,
-    reset,
     zoomBehavior,
-    zoomBy,
-    zoomTo,
-    zoomToFeature,
-    zoomToScale,
+    ...commands,
   }), [
-    reset,
+    commands,
     zoomBehavior,
-    zoomBy,
-    zoomTo,
-    zoomToFeature,
-    zoomToScale,
   ])
 
   const mergedClassName = className
@@ -105,16 +87,14 @@ export const MapZoom = forwardRef<MapZoomHandle, MapZoomProps>((
 
   return (
     <MapZoomPresenceContextValue.Provider value>
-      <MapZoomContextValue.Provider value={zoomContext}>
-        <g
-          {...groupProps}
-          ref={containerRef}
-          className={mergedClassName}
-          name="zoom"
-        >
-          {children}
-        </g>
-      </MapZoomContextValue.Provider>
+      <g
+        {...groupProps}
+        ref={containerRef}
+        className={mergedClassName}
+        name="zoom"
+      >
+        {children}
+      </g>
     </MapZoomPresenceContextValue.Provider>
   )
-})
+}
