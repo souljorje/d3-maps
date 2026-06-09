@@ -6,7 +6,9 @@
           :is="componentName"
         />
         <template #fallback>
-          🌐
+          <div class="h-full content-center text-center">
+            🌐
+          </div>
         </template>
       </Suspense>
     </div>

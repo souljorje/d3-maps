@@ -38,13 +38,13 @@ See [ZoomTransitionStep API](/api/core/zoom#zoomtransitionstep) and [d3-transiti
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `ref` | `Ref<MapZoomRef \| null>` | — | Ref passed to `MapZoom` |
+| `ref` | `Ref<MapZoomRef \| null>` | — | `MapZoom` instance ref |
 
 == React
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `ref` | `RefObject<MapZoomRef \| null>` | — | Ref passed to `MapZoom` |
+| `ref` | `RefObject<MapZoomRef \| null>` | — | `MapZoom` instance ref |
 
 :::
 

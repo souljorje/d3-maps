@@ -1,7 +1,7 @@
 <template>
   <div ref="mapRoot" class="grid gap-3">
     <div class="relative aspect-2/1">
-      <MapBase :context="mapContext">
+      <MapBase>
         <MapZoom
           ref="zoom"
           :min-zoom="minZoom"
@@ -34,7 +34,7 @@
                   class="cursor-pointer"
                   role="button"
                   tabindex="0"
-                  @click="zoomToFeature(feature)"
+                  @focus="zoomToFeature(feature)"
                   @keydown.enter.space.prevent="zoomToFeature(feature)"
                 />
               </template>
@@ -92,17 +92,10 @@
 </template>
 
 <script setup lang="ts">
-import type { MapData, MapZoomRef, ZoomEvent } from '@d3-maps/vue'
+import type { MapData, MapFeatureRendered, MapZoomRef, ZoomEvent } from '@d3-maps/vue'
 
+import { useMapZoom } from '@d3-maps/vue'
 import {
-  makeMapFeatures,
-} from '@d3-maps/core'
-import {
-  useCreateMapContext,
-  useMapZoom,
-} from '@d3-maps/vue'
-import {
-  computed,
   shallowRef,
   useTemplateRef,
 } from 'vue'
@@ -120,28 +113,16 @@ const activeCountryLabel = shallowRef('World')
 const mapRoot = useTemplateRef<HTMLElement>('mapRoot')
 const zoomRef = useTemplateRef<MapZoomRef>('zoom')
 const zoom = useMapZoom(zoomRef)
-const mapContext = useCreateMapContext()
-
-const renderedFeatures = computed(() => {
-  if (!mapContext.value) return []
-
-  return makeMapFeatures(mapContext.value, {
-    data,
-  })
-})
-
-type RenderedMapFeature = typeof renderedFeatures.value[number]
-type MapGeoFeature = Extract<RenderedMapFeature, { type: 'Feature' }>
 
 const zoomTransition = { duration: 600 }
 const zoomConfig = { filter: isDragOnlyFilter }
 
 function zoomIn() {
-  zoom.scaleWith(zoomStep)
+  zoom.scaleWith(zoomStep, null, { duration: 150 })
 }
 
 function zoomOut() {
-  zoom.scaleWith(-zoomStep)
+  zoom.scaleWith(-zoomStep, null, { duration: 150 })
 }
 
 function resetView() {
@@ -150,22 +131,15 @@ function resetView() {
 }
 
 function zoomToRandomCountry() {
-  const features = renderedFeatures.value
-  const randomIndex = Math.floor(Math.random() * features.length)
-  const feature = features[randomIndex]
-
-  if (!feature) return
-
-  const featureElement = mapRoot.value?.querySelector<SVGPathElement>(
-    `[data-feature-key="${feature.key}"]`,
+  const featureElements = Array.from(
+    mapRoot.value?.querySelectorAll<SVGPathElement>('[data-feature-key]') ?? [],
   )
-  if (featureElement) {
-    zoomToFeature(feature)
-    featureElement.focus({ preventScroll: true })
-  }
+  const featureElement = featureElements[Math.floor(Math.random() * featureElements.length)]
+
+  featureElement.focus({ preventScroll: true })
 }
 
-function zoomToFeature(feature: MapGeoFeature) {
+function zoomToFeature(feature: MapFeatureRendered) {
   const didFit = zoom.zoomToFeature(feature)
   if (!didFit) return
 
@@ -180,7 +154,7 @@ function isDragOnlyFilter(event: Event) {
   return event.type !== 'wheel' && event.type !== 'dblclick'
 }
 
-function getFeatureLabel(feature: MapGeoFeature) {
+function getFeatureLabel(feature: MapFeatureRendered) {
   return String(feature.properties.name ?? 'Country')
 }
 </script>

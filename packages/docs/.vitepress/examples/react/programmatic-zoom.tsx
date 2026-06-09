@@ -9,7 +9,6 @@ import type {
   KeyboardEvent as ReactKeyboardEvent,
 } from 'react'
 
-import { makeMapFeatures } from '@d3-maps/core'
 import {
   MapBase,
   MapFeature,
@@ -18,12 +17,10 @@ import {
   MapMesh,
   MapSphere,
   MapZoom,
-  useCreateMapContext,
   useMapZoom,
 } from '@d3-maps/react'
 import {
   use,
-  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -58,20 +55,13 @@ export default function ProgrammaticZoomExample(): JSX.Element {
   const mapRootRef = useRef<HTMLDivElement | null>(null)
   const zoomRef = useRef<MapZoomRef | null>(null)
   const zoom = useMapZoom(zoomRef)
-  const mapContext = useCreateMapContext()
-
-  const renderedFeatures = useMemo(() => {
-    return makeMapFeatures(mapContext, {
-      data: mapData,
-    })
-  }, [mapContext, mapData])
 
   function zoomIn(): void {
-    zoom.scaleWith(zoomStep)
+    zoom.scaleWith(zoomStep, null, { duration: 150 })
   }
 
   function zoomOut(): void {
-    zoom.scaleWith(-zoomStep)
+    zoom.scaleWith(-zoomStep, null, { duration: 150 })
   }
 
   function resetView(): void {
@@ -87,20 +77,16 @@ export default function ProgrammaticZoomExample(): JSX.Element {
   }
 
   function zoomToRandomCountry(): void {
-    const randomIndex = Math.floor(Math.random() * renderedFeatures.length)
-    const feature = renderedFeatures[randomIndex]
-    if (!feature) return
+    const featureElements = Array.from(
+      mapRootRef.current?.querySelectorAll<SVGPathElement>('[data-feature-key]') ?? [],
+    )
+    const featureElement = featureElements[Math.floor(Math.random() * featureElements.length)]
 
-    zoomToFeature(feature)
-    focusFeatureByKey(feature.key)
+    featureElement?.focus({ preventScroll: true })
   }
 
   function onZoom(event: ZoomEvent): void {
     setZoomLevel(event.transform.k)
-  }
-
-  function onFeatureClick(feature: MapFeatureRendered): void {
-    zoomToFeature(feature)
   }
 
   function onFeatureKeyDown(
@@ -112,20 +98,13 @@ export default function ProgrammaticZoomExample(): JSX.Element {
     zoomToFeature(feature)
   }
 
-  function focusFeatureByKey(featureKey: string | number): void {
-    const featureElement = mapRootRef.current?.querySelector<SVGPathElement>(
-      `[data-feature-key="${String(featureKey)}"]`,
-    )
-    featureElement?.focus({ preventScroll: true })
-  }
-
   return (
     <div
       ref={mapRootRef}
       className="grid gap-3"
     >
       <div className="relative aspect-2/1">
-        <MapBase context={mapContext}>
+        <MapBase>
           <MapZoom
             ref={zoomRef}
             minZoom={minZoom}
@@ -153,7 +132,7 @@ export default function ProgrammaticZoomExample(): JSX.Element {
                     tabIndex={0}
                     style={featureButtonStyle}
                     styles={featureInteractionStyles}
-                    onClick={() => onFeatureClick(feature)}
+                    onFocus={() => zoomToFeature(feature)}
                     onKeyDown={(event) => onFeatureKeyDown(feature, event)}
                   />
                 ))}
