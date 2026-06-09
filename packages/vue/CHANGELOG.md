@@ -1,5 +1,19 @@
 # @d3-maps/vue
 
+## 0.14.0
+
+### Minor Changes
+
+- [#45](https://github.com/souljorje/d3-maps/pull/45) [`e44054f`](https://github.com/souljorje/d3-maps/commit/e44054f63a2b4e5495de6c0f06868f5c4819b285) Thanks [@souljorje](https://github.com/souljorje)! - - Removed `center`/`zoom` props from zoom
+  - Added programmatic methods for zoom: `transform`, `translateBy`, `translateTo`, `scaleBy`, `scaleTo`, `scaleWith`, `zoomToFeature`, and `reset`
+  - Fixed map object components inside `MapZoom` to avoid rerendering on controlled zoom state updates when they only need zoom presence
+  - Added feature change event/callback to MapFeature
+
+### Patch Changes
+
+- Updated dependencies [[`e44054f`](https://github.com/souljorje/d3-maps/commit/e44054f63a2b4e5495de6c0f06868f5c4819b285)]:
+  - @d3-maps/core@0.15.0
+
 ## 0.13.0
 
 ### Minor Changes
