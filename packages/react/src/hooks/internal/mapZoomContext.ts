@@ -2,4 +2,4 @@
 
 import { createContext } from 'react'
 
-export const MapZoomPresenceContextValue = createContext(false)
+export const MapZoomContextValue = createContext(false)

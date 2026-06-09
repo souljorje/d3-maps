@@ -3,7 +3,9 @@
 import type { DefaultZoomBehavior, ZoomCommands } from '@d3-maps/core'
 import type { RefObject } from 'react'
 
-import { useMemo } from 'react'
+import { createContext, useMemo } from 'react'
+
+export const MapZoomContextValue = createContext(false)
 
 export type MapZoomRef = {
   container: SVGGElement | null

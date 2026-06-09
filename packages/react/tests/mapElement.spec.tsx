@@ -10,7 +10,7 @@ import {
   MapBase,
   MapElement,
 } from '../src'
-import { MapZoomPresenceContextValue } from '../src/hooks/internal/mapZoomContext'
+import { MapZoomContextValue } from '../src/hooks/useMapZoom'
 import { sampleGeoJson } from './fixtures'
 
 describe('mapElement', () => {
@@ -86,7 +86,7 @@ describe('mapElement', () => {
 
   it('resets active state on global mouseup when element mouseup is missed', () => {
     render(
-      <MapZoomPresenceContextValue.Provider value>
+      <MapZoomContextValue.Provider value>
         <MapBase fit={sampleGeoJson}>
           <MapElement
             data-testid="map-element"
@@ -97,7 +97,7 @@ describe('mapElement', () => {
             }}
           />
         </MapBase>
-      </MapZoomPresenceContextValue.Provider>,
+      </MapZoomContextValue.Provider>,
     )
 
     const path = screen.getByTestId('map-element')

@@ -22,11 +22,11 @@ import {
 } from 'react'
 
 import {
-  MapZoomPresenceContextValue,
-} from '../hooks/internal/mapZoomContext'
-import {
   useCreateMapZoom,
 } from '../hooks/useCreateMapZoom'
+import {
+  MapZoomContextValue,
+} from '../hooks/useMapZoom'
 
 export interface MapZoomProps
   extends ZoomProps,
@@ -86,7 +86,7 @@ export function MapZoom(props: MapZoomProps): ReactElement {
     : 'd3-map-zoom'
 
   return (
-    <MapZoomPresenceContextValue.Provider value>
+    <MapZoomContextValue.Provider value>
       <g
         data-d3m="zoom"
         {...groupProps}
@@ -95,6 +95,6 @@ export function MapZoom(props: MapZoomProps): ReactElement {
       >
         {children}
       </g>
-    </MapZoomPresenceContextValue.Provider>
+    </MapZoomContextValue.Provider>
   )
 }

@@ -35,8 +35,7 @@ import {
 import { MapBase } from '../src/components/MapBase'
 import { MapFeature } from '../src/components/MapFeature'
 import { MapZoom } from '../src/components/MapZoom'
-import { MapZoomPresenceContextValue } from '../src/hooks/internal/mapZoomContext'
-import { useMapZoom } from '../src/hooks/useMapZoom'
+import { MapZoomContextValue, useMapZoom } from '../src/hooks/useMapZoom'
 import { sampleGeoJson } from './fixtures'
 
 const useInteractionSpy = vi.hoisted(() => vi.fn())
@@ -78,7 +77,7 @@ describe('mapZoom', () => {
     let captured: unknown
 
     function Probe() {
-      captured = useContext(MapZoomPresenceContextValue)
+      captured = useContext(MapZoomContextValue)
       return null
     }
 
@@ -95,7 +94,7 @@ describe('mapZoom', () => {
     let captured: unknown
 
     function Probe() {
-      captured = useContext(MapZoomPresenceContextValue)
+      captured = useContext(MapZoomContextValue)
       return null
     }
 
