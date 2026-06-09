@@ -1,19 +1,32 @@
 {
   "name": "@d3-maps/core",
   "type": "module",
-  "version": "0.11.0",
+  "version": "0.14.0",
   "private": false,
-  "description": "Framework-agnostic core utilities for building reactive D3 maps",
+  "description": "Framework-agnostic utilities for building interactive SVG maps with D3",
   "author": "Georgii Bukharov <souljorje@gmail.com>",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "homepage": "https://d3-maps.netlify.app",
   "repository": {
     "type": "git",
     "url": "https://github.com/souljorje/d3-maps.git",
     "directory": "packages/core"
   },
+  "bugs": {
+    "url": "https://github.com/souljorje/d3-maps/issues"
+  },
+  "keywords": [
+    "d3",
+    "d3-geo",
+    "svg",
+    "map",
+    "dataviz",
+    "geojson",
+    "topojson"
+  ],
   "exports": {
     ".": "./dist/index.js",
     "./package.json": "./package.json",
@@ -38,6 +51,7 @@
     "@types/d3-shape": "catalog:",
     "@types/d3-transition": "catalog:",
     "@types/d3-zoom": "catalog:",
+    "@types/geojson": "catalog:",
     "@types/topojson-client": "catalog:",
     "@types/topojson-specification": "catalog:",
     "d3-geo": "catalog:",
@@ -48,7 +62,6 @@
     "topojson-client": "catalog:"
   },
   "devDependencies": {
-    "@types/geojson": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "vite-tsconfig-paths": "catalog:",

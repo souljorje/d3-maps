@@ -1,6 +1,6 @@
 <template>
-  <MapBase :data="data">
-    <MapFeatures />
+  <MapBase>
+    <MapFeatures :data="data" />
 
     <MapMarker
       v-for="city in cities"
@@ -91,5 +91,5 @@ const returnFlight = [
   cities[0].coordinates,
 ]
 
-const { default: data } = await import('world-atlas/countries-110m.json')
+const { default: data } = await import('@d3-maps/atlas/world/countries/countries-110m')
 </script>

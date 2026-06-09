@@ -4,15 +4,17 @@ description: Migration guide from react-simple-maps to @d3-maps/react, covering 
 
 # Migrate from react-simple-maps
 
-[@d3-maps/react](/components/) is fully compatible with [react-simple-maps](https://www.react-simple-maps.io/)  
-But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/issues) or pull request
+[@d3-maps/react](/components/) is fully compatible with [react-simple-maps](https://www.react-simple-maps.io/), supports React 19 an has more features under the hood.  
+
+Feel free to open an [issue](https://github.com/souljorje/d3-maps/issues) or a pull request if something is missing.
 
 ## Migration checklist
 
 | Step | Change |
 | --- | --- |
-| Data | `Geographies.geography` -> `MapBase.data` |
-| Data transform | `Geographies.parseGeographies` -> `MapBase.dataTransformer` |
+| Data | `Geographies.geography` -> `MapFeatures.data` |
+| Data transform | `Geographies.parseGeographies` -> `MapFeatures.transformer` |
+| Fit | `ComposableMap` sizing + geography bounds -> `MapBase.fit` |
 | Style prop | `Geography.style` -> `MapFeature.styles` |
 | Style states | `style.pressed` -> `styles.active` |
 | Zoom wrapper | `ZoomableGroup` -> `MapZoom` |
@@ -20,32 +22,31 @@ But in case feel free to open an [issue](https://github.com/souljorje/d3-maps/is
 | Line | `Line` -> `MapLine` |
 | Annotation | `Annotation` -> `MapAnnotation` |
 | Graticule | `Graticule` -> `MapGraticule` |
-| Sphere | `Sphere` -> `MapGraticule` (`background`/`border`) |
+| Sphere | `Sphere` -> `MapSphere` |
 
 ## 1. Migrate data
 
-- `Geographies.geography` -> `MapBase.data`  
-  `MapBase.data` supports only data objects, not URLs, data fetching is non-opinionated
-- `Geographies.parseGeographies` -> `MapBase.dataTransformer`  
+- `Geographies.geography` -> `MapFeatures.data`  
+- `Geographies.parseGeographies` -> `MapFeatures.transformer`  
 
 ```tsx
-import { MapBase, MapFeatures, type MapData, type MapFeatureData } from '@d3-maps/react'
+import { MapBase, MapFeatures } from '@d3-maps/react'
 import { use, useCallback } from 'react'
 
-const mapDataPromise = import('world-atlas/countries-110m.json').then((m) => m.default)
+const mapDataPromise = import('@d3-maps/atlas/world/countries/countries-110m').then((m) => m.default as MapData)
 
 export function WorldMap() {
   const data = use(mapDataPromise)
-  const filterAntarctica = useCallback((features: MapFeatureData[]) => {
+  const filterAntarctica = useCallback((features) => {
     return features.filter((f) => f.properties?.name !== 'Antarctica')
   }, [])
 
   return (
-    <MapBase
-      data={data}
-      dataTransformer={filterAntarctica}
-    >
-      <MapFeatures />
+    <MapBase>
+      <MapFeatures
+        data={data}
+        transformer={filterAntarctica}
+      />
     </MapBase>
   )
 }
@@ -55,8 +56,6 @@ export function WorldMap() {
 
 - `Geography.style` -> `MapFeature.styles`  
 - `style.pressed` -> `styles.active`
-
-This style model is supported by `MapFeature`, `MapFeatures`, `MapMarker`, `MapMesh`, and `MapGraticule`
 
 ```tsx
 <MapFeature
@@ -68,7 +67,7 @@ This style model is supported by `MapFeature`, `MapFeatures`, `MapMarker`, `MapM
 />
 ```
 
-You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` directly on map components.
+You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` directly on map components
 
 ## 3. Rename zoom component
 
@@ -78,7 +77,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 - `onMoveEnd` -> `onZoomEnd`
 
 ```tsx
-<MapBase data={data}>
+<MapBase>
   <MapZoom
     minZoom={1}
     maxZoom={8}
@@ -86,14 +85,14 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
     onZoom={() => {}}
     onZoomEnd={() => {}}
   >
-    <MapFeatures />
+    <MapFeatures data={data} />
   </MapZoom>
 </MapBase>
 ```
 
 ## 4. Rename marker component
 
-`Marker` -> [MapMarker](/components/map-marker).
+`Marker` -> [MapMarker](/components/map-marker)
 
 ```tsx
 <MapMarker coordinates={[-74.006, 40.7128]}>
@@ -104,7 +103,7 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 
 ## 5. Rename graticule component
 
-`Graticule` -> [MapGraticule](/components/map-graticule).
+`Graticule` -> [MapGraticule](/components/map-graticule)
 
 ```tsx
 <MapGraticule />
@@ -112,17 +111,17 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 
 ## 6. Migrate sphere component
 
-`Sphere` -> [MapGraticule](/components/map-graticule) with `background` and/or `border`.
+`Sphere` -> [MapSphere](/components/map-sphere)
 
 ```tsx
-<MapGraticule background="#eee" border="#333" />
+<MapSphere fill="#eee" stroke="#999">
+  <MapFeatures data={mapData} />
+</MapSphere>
 ```
 
 ## 7. Rename line component
 
 `Line` -> [MapLine](/components/map-line)
-
-`react-simple-maps` line props map directly to `MapLine.coordinates`
 
 ```tsx
 <MapLine
@@ -138,8 +137,8 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 `Annotation` -> [MapAnnotation](/components/map-annotation)
 
 ```tsx
-<MapBase data={data}>
-  <MapFeatures />
+<MapBase>
+  <MapFeatures data={data} />
   <MapAnnotation
     coordinates={[2.3522, 48.8566]}
     length={36}
@@ -170,5 +169,5 @@ You can still use plain SVG attributes like `fill`, `stroke`, and `strokeWidth` 
 | [Line](https://www.react-simple-maps.io/docs/line/) | [MapLine](/components/map-line) |
 | [ZoomableGroup](https://www.react-simple-maps.io/docs/zoomable-group/) | [MapZoom](/components/map-zoom) |
 | [Graticule](https://www.react-simple-maps.io/docs/graticule/) | [MapGraticule](/components/map-graticule) |
-| [Sphere](https://www.react-simple-maps.io/docs/sphere/) | [MapGraticule](/components/map-graticule) (`background`/`border`) or a custom SVG layer |
+| [Sphere](https://www.react-simple-maps.io/docs/sphere/) | [MapSphere](/components/map-sphere) or a custom SVG layer |
 | [Annotation](https://www.react-simple-maps.io/docs/annotation/) | [MapAnnotation](/components/map-annotation) |

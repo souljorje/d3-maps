@@ -1,17 +1,21 @@
 ---
-description: Component for GeoJSON feature rendering on D3 SVG maps in React and Vue
+description: Component for feature rendering on D3 SVG maps in React and Vue
 ---
 
 # MapFeatures
 
-Renders all GeoJSON features from the current map context
+Renders normalized map features from source data: GeoJSON `Feature` objects and geometries.
+
+Features with `geometry: null` are preserved and receive no path data.
 
 ## Props
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `idKey?` | `string` | `id` | See [`getFeatureKey`](/api/core/feature#getfeaturekey) |
-| `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | Forwarded to [MapFeature](/components/map-feature#props) in default rendering mode, see [styling guide](/guide/core-concepts/#styling) |
+| `data?` | [MapData](/api/core/data#MapData) | — | TopoJSON or GeoJSON |
+| `objectKey?` | `string` | — | TopoJSON object key for `data` |
+| `transformer?` | [MapFeatureTransformer](/api/core/feature#mapfeaturetransformer) | — | Optional transform for normalized features |
+| `styles?` | [InteractionProps['styles']](/api/core/interaction#property-styles) | — | Forwarded to default-rendered [MapFeature](/components/map-feature) instances |
 
 Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatures`
 
@@ -23,8 +27,10 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
 
 ```vue
 <template>
-  <MapBase :data="mapData">
+  <MapBase>
     <MapFeatures
+      :data="mapData"
+      object-key="countries"
       fill="darkorange"
       :styles="{
         default: { opacity: 0.9 },
@@ -32,7 +38,6 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
         active: { stroke: '#1f2937', strokeWidth: 1.5 },
       }"
     />
-    <MapMesh stroke="slategray" />
   </MapBase>
 </template>
 ```
@@ -40,8 +45,10 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
 == React
 
 ```tsx
-<MapBase data={mapData}>
+<MapBase>
   <MapFeatures
+    data={mapData}
+    objectKey="countries"
     fill="darkorange"
     styles={{
       default: { opacity: 0.9 },
@@ -49,7 +56,6 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
       active: { stroke: '#1f2937', strokeWidth: 1.5 },
     }}
   />
-  <MapMesh stroke="slategray" />
 </MapBase>
 ```
 
@@ -63,13 +69,16 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
 
 ```vue
 <template>
-  <MapFeatures #default="{ features }">
-    <MapFeature
-      v-for="feature in features"
-      :fill="feature.color"
-      :key="feature.id"
-      :data="feature"
-    />
+  <MapFeatures :data="mapData">
+    <template #default="{ features }">
+      <MapFeature
+        v-for="feature in features"
+        :key="feature.key"
+        :d="feature.d"
+        :aria-label="feature.properties.name"
+        fill="darkorange"
+      />
+    </template>
   </MapFeatures>
 </template>
 ```
@@ -77,17 +86,16 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
 == React
 
 ```tsx
-<MapFeatures>
+<MapFeatures data={mapData}>
   {({ features }) => (
-    <g>
-      {features.map((feature) => (
-        <MapFeature
-          key={String(feature.id)}
-          data={feature}
-          fill={String(feature.color)}
-        />
-      ))}
-    </g>
+    features.map((feature) => (
+      <MapFeature
+        key={feature.key}
+        d={feature.d}
+        aria-label={feature.properties.name}
+        fill="darkorange"
+      />
+    ))
   )}
 </MapFeatures>
 ```

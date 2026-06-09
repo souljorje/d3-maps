@@ -1,5 +1,29 @@
 # @d3-maps/core
 
+## 0.14.0
+
+### Minor Changes
+
+- [#43](https://github.com/souljorje/d3-maps/pull/43) [`1ccc793`](https://github.com/souljorje/d3-maps/commit/1ccc793140103f075a4782b6f4356a607a026b20) Thanks [@souljorje](https://github.com/souljorje)! - - Turned `MapSphere` into a wrapper that renders separate background, content, and border layers.
+  - Added `noClip` to opt out of sphere clipping.
+
+## 0.13.0
+
+### Minor Changes
+
+- [#40](https://github.com/souljorje/d3-maps/pull/40) [`5d93205`](https://github.com/souljorje/d3-maps/commit/5d93205583c933ebc86b05368f7a56c5ccff17af) Thanks [@souljorje](https://github.com/souljorje)! - - Move data prop from MapBase to MapFeatures
+  - Normalized MapFeatures inputs and transformer output around GeoJSON feature data
+  - Changed styling prop from `name` to `data-d3m`
+  - Split sphere rendering from graticule rendering with dedicated MapSphere support
+  - Replaced MapObject-facing APIs with MapElement and interaction naming
+
+## 0.12.0
+
+### Minor Changes
+
+- [#38](https://github.com/souljorje/d3-maps/pull/38) [`e28d478`](https://github.com/souljorje/d3-maps/commit/e28d478b66f1ba123accdf6dc81998c444f3c15d) Thanks [@souljorje](https://github.com/souljorje)! - - Added support for passing multiple GeoJSON and TopoJSON map data inputs into the core map context
+  - Added projection fit modes for fitting to the sphere, all normalized features, or a selected feature object
+
 ## 0.11.0
 
 ### Minor Changes

@@ -4,8 +4,8 @@ description: Component for D3 SVG map TopoJSON borders and boundary lines in Rea
 
 # MapMesh
 
-Renders a TopoJSON mesh as an SVG `<path>`.  
-Use it to draw shared borders/edges (for example country boundaries) on top of feature fills.
+Renders a TopoJSON mesh as an SVG `<path>`  
+Use it to draw shared borders on top of features, it's more efficient than `stroke` on each feature.
 
 _ℹ️ Works only with **TopoJSON** data_
 
@@ -13,9 +13,11 @@ _ℹ️ Works only with **TopoJSON** data_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
+| `data` | [MapData](/api/core/data#MapData) | — | TopoJSON source |
+| `objectKey?` | `string` | — | TopoJSON object key. If omited mesh is rendered from the whole topology. |
+| `filter?` | `(a: GeometryObject, b: GeometryObject) => boolean` | — | See [topojson-client mesh](https://github.com/topojson/topojson-client#mesh) |
 
-Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
+Use native SVG presentation attrs like `stroke` and `fill` directly on `MapMesh`
 
 ## Usage
 
@@ -25,11 +27,17 @@ Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
 
 ```vue
 <template>
-  <MapBase
-    :data="mapData"
-  >
-    <MapFeatures fill="#fff" />
-    <MapMesh stroke="#000"/>
+  <MapBase>
+    <MapFeatures
+      :data="mapData"
+      object-key="countries"
+      fill="#fff"
+    />
+    <MapMesh
+      :data="mapData"
+      object-key="countries"
+      stroke="#000"
+    />
   </MapBase>
 </template>
 ```
@@ -37,11 +45,17 @@ Use native SVG presentation attrs like `stroke`/`fill` directly on `MapMesh`.
 == React
 
 ```tsx
-<MapBase
-  data={mapData}
->
-  <MapFeatures fill="#fff" />
-  <MapMesh stroke="#000" />
+<MapBase>
+  <MapFeatures
+    data={mapData}
+    objectKey="countries"
+    fill="#fff"
+  />
+  <MapMesh
+    data={mapData}
+    objectKey="countries"
+    stroke="#000"
+  />
 </MapBase>
 ```
 

@@ -1,4 +1,7 @@
-import type { MapData, MapFeatureData } from '@d3-maps/react'
+import type {
+  MapData,
+  MapFeatureTransformer,
+} from '@d3-maps/react'
 
 import {
   MapBase,
@@ -6,47 +9,64 @@ import {
   MapFeatures,
 } from '@d3-maps/react'
 import { extent } from 'd3-array'
-import { scaleLinear } from 'd3-scale'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { withBase } from 'vitepress'
+import { scaleSqrt } from 'd3-scale'
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 
-interface CountryStat {
-  id: string
-  value: number
+interface CountryPopulation {
+  cca3: string
+  population: number
+}
+
+interface ChoroplethFeatureExtra {
+  color: string
 }
 
 export default function ChoroplethMapExample(): JSX.Element {
-  const [mapData, setMapData] = useState<MapData | null>(null)
-  const [rawData, setRawData] = useState<Record<string, unknown>[]>([])
+  const [mapData, setMapData] = useState<MapData>()
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+  const [populations, setPopulations] = useState<CountryPopulation[]>([])
 
   useEffect(() => {
-    void Promise.all([
-      fetch(withBase('/example-data/countries-110m.json')).then((r) => r.json()),
-      fetch(withBase('/example-data/choropleth-data.json')).then((r) => r.json()),
-    ]).then(([worldData, choroplethRawData]: [MapData, Record<string, unknown>[]]) => {
-      setMapData(worldData)
-      setRawData(choroplethRawData)
-    })
+    let isCancelled = false
+
+    async function fetchMap(): Promise<MapData> {
+      const { default: payload } = await import('@d3-maps/atlas/world/countries/countries-110m')
+      return payload
+    }
+
+    async function fetchData(): Promise<CountryPopulation[]> {
+      const response = await fetch('https://restcountries.com/v3.1/all?fields=cca3,population')
+      return response.json()
+    }
+
+    Promise.all([fetchMap(), fetchData()])
+      .then(([loadedMap, loadedData]) => {
+        if (isCancelled) return
+
+        setMapData(loadedMap)
+        setPopulations(loadedData)
+      })
+      .catch(() => {
+        if (!isCancelled) setError(true)
+      })
+      .finally(() => {
+        if (!isCancelled) setLoading(false)
+      })
+
+    return () => {
+      isCancelled = true
+    }
   }, [])
 
-  const data: CountryStat[] = useMemo(() => {
-    return (rawData as Record<string, unknown>[]).map((item: Record<string, unknown>) => {
-      const id = item['country-code']
-      if (typeof id !== 'string') {
-        return { id: '', value: 0 }
-      }
-
-      return {
-        ...item,
-        id,
-        value: Number(id),
-      }
-    })
-  }, [rawData])
-
   const minAndMaxValues = useMemo(() => {
-    return extent(data, (item) => item.value)
-  }, [data])
+    return extent(populations, (country) => country.population)
+  }, [populations])
 
   const colorScale = useMemo(() => {
     const safeDomain: [number, number] = [
@@ -54,58 +74,58 @@ export default function ChoroplethMapExample(): JSX.Element {
       minAndMaxValues[1] ?? 1,
     ]
 
-    return scaleLinear<string>()
+    return scaleSqrt<string>()
       .domain(safeDomain)
-      .range(['#e0460030', '#e04600'])
+      .range(['#ffefee', '#e04600'])
   }, [
     minAndMaxValues[0],
     minAndMaxValues[1],
   ])
 
-  const dataTransformer = useCallback((features: MapFeatureData[]): MapFeatureData[] => {
-    return features.map((feature) => {
-      const country = data.find((item) => item.id === String(feature.id))
-      const colorValue = country ? colorScale(country.value) : ''
+  const populationByCode = useMemo(() => {
+    return new Map(populations.map((country) => [country.cca3, country.population]))
+  }, [populations])
 
-      return { ...feature, color: colorValue }
+  const transformer = useCallback<MapFeatureTransformer<ChoroplethFeatureExtra>>((features) => {
+    return features.map((feature) => {
+      const code = String(feature.properties.id)
+      const population = populationByCode.get(code)
+
+      return {
+        ...feature,
+        color: population == null || code === 'ATA'
+          ? '#eee'
+          : colorScale(population),
+      }
     })
   }, [
-    data,
     colorScale,
+    populationByCode,
   ])
 
-  if (!mapData || rawData.length === 0) {
-    return <></>
-  }
+  if (loading) return <></>
+  if (error || !mapData) return <></>
 
   return (
-    <MapBase
-      data={mapData}
-      dataTransformer={dataTransformer}
-    >
-      <MapFeatures>
+    <MapBase>
+      <MapFeatures
+        data={mapData}
+        transformer={transformer}
+      >
         {({ features }) => (
-          <>
-            {
-              features.map((feature) => (
-                <MapFeature
-                  key={String(feature.id)}
-                  data={feature}
-                  styles={{
-                    default: {
-                      fill: String(feature.color),
-                      stroke: '#777',
-                    },
-                    hover: {
-                      fill: String(feature.color),
-                      stroke: '#777',
-                      opacity: 0.8,
-                    },
-                  }}
-                />
-              ))
-            }
-          </>
+          features.map((feature) => (
+            <MapFeature
+              key={feature.key}
+              d={feature.d}
+              fill={feature.color}
+              stroke="#777"
+              styles={{
+                hover: {
+                  opacity: 0.8,
+                },
+              }}
+            />
+          ))
         )}
       </MapFeatures>
     </MapBase>

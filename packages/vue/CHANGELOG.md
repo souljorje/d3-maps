@@ -1,5 +1,39 @@
 # @d3-maps/vue
 
+## 0.13.0
+
+### Minor Changes
+
+- [#43](https://github.com/souljorje/d3-maps/pull/43) [`1ccc793`](https://github.com/souljorje/d3-maps/commit/1ccc793140103f075a4782b6f4356a607a026b20) Thanks [@souljorje](https://github.com/souljorje)! - - Turned `MapSphere` into a wrapper that renders separate background, content, and border layers.
+  - Added `noClip` to opt out of sphere clipping.
+
+### Patch Changes
+
+- Updated dependencies [[`1ccc793`](https://github.com/souljorje/d3-maps/commit/1ccc793140103f075a4782b6f4356a607a026b20)]:
+  - @d3-maps/core@0.14.0
+
+## 0.12.0
+
+### Minor Changes
+
+- [#40](https://github.com/souljorje/d3-maps/pull/40) [`5d93205`](https://github.com/souljorje/d3-maps/commit/5d93205583c933ebc86b05368f7a56c5ccff17af) Thanks [@souljorje](https://github.com/souljorje)! - - Move data prop from MapBase to MapFeatures
+  - Normalized MapFeatures inputs and transformer output around GeoJSON feature data
+  - Changed styling prop from `name` to `data-d3m`
+  - Split sphere rendering from graticule rendering with dedicated MapSphere support
+  - Replaced MapObject-facing APIs with MapElement and interaction naming
+
+### Patch Changes
+
+- Updated dependencies [[`5d93205`](https://github.com/souljorje/d3-maps/commit/5d93205583c933ebc86b05368f7a56c5ccff17af)]:
+  - @d3-maps/core@0.13.0
+
+## 0.11.1
+
+### Patch Changes
+
+- Updated dependencies [[`e28d478`](https://github.com/souljorje/d3-maps/commit/e28d478b66f1ba123accdf6dc81998c444f3c15d)]:
+  - @d3-maps/core@0.12.0
+
 ## 0.11.0
 
 ### Minor Changes

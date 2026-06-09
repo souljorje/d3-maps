@@ -4,21 +4,20 @@ description: Component for the root D3 SVG map container and shared map context 
 
 # MapBase
 
-Renders the root `<svg>` and provides a reactive map context to children.
+Renders the root `<svg>` and provides a reactive map context to children
 
 ## Props
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `data` | [MapData](/api/core/map#mapdata) | — | TopoJSON or GeoJSON |
-| `width?` | `number` | `600` |  |
-| `height?` | `number` | `width/aspectRatio` |  |
-| `aspectRatio?` | `number` | `2 / 1` | Used to derive `height` when `height` is not provided. |
 | `projection?` | `() => GeoProjection` | `geoNaturalEarth1` | d3-geo projection factory |
 | `projectionConfig?` | [ProjectionConfig](/api/core/map#projectionconfig) | — | See the [guide](#projectionconfig) below |
-| `dataTransformer?` | [DataTransformer](/api/core/map#datatransformer) | — | Optional transform applied to GeoJSON features before rendering |
-| `context?` | [MapContext](/api/core/map#mapcontext) | — | Optional externally created context. When provided, `MapBase` uses it instead of creating one from props, and `data` is not required |
-| `topologyObjectKey?` | `string` | — | Selects a TopoJSON object when `data.objects` contains multiple entries. Defaults to the first object |
+| `width?` | `number` | `600` |  |
+| `height?` | `number` | `width/aspectRatio` |  |
+| `aspectRatio?` | `number` | `2 / 1` | Used to derive `height` when `height` is not provided |
+| `fit?` | [MapFit](/api/core/map#mapfit) | `sphere` | Built-in fit source |
+| `fitObjectKey?` | `string` | — | TopoJSON object key used when `fit` is an explicit topology |
+| `context?` | [MapContext](/api/core/map#mapcontext) | — | Optional externally created context. When provided, `MapBase` uses it instead of creating one from props |
 
 ### projectionConfig
 
@@ -26,23 +25,15 @@ Use `projectionConfig` to call projection methods before rendering
 
 <!--@include: ./_modifiers-args-shape.md-->
 
-See available methods in [d3-geo projection docs](https://d3js.org/d3-geo/projection)  
-and usage example below
+See available methods in [d3-geo projection docs](https://d3js.org/d3-geo/projection)
 
-::: details Core defaults
+### fit
 
-```ts
-if (!(fitExtent || fitSize || fitWidth || fitHeight)) {
-  mapProjection.fitExtent([[1, 1], [width - 1, height - 1]], { type: 'Sphere' })
-}
-if (!precision) {
-  mapProjection.precision(0.2)
-}
-```
-
-Source: [packages/core/src/lib/map.ts](https://github.com/souljorje/d3-maps/blob/main/packages/core/src/lib/map.ts) (makeProjection)
-
-:::
+- `fit: 'sphere'` keeps the world-map default
+- `fit: 'manual'` skips implicit fitting and uses the projection config as-is
+- `fit={mapData}` fits an explicit GeoJSON or TopoJSON source and uses `fitObjectKey` for TopoJSON selection
+- `padding` controls the inset used by built-in fit modes
+- explicit `fitExtent`, `fitSize`, `fitWidth`, and `fitHeight` override `fit`
 
 ## Usage
 
@@ -56,14 +47,14 @@ import { geoEquirectangular } from 'd3-geo'
 import { markRaw } from 'vue'
 import {
   type MapData,
-  type MapFeatureData,
+  type MapFeatureNormalized,
 } from '@d3-maps/vue'
 
 defineProps<{
   data: MapData
 }>()
 
-function dataTransformer(features: MapFeatureData[]) {
+function dataTransformer(features: MapFeatureNormalized[]) {
   return features.map(/* some logic */)
 }
 
@@ -76,13 +67,17 @@ const projectionConfig = markRaw({
 
 <template>
   <MapBase
-    :data="data"
-    :data-transformer="dataTransformer"
+    :fit="data"
+    fit-object-key="countries"
     :aspect-ratio="2 / 1"
     :projection="geoEquirectangular"
     :projection-config="projectionConfig"
   >
-    <MapFeatures />
+    <MapFeatures
+      :data="data"
+      object-key="countries"
+      :transformer="dataTransformer"
+    />
   </MapBase>
 </template>
 ```
@@ -95,7 +90,7 @@ import {
   MapBase,
   MapFeatures,
   type MapData,
-  type MapFeatureData,
+  type MapFeatureNormalized,
 } from '@d3-maps/react'
 import {
   useCallback,
@@ -103,7 +98,7 @@ import {
 } from 'react'
 
 export function Example({ data }: { data: MapData }) {
-  const dataTransformer = useCallback((features: MapFeatureData[]) => {
+  const dataTransformer = useCallback((features: MapFeatureNormalized[]) => {
     return features.map(/* some logic */)
   }, [])
   const projectionConfig = useMemo(() => ({
@@ -114,13 +109,17 @@ export function Example({ data }: { data: MapData }) {
 
   return (
     <MapBase
-      data={data}
-      dataTransformer={dataTransformer}
+      fit={data}
+      fitObjectKey="countries"
       aspectRatio={2 / 1}
       projection={geoEquirectangular}
       projectionConfig={projectionConfig}
     >
-      <MapFeatures />
+      <MapFeatures
+        data={data}
+        objectKey="countries"
+        transformer={dataTransformer}
+      />
     </MapBase>
   )
 }
@@ -137,7 +136,7 @@ For adapter code and docs examples, prefer [useMapContext](/helpers/use-map-cont
 
 ## Advanced Composition
 
-If controls or other consumers need the same map context outside the rendered `<svg>`, create the context once in the parent, pass it to sibling UI by prop, and pass the same object into `MapBase`.
+If controls or other consumers need the same map context outside the rendered `<svg>`, create the context once in the parent, pass it to sibling UI by prop, and pass the same object into `MapBase`
 
 :::tabs key:framework
 
@@ -155,17 +154,16 @@ const props = defineProps<{
   data: MapData
 }>()
 
-const contextConfig = computed(() => ({
-  data: props.data,
+const context = useCreateMapContext(computed(() => ({
+  fit: props.data,
   aspectRatio: 2 / 1,
-}))
-const context = useCreateMapContext(contextConfig)
+})))
 </script>
 
 <template>
   <Toolbar :context="context" />
   <MapBase :context="context">
-    <MapFeatures />
+    <MapFeatures :data="props.data" />
   </MapBase>
 </template>
 ```
@@ -179,25 +177,18 @@ import {
   type MapData,
   useCreateMapContext,
 } from '@d3-maps/react'
-import { useMemo } from 'react'
 
 export function Example({ data }: { data: MapData }) {
-  const contextConfig = useMemo(
-    () => ({
-      data,
-      aspectRatio: 2 / 1,
-    }),
-    [data],
-  )
-  const context = useCreateMapContext(contextConfig)
-
-  if (!context) return null
+  const context = useCreateMapContext({
+    fit: data,
+    aspectRatio: 2 / 1,
+  })
 
   return (
     <>
       <Toolbar context={context} />
       <MapBase context={context}>
-        <MapFeatures />
+        <MapFeatures data={data} />
       </MapBase>
     </>
   )

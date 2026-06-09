@@ -1,13 +1,12 @@
 ---
-description: Guide for building simple interactive SVG map with React, Vue, and D3
+description: Interactive SVG maps for React and Vue. Choropleth & bubble maps, markers, lines, zoom and more. Powered by D3. GeoJSON & TopoJSON suppport.
 ---
 
 # Get started
 
-`d3-maps` is a set of components and helpers simplifying creating SVG maps with [D3](https://d3js.org/).  
-Works with your favorite framework, batteries included.
+`d3-maps` is a toolkit for interactive SVG maps in React and Vue. Reactive components, pure SVG and D3.js power without low-level wiring.
 
-Let's build your first map with `d3-maps` 👇
+Let's build your first map 👇
 
 ## Install
 
@@ -89,12 +88,14 @@ bun add @d3-maps/react
 Load a map data object first
 
 ```ts
-const { default: data } = await import('world-atlas/countries-110m.json')
+const { default: data } = await import('@d3-maps/atlas/world/countries/countries-110m')
 ```
+
+See [Atlas](/guide/atlas) for more maps
 
 ## Render the map
 
-Pass the data to `MapBase`
+Pass the data to `MapFeatures`
 
 :::tabs key:framework
 
@@ -109,8 +110,8 @@ defineProps<{
 </script>
 
 <template>
-  <MapBase :data="data">
-    <MapFeatures />
+  <MapBase>
+    <MapFeatures :data="data" />
   </MapBase>
 </template>
 ```
@@ -123,8 +124,8 @@ import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
 
 export function MapView({ data }: { data: MapData }) {
   return (
-    <MapBase data={data}>
-      <MapFeatures />
+    <MapBase>
+      <MapFeatures data={data} />
     </MapBase>
   )
 }
@@ -134,4 +135,18 @@ export function MapView({ data }: { data: MapData }) {
 
 ## Result
 
-<Demo component-name="basic"/>
+<Demo component-name="basic-map"/>
+
+## When to use
+
+| Case | Supported | Notes |
+|---|:---:|---|
+| SVG map charts | ✅ | Choropleth, bubble, heatmap, etc |
+| Components API | ✅ | React & Vue packages |
+| GeoJSON/TopoJSON rendering | ✅ | Renders to SVG |
+| Markers, lines, annotations | ✅ | Framework-native components |
+| Zoomable maps | ✅ | SVG zoom and pan |
+| Full chart workflow | ⚠️ | Use amCharts, Highcharts or Plot |
+| Low-level map rendering | ⚠️ | Use D3.js for full control |
+| Real-world map apps | ❌ | Use Leaflet or MapLibre |
+| Data-heavy 3D maps | ❌ | Use MapLibre |

@@ -1,7 +1,6 @@
 import type { GeoGraticuleGenerator } from 'd3-geo'
 
 import type { MapContext } from './map'
-import type { MapObjectProps } from './mapObject'
 import type { MethodsToModifiers } from './utils'
 
 import { geoGraticule } from 'd3-geo'
@@ -21,18 +20,12 @@ export interface GraticuleConfig extends MethodsToModifiers<GeoGraticuleGenerato
 /**
  * Shared props contract for graticule layers.
  */
-export interface MapGraticuleProps<TStyle = unknown> extends MapObjectProps<TStyle> {
+export interface MapGraticuleProps {
   config?: GraticuleConfig
-  background?: boolean | string
-  border?: boolean | string
 }
 
 export function renderGraticule(context: MapContext, config?: GraticuleConfig): string | null {
   const graticule = geoGraticule()
   applyModifiers(graticule, config)
   return context.path(graticule())
-}
-
-export function renderOutline(context: MapContext): string | null {
-  return context.path({ type: 'Sphere' })
 }

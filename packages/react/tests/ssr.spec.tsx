@@ -14,9 +14,9 @@ import { sampleGeoJson } from './fixtures'
 describe('SSR', () => {
   it('renders map component tree without DOM access errors', () => {
     const html = renderToString(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom>
-          <MapFeatures />
+          <MapFeatures data={sampleGeoJson} />
           <MapAnnotation coordinates={[2.3522, 48.8566]}>
             <text>Paris</text>
           </MapAnnotation>
@@ -26,6 +26,6 @@ describe('SSR', () => {
 
     expect(html).toContain('<svg')
     expect(html).toContain('d3-map-zoom')
-    expect(html).toContain('name="annotation"')
+    expect(html).toContain('data-d3m="annotation"')
   })
 })

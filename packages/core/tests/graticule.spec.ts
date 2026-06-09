@@ -6,7 +6,6 @@ import {
 
 import {
   renderGraticule,
-  renderOutline,
 } from '../src'
 import { makeTestMapContext } from './fixtures'
 
@@ -14,12 +13,6 @@ describe('graticule', () => {
   it('renders graticule path by default', () => {
     const context = makeTestMapContext()
     const path = renderGraticule(context)
-    expect(path).toBeTruthy()
-  })
-
-  it('renders sphere outline path', () => {
-    const context = makeTestMapContext()
-    const path = renderOutline(context)
     expect(path).toBeTruthy()
   })
 

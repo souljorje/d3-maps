@@ -13,9 +13,7 @@ import type {
   ZoomObject,
 } from '@d3-maps/core'
 
-import type {
-  MapZoomRef,
-} from '../src/hooks/useMapZoom'
+import type { MapZoomRef } from '../src/hooks/useMapZoom'
 
 import {
   getFeatureZoomTransform,
@@ -35,9 +33,7 @@ import {
   MapZoom,
 } from '../src'
 import { mapZoomKey } from '../src/hooks/useCreateMapZoom'
-import {
-  useMapZoom,
-} from '../src/hooks/useMapZoom'
+import { useMapZoom } from '../src/hooks/useMapZoom'
 import { sampleGeoJson } from './fixtures'
 
 const emptyFeature: ZoomObject = {
@@ -80,7 +76,7 @@ describe('mapZoom', () => {
     mount(defineComponent({
       setup() {
         return () => h(MapBase, {
-          data: sampleGeoJson,
+          fit: sampleGeoJson,
         }, {
           default: () => h(MapZoom, null, {
             default: () => h(defineComponent({
@@ -165,7 +161,7 @@ describe('mapZoom', () => {
         commands = useMapZoom(zoomRef)
 
         return () => h(MapBase, {
-          data: sampleGeoJson,
+          fit: sampleGeoJson,
         }, {
           default: () => h(MapZoom, {
             ref: 'zoom',
@@ -236,7 +232,7 @@ async function mountZoom(props: Record<string, unknown> = {}): Promise<{
   const wrapper = mount(defineComponent({
     render() {
       return h(MapBase, {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       }, {
         default: (mapContext: MapContext) => {
           context = mapContext

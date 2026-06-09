@@ -1,27 +1,32 @@
 <template>
-  <MapBase :data="data" :projection="projection">
+  <MapBase :projection="projection">
     <MapZoom @zoom="updateMarkerScale">
-      <MapGraticule border />
-      <MapFeatures />
-      <MapMesh />
-      <MapMarker
-        v-for="(item, index) in cities"
-        :key="index"
-        :coordinates="[item.lon, item.lat]"
+      <MapSphere
+        fill="var(--vp-c-bg-alt)"
+        stroke="var(--vp-c-border)"
       >
-        <g :transform="`scale(${markerScale})`">
-          <text
-            font-size="14"
-            y="-8"
-            text-anchor="middle"
-          >
-            {{ item.city }}
-          </text>
-          <circle
-            r="3"
-          />
-        </g>
-      </MapMarker>
+        <MapGraticule />
+        <MapFeatures :data="data" />
+        <MapMesh :data="data" />
+        <MapMarker
+          v-for="(item, index) in cities"
+          :key="index"
+          :coordinates="[item.lon, item.lat]"
+        >
+          <g :transform="`scale(${markerScale})`">
+            <text
+              font-size="14"
+              y="-8"
+              text-anchor="middle"
+            >
+              {{ item.city }}
+            </text>
+            <circle
+              r="3"
+            />
+          </g>
+        </MapMarker>
+      </MapSphere>
     </MapZoom>
   </MapBase>
 </template>
@@ -48,7 +53,7 @@ const initialCities: City[] = [
   { city: 'Georgetown', lon: -58.1, lat: 6.48 },
 ]
 
-const { default: data } = await import('world-atlas/countries-110m.json')
+const { default: data } = await import('@d3-maps/atlas/world/countries/countries-110m')
 const projection = geoNaturalEarth1
 const cities = ref<City[]>(initialCities)
 const markerScale = ref(1)

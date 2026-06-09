@@ -64,14 +64,13 @@ export default function BubbleMapExample(): JSX.Element {
 
   return (
     <MapBase
-      data={mapData}
       projection={geoAlbersUsa}
     >
       <MapZoom
         maxZoom={100}
         onZoom={updateMarkerScale}
       >
-        <MapFeatures />
+        <MapFeatures data={mapData} />
         <g>
           {
             cities.map((item) => (
@@ -89,7 +88,7 @@ export default function BubbleMapExample(): JSX.Element {
             ))
           }
         </g>
-        <MapMesh />
+        <MapMesh data={mapData} />
       </MapZoom>
     </MapBase>
   )

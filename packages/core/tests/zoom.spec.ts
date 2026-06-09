@@ -15,7 +15,10 @@ import {
   isProgrammaticZoomEvent,
   ZOOM_DEFAULTS,
 } from '../src'
-import { makeTestMapContext } from './fixtures'
+import {
+  makeTestMapContext,
+  sampleGeoJson,
+} from './fixtures'
 
 const createBehavior = (options?: ZoomBehaviorOptions) => createZoomBehavior(undefined, options)
 
@@ -341,7 +344,7 @@ describe('zoom helpers', () => {
 
   it('computes a feature zoom transform', () => {
     const context = makeTestMapContext()
-    const feature = context.features[0]
+    const feature = sampleGeoJson.features[0]
     const [[x0, y0], [x1, y1]] = context.path.bounds(feature)
     const boundsWidth = x1 - x0
     const boundsHeight = y1 - y0
@@ -384,7 +387,8 @@ describe('zoom helpers', () => {
     const context = makeTestMapContext()
     const svgElement = new (class FakeSVGElement {})() as unknown as SVGSVGElement
     const transformCall = vi.fn()
-    const transform = getFeatureZoomTransform(context, context.features[0], {
+    const feature = sampleGeoJson.features[0]
+    const transform = getFeatureZoomTransform(context, feature, {
       padding: 10,
     })
     const commands = createZoomCommands({
@@ -400,7 +404,7 @@ describe('zoom helpers', () => {
     vi.stubGlobal('SVGSVGElement', svgElement.constructor as any)
 
     expect(transform).toBeDefined()
-    expect(commands.zoomToFeature(context.features[0], {
+    expect(commands.zoomToFeature(feature, {
       padding: 10,
     })).toBe(true)
     expect(transformCall).toHaveBeenCalledWith(expect.anything(), transform)

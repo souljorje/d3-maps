@@ -1,6 +1,6 @@
 <template>
-  <MapBase :data="data">
-    <MapFeatures />
+  <MapBase>
+    <MapFeatures :data="data" />
     <template
       v-for="city in cities"
       :key="city.name"
@@ -51,5 +51,5 @@ const cities: City[] = [
   },
 ]
 
-const { default: data } = await import('world-atlas/countries-110m.json') as { default: MapData }
+const { default: data } = await import('@d3-maps/atlas/world/countries/countries-110m') as { default: MapData }
 </script>

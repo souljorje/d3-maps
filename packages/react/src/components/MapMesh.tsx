@@ -1,45 +1,42 @@
 'use client'
 
-import type { MapObjectProps } from '@d3-maps/core'
+import type { MapMeshProps as CoreMapMeshProps } from '@d3-maps/core'
 import type {
-  CSSProperties,
   ReactElement,
   SVGProps,
 } from 'react'
 
+import {
+  renderMesh,
+} from '@d3-maps/core'
 import { useMemo } from 'react'
 
 import { useMapContext } from '../hooks/useMapContext'
-import { useMapObject } from '../hooks/useMapObject'
 
 export interface MapMeshProps
-  extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style'>,
-  MapObjectProps<CSSProperties> {}
+  extends Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'filter'>,
+  CoreMapMeshProps {}
 
 export function MapMesh({
-  styles,
+  data,
+  objectKey,
+  filter,
   fill = 'none',
   ...props
 }: MapMeshProps): ReactElement | null {
   const context = useMapContext()
 
-  const path = useMemo(() => {
-    return context.renderMesh() ?? undefined
-  }, [context])
-
-  const { style, ...events } = useMapObject<SVGPathElement>({
-    styles,
-    ...props,
-  })
+  const path = useMemo(
+    () => renderMesh(context, data, objectKey, filter) ?? undefined,
+    [context, data, objectKey, filter],
+  )
 
   return (
     <path
-      {...props}
       d={path}
-      style={style}
+      data-d3m="mesh"
       fill={fill}
-      name="mesh"
-      {...events}
+      {...props}
     />
   )
 }

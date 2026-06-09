@@ -28,7 +28,7 @@ See [ZoomCommands API](/api/core/zoom#zoomcommands)
 ### transition
 
 Can be an object for one step or an array for chained transition steps.  
-See [ZoomTransitionStep API](/api/core/zoom##zoomtransitionstep) and [d3-transition docs](https://d3js.org/d3-transition/timing#timing).
+See [ZoomTransitionStep API](/api/core/zoom#zoomtransitionstep) and [d3-transition docs](https://d3js.org/d3-transition/timing#timing).
 
 ## Parameters
 
@@ -36,15 +36,15 @@ See [ZoomTransitionStep API](/api/core/zoom##zoomtransitionstep) and [d3-transit
 
 == Vue
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `ref` | `Ref<MapZoomRef \| null>` | Ref passed to `MapZoom` |
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `ref` | `Ref<MapZoomRef \| null>` | — | Ref passed to `MapZoom` |
 
 == React
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `ref` | `RefObject<MapZoomRef \| null>` | Ref passed to `MapZoom` |
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `ref` | `RefObject<MapZoomRef \| null>` | — | Ref passed to `MapZoom` |
 
 :::
 

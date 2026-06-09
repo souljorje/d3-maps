@@ -25,14 +25,14 @@ const cities: City[] = [
   },
 ]
 
-const mapDataPromise = import('world-atlas/countries-110m.json').then((m) => m.default)
+const mapDataPromise = import('@d3-maps/atlas/world/countries/countries-110m').then((m) => m.default)
 
 export default function AnnotationExample(): JSX.Element {
   const mapData = use(mapDataPromise)
 
   return (
-    <MapBase data={mapData}>
-      <MapFeatures />
+    <MapBase>
+      <MapFeatures data={mapData} />
       {cities.map((city) => (
         <MapAnnotation
           key={city.name}

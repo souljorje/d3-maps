@@ -11,11 +11,11 @@ import { getLinePath } from '@d3-maps/core'
 import { useMemo } from 'react'
 
 import { useMapContext } from '../hooks/useMapContext'
-import { useMapObject } from '../hooks/useMapObject'
+import { MapElement } from './MapElement'
 
 export interface MapLineProps
   extends CoreMapLineProps<CSSProperties>,
-  Omit<SVGProps<SVGPathElement>, 'children' | 'd' | 'style'> {}
+  Omit<SVGProps<SVGPathElement>, 'children' | 'd'> {}
 
 export function MapLine({
   coordinates,
@@ -24,7 +24,6 @@ export function MapLine({
   curve,
   midpoint,
   styles,
-  name = 'line',
   fill = 'none',
   ...props
 }: MapLineProps): ReactElement {
@@ -47,19 +46,13 @@ export function MapLine({
     midpoint,
   ])
 
-  const { style, ...events } = useMapObject<SVGPathElement>({
-    styles,
-    ...props,
-  })
-
   return (
-    <path
+    <MapElement
+      data-d3m="line"
       {...props}
       d={path}
-      style={style}
+      styles={styles}
       fill={fill}
-      name={name}
-      {...events}
     />
   )
 }

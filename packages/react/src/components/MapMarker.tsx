@@ -11,19 +11,16 @@ import { getMarkerTransform } from '@d3-maps/core'
 import { useMemo } from 'react'
 
 import { useMapContext } from '../hooks/useMapContext'
-import { useMapObject } from '../hooks/useMapObject'
+import { MapElement } from './MapElement'
 
 export interface MapMarkerProps
   extends CoreMapMarkerProps<CSSProperties>,
-  Omit<SVGProps<SVGGElement>, 'style'> {
-  name?: string
-}
+  SVGProps<SVGGElement> {}
 
 export function MapMarker({
   coordinates,
   styles,
   children,
-  name = 'marker',
   ...props
 }: MapMarkerProps): ReactElement | null {
   const context = useMapContext()
@@ -37,22 +34,17 @@ export function MapMarker({
     coordinates?.[1],
   ])
 
-  const { style, ...events } = useMapObject<SVGGElement>({
-    styles,
-    ...props,
-  })
-
   if (!transform) return null
 
   return (
-    <g
+    <MapElement
+      tag="g"
+      data-d3m="marker"
       {...props}
       transform={transform}
-      style={style}
-      name={name}
-      {...events}
+      styles={styles}
     >
       {children}
-    </g>
+    </MapElement>
   )
 }

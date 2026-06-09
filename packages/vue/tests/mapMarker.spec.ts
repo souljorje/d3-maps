@@ -13,7 +13,7 @@ describe('mapMarker', () => {
   it('uses projection transform from context', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
         width: 400,
         height: 300,
       },
@@ -33,13 +33,13 @@ describe('mapMarker', () => {
       props: {
         coordinates: [10, 10],
       },
-    })).toThrowError('useMapContext must be used inside Map')
+    })).toThrow('useMapContext must be used inside MapBase')
   })
 
   it('recomputes marker transform when map context changes', async () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
         width: 300,
       },
       slots: {
@@ -57,20 +57,20 @@ describe('mapMarker', () => {
     expect(nextTransform).not.toBe(initialTransform)
   })
 
-  it('allows overriding the outer group name', () => {
+  it('allows overriding the marker role hook', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
         default: () => h(MapMarker, {
           coordinates: [10, 10],
-          name: 'annotation',
+          'data-d3m': 'annotation',
           'data-testid': 'map-marker',
         }),
       },
     })
 
-    expect(wrapper.get('[data-testid="map-marker"]').attributes('name')).toBe('annotation')
+    expect(wrapper.get('[data-testid="map-marker"]').attributes('data-d3m')).toBe('annotation')
   })
 })

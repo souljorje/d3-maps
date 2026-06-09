@@ -6,6 +6,7 @@ import {
   MapGraticule,
   MapMarker,
   MapMesh,
+  MapSphere,
   MapZoom,
 } from '@d3-maps/react'
 import { geoNaturalEarth1 } from 'd3-geo'
@@ -31,7 +32,7 @@ const initialCities: City[] = [
   { city: 'Georgetown', lon: -58.1, lat: 6.48 },
 ]
 
-const mapDataPromise = import('world-atlas/countries-110m.json').then((m) => m.default)
+const mapDataPromise = import('@d3-maps/atlas/world/countries/countries-110m').then((m) => m.default)
 
 export default function ZoomExample(): JSX.Element {
   const mapData = use(mapDataPromise)
@@ -49,34 +50,36 @@ export default function ZoomExample(): JSX.Element {
 
   return (
     <MapBase
-      data={mapData}
       projection={geoNaturalEarth1}
     >
       <MapZoom onZoom={updateMarkerScale}>
-        <MapGraticule border />
-        <MapFeatures />
-        <MapMesh />
-        {
-          initialCities.map((item) => (
-            <MapMarker
-              key={item.city}
-              coordinates={[item.lon, item.lat]}
-            >
-              <g transform={`scale(${markerScale})`}>
-                <text
-                  fontSize="14"
-                  y={-8}
-                  textAnchor="middle"
-                >
-                  {item.city}
-                </text>
-                <circle
-                  r={3}
-                />
-              </g>
-            </MapMarker>
-          ))
-        }
+        <MapSphere
+          fill="var(--vp-c-bg-alt)"
+          stroke="var(--vp-c-border)"
+        >
+          <MapGraticule />
+          <MapFeatures data={mapData} />
+          <MapMesh data={mapData} />
+          {
+            initialCities.map((item) => (
+              <MapMarker
+                key={item.city}
+                coordinates={[item.lon, item.lat]}
+              >
+                <g transform={`scale(${markerScale})`}>
+                  <text
+                    fontSize="14"
+                    y={-8}
+                    textAnchor="middle"
+                  >
+                    {item.city}
+                  </text>
+                  <circle r={3} />
+                </g>
+              </MapMarker>
+            ))
+          }
+        </MapSphere>
       </MapZoom>
     </MapBase>
   )

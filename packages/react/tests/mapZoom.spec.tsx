@@ -34,14 +34,24 @@ import {
 
 import { MapBase } from '../src/components/MapBase'
 import { MapFeature } from '../src/components/MapFeature'
-import {
-  MapZoom,
-} from '../src/components/MapZoom'
+import { MapZoom } from '../src/components/MapZoom'
 import { MapZoomPresenceContextValue } from '../src/hooks/internal/mapZoomContext'
-import {
-  useMapZoom,
-} from '../src/hooks/useMapZoom'
+import { useMapZoom } from '../src/hooks/useMapZoom'
 import { sampleGeoJson } from './fixtures'
+
+const useInteractionSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('../src/hooks/useInteraction', async () => {
+  const actual = await vi.importActual<typeof import('../src/hooks/useInteraction')>('../src/hooks/useInteraction')
+
+  return {
+    ...actual,
+    useInteraction: (...args: Parameters<typeof actual.useInteraction>) => {
+      useInteractionSpy(...args)
+      return actual.useInteraction(...args)
+    },
+  }
+})
 
 const emptyFeature: ZoomObject = {
   type: 'Feature',
@@ -59,20 +69,6 @@ const emptyFeature: ZoomObject = {
   },
 } as const
 
-const useMapObjectSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('../src/hooks/useMapObject', async () => {
-  const actual = await vi.importActual<typeof import('../src/hooks/useMapObject')>('../src/hooks/useMapObject')
-
-  return {
-    ...actual,
-    useMapObject: (...args: Parameters<typeof actual.useMapObject>) => {
-      useMapObjectSpy(...args)
-      return actual.useMapObject(...args)
-    },
-  }
-})
-
 describe('mapZoom', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -87,7 +83,7 @@ describe('mapZoom', () => {
     }
 
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <Probe />
       </MapBase>,
     )
@@ -104,7 +100,7 @@ describe('mapZoom', () => {
     }
 
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom>
           <Probe />
         </MapZoom>
@@ -189,7 +185,7 @@ describe('mapZoom', () => {
     }
 
     render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <Probe />
       </MapBase>,
     )
@@ -245,24 +241,24 @@ describe('mapZoom', () => {
 
   it('changing zoom props does not rerender stable feature children that only need zoom presence', () => {
     const { rerender } = render(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom minZoom={1}>
-          <MapFeature data={sampleGeoJson.features[0]} />
+          <MapFeature d="M0,0L10,0" />
         </MapZoom>
       </MapBase>,
     )
 
-    expect(useMapObjectSpy).toHaveBeenCalledTimes(1)
+    expect(useInteractionSpy).toHaveBeenCalledTimes(1)
 
     rerender(
-      <MapBase data={sampleGeoJson}>
+      <MapBase fit={sampleGeoJson}>
         <MapZoom minZoom={2}>
-          <MapFeature data={sampleGeoJson.features[0]} />
+          <MapFeature d="M0,0L10,0" />
         </MapZoom>
       </MapBase>,
     )
 
-    expect(useMapObjectSpy).toHaveBeenCalledTimes(1)
+    expect(useInteractionSpy).toHaveBeenCalledTimes(1)
   })
 })
 
@@ -289,7 +285,7 @@ function renderZoom(
   }
 
   render(
-    <MapBase data={sampleGeoJson}>
+    <MapBase fit={sampleGeoJson}>
       {(mapContext) => {
         context = mapContext
         return <Probe />

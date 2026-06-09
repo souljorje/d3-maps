@@ -10,16 +10,19 @@ import {
 import {
   sampleGeoJson,
   sampleTopology,
+  sampleTopologyObjectKey,
+  sampleTopologyTwoObjects,
 } from './fixtures'
 
 describe('mapMesh', () => {
   it('renders mesh for topology data with default fill', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleTopology,
+        fit: sampleTopology,
       },
       slots: {
         default: () => h(MapMesh, {
+          data: sampleTopology,
           'data-testid': 'map-mesh',
           stroke: '#000',
         }),
@@ -29,17 +32,52 @@ describe('mapMesh', () => {
     expect(wrapper.get('[data-testid="map-mesh"]').attributes('fill')).toBe('none')
   })
 
-  it('renders mesh path without topology geometry', () => {
+  it('renders an empty path for a missing topology object', () => {
     const wrapper = mount(MapBase, {
       props: {
-        data: sampleGeoJson,
+        fit: sampleGeoJson,
       },
       slots: {
-        default: () => h(MapMesh),
+        default: () => h(MapMesh, {
+          data: sampleTopologyTwoObjects,
+          objectKey: 'missing',
+        }),
       },
     })
 
     const path = wrapper.get('path')
     expect(path.attributes('d')).toBeUndefined()
+  })
+
+  it('supports topology overrides', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        fit: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapMesh, {
+          data: sampleTopologyTwoObjects,
+          objectKey: sampleTopologyObjectKey,
+        }),
+      },
+    })
+
+    expect(wrapper.get('path').attributes('d')).toBeTruthy()
+  })
+
+  it('supports explicit objectKey overrides', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        fit: sampleTopologyTwoObjects,
+      },
+      slots: {
+        default: () => h(MapMesh, {
+          data: sampleTopologyTwoObjects,
+          objectKey: sampleTopologyObjectKey,
+        }),
+      },
+    })
+
+    expect(wrapper.get('path').attributes('d')).toBeTruthy()
   })
 })

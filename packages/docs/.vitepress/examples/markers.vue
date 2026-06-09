@@ -1,6 +1,6 @@
 <template>
-  <MapBase :data="data">
-    <MapFeatures />
+  <MapBase>
+    <MapFeatures :data="data" />
     <MapMarker
       v-for="item in cities"
       :key="item.city"
@@ -37,5 +37,5 @@ const cities: City[] = [
   { city: 'Georgetown', lon: -58.1, lat: 6.48 },
 ]
 
-const { default: data } = await import('world-atlas/countries-110m.json')
+const { default: data } = await import('@d3-maps/atlas/world/countries/countries-110m')
 </script>

@@ -1,0 +1,138 @@
+{
+  "name": "@d3-maps/atlas",
+  "version": "1.0.0",
+  "description": "Ready-to-use TopoJSON world, continents, countries and more",
+  "type": "module",
+  "private": false,
+  "author": "Georgii Bukharov <souljorje@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://d3-maps.netlify.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/souljorje/d3-maps.git",
+    "directory": "packages/atlas"
+  },
+  "bugs": {
+    "url": "https://github.com/souljorje/d3-maps/issues"
+  },
+  "keywords": [
+    "d3",
+    "topojson",
+    "geojson",
+    "atlas",
+    "map",
+    "world-map",
+    "country-map",
+    "choropleth"
+  ],
+  "sideEffects": false,
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/*"
+  ],
+  "scripts": {
+    "sync-data": "node scripts/sync-data.mjs",
+    "generate": "node scripts/generate.mjs",
+    "validate": "node scripts/validate.mjs",
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "default": "./dist/types.js"
+    },
+    "./countries": {
+      "types": "./dist/countries/index.d.ts",
+      "default": "./dist/countries/index.js"
+    },
+    "./countries/*": {
+      "types": "./dist/countries/*/index.d.ts",
+      "default": "./dist/countries/*/index.js"
+    },
+    "./countries/*/*": {
+      "types": "./dist/_country-topology.d.ts",
+      "default": "./dist/countries/*/*.js"
+    },
+    "./continents/*": {
+      "types": "./dist/continents/*/index.d.ts",
+      "default": "./dist/continents/*/index.js"
+    },
+    "./continents/*/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/continents/*/*.js"
+    },
+    "./world/countries": {
+      "types": "./dist/world/countries/index.d.ts",
+      "default": "./dist/world/countries/index.js"
+    },
+    "./world/countries/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/world/countries/*.js"
+    },
+    "./world/land": {
+      "types": "./dist/world/land/index.d.ts",
+      "default": "./dist/world/land/index.js"
+    },
+    "./world/land/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/world/land/*.js"
+    },
+    "./world/ocean": {
+      "types": "./dist/world/ocean/index.d.ts",
+      "default": "./dist/world/ocean/index.js"
+    },
+    "./world/ocean/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/world/ocean/*.js"
+    },
+    "./world/coastline": {
+      "types": "./dist/world/coastline/index.d.ts",
+      "default": "./dist/world/coastline/index.js"
+    },
+    "./world/coastline/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/world/coastline/*.js"
+    },
+    "./world/lakes": {
+      "types": "./dist/world/lakes/index.d.ts",
+      "default": "./dist/world/lakes/index.js"
+    },
+    "./world/lakes/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/world/lakes/*.js"
+    },
+    "./world/rivers": {
+      "types": "./dist/world/rivers/index.d.ts",
+      "default": "./dist/world/rivers/index.js"
+    },
+    "./world/rivers/*": {
+      "types": "./dist/_topology.d.ts",
+      "default": "./dist/world/rivers/*.js"
+    },
+    "./metadata/countries": {
+      "types": "./dist/metadata/countries.d.ts",
+      "default": "./dist/metadata/countries.js"
+    },
+    "./metadata/continents": {
+      "types": "./dist/metadata/continents.d.ts",
+      "default": "./dist/metadata/continents.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@types/topojson-specification": "catalog:"
+  },
+  "devDependencies": {
+    "execa": "catalog:",
+    "mapshaper": "catalog:",
+    "typescript": "catalog:"
+  }
+}

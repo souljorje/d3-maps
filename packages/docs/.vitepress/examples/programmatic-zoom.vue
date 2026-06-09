@@ -10,34 +10,46 @@
           :config="zoomConfig"
           @zoom="onZoom"
         >
-          <MapGraticule
-            border
-            pointer-events="none"
-          />
-          <MapFeatures fill="var(--vp-c-neutral-inverse)">
-            <template #default="{ features: renderedFeatures }">
-              <MapFeature
-                v-for="(feature) in renderedFeatures"
-                :key="getFeatureKey(feature)"
-                :data="feature"
-                :data-feature-key="getFeatureKey(feature)"
-                :aria-label="getFeatureLabel(feature)"
-                :styles="featureInteractionStyles"
-                class="cursor-pointer"
-                role="button"
-                tabindex="0"
-                @click="zoomToFeature(feature)"
-                @keydown.enter.space.prevent="zoomToFeature(feature)"
-              />
-            </template>
-          </MapFeatures>
-          <MapMesh pointer-events="none" />
+          <MapSphere
+            fill="var(--vp-c-bg-alt)"
+            stroke="var(--vp-c-border)"
+          >
+            <MapGraticule pointer-events="none" />
+            <MapFeatures
+              :data="data"
+              fill="var(--vp-c-neutral-inverse)"
+            >
+              <template #default="{ features }">
+                <MapFeature
+                  v-for="feature in features"
+                  :key="feature.key"
+                  :d="feature.d"
+                  :data-feature-key="feature.key"
+                  :aria-label="getFeatureLabel(feature)"
+                  :styles="{
+                    focus: {
+                      fill: 'lightskyblue',
+                    },
+                  }"
+                  class="cursor-pointer"
+                  role="button"
+                  tabindex="0"
+                  @click="zoomToFeature(feature)"
+                  @keydown.enter.space.prevent="zoomToFeature(feature)"
+                />
+              </template>
+            </MapFeatures>
+            <MapMesh
+              :data="data"
+              pointer-events="none"
+            />
+          </MapSphere>
         </MapZoom>
       </MapBase>
     </div>
     <div class="flex flex-col justify-center items-center gap-2">
       <div>
-        Focus: {{ activeCountryLabel }}
+        {{ activeCountryLabel }}
       </div>
       <div class="flex gap-2 flex-wrap justify-center">
         <button
@@ -80,19 +92,17 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  MapData,
-  MapFeatureData,
-  MapZoomRef,
-  ZoomEvent,
-} from '@d3-maps/vue'
+import type { MapData, MapZoomRef, ZoomEvent } from '@d3-maps/vue'
 
 import {
-  getFeatureKey,
+  makeMapFeatures,
+} from '@d3-maps/core'
+import {
   useCreateMapContext,
   useMapZoom,
 } from '@d3-maps/vue'
 import {
+  computed,
   shallowRef,
   useTemplateRef,
 } from 'vue'
@@ -102,30 +112,36 @@ const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
 
-const { default: mapData } = await import('world-atlas/countries-110m.json')
+const { default: mapData } = await import('@d3-maps/atlas/world/countries/countries-110m')
 const data = mapData as MapData
-const mapContext = useCreateMapContext({ data })
 
 const zoomLevel = shallowRef(initialZoom)
 const activeCountryLabel = shallowRef('World')
 const mapRoot = useTemplateRef<HTMLElement>('mapRoot')
 const zoomRef = useTemplateRef<MapZoomRef>('zoom')
 const zoom = useMapZoom(zoomRef)
+const mapContext = useCreateMapContext()
+
+const renderedFeatures = computed(() => {
+  if (!mapContext.value) return []
+
+  return makeMapFeatures(mapContext.value, {
+    data,
+  })
+})
+
+type RenderedMapFeature = typeof renderedFeatures.value[number]
+type MapGeoFeature = Extract<RenderedMapFeature, { type: 'Feature' }>
 
 const zoomTransition = { duration: 600 }
 const zoomConfig = { filter: isDragOnlyFilter }
-const featureInteractionStyles = {
-  focus: {
-    fill: 'lightskyblue',
-  },
-}
 
 function zoomIn() {
-  zoom.scaleWith(zoomStep, undefined, false)
+  zoom.scaleWith(zoomStep)
 }
 
 function zoomOut() {
-  zoom.scaleWith(-zoomStep, undefined, false)
+  zoom.scaleWith(-zoomStep)
 }
 
 function resetView() {
@@ -134,17 +150,22 @@ function resetView() {
 }
 
 function zoomToRandomCountry() {
-  if (!mapContext.value) return
+  const features = renderedFeatures.value
+  const randomIndex = Math.floor(Math.random() * features.length)
+  const feature = features[randomIndex]
 
-  const randomIndex = Math.floor(Math.random() * mapContext.value.features.length)
-  const feature = mapContext.value.features[randomIndex]
   if (!feature) return
 
-  zoomToFeature(feature)
-  focusFeatureByKey(getFeatureKey(feature))
+  const featureElement = mapRoot.value?.querySelector<SVGPathElement>(
+    `[data-feature-key="${feature.key}"]`,
+  )
+  if (featureElement) {
+    zoomToFeature(feature)
+    featureElement.focus({ preventScroll: true })
+  }
 }
 
-function zoomToFeature(feature: MapFeatureData) {
+function zoomToFeature(feature: MapGeoFeature) {
   const didFit = zoom.zoomToFeature(feature)
   if (!didFit) return
 
@@ -159,16 +180,7 @@ function isDragOnlyFilter(event: Event) {
   return event.type !== 'wheel' && event.type !== 'dblclick'
 }
 
-function getFeatureLabel(feature: MapFeatureData) {
-  return feature.properties?.name ?? 'Country'
-}
-
-function focusFeatureByKey(featureKey: string | number | undefined) {
-  if (featureKey === undefined) return
-
-  const featureElement = mapRoot.value?.querySelector<SVGPathElement>(
-    `[data-feature-key="${String(featureKey)}"]`,
-  )
-  featureElement?.focus({ preventScroll: true })
+function getFeatureLabel(feature: MapGeoFeature) {
+  return String(feature.properties.name ?? 'Country')
 }
 </script>

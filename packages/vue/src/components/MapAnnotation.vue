@@ -1,7 +1,7 @@
 <template>
   <MapMarker
     :coordinates="coordinates"
-    name="annotation"
+    data-d3m="annotation"
   >
     <g :transform="geometry.lineTransform">
       <MapLine
@@ -11,13 +11,13 @@
         :curve="curve"
         :midpoint="midpoint"
         :styles="styles"
+        data-d3m="annotation-line"
         fill="none"
-        name="annotation-line"
       />
     </g>
     <g
       :transform="geometry.contentTransform"
-      name="annotation-content"
+      data-d3m="annotation-content"
     >
       <slot />
     </g>

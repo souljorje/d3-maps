@@ -19,7 +19,7 @@ describe('SSR', () => {
   it('renders map component tree without DOM access errors', async () => {
     const app = createSSRApp({
       render: () =>
-        h(MapBase, { data: sampleGeoJson }, {
+        h(MapBase, { fit: sampleGeoJson }, {
           default: () => h(MapZoom, null, {
             default: () => [
               h(MapFeatures),
@@ -33,7 +33,7 @@ describe('SSR', () => {
     const html = await renderToString(app)
 
     expect(html).toContain('<svg')
-    expect(html).toContain('name="zoom"')
-    expect(html).toContain('name="annotation"')
+    expect(html).toContain('data-d3m="zoom"')
+    expect(html).toContain('data-d3m="annotation"')
   })
 })

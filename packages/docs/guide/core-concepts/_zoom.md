@@ -1,22 +1,28 @@
 ## Zoom
 
-[MapZoom](/components/map-zoom) adds pan and zoom behavior with `d3-zoom`  
+[MapZoom](/components/map-zoom) adds pan and zoom behavior.
 
 :::tabs key:framework
 
 == Vue
 
-```vue{7,11} [vue]
+```vue{5,17} [vue]
 <template>
   <MapBase
-    :data="data"
     :projection="geoEquirectangular"
-    :data-transformer="dataTransformer"
   >
     <MapZoom>
-      <MapGraticule border />
-      <MapFeatures />
-      <MapMesh stroke="#fff" />
+      <MapSphere
+        fill="var(--vp-c-bg-alt)"
+        stroke="var(--vp-c-border)"
+      >
+        <MapGraticule />
+        <MapFeatures
+          :data="data"
+          :transformer="transformer"
+        />
+        <MapMesh :data="data" stroke="#fff" />
+      </MapSphere>
     </MapZoom>
   </MapBase>
 </template>
@@ -24,20 +30,26 @@
 
 == React
 
-```tsx{6,10} [react]
+```tsx{4,16} [react]
 <MapBase
-  data={data}
   projection={geoEquirectangular}
-  dataTransformer={dataTransformer}
 >
   <MapZoom>
-    <MapGraticule border />
-    <MapFeatures />
-    <MapMesh stroke="#fff" />
+    <MapSphere
+      fill="var(--vp-c-bg-alt)"
+      stroke="var(--vp-c-border)"
+    >
+      <MapGraticule />
+      <MapFeatures
+        data={data}
+        transformer={transformer}
+      />
+      <MapMesh data={data} stroke="#fff" />
+    </MapSphere>
   </MapZoom>
 </MapBase>
 ```
 
 :::
 
-See the [zoom example](/examples/zoom) for details
+> See [detailed example](/examples/zoom) and [programmatic zoom](/examples/programmatic-zoom) example

@@ -32,17 +32,20 @@ function isRenderProp(children: MapBaseProps['children']): children is MapBaseRe
 
 export function MapBase(props: MapBaseProps): ReactElement {
   const {
+    aspectRatio,
     children,
     className,
     context: providedContext,
+    fit,
+    fitObjectKey,
+    height,
+    projection,
+    projectionConfig,
+    width,
     ...svgProps
   } = props
 
   const resolvedContext = useCreateMapContext(props, providedContext)
-
-  if (!resolvedContext) {
-    throw new Error('MapBase requires data or context')
-  }
 
   const resolvedChildren = isRenderProp(children)
     ? children(resolvedContext)

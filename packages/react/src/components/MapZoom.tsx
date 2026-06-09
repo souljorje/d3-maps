@@ -88,10 +88,10 @@ export function MapZoom(props: MapZoomProps): ReactElement {
   return (
     <MapZoomPresenceContextValue.Provider value>
       <g
+        data-d3m="zoom"
         {...groupProps}
         ref={containerRef}
         className={mergedClassName}
-        name="zoom"
       >
         {children}
       </g>

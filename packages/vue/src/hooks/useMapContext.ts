@@ -12,7 +12,7 @@ export function useMapContext(): ComputedRef<MapContext> {
   const context = inject(mapContextKey)
 
   if (!context) {
-    throw new Error('useMapContext must be used inside Map')
+    throw new Error('useMapContext must be used inside MapBase')
   }
 
   return context

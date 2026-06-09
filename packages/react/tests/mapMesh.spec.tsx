@@ -12,13 +12,16 @@ import {
 import {
   sampleGeoJson,
   sampleTopology,
+  sampleTopologyObjectKey,
+  sampleTopologyTwoObjects,
 } from './fixtures'
 
 describe('mapMesh', () => {
   it('renders mesh for topology data with default fill', () => {
     render(
-      <MapBase data={sampleTopology}>
+      <MapBase fit={sampleTopology}>
         <MapMesh
+          data={sampleTopology}
           data-testid="map-mesh"
           stroke="#000"
         />
@@ -29,15 +32,44 @@ describe('mapMesh', () => {
     expect(mesh?.getAttribute('fill')).toBe('none')
   })
 
-  it('renders mesh path without topology geometry', () => {
+  it('renders an empty path for a missing topology object', () => {
     const { container } = render(
-      <MapBase data={sampleGeoJson}>
-        <MapMesh />
+      <MapBase fit={sampleGeoJson}>
+        <MapMesh
+          data={sampleTopologyTwoObjects}
+          objectKey="missing"
+        />
       </MapBase>,
     )
 
     const path = container.querySelector('path')
     expect(path).toBeTruthy()
     expect(path?.getAttribute('d')).toBeNull()
+  })
+
+  it('supports topology overrides', () => {
+    const { container } = render(
+      <MapBase fit={sampleGeoJson}>
+        <MapMesh
+          data={sampleTopologyTwoObjects}
+          objectKey={sampleTopologyObjectKey}
+        />
+      </MapBase>,
+    )
+
+    expect(container.querySelector('path')?.getAttribute('d')).toBeTruthy()
+  })
+
+  it('supports explicit objectKey overrides', () => {
+    const { container } = render(
+      <MapBase fit={sampleTopologyTwoObjects}>
+        <MapMesh
+          data={sampleTopologyTwoObjects}
+          objectKey={sampleTopologyObjectKey}
+        />
+      </MapBase>,
+    )
+
+    expect(container.querySelector('path')?.getAttribute('d')).toBeTruthy()
   })
 })

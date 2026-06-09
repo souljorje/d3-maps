@@ -1,0 +1,95 @@
+---
+description: Helper for interaction state and resolved styles on custom D3 SVG map objects with React and Vue
+---
+
+# useInteraction
+
+Provides interaction-state transitions and resolved styles for custom map SVG elements.
+
+Used internally by [MapElement](/components/map-element), [MapFeature](/components/map-feature), [MapLine](/components/map-line), [MapAnnotation](/components/map-annotation), and [MapMarker](/components/map-marker)
+
+## Usage
+
+:::tabs key:framework
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import type { StyleValue } from 'vue'
+
+import { useInteraction, type InteractionProps } from '@d3-maps/vue'
+
+interface Props {
+  d: string
+}
+
+defineProps<Props>()
+
+const styles: InteractionProps<StyleValue>['styles'] = {
+  default: {
+    opacity: 0.9,
+  },
+  focus: {
+    stroke: 'darkgreen',
+  },
+  hover: {
+    opacity: 0.8,
+  },
+  active: {
+    stroke: 'green',
+  },
+}
+
+const { style, ...events } = useInteraction(styles)
+</script>
+
+<template>
+  <path
+    :d="d"
+    :style="style"
+    tabindex="0"
+    v-bind="events"
+  />
+</template>
+```
+
+== React
+
+```tsx
+import type { CSSProperties } from 'react'
+
+import { useInteraction, type InteractionProps } from '@d3-maps/react'
+
+export function CustomFeaturePath({ d }: { d: string }) {
+  const styles: InteractionProps<CSSProperties>['styles'] = {
+    default: {
+      opacity: 0.9,
+    },
+    focus: {
+      stroke: 'darkgreen',
+    },
+    hover: {
+      opacity: 0.8,
+    },
+    active: {
+      stroke: 'green',
+    },
+  }
+
+  const { style, ...events } = useInteraction<SVGPathElement>({
+    styles,
+  })
+
+  return (
+    <path
+      d={d}
+      tabIndex={0}
+      style={style}
+      {...events}
+    />
+  )
+}
+```
+
+:::

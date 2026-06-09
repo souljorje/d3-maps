@@ -1,10 +1,10 @@
 ---
-description: Helper for stable GeoJSON feature IDs in D3 SVG maps
+description: Helper for stable map feature keys in D3 SVG maps
 ---
 
 # getFeatureKey
 
-Resolves a feature key from a GeoJSON feature
+Resolves a key from a normalized map feature.
 
 Use it when you need a stable identifier for rendering or DOM targeting
 
@@ -12,26 +12,22 @@ Use it when you need a stable identifier for rendering or DOM targeting
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `feature` | [MapFeatureData](/api/core/feature#mapfeaturedata) | `—` | Feature to inspect |
-| `idKey?` | `string` | `'id'` | Key checked on the feature and then on `feature.properties` |
-| `fallback?` | `string \| number` | `—` | Optional fallback value returned when no key is found |
+| `item` | [MapFeatureData](/api/core/data#mapfeaturedata) | `—` | Feature or geometry to inspect |
+| `fallback` | `string \| number` | `—` | Fallback when no stable key is found |
 
 ## Behavior
 
 Checks in order:
 
-1. `feature[idKey]`
-2. `feature.properties?.[idKey]`
-3. `fallback`
-
-If no value is found and no fallback is provided, it returns `undefined`
+1. `item.id`
+2. `item.properties?.id`
+3. `item.properties?.name`
+4. `fallback`
 
 ## Usage
 
 ```ts
-const key = getFeatureKey(feature)
-const keyedBySlug = getFeatureKey(feature, 'slug')
-const keyedWithFallback = getFeatureKey(feature, 'id', index)
+const key = getFeatureKey(item, fallback)
 ```
 
 See [feature API](/api/core/feature#getfeaturekey)

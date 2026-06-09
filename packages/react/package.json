@@ -1,9 +1,9 @@
 {
   "name": "@d3-maps/react",
   "type": "module",
-  "version": "0.8.0",
+  "version": "0.10.0",
   "private": false,
-  "description": "React bindings for @d3-maps/core to build reactive D3 SVG maps",
+  "description": "Interactive SVG maps for React, powered by D3",
   "author": "Georgii Bukharov <souljorje@gmail.com>",
   "license": "MIT",
   "publishConfig": {
@@ -22,7 +22,10 @@
     "react",
     "d3",
     "svg",
-    "map"
+    "map",
+    "geojson",
+    "topojson",
+    "dataviz"
   ],
   "exports": {
     ".": "./dist/index.js",

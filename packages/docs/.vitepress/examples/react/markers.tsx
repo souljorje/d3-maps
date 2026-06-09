@@ -4,6 +4,7 @@ import {
   MapGraticule,
   MapMarker,
   MapMesh,
+  MapSphere,
 } from '@d3-maps/react'
 import { use } from 'react'
 
@@ -23,35 +24,38 @@ const cities: City[] = [
   { city: 'Georgetown', lon: -58.1, lat: 6.48 },
 ]
 
-const mapDataPromise = import('world-atlas/countries-110m.json').then((m) => m.default)
+const mapDataPromise = import('@d3-maps/atlas/world/countries/countries-110m').then((m) => m.default)
 
 export default function MarkersExample(): JSX.Element {
   const mapData = use(mapDataPromise)
 
   return (
-    <MapBase data={mapData}>
-      <MapGraticule border />
-      <MapFeatures />
-      <MapMesh />
-      {
-        cities.map((item) => (
-          <MapMarker
-            key={item.city}
-            coordinates={[item.lon, item.lat]}
-          >
-            <text
-              fontSize="14"
-              y={-6}
-              textAnchor="middle"
+    <MapBase>
+      <MapSphere
+        fill="var(--vp-c-bg-alt)"
+        stroke="var(--vp-c-border)"
+      >
+        <MapGraticule />
+        <MapFeatures data={mapData} />
+        <MapMesh data={mapData} />
+        {
+          cities.map((item) => (
+            <MapMarker
+              key={item.city}
+              coordinates={[item.lon, item.lat]}
             >
-              {item.city}
-            </text>
-            <circle
-              r={3}
-            />
-          </MapMarker>
-        ))
-      }
+              <text
+                fontSize="14"
+                y={-6}
+                textAnchor="middle"
+              >
+                {item.city}
+              </text>
+              <circle r={3} />
+            </MapMarker>
+          ))
+        }
+      </MapSphere>
     </MapBase>
   )
 }

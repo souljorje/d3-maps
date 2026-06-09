@@ -7,7 +7,12 @@ import {
 import { curveBasis } from 'd3-shape'
 import { use } from 'react'
 
-const cities = [
+interface City {
+  name: string
+  coordinates: [number, number]
+}
+
+const cities: City[] = [
   { name: 'San Francisco', coordinates: [-122.4194, 37.7749] },
   { name: 'New York', coordinates: [-73.935242, 40.73061] },
   { name: 'London', coordinates: [-0.1276, 51.5072] },
@@ -16,32 +21,32 @@ const cities = [
   { name: 'Tokyo', coordinates: [139.6503, 35.6762] },
 ]
 
-const directFlights = [
+const directFlights: [City, City][] = [
   [cities[0], cities[1]],
   [cities[1], cities[2]],
   [cities[2], cities[3]],
   [cities[5], cities[0]],
 ]
 
-const transitFlight = [
+const transitFlight: [number, number][] = [
   cities[3].coordinates,
   cities[4].coordinates,
   cities[5].coordinates,
 ]
 
-const returnFlight = [
+const returnFlight: [number, number][] = [
   cities[5].coordinates,
   cities[0].coordinates,
 ]
 
-const mapDataPromise = import('world-atlas/countries-110m.json').then((m) => m.default)
+const mapDataPromise = import('@d3-maps/atlas/world/countries/countries-110m').then((m) => m.default)
 
 export default function ConnectionsExample(): JSX.Element {
   const mapData = use(mapDataPromise)
 
   return (
-    <MapBase data={mapData}>
-      <MapFeatures />
+    <MapBase>
+      <MapFeatures data={mapData} />
 
       {
         cities.map((city) => (

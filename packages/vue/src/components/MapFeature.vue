@@ -1,9 +1,8 @@
 <template>
-  <path
-    :d="path"
-    :style="style"
-    v-bind="events"
-    name="feature"
+  <MapElement
+    :d="d"
+    data-d3m="feature"
+    :styles="styles"
   />
 </template>
 
@@ -11,19 +10,7 @@
 import type { MapFeatureProps } from '@d3-maps/core'
 import type { StyleValue } from 'vue'
 
-import {
-  computed,
-  toRef,
-} from 'vue'
+import MapElement from './MapElement.vue'
 
-import { useMapContext } from '../hooks/useMapContext'
-import { useMapObject } from '../hooks/useMapObject'
-
-const props = defineProps<MapFeatureProps<StyleValue>>()
-
-const { style, ...events } = useMapObject(toRef(props, 'styles'))
-
-const context = useMapContext()
-
-const path = computed(() => context.value.path(props.data) ?? undefined)
+defineProps<MapFeatureProps<StyleValue>>()
 </script>

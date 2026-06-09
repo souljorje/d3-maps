@@ -13,6 +13,7 @@ const PACKAGES_DIR = path.join(REPO_ROOT, 'packages')
 const SITE_BASE = process.env.VITEPRESS_BASE || '/'
 const SITE_URL = (process.env.VITEPRESS_SITE_URL || process.env.URL || process.env.DEPLOY_PRIME_URL)?.replace(/\/$/, '')
 const SITEMAP_HOSTNAME = SITE_URL ? `${SITE_URL}/` : null
+const DEFAULT_SITE_DESCRIPTION = 'Interactive SVG maps for React and Vue. Choropleths, markers, lines, zoom and more. Powered by D3.'
 
 function toPascalCase(value) {
   return value
@@ -41,81 +42,34 @@ function toCanonicalUrl(relativePath) {
   return canonicalPath ? `${SITE_URL}/${canonicalPath}` : `${SITE_URL}/`
 }
 
-function toTitleCase(value) {
-  return value
-    .split(/[-_]/g)
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ')
-}
-
 function toAbsoluteSiteUrl(assetPath) {
   if (!SITE_URL) return null
   return `${SITE_URL}/${assetPath.replace(/^\/+/, '')}`
 }
 
-function createBreadcrumbStructuredData(page) {
-  if (!SITE_URL || page === 'index.md') return null
-
-  const relativeUrl = page
-    .replace(/(^|\/)index\.md$/, '$1')
-    .replace(/\.md$/, '.html')
-  const pathSegments = relativeUrl.split('/').filter(Boolean)
-
-  if (pathSegments.length === 0) return null
-
-  const items = [
-    {
-      '@type': 'ListItem',
-      position: 1,
-      name: 'Home',
-      item: `${SITE_URL}/`,
-    },
-  ]
-
-  let currentPath = ''
-  for (const [index, segment] of pathSegments.entries()) {
-    currentPath += `/${segment}`
-    const isLast = index === pathSegments.length - 1
-    const name = isLast && segment.endsWith('.html')
-      ? toTitleCase(segment.replace(/\.html$/, ''))
-      : toTitleCase(segment)
-
-    items.push({
-      '@type': 'ListItem',
-      position: items.length + 1,
-      name,
-      item: `${SITE_URL}${currentPath}${isLast && segment.endsWith('.html') ? '' : '/'}`,
-    })
-  }
+function createHomeStructuredData() {
+  if (!SITE_URL) return null
 
   return {
     '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: items,
+    '@type': 'SoftwareSourceCode',
+    name: 'd3-maps',
+    description: DEFAULT_SITE_DESCRIPTION,
+    url: `${SITE_URL}/`,
+    codeRepository: 'https://github.com/souljorje/d3-maps',
+    programmingLanguage: ['TypeScript', 'JavaScript'],
+    applicationCategory: 'DeveloperApplication',
+    license: 'https://opensource.org/license/mit/',
   }
 }
 
-function createHomeStructuredData() {
-  if (!SITE_URL) return []
+function resolveMetaTitle(pageData) {
+  if (pageData.frontmatter.layout === 'home')
+    return 'Interactive SVG maps for React and Vue · d3-maps'
 
-  return [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Organization',
-      name: 'd3-maps',
-      url: `${SITE_URL}/`,
-      logo: toAbsoluteSiteUrl('/d3-maps-logo.svg'),
-      sameAs: ['https://github.com/souljorje/d3-maps'],
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      name: 'd3-maps',
-      url: `${SITE_URL}/`,
-      description: 'Interactive SVG maps for Vue and React. Reactive components powered by D3.',
-    },
-  ]
+  return pageData.title
+    ? `${pageData.title} · d3-maps`
+    : 'd3-maps'
 }
 
 function getExamples() {
@@ -179,12 +133,13 @@ const docsSidebar = [
           { text: 'Projection', link: '/guide/core-concepts#projection' },
           { text: 'Features', link: '/guide/core-concepts#features' },
           { text: 'Mesh', link: '/guide/core-concepts#mesh' },
-          { text: 'Graticule', link: '/guide/core-concepts#graticule' },
+          { text: 'Sphere and Graticule', link: '/guide/core-concepts#sphere-and-graticule' },
           { text: 'Zoom', link: '/guide/core-concepts#zoom' },
           { text: 'Markers', link: '/guide/core-concepts#markers' },
           { text: 'Styling', link: '/guide/core-concepts#styling' },
           { text: 'Responsiveness', link: '/guide/core-concepts#responsiveness' },
         ] },
+      { text: 'Atlas', link: '/guide/atlas' },
       { text: 'Architecture', link: '/guide/architecture' },
       { text: 'Troubleshooting', link: '/guide/troubleshooting' },
       { text: 'Migrate from react-simple-maps', link: '/guide/migration-from-react-simple-maps' },
@@ -192,11 +147,13 @@ const docsSidebar = [
   },
   {
     text: 'Components',
+    collapsed: true,
     items: [
       { text: 'Overview', link: '/components/' },
       { text: 'MapBase', link: '/components/map-base' },
       { text: 'MapFeatures', link: '/components/map-features' },
       { text: 'MapFeature', link: '/components/map-feature' },
+      { text: 'MapElement', link: '/components/map-element' },
       { text: 'MapAnnotation', link: '/components/map-annotation' },
       { text: 'MapLine', link: '/components/map-line' },
       { text: 'MapMarker', link: '/components/map-marker' },
@@ -207,12 +164,13 @@ const docsSidebar = [
   },
   {
     text: 'Helpers',
+    collapsed: true,
     items: [
       { text: 'Overview', link: '/helpers/' },
       { text: 'useCreateMapContext', link: '/helpers/use-create-map-context' },
       { text: 'useMapContext', link: '/helpers/use-map-context' },
       { text: 'useMapZoom', link: '/helpers/use-map-zoom' },
-      { text: 'useMapObject', link: '/helpers/use-map-object' },
+      { text: 'useInteraction', link: '/helpers/use-interaction' },
       { text: 'getFeatureKey', link: '/helpers/get-feature-key' },
     ],
   },
@@ -250,7 +208,8 @@ export default defineConfig({
   base: SITE_BASE,
   srcExclude: ['AGENTS.md', '**/AGENTS.md', '**/_*.md'],
   title: 'd3-maps',
-  description: 'Reactive SVG maps for Vue and React, powered by D3',
+  titleTemplate: ':title · d3-maps',
+  description: DEFAULT_SITE_DESCRIPTION,
   ...(SITEMAP_HOSTNAME
     ? {
         sitemap: {
@@ -264,6 +223,11 @@ export default defineConfig({
     ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'd3-maps' }],
+    ['meta', { property: 'og:image', content: toAbsoluteSiteUrl('/d3-maps-logo.svg') || withBase('/d3-maps-logo.svg') }],
+    ['meta', { property: 'og:image:alt', content: 'd3-maps logo' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:image', content: toAbsoluteSiteUrl('/d3-maps-logo.svg') || withBase('/d3-maps-logo.svg') }],
+    ['meta', { name: 'twitter:image:alt', content: 'd3-maps logo' }],
     ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: withBase('/favicons/apple-touch-icon.png') }],
     ['link', { rel: 'icon', type: 'image/png', sizes: '96x96', href: withBase('/favicons/favicon-96x96.png') }],
     ['link', { rel: 'manifest', href: withBase('/favicons/site.webmanifest') }],
@@ -271,27 +235,31 @@ export default defineConfig({
   ],
   transformPageData(pageData) {
     const canonicalUrl = toCanonicalUrl(pageData.relativePath)
-    if (!canonicalUrl) return
+    const pageTitle = resolveMetaTitle(pageData)
+    const pageDescription = pageData.description || pageData.frontmatter.description || DEFAULT_SITE_DESCRIPTION
 
     pageData.frontmatter.head ??= []
-    pageData.frontmatter.head.push(['link', { rel: 'canonical', href: canonicalUrl }])
-  },
-  transformHead({ page }) {
-    if (!SITE_URL) return []
-
-    const structuredData = []
-
-    if (page === 'index.md') {
-      structuredData.push(...createHomeStructuredData())
-    } else {
-      const breadcrumbStructuredData = createBreadcrumbStructuredData(page)
-      if (breadcrumbStructuredData) structuredData.push(breadcrumbStructuredData)
+    if (canonicalUrl) {
+      pageData.frontmatter.head.push(['link', { rel: 'canonical', href: canonicalUrl }])
     }
 
-    if (structuredData.length === 0) return []
+    pageData.frontmatter.head.push(['meta', { property: 'og:title', content: pageTitle }])
+    pageData.frontmatter.head.push(['meta', { property: 'og:description', content: pageDescription }])
+    pageData.frontmatter.head.push(['meta', { name: 'twitter:title', content: pageTitle }])
+    pageData.frontmatter.head.push(['meta', { name: 'twitter:description', content: pageDescription }])
+
+    if (canonicalUrl) {
+      pageData.frontmatter.head.push(['meta', { property: 'og:url', content: canonicalUrl }])
+    }
+  },
+  transformHead({ page }) {
+    if (!SITE_URL || page !== 'index.md') return []
+
+    const structuredData = createHomeStructuredData()
+    if (!structuredData) return []
 
     return [
-      ['script', { type: 'application/ld+json' }, JSON.stringify(structuredData.length === 1 ? structuredData[0] : structuredData)],
+      ['script', { type: 'application/ld+json' }, JSON.stringify(structuredData)],
     ]
   },
   buildEnd(siteConfig) {

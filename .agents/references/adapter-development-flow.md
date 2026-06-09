@@ -12,8 +12,9 @@ Shared workflow for Vue, React, and future adapters (Solid, Svelte)
 - If the change is cross-adapter, ensure parity across existing adapters and document intentional deltas
 
 ## Core Contract First
-- Start from the core contract in `packages/core/src/lib` (`map.ts`, `feature.ts`, `marker.ts`, `mapObject.ts`, `zoom.ts`)
+- Start from the core contract in `packages/core/src/lib`
 - If adapters need new behavior/types, add them to core first so adapters stay thin wrappers
+- If a helper needs map context, pass context first and extract needed fields inside it instead of passing context fields separately
 
 ## Adapter Boundary
 - Reuse `@d3-maps/core` helpers only
