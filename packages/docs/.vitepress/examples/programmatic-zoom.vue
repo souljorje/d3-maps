@@ -18,6 +18,7 @@
             <MapFeatures
               :data="data"
               fill="var(--vp-c-neutral-inverse)"
+              @update:features="renderedFeatures = $event"
             >
               <template #default="{ features }">
                 <MapFeature
@@ -110,6 +111,7 @@ const data = mapData as MapData
 
 const zoomLevel = shallowRef(initialZoom)
 const activeCountryLabel = shallowRef('World')
+const renderedFeatures = shallowRef<MapFeatureRendered[]>([])
 const mapRoot = useTemplateRef<HTMLElement>('mapRoot')
 const zoomRef = useTemplateRef<MapZoomRef>('zoom')
 const zoom = useMapZoom(zoomRef)
@@ -131,12 +133,11 @@ function resetView() {
 }
 
 function zoomToRandomCountry() {
-  const featureElements = Array.from(
-    mapRoot.value?.querySelectorAll<SVGPathElement>('[data-feature-key]') ?? [],
-  )
-  const featureElement = featureElements[Math.floor(Math.random() * featureElements.length)]
+  const feature = renderedFeatures.value[Math.floor(Math.random() * renderedFeatures.value.length)]
+  if (!feature) return
 
-  featureElement.focus({ preventScroll: true })
+  zoomToFeature(feature)
+  focusFeatureByKey(feature.key)
 }
 
 function zoomToFeature(feature: MapFeatureRendered) {
@@ -152,6 +153,14 @@ function onZoom(event: ZoomEvent) {
 
 function isDragOnlyFilter(event: Event) {
   return event.type !== 'wheel' && event.type !== 'dblclick'
+}
+
+function focusFeatureByKey(featureKey: string | number) {
+  const featureElement = Array.from(
+    mapRoot.value?.querySelectorAll<SVGPathElement>('[data-feature-key]') ?? [],
+  ).find((element) => element.dataset.featureKey === String(featureKey))
+
+  featureElement?.focus({ preventScroll: true })
 }
 
 function getFeatureLabel(feature: MapFeatureRendered) {

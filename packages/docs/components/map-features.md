@@ -19,6 +19,20 @@ Features with `geometry: null` are preserved and receive no path data.
 
 Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatures`
 
+## Events
+
+:::tabs key:framework
+
+== Vue
+
+- `update:features(features: MapFeatureRendered[])`
+
+== React
+
+- `onFeatureUpdate(features: MapFeatureRendered[])`
+
+:::
+
 ## Usage
 
 :::tabs key:framework
@@ -101,3 +115,9 @@ Use native SVG presentation attrs like `fill` and `stroke` directly on `MapFeatu
 ```
 
 :::
+
+## Examples
+
+- [Basic Map](/examples/basic-map)
+- [Choropleth Map](/examples/choropleth-map)
+- [Programmatic Zoom](/examples/programmatic-zoom)

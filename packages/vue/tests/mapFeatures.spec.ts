@@ -90,6 +90,26 @@ describe('mapFeatures', () => {
     expect(wrapper.findAll('path')).toHaveLength(2)
   })
 
+  it('reports rendered features to script-side listeners', () => {
+    const wrapper = mount(MapBase, {
+      props: {
+        fit: sampleGeoJson,
+      },
+      slots: {
+        default: () => h(MapFeatures, {
+          data: sampleGeoJson,
+          'onUpdate:features': () => undefined,
+        }),
+      },
+    })
+
+    const mapFeatures = wrapper.getComponent(MapFeatures)
+    expect((mapFeatures as any).emitted('update:features')?.[0]?.[0]).toHaveLength(1)
+
+    const [feature] = (mapFeatures as any).emitted('update:features')?.[0]?.[0] as MapFeatureRendered[]
+    expect(feature.key).toBe('demo')
+  })
+
   it('forwards styles to default-rendered objects', async () => {
     const wrapper = mount(MapBase, {
       props: {

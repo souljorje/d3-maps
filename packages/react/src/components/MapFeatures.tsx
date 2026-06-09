@@ -14,7 +14,10 @@ import type {
 import {
   makeMapFeatures,
 } from '@d3-maps/core'
-import { useMemo } from 'react'
+import {
+  useEffect,
+  useMemo,
+} from 'react'
 
 import { useMapContext } from '../hooks/useMapContext'
 import { MapFeature } from './MapFeature'
@@ -31,6 +34,7 @@ export interface MapFeaturesProps<TExtra extends object = object>
   extends MapFeaturesElementProps,
   CoreMapFeaturesProps<TExtra, CSSProperties> {
   children?: MapFeaturesChildren<TExtra>
+  onFeaturesChange?: (features: MapFeatureRendered<TExtra>[]) => void
 }
 
 function isRenderProp<TExtra extends object>(
@@ -46,6 +50,7 @@ export function MapFeatures<TExtra extends object = object>({
   getKey,
   styles,
   children,
+  onFeaturesChange,
   ...groupProps
 }: MapFeaturesProps<TExtra>): ReactElement {
   const context = useMapContext()
@@ -62,6 +67,10 @@ export function MapFeatures<TExtra extends object = object>({
   const resolvedChildren = isRenderProp(children)
     ? children({ features })
     : children
+
+  useEffect(() => {
+    onFeaturesChange?.(features)
+  }, [features, onFeaturesChange])
 
   return (
     <g

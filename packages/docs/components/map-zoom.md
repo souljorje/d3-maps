@@ -41,15 +41,11 @@ Lifecycle events forward the native D3 zoom event.
 
 == Vue
 
-Emits:
-
 - `zoomStart(event: ZoomEvent)`
 - `zoom(event: ZoomEvent)`
 - `zoomEnd(event: ZoomEvent)`
 
 == React
-
-Callbacks:
 
 - `onZoomStart(event: ZoomEvent)`
 - `onZoom(event: ZoomEvent)`

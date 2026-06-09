@@ -52,6 +52,7 @@ export default function ProgrammaticZoomExample(): JSX.Element {
   const mapData = use(mapDataPromise)
   const [zoomLevel, setZoomLevel] = useState(initialZoom)
   const [activeCountryLabel, setActiveCountryLabel] = useState('World')
+  const [renderedFeatures, setRenderedFeatures] = useState<MapFeatureRendered[]>([])
   const mapRootRef = useRef<HTMLDivElement | null>(null)
   const zoomRef = useRef<MapZoomRef | null>(null)
   const zoom = useMapZoom(zoomRef)
@@ -77,12 +78,11 @@ export default function ProgrammaticZoomExample(): JSX.Element {
   }
 
   function zoomToRandomCountry(): void {
-    const featureElements = Array.from(
-      mapRootRef.current?.querySelectorAll<SVGPathElement>('[data-feature-key]') ?? [],
-    )
-    const featureElement = featureElements[Math.floor(Math.random() * featureElements.length)]
+    const feature = renderedFeatures[Math.floor(Math.random() * renderedFeatures.length)]
+    if (!feature) return
 
-    featureElement?.focus({ preventScroll: true })
+    zoomToFeature(feature)
+    focusFeatureByKey(feature.key)
   }
 
   function onZoom(event: ZoomEvent): void {
@@ -96,6 +96,14 @@ export default function ProgrammaticZoomExample(): JSX.Element {
     if (event.key !== 'Enter' && event.key !== ' ') return
     event.preventDefault()
     zoomToFeature(feature)
+  }
+
+  function focusFeatureByKey(featureKey: string | number): void {
+    const featureElement = Array.from(
+      mapRootRef.current?.querySelectorAll<SVGPathElement>('[data-feature-key]') ?? [],
+    ).find((element) => element.dataset.featureKey === String(featureKey))
+
+    featureElement?.focus({ preventScroll: true })
   }
 
   return (
@@ -121,6 +129,7 @@ export default function ProgrammaticZoomExample(): JSX.Element {
               <MapFeatures
                 data={mapData}
                 fill="var(--vp-c-neutral-inverse)"
+                onFeaturesChange={setRenderedFeatures}
               >
                 {({ features }) => features.map((feature) => (
                   <MapFeature
