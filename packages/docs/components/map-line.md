@@ -13,8 +13,8 @@ Renders a path between map locations
 | `coordinates` | `[number, number][]` | — | `[longitude, latitude][]` |
 | `cartesian?` | `boolean` | `false` | Treat `coordinates` as local SVG points and skip map projection |
 | `custom?` | `boolean` | `false` | Render using [d3-shape line](https://d3js.org/d3-shape/line) instead of default |
-| `curve?` | `CurveFactory \| CurveFactoryLineOnly` | `curveNatural` | Any [d3-shape curve](https://d3js.org/d3-shape/curve). Works only with `custom` or `cartesian` |
-| `midpoint?` | `[lengthwise: number, crosswise: number]` | — | Adds a point between each coordinate pair. Value sets position relative to the line center in % from its length. |
+| `curve?` | `CurveFactory` \| `CurveFactoryLineOnly` | `curveNatural` | Any [d3-shape curve](https://d3js.org/d3-shape/curve). Works only with `custom` or `cartesian` |
+| `midpoint?` | `[lengthwise: number,` `crosswise: number]` | — | Adds a point between each coordinate pair. Value sets position relative to the line center in % from its length. |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 You can also use native SVG attrs like `stroke`, `strokeWidth` right on the MapLine

@@ -16,7 +16,6 @@ import type { MapContext } from './map'
 import type {
   MaybeArray,
   MethodsToModifiers,
-  OverloadedArgs,
 } from './utils'
 
 import { select as d3Select } from 'd3-selection'
@@ -86,19 +85,23 @@ export type ZoomTransition = MaybeArray<ZoomTransitionStep>
  */
 export type ZoomTransitionParameter = false | ZoomTransition
 
-type ZoomCommandMethod =
-  | 'scaleBy'
-  | 'scaleTo'
+export type ZoomCommandCallback<T> = (
+  this: SVGSVGElement,
+  event: any,
+  d: unknown,
+) => T
+
+type NativeZoomMethodName =
   | 'transform'
   | 'translateBy'
   | 'translateTo'
-type Tail<Args extends readonly unknown[]> =
-  Args extends readonly [unknown, ...infer Rest] ? Rest : never
-type ZoomBehaviorCommandArgs<Method extends ZoomCommandMethod> =
-  Tail<OverloadedArgs<DefaultZoomBehavior[Method]>>
-type ZoomCommandArgs<Method extends ZoomCommandMethod> =
-  [...ZoomBehaviorCommandArgs<Method>, transition?: ZoomTransitionParameter]
-type ZoomScalePoint = ZoomBehaviorCommandArgs<'scaleBy'>[1]
+  | 'scaleBy'
+  | 'scaleTo'
+
+export type ZoomPoint = readonly [number, number]
+export type ZoomPointSource = null | ZoomPoint | ZoomCommandCallback<ZoomPoint>
+export type ZoomNumberSource = number | ZoomCommandCallback<number>
+export type ZoomTransformSource = ZoomTransform | ZoomCommandCallback<ZoomTransform>
 
 /**
  * GeoJSON object that can be fitted by zoom commands.
@@ -162,54 +165,62 @@ export const ZOOM_DEFAULTS = {
   maxZoom: 8,
 }
 
-type ZoomBehaviorMethod = (target: ZoomSelectionOrTransition, ...args: any[]) => void
-
-interface ZoomCallOptions {
-  element: ZoomTargetElement | null | undefined
-  transition?: ZoomTransitionParameter
-}
-
-/**
- * Options for fitting a feature with a programmatic zoom command.
- */
-export interface ZoomToFeatureOptions extends Pick<ZoomFitOptions, 'padding'> {
-  transition?: ZoomTransitionParameter
-}
-
-/**
- * Lazy inputs used to create programmatic zoom commands.
- */
-export interface CreateZoomCommandsOptions {
-  element: () => ZoomTargetElement | null | undefined
-  behavior: () => DefaultZoomBehavior
-  context: () => Pick<MapContext, 'path' | 'width' | 'height'>
-  minZoom: () => number
-  maxZoom: () => number
-  transition?: () => ZoomTransitionParameter | undefined
-}
-
-interface ZoomCommandState {
-  element: ZoomTargetElement | null | undefined
-  behavior: DefaultZoomBehavior
-  transition?: ZoomTransitionParameter
-}
-
-type NativeZoomCommands = {
-  [Method in ZoomCommandMethod]: (
-    ...args: ZoomCommandArgs<Method>
-  ) => void
-}
+type ZoomBehaviorMethod = (
+  target: ZoomSelectionOrTransition,
+  ...args: readonly unknown[]
+) => void
 
 /**
  * Programmatic zoom commands exposed by adapters and hooks.
  */
-export interface ZoomCommands extends NativeZoomCommands {
+export interface ZoomCommands {
+  /**
+   * Applies a native D3 [transform](https://d3js.org/d3-zoom#zoom_transform)
+   */
+  transform: (
+    transform: ZoomTransformSource,
+    point?: ZoomPointSource,
+    transition?: ZoomTransitionParameter,
+  ) => void
+  /**
+   * Translates by x and y using D3 [translateBy](https://d3js.org/d3-zoom#zoom_translateBy)
+   */
+  translateBy: (
+    x: ZoomNumberSource,
+    y: ZoomNumberSource,
+    transition?: ZoomTransitionParameter,
+  ) => void
+  /**
+   * Translates to x and y using D3 [translateTo](https://d3js.org/d3-zoom#zoom_translateTo)
+   */
+  translateTo: (
+    x: ZoomNumberSource,
+    y: ZoomNumberSource,
+    point?: ZoomPointSource,
+    transition?: ZoomTransitionParameter,
+  ) => void
+  /**
+   * Multiplies the current scale using D3 [scaleBy](https://d3js.org/d3-zoom#zoom_scaleBy)
+   */
+  scaleBy: (
+    scale: ZoomNumberSource,
+    point?: ZoomPointSource,
+    transition?: ZoomTransitionParameter,
+  ) => void
+  /**
+   * Applies an absolute scale using D3 [scaleTo](https://d3js.org/d3-zoom#zoom_scaleTo)
+   */
+  scaleTo: (
+    scale: ZoomNumberSource,
+    point?: ZoomPointSource,
+    transition?: ZoomTransitionParameter,
+  ) => void
   /**
    * Adds a delta to the current zoom scale, clamped to zoom limits.
    */
   scaleWith: (
     delta: number,
-    point?: ZoomScalePoint,
+    point?: ZoomPointSource,
     transition?: ZoomTransitionParameter,
   ) => void
   /**
@@ -217,7 +228,10 @@ export interface ZoomCommands extends NativeZoomCommands {
    */
   zoomToFeature: (
     feature: ZoomObject,
-    options?: ZoomToFeatureOptions,
+    options?: {
+      padding?: ZoomFitOptions['padding']
+      transition?: ZoomTransitionParameter
+    },
   ) => boolean
   /**
    * Resets zoom to the identity transform.
@@ -361,23 +375,33 @@ export function getFeatureZoomTransform(
 /**
  * Creates framework-agnostic programmatic zoom commands.
  */
-export function createZoomCommands(options: CreateZoomCommandsOptions): ZoomCommands {
-  const getCommandState = (transition?: ZoomTransitionParameter): ZoomCommandState => ({
+export function createZoomCommands(options: {
+  element: () => ZoomTargetElement | null | undefined
+  behavior: () => DefaultZoomBehavior
+  context: () => Pick<MapContext, 'path' | 'width' | 'height'>
+  minZoom: () => number
+  maxZoom: () => number
+  transition?: () => ZoomTransitionParameter | undefined
+}): ZoomCommands {
+  const getCommandState = (transition?: ZoomTransitionParameter): {
+    element: ZoomTargetElement | null | undefined
+    behavior: DefaultZoomBehavior
+    transition?: ZoomTransitionParameter
+  } => ({
     element: options.element(),
     behavior: options.behavior(),
     transition: transition ?? options.transition?.(),
   })
   const callCommand = (
-    methodName: ZoomCommandMethod,
+    methodName: NativeZoomMethodName,
     args: readonly unknown[],
     transition?: ZoomTransitionParameter,
   ): void => {
-    const command = getCommandState(transition)
-
-    return callZoomMethod(
-      command.element,
-      command.transition,
-      command.behavior[methodName] as ZoomBehaviorMethod,
+    const state = getCommandState(transition)
+    callZoomMethod(
+      state.element,
+      state.transition,
+      state.behavior[methodName] as ZoomBehaviorMethod,
       args,
     )
   }
@@ -432,11 +456,14 @@ export function createZoomCommands(options: CreateZoomCommandsOptions): ZoomComm
       feature,
       commandOptions = {},
     ) => {
-      const transform = getFeatureZoomTransform(options.context(), feature, {
-        minZoom: options.minZoom(),
-        maxZoom: options.maxZoom(),
-        padding: commandOptions.padding,
-      })
+      const transform = getFeatureZoomTransform(
+        options.context(),
+        feature,
+        {
+          minZoom: options.minZoom(),
+          maxZoom: options.maxZoom(),
+          padding: commandOptions.padding,
+        })
 
       if (!transform) return false
 
@@ -485,8 +512,8 @@ function isZoomTransform(value: unknown): value is ZoomTransform {
 }
 
 function callZoomMethod(
-  element: ZoomCallOptions['element'],
-  transition: ZoomCallOptions['transition'],
+  element: ZoomTargetElement | null | undefined,
+  transition: ZoomTransitionParameter | undefined,
   method: ZoomBehaviorMethod,
   args: readonly unknown[],
 ): void {

@@ -1,4 +1,4 @@
-import type { MapFeatureData } from '@d3-maps/react'
+import type { MapData, MapFeatureData } from '@d3-maps/react'
 
 import {
   MapBase,
@@ -7,7 +7,7 @@ import {
 } from '@d3-maps/react'
 import { extent } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
-import { use, useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { withBase } from 'vitepress'
 
 interface CountryStat {
@@ -16,8 +16,18 @@ interface CountryStat {
 }
 
 export default function ChoroplethMapExample(): JSX.Element {
-  const mapData = use(import('world-atlas/countries-110m.json').then((m) => m.default))
-  const rawData = use(fetch(withBase('/example-data/choropleth-data.json')).then((r) => r.json()))
+  const [mapData, setMapData] = useState<MapData | null>(null)
+  const [rawData, setRawData] = useState<Record<string, unknown>[]>([])
+
+  useEffect(() => {
+    void Promise.all([
+      fetch(withBase('/example-data/countries-110m.json')).then((r) => r.json()),
+      fetch(withBase('/example-data/choropleth-data.json')).then((r) => r.json()),
+    ]).then(([worldData, choroplethRawData]: [MapData, Record<string, unknown>[]]) => {
+      setMapData(worldData)
+      setRawData(choroplethRawData)
+    })
+  }, [])
 
   const data: CountryStat[] = useMemo(() => {
     return (rawData as Record<string, unknown>[]).map((item: Record<string, unknown>) => {
@@ -63,6 +73,10 @@ export default function ChoroplethMapExample(): JSX.Element {
     data,
     colorScale,
   ])
+
+  if (!mapData || rawData.length === 0) {
+    return <></>
+  }
 
   return (
     <MapBase

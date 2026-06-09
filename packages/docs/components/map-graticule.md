@@ -19,7 +19,7 @@ The outline is drawn as two paths: fill under lines and border over lines
 
 Use native SVG presentation attrs like `stroke` directly on `MapGraticule` lines.
 
-### Config
+### config
 
 Use `config` to call graticule generator methods before rendering
 

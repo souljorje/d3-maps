@@ -1,5 +1,6 @@
 <template>
   <MapBase
+    v-if="data"
     :projection="projection"
     :data="data"
   >
@@ -35,7 +36,7 @@ import { extent } from 'd3-array'
 import { geoAlbersUsa } from 'd3-geo'
 import { scaleLinear } from 'd3-scale'
 import { withBase } from 'vitepress'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 interface City {
   city: string
@@ -46,12 +47,18 @@ interface City {
 
 const projection = geoAlbersUsa
 const markerScale = ref(1)
+const data = ref<MapData | null>(null)
+const cities = ref<City[]>([])
 
-const [data, citiesRaw] = await Promise.all([
-  fetch(withBase('/example-data/states-10m.json')).then((r) => r.json()),
-  fetch(withBase('/example-data/us-cities.json')).then((r) => r.json()),
-]) as [MapData, City[]]
-const cities = ref<City[]>(citiesRaw)
+onMounted(async () => {
+  const [mapData, citiesRaw] = await Promise.all([
+    fetch(withBase('/example-data/states-10m.json')).then((r) => r.json()),
+    fetch(withBase('/example-data/us-cities.json')).then((r) => r.json()),
+  ]) as [MapData, City[]]
+
+  data.value = mapData
+  cities.value = citiesRaw
+})
 
 const minAndMaxValues = computed(() => extent(cities.value, (item) => Number(item.population)))
 const scale = computed(() => {

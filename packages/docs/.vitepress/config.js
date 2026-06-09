@@ -214,7 +214,6 @@ const docsSidebar = [
       { text: 'useMapZoom', link: '/helpers/use-map-zoom' },
       { text: 'useMapObject', link: '/helpers/use-map-object' },
       { text: 'getFeatureKey', link: '/helpers/get-feature-key' },
-      { text: 'getObjectZoomView', link: '/helpers/get-object-zoom-view' },
     ],
   },
   {

@@ -1,4 +1,4 @@
-import type { ZoomEvent } from '@d3-maps/react'
+import type { MapData, ZoomEvent } from '@d3-maps/react'
 
 import {
   getInverseZoomScale,
@@ -11,7 +11,7 @@ import {
 import { extent } from 'd3-array'
 import { geoAlbersUsa } from 'd3-geo'
 import { scaleLinear } from 'd3-scale'
-import { use, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { withBase } from 'vitepress'
 
 interface City {
@@ -22,9 +22,19 @@ interface City {
 }
 
 export default function BubbleMapExample(): JSX.Element {
-  const mapData = use(fetch(withBase('/example-data/states-10m.json')).then((r) => r.json()))
-  const cities: City[] = use(fetch(withBase('/example-data/us-cities.json')).then((r) => r.json()))
+  const [mapData, setMapData] = useState<MapData | null>(null)
+  const [cities, setCities] = useState<City[]>([])
   const [markerScale, setMarkerScale] = useState(1)
+
+  useEffect(() => {
+    void Promise.all([
+      fetch(withBase('/example-data/states-10m.json')).then((r) => r.json()),
+      fetch(withBase('/example-data/us-cities.json')).then((r) => r.json()),
+    ]).then(([mapJson, citiesJson]: [MapData, City[]]) => {
+      setMapData(mapJson)
+      setCities(citiesJson)
+    })
+  }, [])
 
   const minAndMaxValues = useMemo(() => {
     return extent(cities, (item) => Number(item.population))
@@ -46,6 +56,10 @@ export default function BubbleMapExample(): JSX.Element {
 
   function updateMarkerScale(event: ZoomEvent): void {
     setMarkerScale(getInverseZoomScale(event))
+  }
+
+  if (!mapData) {
+    return <></>
   }
 
   return (

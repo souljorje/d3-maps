@@ -15,8 +15,8 @@ Use when you need a callout, label, or badge offset from the original location
 | `length?` | `number` | `30` | Connector length in screen pixels |
 | `angle?` | `number` | `-90` | Connector angle in degrees |
 | `margin?` | `number` | `0` | Gap between the anchor point and the connector start |
-| `curve?` | `CurveFactory \| CurveFactoryLineOnly` | `curveNatural` | See [`MapLine.curve`](/components/map-line#props) |
-| `midpoint?` | `[lengthwise: number, crosswise: number]` | — | See [`MapLine.midpoint`](/components/map-line#props) |
+| `curve?` | `CurveFactory` \| `CurveFactoryLineOnly` | `curveNatural` | Any [d3-shape curve](https://d3js.org/d3-shape/curve). Works only with `custom` or `cartesian` |
+| `midpoint?` | `[lengthwise: number,` `crosswise: number]` | — | Adds a point between each coordinate pair. Value sets position relative to the line center in % from its length. |
 | `styles?` | [MapObject['styles']](/api/core/mapObject#property-styles) | — | See [styling guide](/guide/core-concepts/#styling) |
 
 `styles` and native attributes are bound to the connector `<path>`.  

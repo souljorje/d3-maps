@@ -1,6 +1,6 @@
 <template>
   <div class="my-4">
-    <div class="flex flex-col aspect-2/1">
+    <div class="flex justify-center items-center flex-col aspect-2/1">
       <Suspense>
         <component
           :is="componentName"
