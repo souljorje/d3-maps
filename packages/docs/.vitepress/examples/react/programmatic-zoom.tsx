@@ -141,7 +141,7 @@ export default function ProgrammaticZoomExample(): JSX.Element {
                     tabIndex={0}
                     style={featureButtonStyle}
                     styles={featureInteractionStyles}
-                    onFocus={() => zoomToFeature(feature)}
+                    onClick={() => zoomToFeature(feature)}
                     onKeyDown={(event) => onFeatureKeyDown(feature, event)}
                   />
                 ))}
