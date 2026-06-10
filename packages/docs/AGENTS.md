@@ -58,7 +58,7 @@
 ## Skills
 | Skill | When to use |
 |-------|-------------|
-| [vitepress](../../.agents/skills/vitepress/SKILL.md) | Changing VitePress config, theme behavior, markdown features, or docs site navigation/content structure. |
+| `vitepress` | Changing VitePress config, theme behavior, markdown features, or docs site navigation/content structure. |
 
 ## Related
 - [Root Guide](../../AGENTS.md)

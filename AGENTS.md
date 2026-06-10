@@ -46,8 +46,9 @@ Toolkit for interactive SVG maps with framework-agnostic core, React and Vue ada
 ## Skills
 | Skill | When to use |
 |-------|-------------|
-| [vitest](.agents/skills/vitest/SKILL.md) | Writing or updating test suites, mocking setup, or coverage/test config. |
-| [changesets](.agents/skills/changesets/SKILL.md) | Creating or updating `.changeset/*.md` entries for package changes (everything under `packages/*` except `packages/docs`). |
+| `diataxis` | Writing user-facing docs |
+| `vitest` | Writing or updating test suites, mocking setup, or coverage/test config. |
+| `changesets` | Creating or updating `.changeset/*.md` entries for package changes (everything under `packages/*` except `packages/docs`). |
 
 ## Related
 
