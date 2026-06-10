@@ -1,4 +1,4 @@
-# Adapter Development Flow
+# Adapter Development
 
 Shared workflow for Vue, React, and future adapters (Solid, Svelte)
 

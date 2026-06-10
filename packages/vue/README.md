@@ -88,4 +88,4 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 ## License
 
-MIT licensed. Copyright © 2026 Georgii Bukharov. See [LICENCE](../../LICENCE) for more details.
+MIT licensed. Copyright © 2026 Georgii Bukharov. See [LICENCE](./LICENCE) for more details.
