@@ -25,7 +25,7 @@
 | --- | --- |
 | Generated docs ownership | Treat wrapper markdown files in packages/docs/examples as generated output managed by docs generation commands. |
 
-## References
+## Related
 - [Docs Guide](../AGENTS.md)
 - [Root Guide](../../../AGENTS.md)
 - [Architecture](../../../.agents/references/architecture.md)

@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.12.1",
   "private": false,
-  "description": "Interactive SVG maps for React, powered by D3",
+  "description": "Interactive SVG maps toolkit for React, powered by D3",
   "author": "Georgii Bukharov <souljorje@gmail.com>",
   "license": "MIT",
   "publishConfig": {

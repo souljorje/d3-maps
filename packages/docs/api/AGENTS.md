@@ -26,7 +26,7 @@
 | Generated docs ownership | Treat API markdown in packages/docs/api/core as generated output managed by docs generation commands. |
 | Git tracking | Do not commit generated API markdown under packages/docs/api/core. |
 
-## References
+## Related
 - [Docs Guide](../AGENTS.md)
 - [Root Guide](../../../AGENTS.md)
 - [Architecture](../../../.agents/references/architecture.md)

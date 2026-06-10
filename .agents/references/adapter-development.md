@@ -1,4 +1,4 @@
-# Adapter Development Flow
+# Adapter Development
 
 Shared workflow for Vue, React, and future adapters (Solid, Svelte)
 
@@ -61,7 +61,7 @@ Shared workflow for Vue, React, and future adapters (Solid, Svelte)
 - Follow the canonical pipeline in [Docs Generation Workflow](docs-generation.md)
 
 ## Release Hygiene
-- For publishable package changes, add a changeset and follow the [changesets skill](../skills/changesets/SKILL.md)
+- For publishable package changes, add a changeset using `changesets` skill
 
 ## Validation Commands
 - `pnpm --filter @d3-maps/<adapter> typecheck`
