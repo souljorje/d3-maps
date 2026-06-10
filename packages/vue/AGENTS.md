@@ -28,7 +28,7 @@
 ## Guardrails
 | Rule | Requirement |
 | --- | --- |
-| Required workflow | Must follow [Adapter Development Flow](../../.agents/references/adapter-development-flow.md) for any change in this package. Do not bypass steps. |
+| Required workflow | Must follow [Adapter Development Flow](../../.agents/references/adapter-development.md) for any change in this package. Do not bypass steps. |
 | SFC style | Use `<script setup lang="ts">` and Composition API. |
 | Emits | Keep Vue emits camelCase (`zoomStart`, `zoom`, `zoomEnd`) and align listener names with the public component API. |
 | Vue patterns | Follow the [vue-best-practices](../../.agents/skills/vue-best-practices/SKILL.md) skill for Composition API, typing, and reactivity decisions. |
@@ -41,11 +41,14 @@
 | [vue-best-practices](../../.agents/skills/vue-best-practices/SKILL.md) | Any Vue component/composable work in this package, including TypeScript and Composition API decisions. |
 | [vue-testing-best-practices](../../.agents/skills/vue-testing-best-practices/SKILL.md) | Writing or updating Vue adapter tests, mounting components, testing composables, or making Vue-specific test environment decisions. |
 
-## References
+## Related
+
 - [Root Guide](../../AGENTS.md)
 - [Core Guide](../core/AGENTS.md)
-- [Agent Meta-Flow](../../.agents/references/agent-meta-flow.md)
-- [Adapter Development Flow](../../.agents/references/adapter-development-flow.md)
-- [Architecture](../../.agents/references/architecture.md)
-- [Tsdown Build Strategy](../../.agents/references/tsdown-build-strategy.md)
-- [Code Style](../../.agents/references/code-style.md)
+
+| Reference | When to read |
+|---|---|
+| [Architecture](.agents/references/architecture.md) | Understand project boundaries and mandatory principles |
+| [Adapter Development](.agents/references/adapter-development.md) | Read for implementation touching React, Vue, or other adapter behavior |
+| [Build Policy](.agents/references/build.md) | Read when working with tsdown, Turbo, package exports, DTS, CSS or other build changes. |
+| [Code Style](.agents/references/code-style.md) | Read for TypeScript, markdown and other shared conventions. |

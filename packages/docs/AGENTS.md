@@ -60,7 +60,7 @@
 |-------|-------------|
 | [vitepress](../../.agents/skills/vitepress/SKILL.md) | Changing VitePress config, theme behavior, markdown features, or docs site navigation/content structure. |
 
-## References
+## Related
 - [Root Guide](../../AGENTS.md)
 - [Architecture](../../.agents/references/architecture.md)
 - [Docs Generation Workflow](../../.agents/references/docs-generation.md)

@@ -39,8 +39,12 @@
 | Map context inputs | If helper depends on map context values, accept the context object. |
 | Build ownership | Keep D3 and TopoJSON runtime plus published type dependencies owned here, not mirrored into adapters. |
 
-## References
+## Related
+
 - [Root Guide](../../AGENTS.md)
-- [Architecture](../../.agents/references/architecture.md)
-- [Tsdown Build Strategy](../../.agents/references/tsdown-build-strategy.md)
-- [Code Style](../../.agents/references/code-style.md)
+
+| Reference | When to read |
+|---|---|
+| [Architecture](.agents/references/architecture.md) | Understand project boundaries and mandatory principles |
+| [Build Policy](.agents/references/build.md) | Read when working with tsdown, Turbo, package exports, DTS, CSS or other build changes. |
+| [Code Style](.agents/references/code-style.md) | Read for TypeScript, markdown and other shared conventions. |
