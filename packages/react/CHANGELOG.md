@@ -1,5 +1,12 @@
 # @d3-maps/react
 
+## 0.12.1
+
+### Patch Changes
+
+- [#52](https://github.com/souljorje/d3-maps/pull/52) [`421e657`](https://github.com/souljorje/d3-maps/commit/421e657cb5e588996668b7cca90b7494c1dae74f) Thanks [@souljorje](https://github.com/souljorje)! - - Migrate from `useContext` to React 19 `use()` API in `useMapContext` and `useInteraction`
+  - Replace `useEffect` with synchronous callback in `MapFeatures` to avoid extra render
+
 ## 0.12.0
 
 ### Minor Changes
