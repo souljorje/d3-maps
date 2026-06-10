@@ -1,4 +1,4 @@
-# @d3-maps/react [![@d3-maps/react bundle size](https://deno.bundlejs.com/badge?q=@d3-maps/react@0.7.0&config={%22esbuild%22:{%22external%22:[%22react%22,%22react-dom%22]}})](https://deno.bundlejs.com/badge?q=@d3-maps/react@0.7.0&config={%22esbuild%22:{%22external%22:[%22react%22,%22react-dom%22]}})
+# @d3-maps/react <img src="https://raw.githubusercontent.com/souljorje/d3-maps/refs/heads/main/packages/docs/public/d3-maps-logo.svg" alt ="d3-maps logo" width="20" height="20"> [![CI](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml/badge.svg)](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml) [![Netlify Status](https://api.netlify.com/api/v1/badges/619b15fb-c666-48ed-9715-894474c88e35/deploy-status)](https://d3-maps.netlify.app) [![@d3-maps/react bundle size](https://img.shields.io/bundlephobia/minzip/@d3-maps/react?color=%2358c4dc)](https://bundlephobia.com/package/@d3-maps/react)
 
 Interactive SVG maps for React, powered D3.  
 
