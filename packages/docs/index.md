@@ -5,7 +5,7 @@ description: Choropleths, markers, lines, zoom and more. Powered by D3. GeoJSON 
 hero:
   name: d3-maps
   text: Interactive SVG maps <br>for <span class="react">React</span> & <span class="vue">Vue</span>
-  tagline: Geographic dataviz for modern apps
+  tagline: Geographic dataviz toolkit for modern apps
   image:
     src: /d3-maps-logo.svg
     alt: d3-maps logo

@@ -237,7 +237,7 @@ export interface ZoomCommands {
   reset: (transition?: ZoomTransitionParameter) => void
 }
 
-type ZoomCommandTarget = Pick<ZoomCommands, keyof ZoomCommands> | null | undefined
+export type ZoomCommandTarget = Pick<ZoomCommands, keyof ZoomCommands> | null | undefined
 
 /**
  * Creates a stable command proxy over an adapter-specific zoom target getter.

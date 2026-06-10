@@ -1,6 +1,6 @@
 # @d3-maps/vue <img src="https://raw.githubusercontent.com/souljorje/d3-maps/refs/heads/main/packages/docs/public/d3-maps-logo.svg" alt ="d3-maps logo" width="20" height="20"> [![CI](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml/badge.svg)](https://github.com/souljorje/d3-maps/actions/workflows/ci.yml) [![Netlify Status](https://api.netlify.com/api/v1/badges/619b15fb-c666-48ed-9715-894474c88e35/deploy-status)](https://d3-maps.netlify.app) [![@d3-maps/vue bundle size](https://img.shields.io/bundlephobia/minzip/%40d3-maps%2Fvue?color=%2342b883)](https://bundlephobia.com/package/@d3-maps/vue)
 
-Interactive SVG maps for Vue, powered by D3.  
+Interactive SVG maps toolkit for Vue, powered by D3.  
 
 [**Docs**](https://d3-maps.netlify.app/guide) · [**Examples**](https://d3-maps.netlify.app/examples)
 

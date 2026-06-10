@@ -38,7 +38,10 @@ feat(core): add auto-fit helper for responsive maps
 - Keeps existing behavior; opt-in helper only.
 ```
 
-## Pull Request Checks
+## Pull Request
+
+Pull Request title must be must be a commit message according to this guide.
+
 | Check | Command |
 | --- | --- |
 | Tests | `pnpm test` |

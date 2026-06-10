@@ -1,6 +1,6 @@
 # D3-maps
 
-Toolkit for interactive SVG maps with framework-agnostic core, React and Vue adapters, and VitePress docs.
+Interactive SVG maps toolkit with framework-agnostic core, React and Vue adapters, and VitePress docs.
 
 ## Global rules
 
