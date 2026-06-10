@@ -2,15 +2,12 @@
 
 import type { MapContext } from '@d3-maps/core'
 
-import {
-  createContext,
-  useContext,
-} from 'react'
+import { createContext, use } from 'react'
 
 export const MapContextValue = createContext<MapContext | undefined>(undefined)
 
 export function useMapContext(): MapContext {
-  const context = useContext(MapContextValue)
+  const context = use(MapContextValue)
 
   if (!context) {
     throw new Error('useMapContext must be used inside MapBase')

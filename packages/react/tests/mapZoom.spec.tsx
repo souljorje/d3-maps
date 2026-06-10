@@ -28,7 +28,7 @@ import {
   screen,
 } from '@testing-library/react'
 import {
-  useContext,
+  use,
   useRef,
 } from 'react'
 
@@ -77,7 +77,7 @@ describe('mapZoom', () => {
     let captured: unknown
 
     function Probe() {
-      captured = useContext(MapZoomContextValue)
+      captured = use(MapZoomContextValue)
       return null
     }
 
@@ -94,7 +94,7 @@ describe('mapZoom', () => {
     let captured: unknown
 
     function Probe() {
-      captured = useContext(MapZoomContextValue)
+      captured = use(MapZoomContextValue)
       return null
     }
 

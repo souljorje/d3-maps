@@ -15,8 +15,8 @@ import {
   makeMapFeatures,
 } from '@d3-maps/core'
 import {
-  useEffect,
   useMemo,
+  useRef,
 } from 'react'
 
 import { useMapContext } from '../hooks/useMapContext'
@@ -68,9 +68,12 @@ export function MapFeatures<TExtra extends object = object>({
     ? children({ features })
     : children
 
-  useEffect(() => {
+  // Notify parent synchronously when features change — avoids extra render from useEffect
+  const notifiedFeaturesRef = useRef<MapFeatureRendered<TExtra>[] | undefined>(undefined)
+  if (features !== notifiedFeaturesRef.current) {
+    notifiedFeaturesRef.current = features
     onFeaturesChange?.(features)
-  }, [features, onFeaturesChange])
+  }
 
   return (
     <g
