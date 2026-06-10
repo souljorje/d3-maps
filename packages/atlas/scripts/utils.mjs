@@ -56,6 +56,7 @@ export const WORLD_LAYERS = [
     topologyFields: TOPOLOGY_FIELD_NAMES,
     propertyMode: TOPOLOGY_PROPERTY_MODE.NORMALIZE,
     propertyMap: TOPOLOGY_PROPERTY_MAP,
+    typeName: 'AtlasWorldCountriesTopology',
   },
   {
     id: 'land',
@@ -64,6 +65,7 @@ export const WORLD_LAYERS = [
     theme: 'physical',
     topologyFields: [],
     propertyMode: TOPOLOGY_PROPERTY_MODE.PRESERVE,
+    typeName: 'Topology',
   },
   {
     id: 'ocean',
@@ -72,6 +74,7 @@ export const WORLD_LAYERS = [
     theme: 'physical',
     topologyFields: [],
     propertyMode: TOPOLOGY_PROPERTY_MODE.PRESERVE,
+    typeName: 'Topology',
   },
   {
     id: 'coastline',
@@ -80,6 +83,7 @@ export const WORLD_LAYERS = [
     theme: 'physical',
     topologyFields: [],
     propertyMode: TOPOLOGY_PROPERTY_MODE.PRESERVE,
+    typeName: 'Topology',
   },
   {
     id: 'lakes',
@@ -88,6 +92,7 @@ export const WORLD_LAYERS = [
     theme: 'physical',
     topologyFields: [],
     propertyMode: TOPOLOGY_PROPERTY_MODE.PRESERVE,
+    typeName: 'Topology',
   },
   {
     id: 'rivers',
@@ -96,6 +101,7 @@ export const WORLD_LAYERS = [
     theme: 'physical',
     topologyFields: [],
     propertyMode: TOPOLOGY_PROPERTY_MODE.PRESERVE,
+    typeName: 'Topology',
   },
 ]
 

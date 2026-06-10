@@ -162,7 +162,7 @@ function createAtlasSharedDescriptors(rootDir, { countries, continents }) {
         group: 'world',
         slug: layer.id,
         scales: SCALES,
-        typeName: 'Topology',
+        typeName: layer.typeName,
       }),
       createEntityBarrelDescriptor({
         rootDir,
