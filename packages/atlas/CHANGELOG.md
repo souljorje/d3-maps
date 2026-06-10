@@ -1,5 +1,12 @@
 # @d3-maps/atlas
 
+## 1.0.1
+
+### Patch Changes
+
+- [#50](https://github.com/souljorje/d3-maps/pull/50) [`f1f4960`](https://github.com/souljorje/d3-maps/commit/f1f49600b7ac0058edd1c6f3185cb467a9b8b1af) Thanks [@souljorje](https://github.com/souljorje)! - - Add typed `AtlasWorldCountriesTopology` export for world countries topology
+  - Add explicit `typeName` to world layer descriptors for accurate generated types
+
 ## 1.0.0
 
 ### Major Changes
