@@ -1,5 +1,11 @@
 # @d3-maps/core
 
+## 1.0.0
+
+### Major Changes
+
+- [#54](https://github.com/souljorje/d3-maps/pull/54) [`c22c73b`](https://github.com/souljorje/d3-maps/commit/c22c73bed0bc42b09d1f64e768ed2ff13eb82ab4) Thanks [@souljorje](https://github.com/souljorje)! - - First stable release: `1.0.0` 🍻
+
 ## 0.16.0
 
 ### Minor Changes
