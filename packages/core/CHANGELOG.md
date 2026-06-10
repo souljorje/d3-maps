@@ -1,5 +1,12 @@
 # @d3-maps/core
 
+## 0.16.0
+
+### Minor Changes
+
+- [#48](https://github.com/souljorje/d3-maps/pull/48) [`0a73c16`](https://github.com/souljorje/d3-maps/commit/0a73c16139be60d4d4d07dcce02b7347e852e8f7) Thanks [@souljorje](https://github.com/souljorje)! - - Reordered zoom command parameters so `transition` comes before `point`.
+  - Changed `zoomToFeature` to accept `padding` and `transition` as positional arguments.
+
 ## 0.15.0
 
 ### Minor Changes

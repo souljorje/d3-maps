@@ -134,7 +134,7 @@ describe('mapZoom', () => {
     } = await mountZoom()
     const transform = zoomIdentity.translate(10, 20).scale(3)
 
-    zoom.transform(transform, undefined, false)
+    zoom.transform(transform, false)
 
     expect(wrapper.get('[data-testid="map-zoom-group"]').attributes('transform')).toBe(transform.toString())
   })
@@ -145,10 +145,10 @@ describe('mapZoom', () => {
       zoom,
     } = await mountZoom()
 
-    zoom.scaleWith(0.5, undefined, false)
+    zoom.scaleWith(0.5, false)
     expectScale(wrapper.get('[data-testid="map-zoom-group"]').element, 1.5)
 
-    zoom.scaleTo(3, undefined, false)
+    zoom.scaleTo(3, false)
     expectScale(wrapper.get('[data-testid="map-zoom-group"]').element, 3)
   })
 
@@ -173,7 +173,32 @@ describe('mapZoom', () => {
     await nextTick()
 
     const transform = zoomIdentity.scale(2.5)
-    commands?.transform(transform, undefined, false)
+    commands?.transform(transform, false)
+
+    expect(wrapper.get('[data-testid="map-zoom-group"]').attributes('transform')).toBe(transform.toString())
+  })
+
+  it('creates zoom commands with a string key via useMapZoom', async () => {
+    let commands: ZoomCommands | undefined
+
+    const wrapper = mount(defineComponent({
+      setup() {
+        commands = useMapZoom('zoom')
+
+        return () => h(MapBase, {
+          fit: sampleGeoJson,
+        }, {
+          default: () => h(MapZoom, {
+            ref: 'zoom',
+            'data-testid': 'map-zoom-group',
+          }),
+        })
+      },
+    }))
+    await nextTick()
+
+    const transform = zoomIdentity.scale(2.5)
+    commands?.transform(transform, false)
 
     expect(wrapper.get('[data-testid="map-zoom-group"]').attributes('transform')).toBe(transform.toString())
   })
@@ -192,10 +217,7 @@ describe('mapZoom', () => {
     })
 
     expect(expectedTransform).toBeDefined()
-    expect(zoom.zoomToFeature(feature, {
-      padding: 12,
-      transition: false,
-    })).toBe(true)
+    expect(zoom.zoomToFeature(feature, 12, false)).toBe(true)
     expect(wrapper.get('[data-testid="map-zoom-group"]').attributes('transform')).toBe(expectedTransform?.toString())
   })
 
@@ -215,7 +237,7 @@ describe('mapZoom', () => {
       zoom,
     } = await mountZoom()
 
-    zoom.transform(zoomIdentity.translate(10, 20).scale(3), undefined, false)
+    zoom.transform(zoomIdentity.translate(10, 20).scale(3), false)
     zoom.reset(false)
 
     expect(wrapper.get('[data-testid="map-zoom-group"]').attributes('transform')).toBe(zoomIdentity.toString())

@@ -9,7 +9,7 @@ import './custom.css'
 // eslint-disable-next-line perfectionist/sort-imports
 import DefaultTheme from 'vitepress/theme'
 
-const demoModules = import.meta.glob('../examples/*.vue', {
+const exampleModules = import.meta.glob('../examples/*.vue', {
   eager: true,
   import: 'default',
 })
@@ -18,8 +18,8 @@ function toPascalCase(value) {
   return value.replace(/(^\w|[-_]\w)/g, (match) => match.replace(/[-_]/, '').toUpperCase())
 }
 
-function registerDemoComponents(app) {
-  for (const [filePath, component] of Object.entries(demoModules)) {
+function registerExampleComponents(app) {
+  for (const [filePath, component] of Object.entries(exampleModules)) {
     const match = /\/([^/]+)\.vue$/.exec(filePath)
     if (!match) continue
 
@@ -35,7 +35,7 @@ export default {
     DefaultTheme.enhanceApp({ app })
     enhanceAppWithTabs(app)
     app.use(D3Maps)
-    registerDemoComponents(app)
+    registerExampleComponents(app)
     app.component('CoreConceptsCombined', CoreConceptsCombined)
     app.component('Demo', Demo)
     app.component('ExamplesList', ExamplesList)

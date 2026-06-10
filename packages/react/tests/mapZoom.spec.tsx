@@ -150,7 +150,7 @@ describe('mapZoom', () => {
     } = renderZoom()
     const transform = zoomIdentity.translate(10, 20).scale(3)
 
-    zoomRef.current?.transform(transform, undefined, false)
+    zoomRef.current?.transform(transform, false)
 
     expect(zoomGroup.getAttribute('transform')).toBe(transform.toString())
   })
@@ -161,10 +161,10 @@ describe('mapZoom', () => {
       zoomGroup,
     } = renderZoom()
 
-    zoomRef.current?.scaleWith(0.5, undefined, false)
+    zoomRef.current?.scaleWith(0.5, false)
     expectScale(zoomGroup, 1.5)
 
-    zoomRef.current?.scaleTo(3, undefined, false)
+    zoomRef.current?.scaleTo(3, false)
     expectScale(zoomGroup, 3)
   })
 
@@ -190,7 +190,7 @@ describe('mapZoom', () => {
     )
 
     const transform = zoomIdentity.scale(2.5)
-    zoom?.transform(transform, undefined, false)
+    zoom?.transform(transform, false)
 
     expect(screen.getByTestId('map-zoom-group').getAttribute('transform')).toBe(transform.toString())
   })
@@ -209,10 +209,7 @@ describe('mapZoom', () => {
     })
 
     expect(expectedTransform).toBeDefined()
-    expect(zoomRef.current?.zoomToFeature(feature, {
-      padding: 12,
-      transition: false,
-    })).toBe(true)
+    expect(zoomRef.current?.zoomToFeature(feature, 12, false)).toBe(true)
     expect(zoomGroup.getAttribute('transform')).toBe(expectedTransform?.toString())
   })
 
@@ -232,7 +229,7 @@ describe('mapZoom', () => {
       zoomGroup,
     } = renderZoom()
 
-    zoomRef.current?.transform(zoomIdentity.translate(10, 20).scale(3), undefined, false)
+    zoomRef.current?.transform(zoomIdentity.translate(10, 20).scale(3), false)
     zoomRef.current?.reset(false)
 
     expect(zoomGroup.getAttribute('transform')).toBe(zoomIdentity.toString())
