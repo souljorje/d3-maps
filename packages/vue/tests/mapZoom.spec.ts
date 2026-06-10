@@ -178,6 +178,31 @@ describe('mapZoom', () => {
     expect(wrapper.get('[data-testid="map-zoom-group"]').attributes('transform')).toBe(transform.toString())
   })
 
+  it('creates zoom commands with a string key via useMapZoom', async () => {
+    let commands: ZoomCommands | undefined
+
+    const wrapper = mount(defineComponent({
+      setup() {
+        commands = useMapZoom('zoom')
+
+        return () => h(MapBase, {
+          fit: sampleGeoJson,
+        }, {
+          default: () => h(MapZoom, {
+            ref: 'zoom',
+            'data-testid': 'map-zoom-group',
+          }),
+        })
+      },
+    }))
+    await nextTick()
+
+    const transform = zoomIdentity.scale(2.5)
+    commands?.transform(transform, undefined, false)
+
+    expect(wrapper.get('[data-testid="map-zoom-group"]').attributes('transform')).toBe(transform.toString())
+  })
+
   it('exposes zoomToFeature and resolves the feature transform through core', async () => {
     const {
       context,

@@ -38,7 +38,7 @@ See [ZoomTransitionStep API](/api/core/zoom#zoomtransitionstep) and [d3-transiti
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `ref` | `Ref<MapZoomRef \| null>` | — | `MapZoom` instance ref |
+| `ref` | `string \| Ref<MapZoomRef \| null>` | — | `MapZoom` template ref key or instance ref |
 
 == React
 
@@ -56,13 +56,10 @@ See [ZoomTransitionStep API](/api/core/zoom#zoomtransitionstep) and [d3-transiti
 
 ```vue
 <script setup lang="ts">
-import type { MapZoomRef } from '@d3-maps/vue'
 import { useMapZoom } from '@d3-maps/vue'
 import { easeCubicOut } from 'd3-ease'
-import { useTemplateRef } from 'vue'
 
-const zoomRef = useTemplateRef<MapZoomRef>('zoom')
-const zoom = useMapZoom(zoomRef)
+const zoom = useMapZoom('zoomRef')
 const transition = [
   // Wait first
   { delay: 150 },
@@ -94,7 +91,7 @@ function resetZoom() {
     Reset
   </button>
 
-  <MapZoom ref="zoom">
+  <MapZoom ref="zoomRef">
     <MapFeatures />
   </MapZoom>
 </template>
@@ -153,8 +150,6 @@ export function Example() {
 
 ## Best Practice
 
-- Use `useMapZoom` when commands are triggered outside the `MapZoom` subtree
-- Use the `MapZoom` ref directly when you also need `container` or `zoomBehavior`
 - Use [MapZoom](/components/map-zoom) `transition` for a shared default command transition
 
 ## Examples

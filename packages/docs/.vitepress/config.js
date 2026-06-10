@@ -209,6 +209,7 @@ export default defineConfig({
   srcExclude: ['AGENTS.md', '**/AGENTS.md', '**/_*.md'],
   title: 'd3-maps',
   titleTemplate: ':title · d3-maps',
+  cleanUrls: true,
   description: DEFAULT_SITE_DESCRIPTION,
   ...(SITEMAP_HOSTNAME
     ? {

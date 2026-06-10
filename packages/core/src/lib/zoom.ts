@@ -239,6 +239,26 @@ export interface ZoomCommands {
   reset: (transition?: ZoomTransitionParameter) => void
 }
 
+type ZoomCommandTarget = Pick<ZoomCommands, keyof ZoomCommands> | null | undefined
+
+/**
+ * Creates a stable command proxy over an adapter-specific zoom target getter.
+ */
+export function createZoomCommandsProxy(
+  getTarget: () => ZoomCommandTarget,
+): ZoomCommands {
+  return {
+    transform: (...args) => getTarget()?.transform(...args),
+    translateBy: (...args) => getTarget()?.translateBy(...args),
+    translateTo: (...args) => getTarget()?.translateTo(...args),
+    scaleBy: (...args) => getTarget()?.scaleBy(...args),
+    scaleTo: (...args) => getTarget()?.scaleTo(...args),
+    scaleWith: (...args) => getTarget()?.scaleWith(...args),
+    zoomToFeature: (...args) => getTarget()?.zoomToFeature(...args) ?? false,
+    reset: (...args) => getTarget()?.reset(...args),
+  }
+}
+
 /**
  * Options for computing or applying a fit operation.
  */

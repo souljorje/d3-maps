@@ -35,7 +35,7 @@ Make map creation with D3 simple, reactive, and responsive out of the box, acros
 | `pnpm test` | Run core, react, and vue test suites. |
 | `pnpm --filter @d3-maps/docs gen:examples` | Generate docs example wrapper pages from `.vitepress/examples`. |
 | `pnpm --filter @d3-maps/docs typedoc` | Generate API reference docs via TypeDoc. |
-| `pnpm docs:preview` | Preview built docs site. |
+| `pnpm preview` | Preview built docs site. |
 | `pnpm lint` | Run ESLint. |
 | `pnpm lintfix` | Run ESLint with auto-fix. |
 

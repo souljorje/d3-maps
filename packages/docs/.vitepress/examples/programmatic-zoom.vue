@@ -3,11 +3,10 @@
     <div class="relative aspect-2/1">
       <MapBase>
         <MapZoom
-          ref="zoom"
-          :min-zoom="minZoom"
+          ref="zoomRef"
           :max-zoom="maxZoom"
           :transition="zoomTransition"
-          :config="zoomConfig"
+          :config="dragOnlyZoomConfig"
           @zoom="onZoom"
         >
           <MapSphere
@@ -16,7 +15,7 @@
           >
             <MapGraticule pointer-events="none" />
             <MapFeatures
-              :data="data"
+              :data="mapData"
               fill="var(--vp-c-neutral-inverse)"
               @update:features="renderedFeatures = $event"
             >
@@ -41,7 +40,7 @@
               </template>
             </MapFeatures>
             <MapMesh
-              :data="data"
+              :data="mapData"
               pointer-events="none"
             />
           </MapSphere>
@@ -80,7 +79,7 @@
         <button
           type="button"
           class="flex rounded border! px-3! h-7"
-          @click="resetView"
+          @click="reset"
         >
           Reset
         </button>
@@ -93,31 +92,31 @@
 </template>
 
 <script setup lang="ts">
-import type { MapData, MapFeatureRendered, MapZoomRef, ZoomEvent } from '@d3-maps/vue'
+import type { MapFeatureRendered, MapZoomRef, ZoomEvent } from '@d3-maps/vue'
 
 import { useMapZoom } from '@d3-maps/vue'
-import {
-  shallowRef,
-  useTemplateRef,
-} from 'vue'
-
-const initialZoom = 1
-const minZoom = 1
-const maxZoom = 16
-const zoomStep = 0.5
+import { shallowRef, useTemplateRef } from 'vue'
 
 const { default: mapData } = await import('@d3-maps/atlas/world/countries/countries-110m')
-const data = mapData as MapData
 
-const zoomLevel = shallowRef(initialZoom)
-const activeCountryLabel = shallowRef('World')
+function getFeatureLabel(feature: MapFeatureRendered) {
+  return String(feature.properties.name ?? 'Country')
+}
+
 const renderedFeatures = shallowRef<MapFeatureRendered[]>([])
 const mapRoot = useTemplateRef<HTMLElement>('mapRoot')
-const zoomRef = useTemplateRef<MapZoomRef>('zoom')
-const zoom = useMapZoom(zoomRef)
 
+const maxZoom = 16
+const zoomStep = 0.5
+const zoomLevel = shallowRef(1)
 const zoomTransition = { duration: 600 }
-const zoomConfig = { filter: isDragOnlyFilter }
+const dragOnlyZoomConfig = { filter: (event: Event) => event.type !== 'wheel' && event.type !== 'dblclick' }
+// also valid: const zoom = useMapZoom('zoomRef')
+const zoom = useMapZoom(useTemplateRef<MapZoomRef>('zoomRef'))
+
+function onZoom(event: ZoomEvent) {
+  zoomLevel.value = event.transform.k
+}
 
 function zoomIn() {
   zoom.scaleWith(zoomStep, null, { duration: 150 })
@@ -125,11 +124,6 @@ function zoomIn() {
 
 function zoomOut() {
   zoom.scaleWith(-zoomStep, null, { duration: 150 })
-}
-
-function resetView() {
-  zoom.reset()
-  activeCountryLabel.value = 'World'
 }
 
 function zoomToRandomCountry() {
@@ -140,30 +134,24 @@ function zoomToRandomCountry() {
   focusFeatureByKey(feature.key)
 }
 
+const defaultCountryLabel = 'World'
+const activeCountryLabel = shallowRef(defaultCountryLabel)
+
 function zoomToFeature(feature: MapFeatureRendered) {
-  const didFit = zoom.zoomToFeature(feature)
+  const didFit = zoom.zoomToFeature(feature, { padding: 10 })
   if (!didFit) return
 
   activeCountryLabel.value = getFeatureLabel(feature)
 }
 
-function onZoom(event: ZoomEvent) {
-  zoomLevel.value = event.transform.k
-}
-
-function isDragOnlyFilter(event: Event) {
-  return event.type !== 'wheel' && event.type !== 'dblclick'
+function reset() {
+  zoom.reset()
+  activeCountryLabel.value = defaultCountryLabel
 }
 
 function focusFeatureByKey(featureKey: string | number) {
-  const featureElement = Array.from(
-    mapRoot.value?.querySelectorAll<SVGPathElement>('[data-feature-key]') ?? [],
-  ).find((element) => element.dataset.featureKey === String(featureKey))
+  const featureElement = mapRoot.value?.querySelector<SVGPathElement>(`[data-feature-key="${String(featureKey)}"]`)
 
   featureElement?.focus({ preventScroll: true })
-}
-
-function getFeatureLabel(feature: MapFeatureRendered) {
-  return String(feature.properties.name ?? 'Country')
 }
 </script>

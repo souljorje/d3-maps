@@ -26,7 +26,6 @@ import {
 } from 'react'
 
 const initialZoom = 1
-const minZoom = 1
 const maxZoom = 16
 const zoomStep = 0.5
 const zoomTransition = [{ duration: 600 }] as const
@@ -51,7 +50,8 @@ const mapDataPromise = import('@d3-maps/atlas/world/countries/countries-110m').t
 export default function ProgrammaticZoomExample(): JSX.Element {
   const mapData = use(mapDataPromise)
   const [zoomLevel, setZoomLevel] = useState(initialZoom)
-  const [activeCountryLabel, setActiveCountryLabel] = useState('World')
+  const defaultCountryLabel = 'World'
+  const [activeCountryLabel, setActiveCountryLabel] = useState(defaultCountryLabel)
   const [renderedFeatures, setRenderedFeatures] = useState<MapFeatureRendered[]>([])
   const mapRootRef = useRef<HTMLDivElement | null>(null)
   const zoomRef = useRef<MapZoomRef | null>(null)
@@ -65,13 +65,13 @@ export default function ProgrammaticZoomExample(): JSX.Element {
     zoom.scaleWith(-zoomStep, null, { duration: 150 })
   }
 
-  function resetView(): void {
+  function reset(): void {
     zoom.reset()
-    setActiveCountryLabel('World')
+    setActiveCountryLabel(defaultCountryLabel)
   }
 
   function zoomToFeature(feature: MapFeatureRendered): void {
-    const didFit = zoom.zoomToFeature(feature)
+    const didFit = zoom.zoomToFeature(feature, { padding: 10 })
     if (!didFit) return
 
     setActiveCountryLabel(getFeatureLabel(feature))
@@ -99,9 +99,9 @@ export default function ProgrammaticZoomExample(): JSX.Element {
   }
 
   function focusFeatureByKey(featureKey: string | number): void {
-    const featureElement = Array.from(
-      mapRootRef.current?.querySelectorAll<SVGPathElement>('[data-feature-key]') ?? [],
-    ).find((element) => element.dataset.featureKey === String(featureKey))
+    const featureElement = mapRootRef.current?.querySelector<SVGPathElement>(
+      `[data-feature-key="${String(featureKey)}"]`,
+    )
 
     featureElement?.focus({ preventScroll: true })
   }
@@ -115,7 +115,6 @@ export default function ProgrammaticZoomExample(): JSX.Element {
         <MapBase>
           <MapZoom
             ref={zoomRef}
-            minZoom={minZoom}
             maxZoom={maxZoom}
             transition={zoomTransition}
             config={dragOnlyZoomConfig}
@@ -185,7 +184,7 @@ export default function ProgrammaticZoomExample(): JSX.Element {
           <button
             type="button"
             className="flex rounded border! px-3! h-7"
-            onClick={resetView}
+            onClick={reset}
           >
             Reset
           </button>

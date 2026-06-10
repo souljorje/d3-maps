@@ -8,6 +8,7 @@ import {
   applyZoomEventTransform,
   createZoomBehavior,
   createZoomCommands,
+  createZoomCommandsProxy,
   getFeatureZoomTransform,
   getInverseZoomScale,
   getZoomScale,
@@ -410,5 +411,29 @@ describe('zoom helpers', () => {
     expect(transformCall).toHaveBeenCalledWith(expect.anything(), transform)
 
     vi.unstubAllGlobals()
+  })
+
+  it('creates a command proxy from a target getter', () => {
+    const transform = vi.fn()
+    const reset = vi.fn()
+    const zoomToFeature = vi.fn(() => true)
+    const commands = createZoomCommandsProxy(() => ({
+      transform,
+      translateBy: vi.fn(),
+      translateTo: vi.fn(),
+      scaleBy: vi.fn(),
+      scaleTo: vi.fn(),
+      scaleWith: vi.fn(),
+      zoomToFeature,
+      reset,
+    }))
+
+    commands.transform(zoomIdentity, undefined, false)
+    commands.reset(false)
+    expect(commands.zoomToFeature(sampleGeoJson.features[0])).toBe(true)
+
+    expect(transform).toHaveBeenCalledWith(zoomIdentity, undefined, false)
+    expect(reset).toHaveBeenCalledWith(false)
+    expect(zoomToFeature).toHaveBeenCalledWith(sampleGeoJson.features[0])
   })
 })
