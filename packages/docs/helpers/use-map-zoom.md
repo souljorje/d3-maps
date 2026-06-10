@@ -10,13 +10,13 @@ Creates a stable set of programmatic zoom commands from a [MapZoom](/components/
 
 | Method | Description |
 | --- | --- |
-| `transform(transform, point?, transition?)` | Apply a native D3 `ZoomTransform` |
+| `transform(transform, transition?, point?)` | Apply a native D3 `ZoomTransform` |
 | `translateBy(x, y, transition?)` | Translate by x and y using D3 `translateBy` |
-| `translateTo(x, y, point?, transition?)` | Translate to x and y using D3 `translateTo` |
-| `scaleBy(scale, point?, transition?)` | Multiply scale using D3 `scaleBy` |
-| `scaleTo(scale, point?, transition?)` | Apply an absolute scale using D3 `scaleTo` |
-| `scaleWith(delta, point?, transition?)` | Add or subtract from the current zoom scale |
-| `zoomToFeature(feature, {transition, padding})` | Zoom to a GeoJSON feature |
+| `translateTo(x, y, transition?, point?)` | Translate to x and y using D3 `translateTo` |
+| `scaleBy(scale, transition?, point?)` | Multiply scale using D3 `scaleBy` |
+| `scaleTo(scale, transition?, point?)` | Apply an absolute scale using D3 `scaleTo` |
+| `scaleWith(delta, transition?, point?)` | Add or subtract from the current zoom scale |
+| `zoomToFeature(feature, padding?, transition?)` | Zoom to a GeoJSON feature |
 | `reset(transition?)` | Reset to `zoomIdentity` |
 
 > Methods are available directly without `ref.current?.` / `ref.value?.`
@@ -72,7 +72,7 @@ function zoomIn() {
 }
 
 function zoomToCenter() {
-  zoom.translateTo(0, 0, null, transition)
+  zoom.translateTo(0, 0, transition)
 }
 
 function resetZoom() {
@@ -119,7 +119,7 @@ export function Example() {
   }
 
   function zoomToCenter() {
-    zoom.translateTo(0, 0, null, transition)
+    zoom.translateTo(0, 0, transition)
   }
 
   function resetZoom() {

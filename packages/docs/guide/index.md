@@ -150,3 +150,7 @@ export function MapView({ data }: { data: MapData }) {
 | Low-level map rendering | ⚠️ | Use D3.js for full control |
 | Real-world map apps | ❌ | Use Leaflet or MapLibre |
 | Data-heavy 3D maps | ❌ | Use MapLibre |
+
+## Migrate from react-simple-maps
+
+`@d3-maps/react` is fully compatible with `react-simple-maps`, supports React 19 an has more features under the hood. See [migration guide](/guide/migration-from-react-simple-maps)

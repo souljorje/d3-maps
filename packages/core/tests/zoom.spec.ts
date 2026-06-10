@@ -248,19 +248,19 @@ describe('zoom helpers', () => {
       maxZoom: () => 8,
     })
 
-    commands.transform(transform, point)
+    commands.transform(transform, undefined, point)
     expect(transformSpy).toHaveBeenCalledWith(expect.anything(), transform, point)
 
     commands.translateBy(4, 5)
     expect(translateBySpy).toHaveBeenCalledWith(expect.anything(), 4, 5)
 
-    commands.translateTo(4, 5, point)
+    commands.translateTo(4, 5, undefined, point)
     expect(translateToSpy).toHaveBeenCalledWith(expect.anything(), 4, 5, point)
 
-    commands.scaleBy(1.5, point)
+    commands.scaleBy(1.5, undefined, point)
     expect(scaleBySpy).toHaveBeenCalledWith(expect.anything(), 1.5, point)
 
-    commands.scaleTo(3, point)
+    commands.scaleTo(3, undefined, point)
     expect(scaleToSpy).toHaveBeenCalledWith(expect.anything(), 3, point)
 
     vi.unstubAllGlobals()
@@ -286,7 +286,7 @@ describe('zoom helpers', () => {
     expect(scaleToSpy).toHaveBeenCalledWith(expect.anything(), 1.5, undefined)
 
     const pointFn = (): [number, number] => [40, 50]
-    commands.scaleWith(0.5, pointFn)
+    commands.scaleWith(0.5, undefined, pointFn)
     expect(scaleToSpy).toHaveBeenLastCalledWith(expect.anything(), 1.5, pointFn)
 
     vi.unstubAllGlobals()
@@ -337,7 +337,7 @@ describe('zoom helpers', () => {
 
     commands.reset(false)
     expect(transformSpy).toHaveBeenCalledWith(expect.anything(), zoomIdentity)
-    commands.scaleTo(3, undefined, false)
+    commands.scaleTo(3, false)
     expect(scaleToSpy).toHaveBeenCalledWith(expect.anything(), 3, undefined)
 
     vi.unstubAllGlobals()
@@ -405,9 +405,7 @@ describe('zoom helpers', () => {
     vi.stubGlobal('SVGSVGElement', svgElement.constructor as any)
 
     expect(transform).toBeDefined()
-    expect(commands.zoomToFeature(feature, {
-      padding: 10,
-    })).toBe(true)
+    expect(commands.zoomToFeature(feature, 10)).toBe(true)
     expect(transformCall).toHaveBeenCalledWith(expect.anything(), transform)
 
     vi.unstubAllGlobals()
@@ -428,11 +426,11 @@ describe('zoom helpers', () => {
       reset,
     }))
 
-    commands.transform(zoomIdentity, undefined, false)
+    commands.transform(zoomIdentity, false)
     commands.reset(false)
     expect(commands.zoomToFeature(sampleGeoJson.features[0])).toBe(true)
 
-    expect(transform).toHaveBeenCalledWith(zoomIdentity, undefined, false)
+    expect(transform).toHaveBeenCalledWith(zoomIdentity, false)
     expect(reset).toHaveBeenCalledWith(false)
     expect(zoomToFeature).toHaveBeenCalledWith(sampleGeoJson.features[0])
   })

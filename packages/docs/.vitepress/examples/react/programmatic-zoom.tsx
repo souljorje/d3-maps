@@ -58,11 +58,11 @@ export default function ProgrammaticZoomExample(): JSX.Element {
   const zoom = useMapZoom(zoomRef)
 
   function zoomIn(): void {
-    zoom.scaleWith(zoomStep, null, { duration: 150 })
+    zoom.scaleWith(zoomStep, { duration: 100 })
   }
 
   function zoomOut(): void {
-    zoom.scaleWith(-zoomStep, null, { duration: 150 })
+    zoom.scaleWith(-zoomStep, { duration: 100 })
   }
 
   function reset(): void {
@@ -71,7 +71,7 @@ export default function ProgrammaticZoomExample(): JSX.Element {
   }
 
   function zoomToFeature(feature: MapFeatureRendered): void {
-    const didFit = zoom.zoomToFeature(feature, { padding: 10 })
+    const didFit = zoom.zoomToFeature(feature, 10)
     if (!didFit) return
 
     setActiveCountryLabel(getFeatureLabel(feature))

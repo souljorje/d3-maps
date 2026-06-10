@@ -119,11 +119,11 @@ function onZoom(event: ZoomEvent) {
 }
 
 function zoomIn() {
-  zoom.scaleWith(zoomStep, null, { duration: 150 })
+  zoom.scaleWith(zoomStep, { duration: 100 })
 }
 
 function zoomOut() {
-  zoom.scaleWith(-zoomStep, null, { duration: 150 })
+  zoom.scaleWith(-zoomStep, { duration: 100 })
 }
 
 function zoomToRandomCountry() {
@@ -138,7 +138,7 @@ const defaultCountryLabel = 'World'
 const activeCountryLabel = shallowRef(defaultCountryLabel)
 
 function zoomToFeature(feature: MapFeatureRendered) {
-  const didFit = zoom.zoomToFeature(feature, { padding: 10 })
+  const didFit = zoom.zoomToFeature(feature, 10)
   if (!didFit) return
 
   activeCountryLabel.value = getFeatureLabel(feature)

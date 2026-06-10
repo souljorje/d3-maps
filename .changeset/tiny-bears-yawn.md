@@ -1,5 +1,6 @@
 ---
-'@d3-maps/core': patch
+'@d3-maps/core': minor
 ---
 
-- Added a shared zoom commands proxy helper for programmatic zoom commands.
+- Reordered zoom command parameters so `transition` comes before `point`.
+- Changed `zoomToFeature` to accept `padding` and `transition` as positional arguments.

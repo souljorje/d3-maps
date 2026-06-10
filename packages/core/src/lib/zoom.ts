@@ -179,8 +179,8 @@ export interface ZoomCommands {
    */
   transform: (
     transform: ZoomTransformSource,
-    point?: ZoomPointSource,
     transition?: ZoomTransitionParameter,
+    point?: ZoomPointSource,
   ) => void
   /**
    * Translates by x and y using D3 [translateBy](https://d3js.org/d3-zoom#zoom_translateBy)
@@ -196,42 +196,40 @@ export interface ZoomCommands {
   translateTo: (
     x: ZoomNumberSource,
     y: ZoomNumberSource,
-    point?: ZoomPointSource,
     transition?: ZoomTransitionParameter,
+    point?: ZoomPointSource,
   ) => void
   /**
    * Multiplies the current scale using D3 [scaleBy](https://d3js.org/d3-zoom#zoom_scaleBy)
    */
   scaleBy: (
     scale: ZoomNumberSource,
-    point?: ZoomPointSource,
     transition?: ZoomTransitionParameter,
+    point?: ZoomPointSource,
   ) => void
   /**
    * Applies an absolute scale using D3 [scaleTo](https://d3js.org/d3-zoom#zoom_scaleTo)
    */
   scaleTo: (
     scale: ZoomNumberSource,
-    point?: ZoomPointSource,
     transition?: ZoomTransitionParameter,
+    point?: ZoomPointSource,
   ) => void
   /**
    * Adds a delta to the current zoom scale, clamped to zoom limits.
    */
   scaleWith: (
     delta: number,
-    point?: ZoomPointSource,
     transition?: ZoomTransitionParameter,
+    point?: ZoomPointSource,
   ) => void
   /**
    * Fits a GeoJSON object in the viewport.
    */
   zoomToFeature: (
     feature: ZoomObject,
-    options?: {
-      padding?: ZoomFitOptions['padding']
-      transition?: ZoomTransitionParameter
-    },
+    padding?: number,
+    transition?: ZoomTransitionParameter,
   ) => boolean
   /**
    * Resets zoom to the identity transform.
@@ -428,8 +426,8 @@ export function createZoomCommands(options: {
   return {
     transform: (
       transform,
-      point,
       transition,
+      point,
     ) => callCommand('transform', [transform, point], transition),
     translateBy: (
       x,
@@ -439,23 +437,23 @@ export function createZoomCommands(options: {
     translateTo: (
       x,
       y,
-      point,
       transition,
+      point,
     ) => callCommand('translateTo', [x, y, point], transition),
     scaleBy: (
       scale,
-      point,
       transition,
+      point,
     ) => callCommand('scaleBy', [scale, point], transition),
     scaleTo: (
       scale,
-      point,
       transition,
+      point,
     ) => callCommand('scaleTo', [scale, point], transition),
     scaleWith: (
       delta,
-      point,
       transition,
+      point,
     ) => {
       const command = getCommandState(transition)
       const currentTransform = getCurrentZoomTransform(command.element)
@@ -474,7 +472,8 @@ export function createZoomCommands(options: {
     },
     zoomToFeature: (
       feature,
-      commandOptions = {},
+      padding,
+      transition,
     ) => {
       const transform = getFeatureZoomTransform(
         options.context(),
@@ -482,12 +481,12 @@ export function createZoomCommands(options: {
         {
           minZoom: options.minZoom(),
           maxZoom: options.maxZoom(),
-          padding: commandOptions.padding,
+          padding,
         })
 
       if (!transform) return false
 
-      callCommand('transform', [transform], commandOptions.transition)
+      callCommand('transform', [transform], transition)
       return true
     },
     reset: (transition) => callCommand('transform', [zoomIdentity], transition),
