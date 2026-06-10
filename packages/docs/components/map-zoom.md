@@ -61,12 +61,9 @@ Lifecycle events forward the native D3 zoom event.
 
 ```vue
 <script setup lang="ts">
-import type { MapZoomRef } from '@d3-maps/vue'
 import { useMapZoom } from '@d3-maps/vue'
-import { useTemplateRef } from 'vue'
 
-const zoomRef = useTemplateRef<MapZoomRef>('zoom')
-const zoom = useMapZoom(zoomRef)
+const zoom = useMapZoom('zoomRef')
 const transition = { duration: 600 }
 
 function zoomIn() {
@@ -76,7 +73,7 @@ function zoomIn() {
 
 <template>
   <MapZoom
-    ref="zoom"
+    ref="zoomRef"
     :min-zoom="1"
     :max-zoom="6"
     :transition="transition"

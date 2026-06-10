@@ -1,4 +1,4 @@
-import type { Topology } from '../../types.ts'
+import type { AtlasWorldCountriesTopology } from '../../types.ts'
 import data from './countries-10m.json' with { type: 'json' }
 
-export default data as unknown as Topology
+export default data as unknown as AtlasWorldCountriesTopology

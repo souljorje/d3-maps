@@ -1,6 +1,6 @@
 {
   "name": "@d3-maps/atlas",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Ready-to-use TopoJSON world, continents, countries and more",
   "type": "module",
   "private": false,

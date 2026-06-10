@@ -10,13 +10,13 @@ Creates a stable set of programmatic zoom commands from a [MapZoom](/components/
 
 | Method | Description |
 | --- | --- |
-| `transform(transform, point?, transition?)` | Apply a native D3 `ZoomTransform` |
+| `transform(transform, transition?, point?)` | Apply a native D3 `ZoomTransform` |
 | `translateBy(x, y, transition?)` | Translate by x and y using D3 `translateBy` |
-| `translateTo(x, y, point?, transition?)` | Translate to x and y using D3 `translateTo` |
-| `scaleBy(scale, point?, transition?)` | Multiply scale using D3 `scaleBy` |
-| `scaleTo(scale, point?, transition?)` | Apply an absolute scale using D3 `scaleTo` |
-| `scaleWith(delta, point?, transition?)` | Add or subtract from the current zoom scale |
-| `zoomToFeature(feature, {transition, padding})` | Zoom to a GeoJSON feature |
+| `translateTo(x, y, transition?, point?)` | Translate to x and y using D3 `translateTo` |
+| `scaleBy(scale, transition?, point?)` | Multiply scale using D3 `scaleBy` |
+| `scaleTo(scale, transition?, point?)` | Apply an absolute scale using D3 `scaleTo` |
+| `scaleWith(delta, transition?, point?)` | Add or subtract from the current zoom scale |
+| `zoomToFeature(feature, padding?, transition?)` | Zoom to a GeoJSON feature |
 | `reset(transition?)` | Reset to `zoomIdentity` |
 
 > Methods are available directly without `ref.current?.` / `ref.value?.`
@@ -38,7 +38,7 @@ See [ZoomTransitionStep API](/api/core/zoom#zoomtransitionstep) and [d3-transiti
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `ref` | `Ref<MapZoomRef \| null>` | — | `MapZoom` instance ref |
+| `ref` | `string \| Ref<MapZoomRef \| null>` | — | `MapZoom` template ref key or instance ref |
 
 == React
 
@@ -56,13 +56,10 @@ See [ZoomTransitionStep API](/api/core/zoom#zoomtransitionstep) and [d3-transiti
 
 ```vue
 <script setup lang="ts">
-import type { MapZoomRef } from '@d3-maps/vue'
 import { useMapZoom } from '@d3-maps/vue'
 import { easeCubicOut } from 'd3-ease'
-import { useTemplateRef } from 'vue'
 
-const zoomRef = useTemplateRef<MapZoomRef>('zoom')
-const zoom = useMapZoom(zoomRef)
+const zoom = useMapZoom('zoomRef')
 const transition = [
   // Wait first
   { delay: 150 },
@@ -75,7 +72,7 @@ function zoomIn() {
 }
 
 function zoomToCenter() {
-  zoom.translateTo(0, 0, null, transition)
+  zoom.translateTo(0, 0, transition)
 }
 
 function resetZoom() {
@@ -94,7 +91,7 @@ function resetZoom() {
     Reset
   </button>
 
-  <MapZoom ref="zoom">
+  <MapZoom ref="zoomRef">
     <MapFeatures />
   </MapZoom>
 </template>
@@ -122,7 +119,7 @@ export function Example() {
   }
 
   function zoomToCenter() {
-    zoom.translateTo(0, 0, null, transition)
+    zoom.translateTo(0, 0, transition)
   }
 
   function resetZoom() {
@@ -153,8 +150,6 @@ export function Example() {
 
 ## Best Practice
 
-- Use `useMapZoom` when commands are triggered outside the `MapZoom` subtree
-- Use the `MapZoom` ref directly when you also need `container` or `zoomBehavior`
 - Use [MapZoom](/components/map-zoom) `transition` for a shared default command transition
 
 ## Examples
