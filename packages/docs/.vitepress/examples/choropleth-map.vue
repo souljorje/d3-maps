@@ -35,7 +35,7 @@ import { scaleSqrt } from 'd3-scale'
 import { computed, onMounted, ref } from 'vue'
 
 interface CountryPopulation {
-  cca3: string
+  id: string
   population: number
 }
 
@@ -55,7 +55,7 @@ const colorScale = computed(() => {
 })
 
 const populationByCode = computed(() => {
-  return new Map(populations.value.map((country) => [country.cca3, country.population]))
+  return new Map(populations.value.map((country) => [country.id, country.population]))
 })
 
 onMounted(async () => {
@@ -74,8 +74,11 @@ async function fetchMap(): Promise<MapData> {
 }
 
 async function fetchData(): Promise<CountryPopulation[]> {
-  const response = await fetch('https://restcountries.com/v3.1/all?fields=cca3,population')
-  return response.json()
+  const response = await fetch('https://www.apicountries.com/countries')
+  const data = await response.json()
+  return data.map(
+    ({ alpha3Code, population }: { alpha3Code: string, population: number }) => ({ id: alpha3Code, population }),
+  )
 }
 
 const transformer: MapFeatureTransformer<ChoroplethFeatureExtra> = (features) => {
