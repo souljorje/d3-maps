@@ -12,14 +12,12 @@
     "build:full": "turbo run build",
     "build:docs": "turbo run build --filter=@d3-maps/docs",
     "preview": "pnpm --filter docs preview",
-
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "typecheck:test": "turbo run typecheck:test",
     "lint": "eslint ./packages --max-warnings 0 --cache",
     "lintfix": "pnpm run lint --fix",
     "verify": "turbo run typecheck typecheck:test test",
-
     "changeset": "changeset",
     "version": "changeset version",
     "release": "changeset publish",
@@ -36,7 +34,8 @@
     "lint-staged": "catalog:",
     "simple-git-hooks": "catalog:",
     "tsdown": "catalog:",
-    "turbo": "catalog:"
+    "turbo": "catalog:",
+    "@netlify/functions": "catalog:"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec lint-staged && pnpm verify"
