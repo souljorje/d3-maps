@@ -323,6 +323,13 @@ export default defineConfig({
       fs: {
         allow: [REPO_ROOT],
       },
+      proxy: {
+        '/api/countries': {
+          target: 'https://www.apicountries.com',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/countries/, '/countries'),
+        },
+      },
     },
     resolve: {
       dedupe: ['vue'],

@@ -41,7 +41,7 @@ export default function ChoroplethMapExample(): JSX.Element {
     }
 
     async function fetchData(): Promise<CountryPopulation[]> {
-      const response = await fetch('https://www.apicountries.com/countries')
+      const response = await fetch('/api/countries')
       const data = await response.json()
       return data.map(
         ({ alpha3Code, population }: { alpha3Code: string, population: number }) => ({ id: alpha3Code, population }),

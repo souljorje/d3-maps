@@ -12,3 +12,7 @@ pnpm-error.log
 packages/docs/api/core
 
 .codex
+
+# Local Netlify folder
+.netlify
+deno.lock

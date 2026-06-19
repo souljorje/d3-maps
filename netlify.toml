@@ -7,3 +7,11 @@ ignore = "node ./scripts/netlify-ignore-build.mjs"
 # to enable Turbo Remote Cache for docs generation and VitePress build tasks.
 [build.environment]
 NODE_VERSION = "24"
+
+[functions]
+node_bundler = "esbuild"
+
+[dev]
+command = "pnpm dev"
+targetPort = 5173
+framework = "#custom"
