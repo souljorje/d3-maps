@@ -1,5 +1,4 @@
 import type {
-  MapData,
   MapFeatureRendered,
   MapZoomRef,
   ZoomEvent,
@@ -45,7 +44,7 @@ function getFeatureLabel(feature: MapFeatureRendered): string {
   return String(feature.properties.name ?? 'Country')
 }
 
-const mapDataPromise = import('@d3-maps/atlas/world/countries/countries-110m').then((m) => m.default as MapData)
+const mapDataPromise = import('@d3-maps/atlas/world/countries/countries-110m').then((m) => m.default)
 
 export default function ProgrammaticZoomExample(): JSX.Element {
   const mapData = use(mapDataPromise)
