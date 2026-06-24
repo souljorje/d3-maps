@@ -43,13 +43,21 @@ npm install @d3-maps/react
 ## Usage
 
 ```tsx
+import { use } from 'react'
 import '@d3-maps/react/style.css'
-import { MapBase, MapFeatures, type MapData } from '@d3-maps/react'
+import { MapBase, MapFeatures, MapZoom } from '@d3-maps/react'
 
-export function App({ mapData }: { mapData: MapData }) {
+const worldPromise = import('@d3-maps/atlas/world/countries')
+  .then((m) => m.default)
+
+export function MapView() {
+  const world = use(worldPromise)
+
   return (
     <MapBase>
-      <MapFeatures data={mapData} />
+      <MapZoom>
+        <MapFeatures data={world} />
+      </MapZoom>
     </MapBase>
   )
 }

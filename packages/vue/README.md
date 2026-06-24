@@ -42,19 +42,18 @@ npm install @d3-maps/vue
 
 ## Usage
 
-```html
+```vue
 <script setup lang="ts">
-import type { MapData } from '@d3-maps/core'
+import { MapBase, MapFeatures, MapZoom } from '@d3-maps/vue'
 
-import { MapBase, MapFeatures } from '@d3-maps/vue'
-defineProps<{
-  data: MapData
-}>()
+const { default: world } = await import('@d3-maps/atlas/world/countries/countries-110m')
 </script>
 
 <template>
   <MapBase>
-    <MapFeatures :data="data" />
+    <MapZoom>
+      <MapFeatures :data="world" />
+    </MapZoom>
   </MapBase>
 </template>
 ```
