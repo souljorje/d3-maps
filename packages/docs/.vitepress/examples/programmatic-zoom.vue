@@ -99,10 +99,6 @@ import { shallowRef, useTemplateRef } from 'vue'
 
 const { default: mapData } = await import('@d3-maps/atlas/world/countries/countries-110m')
 
-function getFeatureLabel(feature: MapFeatureRendered) {
-  return String(feature.properties.name ?? 'Country')
-}
-
 const renderedFeatures = shallowRef<MapFeatureRendered[]>([])
 const mapRoot = useTemplateRef<HTMLElement>('mapRoot')
 
@@ -136,6 +132,10 @@ function zoomToRandomCountry() {
 
 const defaultCountryLabel = 'World'
 const activeCountryLabel = shallowRef(defaultCountryLabel)
+
+function getFeatureLabel(feature: MapFeatureRendered) {
+  return String(feature.properties.name ?? 'Country')
+}
 
 function zoomToFeature(feature: MapFeatureRendered) {
   const didFit = zoom.zoomToFeature(feature, 10)

@@ -33,10 +33,11 @@ Feel free to open an [issue](https://github.com/souljorje/d3-maps/issues) or a p
 import { MapBase, MapFeatures } from '@d3-maps/react'
 import { use, useCallback } from 'react'
 
-const mapDataPromise = import('@d3-maps/atlas/world/countries/countries-110m').then((m) => m.default as MapData)
+const worldPromise = import('@d3-maps/atlas/world/countries')
+  .then((m) => m.default)
 
 export function WorldMap() {
-  const data = use(mapDataPromise)
+  const world = use(worldPromise)
   const filterAntarctica = useCallback((features) => {
     return features.filter((f) => f.properties?.name !== 'Antarctica')
   }, [])
