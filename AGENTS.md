@@ -1,6 +1,6 @@
 # D3-maps
 
-Interactive SVG maps toolkit with framework-agnostic core, React and Vue adapters, and VitePress docs.
+Interactive SVG maps toolkit with framework-agnostic core, React, Vue, and Svelte adapters, and VitePress docs.
 
 ## Global rules
 
@@ -25,7 +25,7 @@ Interactive SVG maps toolkit with framework-agnostic core, React and Vue adapter
   ├─ react/ # React adapter (@d3-maps/react)
   ├─ vue/   # Vue adapter (@d3-maps/vue)
   ├─ svelte/ # Svelte adapter (@d3-maps/svelte)
-  └─ solid/  # Solid adapter
+  └─ solid/  # Solid adapter (planned)
 ```
 
 ## Commands
@@ -36,7 +36,7 @@ Interactive SVG maps toolkit with framework-agnostic core, React and Vue adapter
 | `pnpm build` | Build publishable packages only via Turbo (`packages/docs` excluded). |
 | `pnpm build:full` | Build all workspaces with Turbo, including `packages/docs`. |
 | `pnpm build:docs` | Build VitePress docs with docs generation through Turbo task dependencies. |
-| `pnpm test` | Run core, react, and vue test suites. |
+| `pnpm test` | Run core and adapter test suites. |
 | `pnpm --filter @d3-maps/docs gen:examples` | Generate docs example wrapper pages from `.vitepress/examples`. |
 | `pnpm --filter @d3-maps/docs typedoc` | Generate API reference docs via TypeDoc. |
 | `pnpm preview` | Preview built docs site. |

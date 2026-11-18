@@ -80,7 +80,10 @@ describe('mounted behavior bindings', () => {
     const view = document.defaultView!
     const binding = bindMapZoom(() => makeMapContext(), group)
     disposers.push(binding.dispose)
-    svg.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, view, button: 0 }))
+    const event = new MouseEvent('mousedown', { bubbles: true, button: 0 })
+    // jsdom rejects Vitest's window proxy in the constructor's view option.
+    Object.defineProperty(event, 'view', { value: view })
+    svg.dispatchEvent(event)
     expect(select(view).on('mousemove.zoom')).toBeTypeOf('function')
     binding.dispose()
     expect(select(view).on('mousemove.zoom')).toBeUndefined()

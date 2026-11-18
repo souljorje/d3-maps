@@ -98,7 +98,9 @@ describe('svelte map components', () => {
 
   it('exposes commands, updates zoom configuration, and disposes on unmount', async () => {
     let zoom: MapZoomHandle | undefined
-    const onReady = (value: MapZoomHandle): void => { zoom = value }
+    const onReady = (value: MapZoomHandle): void => {
+      zoom = value
+    }
     const props = $state({ maxZoom: 8, onReady })
     const container = target()
     const component = mount(Harness, { target: container, props })
