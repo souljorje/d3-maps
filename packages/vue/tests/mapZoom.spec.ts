@@ -25,6 +25,7 @@ import {
   h,
   inject,
   nextTick,
+  reactive,
   useTemplateRef,
 } from 'vue'
 
@@ -243,18 +244,17 @@ describe('mapZoom', () => {
   })
 
   it('keeps the exposed zoom behavior current after reactive prop updates', async () => {
-    const { wrapper, zoom } = await mountZoom({
+    const props = reactive({
       maxZoom: 8,
-      config: { clickDistance: 12 },
+      config: { clickDistance: 12 } as { clickDistance: number } | undefined,
     })
+    const { zoom } = await mountZoom(props)
     const exposedBehavior = zoom.zoomBehavior
     expect(exposedBehavior.scaleExtent()).toEqual([1, 8])
     expect(exposedBehavior.clickDistance()).toBe(12)
 
-    await wrapper.findComponent(MapZoom).setProps({
-      maxZoom: 4,
-      config: undefined,
-    })
+    props.maxZoom = 4
+    props.config = undefined
     await nextTick()
 
     expect(zoom.zoomBehavior).toBe(exposedBehavior)
