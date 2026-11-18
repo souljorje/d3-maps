@@ -56,7 +56,7 @@ export function MapZoom(props: MapZoomProps): ReactElement {
 
   const {
     commands,
-    zoomBehavior,
+    getZoomBehavior,
   } = useCreateMapZoom(
     containerRef,
     {
@@ -74,11 +74,11 @@ export function MapZoom(props: MapZoomProps): ReactElement {
 
   useImperativeHandle(ref, () => ({
     container: containerRef.current,
-    zoomBehavior,
+    get zoomBehavior() { return getZoomBehavior()! },
     ...commands,
   }), [
     commands,
-    zoomBehavior,
+    getZoomBehavior,
   ])
 
   const mergedClassName = className

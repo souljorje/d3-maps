@@ -1,16 +1,16 @@
-import type { MapZoomBinding } from '@d3-maps/core'
+import type { ZoomBinding } from '@d3-maps/core'
 import type { JSX } from '@solidjs/web'
 
 import type { MapZoomHandle, MapZoomProps } from '../types'
 
-import { bindMapZoom, createZoomCommandsProxy } from '@d3-maps/core'
-import { createEffect, omit, onSettled, untrack } from 'solid-js'
+import { createZoomBinding, createZoomCommandsProxy } from '@d3-maps/core'
+import { createEffect, omit, onCleanup, onSettled, untrack } from 'solid-js'
 
 import { MapZoomContextValue, useMapContext } from '../context'
 
 export function MapZoom(props: MapZoomProps): JSX.Element {
   let container: SVGGElement | undefined
-  let binding: MapZoomBinding | undefined
+  let binding: ZoomBinding | undefined
   const context = useMapContext()
   const commands = createZoomCommandsProxy(() => binding?.commands)
   const handle: MapZoomHandle = {
@@ -22,22 +22,28 @@ export function MapZoom(props: MapZoomProps): JSX.Element {
 
   createEffect(
     () => ({ context: context(), minZoom: props.minZoom, maxZoom: props.maxZoom, config: props.config }),
-    ({ context: viewport, ...options }) => {
+    () => {
       if (!container) return
-      const current = bindMapZoom(() => viewport, container, () => untrack(() => ({
-        ...options,
-        transition: props.transition,
-        onZoomStart: props.onZoomStart,
-        onZoom: props.onZoom,
-        onZoomEnd: props.onZoomEnd,
-      })))
-      binding = current
-      return () => {
-        current.dispose()
-        if (binding === current) binding = undefined
+      if (binding) {
+        untrack(() => binding!.update())
+      } else {
+        binding = createZoomBinding(context, container, () => untrack(() => ({
+          minZoom: props.minZoom,
+          maxZoom: props.maxZoom,
+          config: props.config,
+          transition: props.transition,
+          onZoomStart: props.onZoomStart,
+          onZoom: props.onZoom,
+          onZoomEnd: props.onZoomEnd,
+        })))
       }
     },
   )
+
+  onCleanup(() => {
+    binding?.dispose()
+    binding = undefined
+  })
 
   onSettled(() => {
     props.onReady?.(handle)
