@@ -15,6 +15,7 @@ function forwardEvent(handler: unknown, event: Event): void {
 }
 
 export function MapElement(props: MapElementProps): JSX.Element {
+  let element: SVGElement | undefined
   const isZoomed = Boolean(useContext(MapZoomContextValue))
   const [state, setState] = createSignal<InteractionState>('default')
   let controller: InteractionController<MouseEvent> | undefined
@@ -25,6 +26,7 @@ export function MapElement(props: MapElementProps): JSX.Element {
   createEffect(
     () => props.tag ?? 'path',
     () => {
+      if (!element) return
       const current = useInteractionEvents(setState, isZoomed)
       controller = current
       setState('default')
@@ -38,14 +40,34 @@ export function MapElement(props: MapElementProps): JSX.Element {
   return (
     <Tag
       {...attributes}
-      ref={props.ref}
+      ref={[(value: SVGElement) => {
+        element = value
+      }, props.ref]}
       style={style()}
-      onMouseEnter={(event) => { controller?.onMouseenter(); forwardEvent(props.onMouseEnter, event) }}
-      onMouseLeave={(event) => { controller?.onMouseleave(); forwardEvent(props.onMouseLeave, event) }}
-      onMouseDown={(event) => { controller?.onMousedown(event); forwardEvent(props.onMouseDown, event) }}
-      onMouseUp={(event) => { controller?.onMouseup(); forwardEvent(props.onMouseUp, event) }}
-      onFocus={(event) => { controller?.onFocus(); forwardEvent(props.onFocus, event) }}
-      onBlur={(event) => { controller?.onBlur(); forwardEvent(props.onBlur, event) }}
+      on:mouseenter={(event: MouseEvent) => {
+        controller?.onMouseenter()
+        forwardEvent(props.onMouseEnter, event)
+      }}
+      on:mouseleave={(event: MouseEvent) => {
+        controller?.onMouseleave()
+        forwardEvent(props.onMouseLeave, event)
+      }}
+      on:mousedown={(event: MouseEvent) => {
+        controller?.onMousedown(event)
+        forwardEvent(props.onMouseDown, event)
+      }}
+      on:mouseup={(event: MouseEvent) => {
+        controller?.onMouseup()
+        forwardEvent(props.onMouseUp, event)
+      }}
+      on:focus={(event: FocusEvent) => {
+        controller?.onFocus()
+        forwardEvent(props.onFocus, event)
+      }}
+      on:blur={(event: FocusEvent) => {
+        controller?.onBlur()
+        forwardEvent(props.onBlur, event)
+      }}
     >
       {props.children}
     </Tag>
