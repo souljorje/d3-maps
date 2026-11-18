@@ -1,4 +1,4 @@
-import type { InteractionController, InteractionState } from '@d3-maps/core'
+import type { InteractionEventType, InteractionState } from '@d3-maps/core'
 import type { JSX } from '@solidjs/web'
 import type { Ref } from 'solid-js'
 
@@ -10,11 +10,6 @@ import { createEffect, createMemo, createSignal, omit, useContext } from 'solid-
 
 import { MapZoomContextValue } from '../context'
 
-function forwardEvent(handler: unknown, event: Event): void {
-  if (typeof handler === 'function') handler(event)
-  else if (Array.isArray(handler) && typeof handler[0] === 'function') handler[0](handler[1], event)
-}
-
 function assignRef(ref: Ref<SVGElement>, element: SVGElement): void {
   if (Array.isArray(ref)) {
     for (const item of ref) assignRef(item, element)
@@ -23,11 +18,15 @@ function assignRef(ref: Ref<SVGElement>, element: SVGElement): void {
   }
 }
 
+function forwardEvent(handler: unknown, event: Event): void {
+  if (typeof handler === 'function') handler(event)
+  else if (Array.isArray(handler) && typeof handler[0] === 'function') handler[0](handler[1], event)
+}
+
 export function MapElement(props: MapElementProps): JSX.Element {
   let element: SVGElement | undefined
   const isZoomed = Boolean(useContext(MapZoomContextValue))
   const [state, setState] = createSignal<InteractionState>('default')
-  let controller: InteractionController<MouseEvent> | undefined
   const attributes = omit(props, 'tag', 'styles', 'style', 'ref', 'children', 'onMouseEnter', 'onMouseLeave', 'onMouseDown', 'onMouseUp', 'onFocus', 'onBlur')
   const style = createMemo(() => ({ ...props.style, ...resolveInteractionStyle(state(), props.styles) }))
   const Tag = dynamic(() => props.tag ?? 'path')
@@ -35,13 +34,50 @@ export function MapElement(props: MapElementProps): JSX.Element {
   createEffect(
     () => props.tag ?? 'path',
     () => {
-      if (!element) return
-      const current = useInteractionEvents(setState, isZoomed)
-      controller = current
+      const node = element
+      if (!node) return
+
+      const interaction = useInteractionEvents(setState, isZoomed)
       setState('default')
+
+      // Solid 2 delegates pointer events to its render root. D3 Zoom can
+      // consume those events before delegation, so bind native listeners.
+      const handlers: Record<InteractionEventType, (event: Event) => void> = {
+        mouseenter: (event) => {
+          interaction.onMouseenter()
+          forwardEvent(props.onMouseEnter, event)
+        },
+        mouseleave: (event) => {
+          interaction.onMouseleave()
+          forwardEvent(props.onMouseLeave, event)
+        },
+        mousedown: (event) => {
+          interaction.onMousedown(event)
+          forwardEvent(props.onMouseDown, event)
+        },
+        mouseup: (event) => {
+          interaction.onMouseup()
+          forwardEvent(props.onMouseUp, event)
+        },
+        focus: (event) => {
+          interaction.onFocus()
+          forwardEvent(props.onFocus, event)
+        },
+        blur: (event) => {
+          interaction.onBlur()
+          forwardEvent(props.onBlur, event)
+        },
+      }
+
+      for (const [name, handler] of Object.entries(handlers)) {
+        node.addEventListener(name, handler)
+      }
+
       return () => {
-        current.dispose()
-        if (controller === current) controller = undefined
+        for (const [name, handler] of Object.entries(handlers)) {
+          node.removeEventListener(name, handler)
+        }
+        interaction.dispose()
       }
     },
   )
@@ -54,30 +90,6 @@ export function MapElement(props: MapElementProps): JSX.Element {
         assignRef(props.ref, value)
       }}
       style={style()}
-      onMouseenter={(event: MouseEvent) => {
-        controller?.onMouseenter()
-        forwardEvent(props.onMouseEnter, event)
-      }}
-      onMouseleave={(event: MouseEvent) => {
-        controller?.onMouseleave()
-        forwardEvent(props.onMouseLeave, event)
-      }}
-      onMousedown={(event: MouseEvent) => {
-        controller?.onMousedown(event)
-        forwardEvent(props.onMouseDown, event)
-      }}
-      onMouseup={(event: MouseEvent) => {
-        controller?.onMouseup()
-        forwardEvent(props.onMouseUp, event)
-      }}
-      onFocus={(event: FocusEvent) => {
-        controller?.onFocus()
-        forwardEvent(props.onFocus, event)
-      }}
-      onBlur={(event: FocusEvent) => {
-        controller?.onBlur()
-        forwardEvent(props.onBlur, event)
-      }}
     >
       {props.children}
     </Tag>
