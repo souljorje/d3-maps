@@ -1,4 +1,4 @@
-import type { MapContext, ZoomCommandTarget, ZoomCommands } from '@d3-maps/core'
+import type { MapContext, ZoomCommands, ZoomCommandTarget } from '@d3-maps/core'
 import type { Accessor } from 'solid-js'
 
 import type { MapZoomHandle } from './types'
