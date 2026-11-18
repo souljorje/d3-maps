@@ -2,6 +2,7 @@
 
 import type {
   DefaultZoomBehavior,
+  ZoomBinding,
   ZoomCommands,
   ZoomEvent,
   ZoomProps,
@@ -9,15 +10,14 @@ import type {
 import type { RefObject } from 'react'
 
 import {
-  applyZoomEventTransform,
-  createZoomBehavior,
-  createZoomCommands,
-  setupZoom,
+  createZoomBinding,
+  createZoomCommandsProxy,
 } from '@d3-maps/core'
 import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
 } from 'react'
 
 import { useLatest } from './useLatest'
@@ -36,7 +36,7 @@ export interface ResolvedMapZoomProps extends ZoomProps {
 
 export interface CreateMapZoomResult {
   commands: ZoomCommands
-  zoomBehavior: DefaultZoomBehavior
+  getZoomBehavior: () => DefaultZoomBehavior | undefined
 }
 
 export function useCreateMapZoom(
@@ -44,73 +44,41 @@ export function useCreateMapZoom(
   props: ResolvedMapZoomProps,
   eventCallbacks: MapZoomEventCallbacks,
 ): CreateMapZoomResult {
-  const { minZoom, maxZoom, transition, config } = props
+  const { minZoom, maxZoom, config } = props
   const context = useMapContext()
+  const latestContext = useLatest(context)
+  const latestProps = useLatest(props)
+  const latestCallbacks = useLatest(eventCallbacks)
+  const bindingRef = useRef<ZoomBinding | undefined>(undefined)
 
-  const {
-    onZoomStart,
-    onZoom,
-    onZoomEnd,
-  } = eventCallbacks
-  const onZoomStartRef = useLatest(onZoomStart)
-  const onZoomRef = useLatest(onZoom)
-  const onZoomEndRef = useLatest(onZoomEnd)
-
-  const onZoomStartEvent = useCallback((event: ZoomEvent) => {
-    onZoomStartRef.current?.(event)
-  }, [])
-  const onZoomEvent = useCallback((event: ZoomEvent) => {
-    applyZoomEventTransform(containerRef.current, event)
-    onZoomRef.current?.(event)
-  }, [])
-  const onZoomEndEvent = useCallback((event: ZoomEvent) => {
-    onZoomEndRef.current?.(event)
-  }, [])
-
-  const zoomBehavior = useMemo(() => {
-    return createZoomBehavior({
-      width: context.width,
-      height: context.height,
-    }, {
-      minZoom,
-      maxZoom,
-      config,
-      onZoomStart: onZoomStartEvent,
-      onZoom: onZoomEvent,
-      onZoomEnd: onZoomEndEvent,
-    })
-  }, [
-    config,
-    context.height,
-    context.width,
-    maxZoom,
-    minZoom,
-  ])
+  const commands = useMemo(() => createZoomCommandsProxy(() => bindingRef.current?.commands), [])
+  const getZoomBehavior = useCallback(() => bindingRef.current?.zoomBehavior, [])
 
   useEffect(() => {
-    setupZoom({
-      element: containerRef.current,
-      behavior: zoomBehavior,
-    })
-  }, [zoomBehavior])
+    const element = containerRef.current
+    if (!element) return
 
-  const commands = useMemo(() => createZoomCommands({
-    element: () => containerRef.current,
-    behavior: () => zoomBehavior,
-    context: () => context,
-    minZoom: () => minZoom,
-    maxZoom: () => maxZoom,
-    transition: () => transition,
-  }), [
-    context,
-    maxZoom,
-    minZoom,
-    transition,
-    zoomBehavior,
-  ])
+    const current = createZoomBinding(
+      () => latestContext.current,
+      element,
+      () => ({
+        ...latestProps.current,
+        onZoomStart: (event) => latestCallbacks.current.onZoomStart?.(event),
+        onZoom: (event) => latestCallbacks.current.onZoom?.(event),
+        onZoomEnd: (event) => latestCallbacks.current.onZoomEnd?.(event),
+      }),
+    )
+    bindingRef.current = current
 
-  return {
-    commands,
-    zoomBehavior,
-  }
+    return () => {
+      current.dispose()
+      if (bindingRef.current === current) bindingRef.current = undefined
+    }
+  }, [containerRef, latestContext, latestProps, latestCallbacks])
+
+  useEffect(() => {
+    bindingRef.current?.update()
+  }, [context.width, context.height, minZoom, maxZoom, config])
+
+  return { commands, getZoomBehavior }
 }

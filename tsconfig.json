@@ -6,6 +6,8 @@
     "moduleDetection": "force",
     "resolveJsonModule": true,
     "paths": {
+      "@d3-maps/svelte": ["./packages/svelte/src/index.ts"],
+      "@d3-maps/svelte/*": ["./packages/svelte/src/*"],
       "~/*": ["./*"],
       "@d3-maps/core": ["./packages/core/src/index.ts"],
       "@d3-maps/core/types": ["./packages/core/src/index.ts"],

@@ -62,6 +62,7 @@
     "topojson-client": "catalog:"
   },
   "devDependencies": {
+    "jsdom": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "vite-tsconfig-paths": "catalog:",

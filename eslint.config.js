@@ -3,6 +3,7 @@ import antfu from '@antfu/eslint-config'
 export default antfu({
   type: 'lib',
   vue: true,
+  svelte: true,
   typescript: true,
   ignores: ['**/*.md', 'packages/docs/public/example-data/*', 'packages/atlas/*'],
 })

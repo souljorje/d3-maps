@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { "types": ["svelte", "vite/client"] },
+  "include": ["src/**/*.ts", "src/**/*.svelte", "env.d.ts"]
+}

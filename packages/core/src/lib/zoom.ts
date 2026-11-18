@@ -273,7 +273,32 @@ export function createZoomBehavior(
   context?: Pick<MapContext, 'width' | 'height'>,
   options: ZoomBehaviorOptions = {},
 ): DefaultZoomBehavior {
-  const behavior = zoom<SVGSVGElement, unknown>()
+  return configureZoomBehavior(context, zoom<SVGSVGElement, unknown>(), options)
+}
+
+/**
+ * Updates a live D3 zoom behavior without replacing its gesture dispatcher.
+ * Resets previous modifiers so removing a config prop restores D3 defaults.
+ */
+export function configureZoomBehavior(
+  context: Pick<MapContext, 'width' | 'height'> | undefined,
+  behavior: DefaultZoomBehavior,
+  options: ZoomBehaviorOptions = {},
+): DefaultZoomBehavior {
+  const defaults = zoom<SVGSVGElement, unknown>()
+  behavior
+    .filter(defaults.filter())
+    .touchable(defaults.touchable())
+    .wheelDelta(defaults.wheelDelta() as (event: WheelEvent) => number)
+    .extent(defaults.extent())
+    .scaleExtent(defaults.scaleExtent())
+    .translateExtent(defaults.translateExtent())
+    .constrain(defaults.constrain())
+    .duration(defaults.duration())
+    .interpolate(defaults.interpolate())
+    .clickDistance(defaults.clickDistance())
+    .tapDistance(defaults.tapDistance())
+
   const minZoom = options.minZoom ?? ZOOM_DEFAULTS.minZoom
   const maxZoom = options.maxZoom ?? ZOOM_DEFAULTS.maxZoom
 
@@ -291,8 +316,11 @@ export function createZoomBehavior(
   applyModifiers(behavior, config)
 
   if (options.onZoomStart) behavior.on('start', options.onZoomStart)
+  else behavior.on('start', null)
   if (options.onZoom) behavior.on('zoom', options.onZoom)
+  else behavior.on('zoom', null)
   if (options.onZoomEnd) behavior.on('end', options.onZoomEnd)
+  else behavior.on('end', null)
 
   return behavior
 }
