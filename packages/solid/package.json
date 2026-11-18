@@ -1,0 +1,74 @@
+{
+  "name": "@d3-maps/solid",
+  "type": "module",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Interactive SVG maps toolkit for Solid 2, powered by D3",
+  "author": "Georgii Bukharov <souljorje@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://d3-maps.netlify.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/souljorje/d3-maps.git",
+    "directory": "packages/solid"
+  },
+  "bugs": {
+    "url": "https://github.com/souljorje/d3-maps/issues"
+  },
+  "keywords": [
+    "solid",
+    "solidjs",
+    "d3",
+    "svg",
+    "map",
+    "geojson",
+    "topojson",
+    "dataviz"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/client/index.d.ts",
+      "browser": "./dist/client/index.js",
+      "node": "./dist/server/index.js",
+      "default": "./dist/client/index.js"
+    },
+    "./package.json": "./package.json",
+    "./style.css": "./dist/style.css"
+  },
+  "types": "dist/client/index.d.ts",
+  "style": "dist/style.css",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "typecheck:test": "tsc -p tsconfig.test.json --noEmit",
+    "build": "tsdown",
+    "test": "vitest run && vitest run --config vitest.ssr.config.ts",
+    "test:watch": "vitest"
+  },
+  "peerDependencies": {
+    "@solidjs/web": "^2.0.0",
+    "solid-js": "^2.0.0"
+  },
+  "dependencies": {
+    "@d3-maps/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@solidjs/compiler": "catalog:",
+    "@solidjs/web": "catalog:",
+    "jsdom": "catalog:",
+    "solid-js": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "vitest": "catalog:"
+  }
+}

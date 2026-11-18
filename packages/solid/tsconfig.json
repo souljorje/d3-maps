@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { "jsx": "preserve", "jsxImportSource": "@solidjs/web" },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "env.d.ts"]
+}

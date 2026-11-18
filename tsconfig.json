@@ -6,6 +6,8 @@
     "moduleDetection": "force",
     "resolveJsonModule": true,
     "paths": {
+      "@d3-maps/solid": ["./packages/solid/src/index.ts"],
+      "@d3-maps/solid/*": ["./packages/solid/src/*"],
       "~/*": ["./*"],
       "@d3-maps/core": ["./packages/core/src/index.ts"],
       "@d3-maps/core/types": ["./packages/core/src/index.ts"],

@@ -28,6 +28,7 @@ import {
   screen,
 } from '@testing-library/react'
 import {
+  createRef,
   use,
   useRef,
 } from 'react'
@@ -233,6 +234,23 @@ describe('mapZoom', () => {
     zoomRef.current?.reset(false)
 
     expect(zoomGroup.getAttribute('transform')).toBe(zoomIdentity.toString())
+  })
+
+  it('releases D3 listeners and disables commands on unmount', () => {
+    const zoomRef = createRef<MapZoomRef>()
+    const { unmount } = render(
+      <MapBase fit={sampleGeoJson}>
+        <MapZoom ref={zoomRef} />
+      </MapBase>,
+    )
+    const handle = zoomRef.current
+    const behavior = handle?.zoomBehavior
+
+    expect(behavior?.on('zoom')).toBeTypeOf('function')
+    unmount()
+
+    expect(behavior?.on('zoom')).toBeUndefined()
+    expect(handle?.zoomToFeature(sampleGeoJson.features[0], 12, false)).toBe(false)
   })
 
   it('changing zoom props does not rerender stable feature children that only need zoom presence', () => {

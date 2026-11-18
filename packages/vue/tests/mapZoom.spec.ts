@@ -25,6 +25,7 @@ import {
   h,
   inject,
   nextTick,
+  reactive,
   useTemplateRef,
 } from 'vue'
 
@@ -229,6 +230,36 @@ describe('mapZoom', () => {
 
     expect(zoom.zoomToFeature(emptyFeature)).toBe(false)
     expect(wrapper.get('[data-testid="map-zoom-group"]').attributes('transform')).toBeUndefined()
+  })
+
+  it('releases D3 listeners and disables commands on unmount', async () => {
+    const { wrapper, zoom } = await mountZoom()
+    const behavior = zoom.zoomBehavior
+
+    expect(behavior.on('zoom')).toBeTypeOf('function')
+    wrapper.unmount()
+
+    expect(behavior.on('zoom')).toBeUndefined()
+    expect(zoom.zoomToFeature(sampleGeoJson.features[0], 12, false)).toBe(false)
+  })
+
+  it('keeps the exposed zoom behavior current after reactive prop updates', async () => {
+    const props = reactive({
+      maxZoom: 8,
+      config: { clickDistance: 12 } as { clickDistance: number } | undefined,
+    })
+    const { zoom } = await mountZoom(props)
+    const exposedBehavior = zoom.zoomBehavior
+    expect(exposedBehavior.scaleExtent()).toEqual([1, 8])
+    expect(exposedBehavior.clickDistance()).toBe(12)
+
+    props.maxZoom = 4
+    props.config = undefined
+    await nextTick()
+
+    expect(zoom.zoomBehavior).toBe(exposedBehavior)
+    expect(exposedBehavior.scaleExtent()).toEqual([1, 4])
+    expect(exposedBehavior.clickDistance()).toBe(0)
   })
 
   it('exposes reset and applies the identity transform', async () => {

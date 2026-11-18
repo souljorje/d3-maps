@@ -1,4 +1,6 @@
 import type {
+  DefaultZoomBehavior,
+  ZoomBinding,
   ZoomCommands,
   ZoomEvent,
   ZoomProps,
@@ -10,16 +12,15 @@ import type {
 } from 'vue'
 
 import {
-  applyZoomEventTransform,
-  createZoomBehavior,
-  createZoomCommands,
-  setupZoom,
+  createZoomBinding,
+  createZoomCommandsProxy,
 } from '@d3-maps/core'
 import {
   computed,
   onMounted,
   onUnmounted,
   provide,
+  shallowRef,
   watch,
 } from 'vue'
 
@@ -40,7 +41,7 @@ export interface ResolvedZoomProps extends ZoomProps {
 
 export interface CreateMapZoomResult {
   commands: ZoomCommands
-  zoomBehavior: ComputedRef<ReturnType<typeof createZoomBehavior>>
+  zoomBehavior: ComputedRef<DefaultZoomBehavior>
 }
 
 export function useCreateMapZoom(
@@ -49,49 +50,40 @@ export function useCreateMapZoom(
   eventCallbacks: MapZoomEventCallbacks,
 ): CreateMapZoomResult {
   const context = useMapContext()
-
-  const zoomBehavior = computed(() => {
-    return createZoomBehavior(context.value, {
-      minZoom: props.minZoom,
-      maxZoom: props.maxZoom,
-      config: props.config,
-      onZoomStart: (event) => eventCallbacks.onZoomStart?.(event),
-      onZoom: (event) => {
-        applyZoomEventTransform(container.value, event)
-        eventCallbacks.onZoom?.(event)
-      },
-      onZoomEnd: (event) => eventCallbacks.onZoomEnd?.(event),
-    })
-  })
-
-  const commands = createZoomCommands({
-    element: () => container.value,
-    behavior: () => zoomBehavior.value,
-    context: () => context.value,
-    minZoom: () => props.minZoom,
-    maxZoom: () => props.maxZoom,
-    transition: () => props.transition,
-  })
+  const binding = shallowRef<ZoomBinding>()
+  const zoomBehavior = computed(() => binding.value!.zoomBehavior)
+  const commands = createZoomCommandsProxy(() => binding.value?.commands)
 
   provide(mapZoomKey, true)
 
-  let stopBehaviorWatch: (() => void) | undefined
   onMounted(() => {
-    stopBehaviorWatch = watch(zoomBehavior, (behavior) => {
-      if (!container.value) return
-      setupZoom({
-        element: container.value,
-        behavior,
-      })
-    }, { immediate: true })
+    if (!container.value) return
+    binding.value = createZoomBinding(
+      () => context.value,
+      container.value,
+      () => ({
+        minZoom: props.minZoom,
+        maxZoom: props.maxZoom,
+        transition: props.transition,
+        config: props.config,
+        onZoomStart: (event) => eventCallbacks.onZoomStart?.(event),
+        onZoom: (event) => eventCallbacks.onZoom?.(event),
+        onZoomEnd: (event) => eventCallbacks.onZoomEnd?.(event),
+      }),
+    )
   })
+
+  watch([
+    context,
+    () => props.minZoom,
+    () => props.maxZoom,
+    () => props.config,
+  ], () => binding.value?.update(), { flush: 'post' })
 
   onUnmounted(() => {
-    stopBehaviorWatch?.()
+    binding.value?.dispose()
+    binding.value = undefined
   })
 
-  return {
-    commands,
-    zoomBehavior,
-  }
+  return { commands, zoomBehavior }
 }
