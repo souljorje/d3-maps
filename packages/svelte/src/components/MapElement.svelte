@@ -33,27 +33,27 @@
   xmlns='http://www.w3.org/2000/svg'
   {...attributes}
   style={resolvedStyle}
-  onmouseenter={(event: MouseEvent) => {
+  onmouseenter={(event: MouseEvent & { currentTarget: EventTarget & SVGElement }) => {
     controller?.onMouseenter()
     attributes.onmouseenter?.(event)
   }}
-  onmouseleave={(event: MouseEvent) => {
+  onmouseleave={(event: MouseEvent & { currentTarget: EventTarget & SVGElement }) => {
     controller?.onMouseleave()
     attributes.onmouseleave?.(event)
   }}
-  onmousedowncapture={(event: MouseEvent) => {
+  onmousedowncapture={(event: MouseEvent & { currentTarget: EventTarget & SVGElement }) => {
     controller?.onMousedown(event)
     attributes.onmousedown?.(event)
   }}
-  onmouseupcapture={(event: MouseEvent) => {
+  onmouseupcapture={(event: MouseEvent & { currentTarget: EventTarget & SVGElement }) => {
     controller?.onMouseup()
     attributes.onmouseup?.(event)
   }}
-  onfocus={(event: FocusEvent) => {
+  onfocus={(event: FocusEvent & { currentTarget: EventTarget & SVGElement }) => {
     controller?.onFocus()
     attributes.onfocus?.(event)
   }}
-  onblur={(event: FocusEvent) => {
+  onblur={(event: FocusEvent & { currentTarget: EventTarget & SVGElement }) => {
     controller?.onBlur()
     attributes.onblur?.(event)
   }}
