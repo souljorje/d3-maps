@@ -6,27 +6,15 @@
   "description": "Framework-agnostic utilities for building interactive SVG maps with D3",
   "author": "Georgii Bukharov <souljorje@gmail.com>",
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
+  "publishConfig": { "access": "public" },
   "homepage": "https://d3-maps.netlify.app",
   "repository": {
     "type": "git",
     "url": "https://github.com/souljorje/d3-maps.git",
     "directory": "packages/core"
   },
-  "bugs": {
-    "url": "https://github.com/souljorje/d3-maps/issues"
-  },
-  "keywords": [
-    "d3",
-    "d3-geo",
-    "svg",
-    "map",
-    "dataviz",
-    "geojson",
-    "topojson"
-  ],
+  "bugs": { "url": "https://github.com/souljorje/d3-maps/issues" },
+  "keywords": ["d3", "d3-geo", "svg", "map", "dataviz", "geojson", "topojson"],
   "exports": {
     ".": "./dist/index.js",
     "./package.json": "./package.json",
@@ -34,9 +22,7 @@
   },
   "style": "dist/style.css",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist/*"
-  ],
+  "files": ["dist/*"],
   "scripts": {
     "typecheck": "tsc --noEmit",
     "typecheck:test": "tsc -p tsconfig.test.json --noEmit",
@@ -54,6 +40,7 @@
     "@types/geojson": "catalog:",
     "@types/topojson-client": "catalog:",
     "@types/topojson-specification": "catalog:",
+    "d3-drag": "^3.0.0",
     "d3-geo": "catalog:",
     "d3-selection": "catalog:",
     "d3-shape": "catalog:",
@@ -62,6 +49,8 @@
     "topojson-client": "catalog:"
   },
   "devDependencies": {
+    "@types/d3-drag": "^3.0.7",
+    "jsdom": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "vite-tsconfig-paths": "catalog:",
