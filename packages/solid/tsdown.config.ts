@@ -1,7 +1,7 @@
 import { copyFile } from 'node:fs/promises'
 
 import { createTsDownConfig } from '../../tsdown.config.ts'
-import { solidCompiler } from './build/compiler'
+import { solidCompiler } from './build/compiler.ts'
 
 export default [
   {
