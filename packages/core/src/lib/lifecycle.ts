@@ -1,11 +1,8 @@
-import type { InteractionState } from './interaction'
 import type { MapContext } from './map'
 import type { DefaultZoomBehavior, ZoomBehaviorOptions, ZoomCommands } from './zoom'
 
-import { dragEnable } from 'd3-drag'
 import { select } from 'd3-selection'
 
-import { useInteractionEvents } from './interaction'
 import { getSvgElement } from './utils'
 import {
   applyZoomEventTransform,
@@ -17,79 +14,60 @@ import {
   ZOOM_DEFAULTS,
 } from './zoom'
 
-const zoomOwners = new WeakMap<SVGSVGElement, () => void>()
+const zoomEventNames = [
+  'wheel.zoom',
+  'mousedown.zoom',
+  'dblclick.zoom',
+  'touchstart.zoom',
+  'touchmove.zoom',
+  'touchend.zoom',
+  'touchcancel.zoom',
+] as const
 
-/** Attaches shared interaction behavior to an already-mounted element. */
-export function bindMapInteraction(
-  element: Element,
-  onStateChange: (state: InteractionState) => void,
-  shouldRecoverOnGlobalMouseup = false,
-): () => void {
-  const controller = useInteractionEvents(onStateChange, shouldRecoverOnGlobalMouseup)
-  const listeners: [string, EventListener][] = [
-    ['mouseenter', () => controller.onMouseenter()],
-    ['mouseleave', () => controller.onMouseleave()],
-    ['mousedown', (event) => controller.onMousedown(event)],
-    ['mouseup', () => controller.onMouseup()],
-    ['focus', () => controller.onFocus()],
-    ['blur', () => controller.onBlur()],
-  ]
-  for (const [event, listener] of listeners) element.addEventListener(event, listener)
-
-  return () => {
-    for (const [event, listener] of listeners) element.removeEventListener(event, listener)
-    controller.dispose()
-  }
-}
-
-export interface MapZoomBinding {
-  commands: ZoomCommands
-  zoomBehavior: DefaultZoomBehavior
+/** Owns the D3 zoom listeners independently of a framework component. */
+export interface ZoomBinding {
+  readonly commands: ZoomCommands
+  readonly zoomBehavior: DefaultZoomBehavior
+  update: () => void
   dispose: () => void
 }
 
 /**
- * Attaches zoom after mount. Rebind when viewport or behavior options change.
- * The getters keep command geometry, transitions, and event callbacks current.
- * Commands become no-ops after disposal; the SVG's transform is preserved.
+ * Attach zoom to a mounted map group. Frameworks call update when geometry or
+ * behavior options change and dispose when the group unmounts.
+ *
+ * Listener references belong to this binding, not to component state.
  */
-export function bindMapZoom(
+export function createZoomBinding(
   context: () => MapContext,
   element: SVGGElement,
   getOptions: () => ZoomBehaviorOptions = () => ({}),
-): MapZoomBinding {
+): ZoomBinding {
   const svg = getSvgElement(element)
-  if (!svg) throw new Error('bindMapZoom requires a group inside an SVG')
-  zoomOwners.get(svg)?.()
+  if (!svg) throw new Error('createZoomBinding requires a group inside an SVG')
 
-  let isDisposed = false
-  let dragView: Window | undefined
   const selection = select(svg)
   const tapHighlight = svg.style.getPropertyValue('-webkit-tap-highlight-color')
   const tapHighlightPriority = svg.style.getPropertyPriority('-webkit-tap-highlight-color')
-  const zoomBehavior = createZoomBehavior(context(), {
-    ...getOptions(),
-    onZoomStart: (event) => {
-      if (isDisposed) return
-      const source = event.sourceEvent as MouseEvent | undefined
-      if (source?.type === 'mousedown') dragView = source.view ?? undefined
-      getOptions().onZoomStart?.(event)
-    },
-    onZoom: (event) => {
-      if (isDisposed) return
-      applyZoomEventTransform(element, event)
-      getOptions().onZoom?.(event)
-    },
-    onZoomEnd: (event) => {
-      if (isDisposed) return
-      dragView = undefined
-      getOptions().onZoomEnd?.(event)
-    },
-  })
+  let isDisposed = false
+  let behavior: DefaultZoomBehavior | undefined
+  let listeners: { name: string, listener: unknown }[] = []
+
+  const releaseListeners = (): boolean => {
+    let hasOwnedListener = false
+    for (const { name, listener } of listeners) {
+      if (listener && selection.on(name) === listener) {
+        selection.on(name, null)
+        hasOwnedListener = true
+      }
+    }
+    listeners = []
+    return hasOwnedListener
+  }
 
   const target = createZoomCommands({
     element: () => isDisposed ? undefined : element,
-    behavior: () => zoomBehavior,
+    behavior: () => behavior!,
     context,
     minZoom: () => getOptions().minZoom ?? ZOOM_DEFAULTS.minZoom,
     maxZoom: () => getOptions().maxZoom ?? ZOOM_DEFAULTS.maxZoom,
@@ -97,31 +75,43 @@ export function bindMapZoom(
   })
   const commands = createZoomCommandsProxy(() => isDisposed ? undefined : target)
 
+  const update = (): void => {
+    if (isDisposed) return
+    releaseListeners()
+    behavior?.on('start zoom end', null)
+
+    behavior = createZoomBehavior(context(), {
+      ...getOptions(),
+      onZoomStart: (event) => getOptions().onZoomStart?.(event),
+      onZoom: (event) => {
+        applyZoomEventTransform(element, event)
+        getOptions().onZoom?.(event)
+      },
+      onZoomEnd: (event) => getOptions().onZoomEnd?.(event),
+    })
+    setupZoom({ element, behavior })
+    listeners = zoomEventNames.map(name => ({ name, listener: selection.on(name) }))
+    applyZoomEventTransform(element, { transform: getCurrentZoomTransform(element) })
+  }
+
   const dispose = (): void => {
     if (isDisposed) return
     isDisposed = true
-    if (zoomOwners.get(svg) === dispose) {
-      zoomOwners.delete(svg)
-      selection.interrupt().on('.zoom', null)
+    const hasOwnedListener = releaseListeners()
+    behavior?.on('start zoom end', null)
+    if (hasOwnedListener) {
       if (tapHighlight) svg.style.setProperty('-webkit-tap-highlight-color', tapHighlight, tapHighlightPriority)
       else svg.style.removeProperty('-webkit-tap-highlight-color')
     }
-    if (dragView) {
-      select(dragView).on('mousemove.zoom mouseup.zoom', null)
-      dragEnable(dragView, false)
-      dragView = undefined
-    }
-    zoomBehavior.on('start zoom end', null)
   }
 
-  zoomOwners.set(svg, dispose)
-  try {
-    setupZoom({ element, behavior: zoomBehavior })
-    applyZoomEventTransform(element, { transform: getCurrentZoomTransform(element) })
-  } catch (error) {
-    dispose()
-    throw error
+  update()
+  return {
+    commands,
+    get zoomBehavior() {
+      return behavior!
+    },
+    update,
+    dispose,
   }
-
-  return { commands, zoomBehavior, dispose }
 }

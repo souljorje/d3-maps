@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { select } from 'd3-selection'
 
-import { bindMapInteraction, bindMapZoom, makeMapContext, zoomIdentity } from '../src'
+import { createZoomBinding, makeMapContext, zoomIdentity } from '../src'
 
 const disposers: (() => void)[] = []
 
@@ -20,74 +20,61 @@ function makeElements() {
   return { svg, group }
 }
 
-describe('mounted behavior bindings', () => {
-  it('disposes element and global interaction listeners', () => {
+describe('zoom resource lifecycle', () => {
+  it('updates options and callbacks without losing the current transform', () => {
     const { group } = makeElements()
-    const onStateChange = vi.fn()
-    const dispose = bindMapInteraction(group, onStateChange, true)
-    disposers.push(dispose)
-    group.dispatchEvent(new MouseEvent('mouseenter'))
-    group.dispatchEvent(new FocusEvent('focus'))
-    group.dispatchEvent(new MouseEvent('mousedown'))
-    expect(onStateChange.mock.calls.map(([state]) => state)).toEqual(['hover', 'focus', 'active'])
-    dispose()
-    onStateChange.mockClear()
-    group.dispatchEvent(new MouseEvent('mouseup'))
-    window.dispatchEvent(new MouseEvent('mouseup'))
-    expect(onStateChange).not.toHaveBeenCalled()
-  })
-
-  it('forwards current callbacks and preserves transforms while rebinding', () => {
-    const { svg, group } = makeElements()
     const context = makeMapContext()
+    let maxZoom = 8
     let onZoom = vi.fn()
-    const first = bindMapZoom(() => context, group, () => ({ onZoom }))
-    disposers.push(first.dispose)
-    first.commands.transform(zoomIdentity.scale(2), false)
+    const binding = createZoomBinding(() => context, group, () => ({ maxZoom, onZoom }))
+    disposers.push(binding.dispose)
+    const previousBehavior = binding.zoomBehavior
+
+    binding.commands.transform(zoomIdentity.scale(2), false)
     expect(group.getAttribute('transform')).toContain('scale(2)')
     expect(onZoom).toHaveBeenCalledOnce()
-    onZoom = vi.fn()
-    first.commands.scaleTo(3, false)
-    expect(onZoom).toHaveBeenCalledOnce()
 
-    const second = bindMapZoom(() => context, group)
-    disposers.push(second.dispose)
-    first.dispose()
-    expect(select(svg).on('wheel.zoom')).toBeTypeOf('function')
-    expect(group.getAttribute('transform')).toContain('scale(3)')
-    first.commands.reset(false)
-    expect(group.getAttribute('transform')).toContain('scale(3)')
-    second.commands.reset(false)
-    expect(group.getAttribute('transform')).toContain('scale(1)')
+    onZoom = vi.fn()
+    maxZoom = 4
+    binding.update()
+    expect(previousBehavior.on('zoom')).toBeUndefined()
+    expect(binding.zoomBehavior.scaleExtent()).toEqual([1, 4])
+    expect(group.getAttribute('transform')).toContain('scale(2)')
+    binding.commands.scaleTo(3, false)
+    expect(onZoom).toHaveBeenCalledOnce()
   })
 
-  it('removes zoom listeners without removing unrelated listeners', () => {
+  it('does not remove newer bindings on the same SVG', () => {
+    const { svg, group } = makeElements()
+    const first = createZoomBinding(() => makeMapContext(), group)
+    disposers.push(first.dispose)
+    const second = createZoomBinding(() => makeMapContext(), group)
+    disposers.push(second.dispose)
+
+    first.dispose()
+    expect(select(svg).on('wheel.zoom')).toBeTypeOf('function')
+    first.commands.reset(false)
+    second.commands.transform(zoomIdentity.scale(2), false)
+    expect(group.getAttribute('transform')).toContain('scale(2)')
+  })
+
+  it('disposes only owned zoom listeners and makes commands inert', () => {
     const { svg, group } = makeElements()
     const onClick = vi.fn()
     select(svg).on('click.application', onClick)
-    const binding = bindMapZoom(() => makeMapContext(), group)
+    const binding = createZoomBinding(() => makeMapContext(), group)
     disposers.push(binding.dispose)
+    const behavior = binding.zoomBehavior
+
+    expect(select(svg).on('wheel.zoom')).toBeTypeOf('function')
     binding.dispose()
     binding.dispose()
+    binding.update()
+
+    expect(behavior.on('zoom')).toBeUndefined()
     expect(select(svg).on('wheel.zoom')).toBeUndefined()
     svg.dispatchEvent(new MouseEvent('click'))
     expect(onClick).toHaveBeenCalledOnce()
     expect(binding.commands.zoomToFeature({ type: 'Sphere' })).toBe(false)
-  })
-
-  it('cleans window listeners when unmounted during a drag', () => {
-    const { svg, group } = makeElements()
-    const view = document.defaultView!
-    const binding = bindMapZoom(() => makeMapContext(), group)
-    disposers.push(binding.dispose)
-    const event = new MouseEvent('mousedown', { bubbles: true, button: 0 })
-    // jsdom rejects Vitest's window proxy in the constructor's view option.
-    Object.defineProperty(event, 'view', { value: view })
-    svg.dispatchEvent(event)
-    expect(select(view).on('mousemove.zoom')).toBeTypeOf('function')
-    binding.dispose()
-    expect(select(view).on('mousemove.zoom')).toBeUndefined()
-    expect(select(view).on('mouseup.zoom')).toBeUndefined()
-    expect(select(view).on('dragstart.drag')).toBeUndefined()
   })
 })

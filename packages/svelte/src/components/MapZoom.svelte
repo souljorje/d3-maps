@@ -1,10 +1,10 @@
 <script lang='ts'>
-  import type { MapZoomBinding } from '@d3-maps/core'
+  import type { ZoomBinding } from '@d3-maps/core'
 
   import type { MapZoomHandle, MapZoomProps } from '../types'
 
-  import { bindMapZoom, createZoomCommandsProxy } from '@d3-maps/core'
-  import { onMount, setContext, untrack } from 'svelte'
+  import { createZoomBinding, createZoomCommandsProxy } from '@d3-maps/core'
+  import { onMount, setContext } from 'svelte'
 
   import { MAP_ZOOM_CONTEXT, useMapContext } from '../context'
 
@@ -22,7 +22,7 @@
     ...attributes
   }: MapZoomProps = $props()
   let container: SVGGElement | undefined = $state()
-  let binding: MapZoomBinding | undefined
+  let binding: ZoomBinding | undefined
   const context = useMapContext()
   const commands = createZoomCommandsProxy(() => binding?.commands)
   const handle: MapZoomHandle = { ...commands, getContainer, getZoomBehavior }
@@ -43,23 +43,27 @@
     return binding?.zoomBehavior
   }
 
-  $effect(() => {
-    const element = container
-    const viewport = context()
-    const options = { minZoom, maxZoom, config }
-    if (!element) return
-    const current = untrack(() => bindMapZoom(() => viewport, element, () => ({
-      ...options,
+  function zoom(element: SVGGElement) {
+    const current = createZoomBinding(context, element, () => ({
+      minZoom,
+      maxZoom,
       transition,
+      config,
       onZoomStart,
       onZoom,
       onZoomEnd,
-    })))
+    }))
     binding = current
-    return () => {
-      current.dispose()
-      if (binding === current) binding = undefined
+    return {
+      destroy() {
+        current.dispose()
+        if (binding === current) binding = undefined
+      },
     }
+  }
+
+  $effect(() => {
+    if (container) binding?.update()
   })
 
   onMount(() => {
@@ -67,6 +71,6 @@
   })
 </script>
 
-<g data-d3m='zoom' {...attributes} bind:this={container} class={['d3-map-zoom', className]}>
+<g data-d3m='zoom' {...attributes} bind:this={container} use:zoom class={['d3-map-zoom', className]}>
   {@render children?.()}
 </g>
