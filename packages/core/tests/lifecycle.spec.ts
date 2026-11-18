@@ -65,7 +65,7 @@ describe('zoom resource lifecycle', () => {
 
     // D3 dispatches the remaining events of an active gesture via its original behavior.
     const event = { transform: zoomIdentity.scale(3) }
-    const listener = activeBehavior.on('zoom') as ((event: typeof event) => void) | undefined
+    const listener = activeBehavior.on('zoom') as ((zoomEvent: typeof event) => void) | undefined
     expect(listener).toBeTypeOf('function')
     listener?.(event)
     expect(group.getAttribute('transform')).toContain('scale(3)')

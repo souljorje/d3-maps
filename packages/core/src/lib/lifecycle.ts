@@ -6,6 +6,7 @@ import { select } from 'd3-selection'
 import { getSvgElement } from './utils'
 import {
   applyZoomEventTransform,
+  configureZoomBehavior,
   createZoomBehavior,
   createZoomCommands,
   createZoomCommandsProxy,
@@ -76,10 +77,8 @@ export function createZoomBinding(
 
   const update = (): void => {
     if (isDisposed) return
-    releaseListeners()
-    behavior?.on('start zoom end', null)
 
-    behavior = createZoomBehavior(context(), {
+    const options: ZoomBehaviorOptions = {
       ...getOptions(),
       onZoomStart: (event) => getOptions().onZoomStart?.(event),
       onZoom: (event) => {
@@ -87,7 +86,11 @@ export function createZoomBinding(
         getOptions().onZoom?.(event)
       },
       onZoomEnd: (event) => getOptions().onZoomEnd?.(event),
-    })
+    }
+
+    if (behavior) configureZoomBehavior(context(), behavior, options)
+    else behavior = createZoomBehavior(context(), options)
+
     setupZoom({ element, behavior })
     listeners = zoomEventNames.map((name) => ({ name, listener: selection.on(name) }))
   }
