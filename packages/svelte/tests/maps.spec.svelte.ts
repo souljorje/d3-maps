@@ -5,7 +5,7 @@ import type { MapZoomHandle } from '../src'
 import { flushSync, mount, unmount } from 'svelte'
 
 import { sampleGeoJsonTwoFeatures, sampleTopology } from '../../../tests/fixtures/mapData'
-import { makeMapContext, MapSphere, useMapZoom, zoomIdentity } from '../src'
+import { makeMapContext, MapElement, MapSphere, useMapZoom, zoomIdentity } from '../src'
 import CustomFeatures from './CustomFeatures.svelte'
 import Harness from './Harness.svelte'
 
@@ -94,6 +94,26 @@ describe('svelte map components', () => {
     path.dispatchEvent(new FocusEvent('blur'))
     flushSync()
     expect(path.style.opacity).toBe('0.9')
+  })
+
+  it('calls native mousedown and mouseup callbacks once outside MapZoom', () => {
+    const onmousedown = vi.fn()
+    const onmouseup = vi.fn()
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    document.body.append(svg)
+    const component = mount(MapElement, {
+      target: svg,
+      props: { onmousedown, onmouseup },
+    })
+    cleanup.push(() => unmount(component))
+    flushSync()
+
+    const path = svg.querySelector('path')!
+    path.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
+    path.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }))
+
+    expect(onmousedown).toHaveBeenCalledOnce()
+    expect(onmouseup).toHaveBeenCalledOnce()
   })
 
   it('exposes commands, updates zoom configuration, and disposes on unmount', async () => {

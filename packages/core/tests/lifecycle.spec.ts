@@ -44,6 +44,34 @@ describe('zoom resource lifecycle', () => {
     expect(onZoom).toHaveBeenCalledOnce()
   })
 
+  it('retains a live behavior and its gesture callbacks while replacing zoom options', () => {
+    const { group } = makeElements()
+    const context = makeMapContext()
+    const onZoom = vi.fn()
+    let maxZoom = 8
+    let config: { clickDistance: number } | undefined = { clickDistance: 12 }
+    const binding = createZoomBinding(() => context, group, () => ({ maxZoom, config, onZoom }))
+    disposers.push(binding.dispose)
+    const activeBehavior = binding.zoomBehavior
+    expect(activeBehavior.clickDistance()).toBe(12)
+
+    maxZoom = 4
+    config = undefined
+    binding.update()
+
+    expect(binding.zoomBehavior).toBe(activeBehavior)
+    expect(activeBehavior.scaleExtent()).toEqual([1, 4])
+    expect(activeBehavior.clickDistance()).toBe(0)
+
+    // D3 dispatches the remaining events of an active gesture via its original behavior.
+    const event = { transform: zoomIdentity.scale(3) }
+    const listener = activeBehavior.on('zoom') as ((event: typeof event) => void) | undefined
+    expect(listener).toBeTypeOf('function')
+    listener?.(event)
+    expect(group.getAttribute('transform')).toContain('scale(3)')
+    expect(onZoom).toHaveBeenCalledWith(event)
+  })
+
   it('does not remove newer bindings on the same SVG', () => {
     const { svg, group } = makeElements()
     const first = createZoomBinding(() => makeMapContext(), group)

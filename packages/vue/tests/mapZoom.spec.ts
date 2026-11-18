@@ -242,6 +242,26 @@ describe('mapZoom', () => {
     expect(zoom.zoomToFeature(sampleGeoJson.features[0], 12, false)).toBe(false)
   })
 
+  it('keeps the exposed zoom behavior current after reactive prop updates', async () => {
+    const { wrapper, zoom } = await mountZoom({
+      maxZoom: 8,
+      config: { clickDistance: 12 },
+    })
+    const exposedBehavior = zoom.zoomBehavior
+    expect(exposedBehavior.scaleExtent()).toEqual([1, 8])
+    expect(exposedBehavior.clickDistance()).toBe(12)
+
+    await wrapper.findComponent(MapZoom).setProps({
+      maxZoom: 4,
+      config: undefined,
+    })
+    await nextTick()
+
+    expect(zoom.zoomBehavior).toBe(exposedBehavior)
+    expect(exposedBehavior.scaleExtent()).toEqual([1, 4])
+    expect(exposedBehavior.clickDistance()).toBe(0)
+  })
+
   it('exposes reset and applies the identity transform', async () => {
     const {
       wrapper,
