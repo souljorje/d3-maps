@@ -37,7 +37,8 @@ describe('zoom resource lifecycle', () => {
     onZoom = vi.fn()
     maxZoom = 4
     binding.update()
-    expect(previousBehavior.on('zoom')).toBeUndefined()
+    expect(binding.zoomBehavior).toBe(previousBehavior)
+    expect(previousBehavior.on('zoom')).toBeTypeOf('function')
     expect(binding.zoomBehavior.scaleExtent()).toEqual([1, 4])
     expect(group.getAttribute('transform')).toContain('scale(2)')
     binding.commands.scaleTo(3, false)

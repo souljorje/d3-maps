@@ -289,7 +289,7 @@ export function configureZoomBehavior(
   behavior
     .filter(defaults.filter())
     .touchable(defaults.touchable())
-    .wheelDelta(defaults.wheelDelta())
+    .wheelDelta(defaults.wheelDelta() as (event: WheelEvent) => number)
     .extent(defaults.extent())
     .scaleExtent(defaults.scaleExtent())
     .translateExtent(defaults.translateExtent())
@@ -315,9 +315,12 @@ export function configureZoomBehavior(
   }
   applyModifiers(behavior, config)
 
-  behavior.on('start', options.onZoomStart ?? null)
-  behavior.on('zoom', options.onZoom ?? null)
-  behavior.on('end', options.onZoomEnd ?? null)
+  if (options.onZoomStart) behavior.on('start', options.onZoomStart)
+  else behavior.on('start', null)
+  if (options.onZoom) behavior.on('zoom', options.onZoom)
+  else behavior.on('zoom', null)
+  if (options.onZoomEnd) behavior.on('end', options.onZoomEnd)
+  else behavior.on('end', null)
 
   return behavior
 }
