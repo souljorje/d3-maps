@@ -41,7 +41,7 @@ export function Harness(props: HarnessProps): JSX.Element {
           <MapElement
             data-testid="interactive"
             d="M0,0L1,1"
-            tabIndex={0}
+            tabindex={0}
             style={{ fill: 'orange', opacity: 0.95 }}
             styles={{ default: { opacity: 0.9 }, hover: { opacity: 0.8 }, active: { opacity: 0.7 }, focus: { opacity: 0.6 } }}
             onMouseEnter={props.onMouseEnter}

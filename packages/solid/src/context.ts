@@ -1,4 +1,4 @@
-import type { MapContext, ZoomCommands, ZoomCommandTarget } from '@d3-maps/core'
+import type { MapContext, ZoomCommandTarget, ZoomCommands } from '@d3-maps/core'
 import type { Accessor } from 'solid-js'
 
 import type { MapZoomHandle } from './types'
@@ -6,8 +6,8 @@ import type { MapZoomHandle } from './types'
 import { createZoomCommandsProxy } from '@d3-maps/core'
 import { createContext, useContext } from 'solid-js'
 
-export const MapContextValue = createContext<Accessor<MapContext>>()
-export const MapZoomContextValue = createContext<MapZoomHandle>()
+export const MapContextValue = createContext<Accessor<MapContext> | null>(null)
+export const MapZoomContextValue = createContext<MapZoomHandle | null>(null)
 
 /** Read the accessor in JSX or a computation to track projection and viewport updates. */
 export function useMapContext(): Accessor<MapContext> {

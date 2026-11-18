@@ -1,5 +1,6 @@
 import type { InteractionState } from '@d3-maps/core'
 import type { JSX } from '@solidjs/web'
+import type { Ref } from 'solid-js'
 
 import type { MapElementProps } from '../types'
 
@@ -8,6 +9,14 @@ import { dynamic } from '@solidjs/web'
 import { createEffect, createMemo, createSignal, omit, useContext } from 'solid-js'
 
 import { MapZoomContextValue } from '../context'
+
+function assignRef(ref: Ref<SVGElement>, element: SVGElement): void {
+  if (Array.isArray(ref)) {
+    for (const item of ref) assignRef(item, element)
+  } else if (typeof ref === 'function') {
+    ref(element)
+  }
+}
 
 export function MapElement(props: MapElementProps): JSX.Element {
   let element: SVGElement | undefined
@@ -29,9 +38,10 @@ export function MapElement(props: MapElementProps): JSX.Element {
   return (
     <Tag
       {...attributes}
-      ref={[(value: SVGElement) => {
+      ref={(value: SVGElement) => {
         element = value
-      }, props.ref]}
+        assignRef(props.ref, value)
+      }}
       style={style()}
     >
       {props.children}

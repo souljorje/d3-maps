@@ -19,7 +19,7 @@ import type { JSX } from '@solidjs/web'
 import type { Ref } from 'solid-js'
 
 /** Native and interaction styles use Solid's CSS property objects. */
-export type MapElementProps = Omit<JSX.SVGAttributes<SVGElement>, 'style' | 'children' | 'ref'> & CoreMapElementProps<JSX.CSSProperties> & {
+export type MapElementProps = Omit<JSX.PathSVGAttributes<SVGElement>, 'style' | 'children' | 'ref'> & CoreMapElementProps<JSX.CSSProperties> & {
   tag?: 'path' | 'g'
   style?: JSX.CSSProperties
   ref?: Ref<SVGElement>
