@@ -1,0 +1,73 @@
+{
+  "name": "@d3-maps/svelte",
+  "type": "module",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Interactive SVG maps toolkit for Svelte 5, powered by D3",
+  "author": "Georgii Bukharov <souljorje@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://d3-maps.netlify.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/souljorje/d3-maps.git",
+    "directory": "packages/svelte"
+  },
+  "bugs": {
+    "url": "https://github.com/souljorje/d3-maps/issues"
+  },
+  "keywords": [
+    "svelte",
+    "d3",
+    "svg",
+    "map",
+    "geojson",
+    "topojson",
+    "dataviz"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json",
+    "./style.css": "./dist/style.css"
+  },
+  "svelte": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "style": "dist/style.css",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "typecheck": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
+    "typecheck:test": "svelte-check --tsconfig ./tsconfig.test.json --fail-on-warnings",
+    "build": "svelte-package --input src --output dist --tsconfig tsconfig.build.json && tsdown",
+    "test": "vitest run && vitest run --config vitest.ssr.config.ts",
+    "test:watch": "vitest"
+  },
+  "peerDependencies": {
+    "svelte": ">=5.20 <6"
+  },
+  "dependencies": {
+    "@d3-maps/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@sveltejs/package": "catalog:",
+    "@sveltejs/vite-plugin-svelte": "catalog:",
+    "jsdom": "catalog:",
+    "svelte": "catalog:",
+    "svelte-check": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "vitest": "catalog:"
+  }
+}

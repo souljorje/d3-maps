@@ -14,6 +14,7 @@ Interactive SVG maps toolkit with framework-agnostic core, React and Vue adapter
 - [Core Guide](packages/core/AGENTS.md)
 - [React Guide](packages/react/AGENTS.md)
 - [Vue Guide](packages/vue/AGENTS.md)
+- [Svelte Guide](packages/svelte/AGENTS.md)
 - [Docs Guide](packages/docs/AGENTS.md)
 
 ## Repository Layout
@@ -23,8 +24,7 @@ Interactive SVG maps toolkit with framework-agnostic core, React and Vue adapter
   ├─ core/  # framework-agnostic core utilities (@d3-maps/core)
   ├─ react/ # React adapter (@d3-maps/react)
   ├─ vue/   # Vue adapter (@d3-maps/vue)
-  # planned
-  ├─ svelte/ # Svelte adapter
+  ├─ svelte/ # Svelte adapter (@d3-maps/svelte)
   └─ solid/  # Solid adapter
 ```
 
