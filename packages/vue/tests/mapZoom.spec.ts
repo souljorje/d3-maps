@@ -231,6 +231,17 @@ describe('mapZoom', () => {
     expect(wrapper.get('[data-testid="map-zoom-group"]').attributes('transform')).toBeUndefined()
   })
 
+  it('releases D3 listeners and disables commands on unmount', async () => {
+    const { wrapper, zoom } = await mountZoom()
+    const behavior = zoom.zoomBehavior
+
+    expect(behavior.on('zoom')).toBeTypeOf('function')
+    wrapper.unmount()
+
+    expect(behavior.on('zoom')).toBeUndefined()
+    expect(zoom.zoomToFeature(sampleGeoJson.features[0], 12, false)).toBe(false)
+  })
+
   it('exposes reset and applies the identity transform', async () => {
     const {
       wrapper,
