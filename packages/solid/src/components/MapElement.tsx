@@ -1,5 +1,6 @@
 import type { InteractionController, InteractionState } from '@d3-maps/core'
 import type { JSX } from '@solidjs/web'
+import type { Ref } from 'solid-js'
 
 import type { MapElementProps } from '../types'
 
@@ -12,6 +13,14 @@ import { MapZoomContextValue } from '../context'
 function forwardEvent(handler: unknown, event: Event): void {
   if (typeof handler === 'function') handler(event)
   else if (Array.isArray(handler) && typeof handler[0] === 'function') handler[0](handler[1], event)
+}
+
+function assignRef(ref: Ref<SVGElement>, element: SVGElement): void {
+  if (Array.isArray(ref)) {
+    for (const item of ref) assignRef(item, element)
+  } else if (typeof ref === 'function') {
+    ref(element)
+  }
 }
 
 export function MapElement(props: MapElementProps): JSX.Element {
@@ -40,31 +49,32 @@ export function MapElement(props: MapElementProps): JSX.Element {
   return (
     <Tag
       {...attributes}
-      ref={[(value: SVGElement) => {
+      ref={(value: SVGElement) => {
         element = value
-      }, props.ref]}
+        assignRef(props.ref, value)
+      }}
       style={style()}
-      on:mouseenter={(event: MouseEvent) => {
+      onMouseenter={(event: MouseEvent) => {
         controller?.onMouseenter()
         forwardEvent(props.onMouseEnter, event)
       }}
-      on:mouseleave={(event: MouseEvent) => {
+      onMouseleave={(event: MouseEvent) => {
         controller?.onMouseleave()
         forwardEvent(props.onMouseLeave, event)
       }}
-      on:mousedown={(event: MouseEvent) => {
+      onMousedown={(event: MouseEvent) => {
         controller?.onMousedown(event)
         forwardEvent(props.onMouseDown, event)
       }}
-      on:mouseup={(event: MouseEvent) => {
+      onMouseup={(event: MouseEvent) => {
         controller?.onMouseup()
         forwardEvent(props.onMouseUp, event)
       }}
-      on:focus={(event: FocusEvent) => {
+      onFocus={(event: FocusEvent) => {
         controller?.onFocus()
         forwardEvent(props.onFocus, event)
       }}
-      on:blur={(event: FocusEvent) => {
+      onBlur={(event: FocusEvent) => {
         controller?.onBlur()
         forwardEvent(props.onBlur, event)
       }}
