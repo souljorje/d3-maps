@@ -77,13 +77,17 @@ describe('mounted behavior bindings', () => {
 
   it('cleans window listeners when unmounted during a drag', () => {
     const { svg, group } = makeElements()
+    const view = document.defaultView!
     const binding = bindMapZoom(() => makeMapContext(), group)
     disposers.push(binding.dispose)
-    svg.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, view: window, button: 0 }))
-    expect(select(window).on('mousemove.zoom')).toBeTypeOf('function')
+    const event = new MouseEvent('mousedown', { bubbles: true, button: 0 })
+    // jsdom rejects Vitest's window proxy in the constructor's view option.
+    Object.defineProperty(event, 'view', { value: view })
+    svg.dispatchEvent(event)
+    expect(select(view).on('mousemove.zoom')).toBeTypeOf('function')
     binding.dispose()
-    expect(select(window).on('mousemove.zoom')).toBeUndefined()
-    expect(select(window).on('mouseup.zoom')).toBeUndefined()
-    expect(select(window).on('dragstart.drag')).toBeUndefined()
+    expect(select(view).on('mousemove.zoom')).toBeUndefined()
+    expect(select(view).on('mouseup.zoom')).toBeUndefined()
+    expect(select(view).on('dragstart.drag')).toBeUndefined()
   })
 })

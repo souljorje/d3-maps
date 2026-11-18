@@ -7,6 +7,11 @@ allowBuilds:
   simple-git-hooks: true
 
 catalog:
+  '@solidjs/compiler': 2.0.0
+  '@solidjs/web': 2.0.0
+  '@types/d3-drag': ^3.0.7
+  'd3-drag': ^3.0.0
+  'solid-js': 2.0.0
   '@antfu/eslint-config': ^6.7.3
   '@changesets/changelog-github': ^0.5.2
   '@changesets/cli': ^2.30.0
