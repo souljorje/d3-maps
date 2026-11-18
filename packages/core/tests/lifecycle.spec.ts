@@ -77,13 +77,14 @@ describe('mounted behavior bindings', () => {
 
   it('cleans window listeners when unmounted during a drag', () => {
     const { svg, group } = makeElements()
+    const view = document.defaultView!
     const binding = bindMapZoom(() => makeMapContext(), group)
     disposers.push(binding.dispose)
-    svg.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, view: window, button: 0 }))
-    expect(select(window).on('mousemove.zoom')).toBeTypeOf('function')
+    svg.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, view, button: 0 }))
+    expect(select(view).on('mousemove.zoom')).toBeTypeOf('function')
     binding.dispose()
-    expect(select(window).on('mousemove.zoom')).toBeUndefined()
-    expect(select(window).on('mouseup.zoom')).toBeUndefined()
-    expect(select(window).on('dragstart.drag')).toBeUndefined()
+    expect(select(view).on('mousemove.zoom')).toBeUndefined()
+    expect(select(view).on('mouseup.zoom')).toBeUndefined()
+    expect(select(view).on('dragstart.drag')).toBeUndefined()
   })
 })

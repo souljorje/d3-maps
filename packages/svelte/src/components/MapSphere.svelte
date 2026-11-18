@@ -7,7 +7,8 @@
 
   const { noClip = false, fill = 'none', stroke = 'none', children, ...attributes }: MapSphereProps = $props()
   const context = useMapContext()
-  const clipId = `d3m-sphere-${$props.id()}`
+  const id = $props.id()
+  const clipId = `d3m-sphere-${id}`
   const d = $derived(renderSphere(context()) ?? undefined)
 </script>
 
