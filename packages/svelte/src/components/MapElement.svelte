@@ -33,12 +33,30 @@
   xmlns='http://www.w3.org/2000/svg'
   {...attributes}
   style={resolvedStyle}
-  onmouseenter={(event) => { controller?.onMouseenter(); attributes.onmouseenter?.(event) }}
-  onmouseleave={(event) => { controller?.onMouseleave(); attributes.onmouseleave?.(event) }}
-  onmousedown={(event) => { controller?.onMousedown(event); attributes.onmousedown?.(event) }}
-  onmouseup={(event) => { controller?.onMouseup(); attributes.onmouseup?.(event) }}
-  onfocus={(event) => { controller?.onFocus(); attributes.onfocus?.(event) }}
-  onblur={(event) => { controller?.onBlur(); attributes.onblur?.(event) }}
+  onmouseenter={(event: MouseEvent) => {
+    controller?.onMouseenter()
+    attributes.onmouseenter?.(event)
+  }}
+  onmouseleave={(event: MouseEvent) => {
+    controller?.onMouseleave()
+    attributes.onmouseleave?.(event)
+  }}
+  onmousedowncapture={(event: MouseEvent) => {
+    controller?.onMousedown(event)
+    attributes.onmousedown?.(event)
+  }}
+  onmouseupcapture={(event: MouseEvent) => {
+    controller?.onMouseup()
+    attributes.onmouseup?.(event)
+  }}
+  onfocus={(event: FocusEvent) => {
+    controller?.onFocus()
+    attributes.onfocus?.(event)
+  }}
+  onblur={(event: FocusEvent) => {
+    controller?.onBlur()
+    attributes.onblur?.(event)
+  }}
 >
   {@render children?.()}
 </svelte:element>

@@ -9,7 +9,6 @@ import {
   createZoomBehavior,
   createZoomCommands,
   createZoomCommandsProxy,
-  getCurrentZoomTransform,
   setupZoom,
   ZOOM_DEFAULTS,
 } from './zoom'
@@ -90,8 +89,7 @@ export function createZoomBinding(
       onZoomEnd: (event) => getOptions().onZoomEnd?.(event),
     })
     setupZoom({ element, behavior })
-    listeners = zoomEventNames.map(name => ({ name, listener: selection.on(name) }))
-    applyZoomEventTransform(element, { transform: getCurrentZoomTransform(element) })
+    listeners = zoomEventNames.map((name) => ({ name, listener: selection.on(name) }))
   }
 
   const dispose = (): void => {

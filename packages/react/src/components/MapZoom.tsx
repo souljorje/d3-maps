@@ -74,7 +74,9 @@ export function MapZoom(props: MapZoomProps): ReactElement {
 
   useImperativeHandle(ref, () => ({
     container: containerRef.current,
-    get zoomBehavior() { return getZoomBehavior()! },
+    get zoomBehavior() {
+      return getZoomBehavior()!
+    },
     ...commands,
   }), [
     commands,
