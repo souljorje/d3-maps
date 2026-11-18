@@ -43,11 +43,9 @@
   }}
   onmousedowncapture={(event: MouseEvent & { currentTarget: EventTarget & SVGElement }) => {
     controller?.onMousedown(event)
-    attributes.onmousedown?.(event)
   }}
-  onmouseupcapture={(event: MouseEvent & { currentTarget: EventTarget & SVGElement }) => {
+  onmouseupcapture={() => {
     controller?.onMouseup()
-    attributes.onmouseup?.(event)
   }}
   onfocus={(event: FocusEvent & { currentTarget: EventTarget & SVGElement }) => {
     controller?.onFocus()
